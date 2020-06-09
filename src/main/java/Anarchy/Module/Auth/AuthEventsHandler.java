@@ -1,5 +1,8 @@
 package Anarchy.Module.Auth;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Module.Permissions.PermissionsAPI;
@@ -13,11 +16,8 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AuthEventsHandler implements Listener {
-	private static Map<Integer, Integer> START_MONEY = new HashMap<>();
+	private static Map<Integer, Integer> START_MONEY = new HashMap <>();
 
 	public static void register() {
 		START_MONEY.put(1, 150);

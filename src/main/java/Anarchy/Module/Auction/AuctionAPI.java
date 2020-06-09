@@ -1,9 +1,18 @@
 package Anarchy.Module.Auction;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import Anarchy.AnarchyMain;
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
-import Anarchy.Module.Auction.Utils.Inventory.AuctionChest;
 import Anarchy.Module.Auction.Utils.TradeItem;
+import Anarchy.Module.Auction.Utils.Inventory.AuctionChest;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
@@ -13,20 +22,15 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteOrder;
-import java.util.*;
-
 public class AuctionAPI extends PluginBase {
-	public static LinkedHashMap<String, TradeItem> AUCTION = new LinkedHashMap<>();
-	public static Map<CommandSender, Long> AUCTION_COOLDOWN = new HashMap<>();
-	public static Map<Player, AuctionChest> AUCTION_CHEST = new HashMap<>();
-	public static Map<Player, Integer> AUCTION_PAGE = new HashMap<>();
+	public static LinkedHashMap <String, TradeItem> AUCTION = new LinkedHashMap <>();
+	public static Map <CommandSender, Long> AUCTION_COOLDOWN = new HashMap <>();
+	public static Map <Player, AuctionChest> AUCTION_CHEST = new HashMap <>();
+	public static Map <Player, Integer> AUCTION_PAGE = new HashMap <>();
 	public static int AUCTION_MAX_PRICE = 100000;
-	public static int AUCTION_CHEST_SIZE = 25;
-	public static int AUCTION_MAX_SELLS = 10;
-	public static int AUCTION_ADD_COOLDOWN = 30;
+	public static int AUCTION_CHEST_SIZE = 45;
+	public static int AUCTION_MAX_SELLS = 10; // 10
+	public static int AUCTION_ADD_COOLDOWN = 60; // 60
 	public static String PREFIX = "§l§7(§cАукцион§7) §r";
 
 	public static void register() {
@@ -35,12 +39,14 @@ public class AuctionAPI extends PluginBase {
 		if (auctionData.exists()) {
 			Config config = new Config(auctionData, Config.YAML);
 			for (Map.Entry<String, Object> entry: config.getAll().entrySet()) {
-				ArrayList<Object> itemData = (ArrayList<Object> ) entry.getValue();
+				ArrayList<Object> itemData = (ArrayList<Object>) entry.getValue();
 				CompoundTag compoundTag = null;
 				if (itemData.size() > 7) {
 					try {
 						compoundTag = NBTIO.read((byte[]) itemData.get(7), ByteOrder.LITTLE_ENDIAN);
-					} catch (IOException e) { /**/ }
+					} catch(IOException e) {
+						Server.getInstance().getLogger().alert("error: " + e);
+					}
 				}
 				if (compoundTag == null) {
 					compoundTag = new CompoundTag();
@@ -48,7 +54,7 @@ public class AuctionAPI extends PluginBase {
 				compoundTag.putString("UUID", entry.getKey());
 				Item item = Item.get((int) itemData.get(4), (int) itemData.get(5), (int) itemData.get(6));
 				item.setNamedTag(compoundTag);
-				AUCTION.put(entry.getKey(), new TradeItem(item, itemData.get(0).toString(), itemData.get(1) == null ? null : itemData.get(1).toString(), (int) itemData.get(2), Long.valueOf(itemData.get(3).toString()), entry.getKey()));
+				AUCTION.put(entry.getKey(), new TradeItem(item, itemData.get(0).toString(), itemData.get(1) == null ? null: itemData.get(1).toString(), (int) itemData.get(2), Long.valueOf(itemData.get(3).toString()), entry.getKey()));
 			}
 		}
 	}
@@ -59,22 +65,37 @@ public class AuctionAPI extends PluginBase {
 			auctionData.delete();
 		}
 		Config config = new Config(auctionData, Config.YAML);
-		for (Map.Entry<String, TradeItem> entry: AUCTION.entrySet()) {
+		for (Map.Entry <String, TradeItem> entry: AUCTION.entrySet()) {
 			try {
 				TradeItem tradeItem = entry.getValue();
 				Item item = tradeItem.sellItem;
 				config.set(entry.getKey(), item.hasCompoundTag() ? new Object[] {
-					tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)
-				} : new Object[] {
-					tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount()
+					tradeItem.sellerName,
+					tradeItem.aboutMessage,
+					tradeItem.itemPrice,
+					tradeItem.sellTime,
+					item.getId(),
+					item.getDamage(),
+					item.getCount(),
+					NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)
+				}: new Object[] {
+					tradeItem.sellerName,
+					tradeItem.aboutMessage,
+					tradeItem.itemPrice,
+					tradeItem.sellTime,
+					item.getId(),
+					item.getDamage(),
+					item.getCount()
 				});
-			} catch (IOException e) { /**/ }
+			} catch(IOException e) {
+				Server.getInstance().getLogger().alert("error: " + e);
+			}
 		}
 		config.save();
 	}
 
 	public static Long getTradeTime() {
-		return System.currentTimeMillis() / 1000L + 259200;
+		return System.currentTimeMillis() / 1000L + 259200; // 259200
 	}
 
 	public static int getPagesCount() {
@@ -94,12 +115,19 @@ public class AuctionAPI extends PluginBase {
 					File dataFile = new File(AnarchyMain.datapath + "/Auction/PlayerItems/" + tradeItem.sellerName + ".yml");
 					Config config = new Config(dataFile, Config.YAML);
 					config.set(tradeItem.UUID, tradeItem.sellItem.hasCompoundTag() ? new Object[] {
-						tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount(), NBTIO.write(tradeItem.sellItem.getNamedTag(), ByteOrder.LITTLE_ENDIAN)
-					} : new Object[] {
-						tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount()
+						tradeItem.sellItem.getId(),
+						tradeItem.sellItem.getDamage(),
+						tradeItem.sellItem.getCount(),
+						NBTIO.write(tradeItem.sellItem.getNamedTag(), ByteOrder.LITTLE_ENDIAN)
+					}: new Object[] {
+						tradeItem.sellItem.getId(),
+						tradeItem.sellItem.getDamage(),
+						tradeItem.sellItem.getCount()
 					});
 					config.save();
-				} catch (IOException e) { /**/ }
+				} catch(IOException e) {
+					Server.getInstance().getLogger().alert("error: " + e);
+				}
 				iterator.remove();
 			}
 		}
@@ -109,40 +137,46 @@ public class AuctionAPI extends PluginBase {
 		int playerPage = AUCTION_PAGE.get(player);
 		AuctionChest auctionChest;
 		if (firstTime) {
-			auctionChest = new AuctionChest();
+			auctionChest = new AuctionChest(PREFIX);
 		} else {
 			auctionChest = AUCTION_CHEST.get(player);
 			auctionChest.clearAll();
 		}
 
-		auctionChest.setTitle("§fАукцион, всего предметов §l" + AUCTION.size());
+		auctionChest.setTitle("§fТорговая Площадка §7(§f" + AUCTION.size() + "§7)");
 		int tradeSize = AUCTION.size();
 		if (tradeSize == 0) {
 			player.sendMessage(AuctionAPI.PREFIX + "§fНа аукционе нет предметов!");
 			return;
 		}
 
-		int start = playerPage * AUCTION_CHEST_SIZE, stop;
+		int start = playerPage * AUCTION_CHEST_SIZE,
+		stop;
 		if (tradeSize > start + AUCTION_CHEST_SIZE) {
 			stop = start + AUCTION_CHEST_SIZE;
-			auctionChest.setItem(26, Item.get(Item.PAPER).setCustomName("§6Вперед"));
+			auctionChest.setItem(52, Item.get(Item.PAPER).setCustomName("§r§eСледующая Страница\n\n§r§e• §fНажмите, чтобы перейти"));
 		} else {
 			stop = tradeSize;
 		}
 
 		Object[] tradeItems = AUCTION.values().toArray();
-		for (int i = start; i<stop; i++) {
+		for (int i = start; i < stop; i++) {
 			TradeItem tradeItem = (TradeItem) tradeItems[i];
 			Item item = tradeItem.sellItem.clone();
 			CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 			compoundTag.putString("UUID", tradeItem.UUID);
 			item.setNamedTag(compoundTag);
-			item.setCustomName("§r§fПродавец: §e" + tradeItem.sellerName + "\n§fЦена: §e" + tradeItem.itemPrice + "\n§fИстекает через: §c" + (tradeItem.getTime() / 3600) + " §fч. §c" + (tradeItem.getTime() / 60 % 60) + " §fмин." + (tradeItem.aboutMessage == null ? "" : "\n§fОписание: §f" + tradeItem.aboutMessage));
+			item.setCustomName("§r§fПродавец: §e" + tradeItem.sellerName + "\n§r§fСтоимость: §e" + tradeItem.itemPrice + "\n§r§fДо окончания: §c" + (tradeItem.getTime() / 3600) + " §fч. §c" + (tradeItem.getTime() / 60 % 60) + " §fмин." + (tradeItem.aboutMessage == null ? "": "\n§r§fОписание: §e" + tradeItem.aboutMessage) + "\n\n§r§e• §fНажмите, чтобы купить");
 			auctionChest.addItem(item);
 		}
 
 		if (playerPage != 0) {
-			auctionChest.setItem(25, Item.get(Item.PAPER).setCustomName("§6Назад"));
+			auctionChest.setItem(51, Item.get(Item.PAPER).setCustomName("§r§eПредыдущая Страница\n\n§r§e• §fНажмите, чтобы перейти"));
+		}
+		
+		if (playerPage >=0) {
+		      auctionChest.setItem(49, Item.get(Item.EMERALD).setCustomName("§r§eОбновление страницы\n\n§r§e• §fНажмите, чтобы обновить страницу"));
+		      auctionChest.setItem(53, Item.get(Item.SIGN).setCustomName("§r§eСправка\n\n§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §eМонет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§e/auc §7(§eцена§7)\n§r§fили\n§r§e/auc §7(§eцена§7) (§eописание§7)"));
 		}
 
 		if (firstTime) {

@@ -23,7 +23,7 @@ public class NearCommand extends Command {
 		Player player = (Player) commandSender;
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Player list: Server.getInstance().getOnlinePlayers().values()) {
-			if (list.distance(player)<RADIUS && list.gamemode != 3) {
+			if (list.distance(player) < RADIUS && list.gamemode != 3) {
 				stringBuilder.append("§7, §e").append(list.getName());
 			}
 		}

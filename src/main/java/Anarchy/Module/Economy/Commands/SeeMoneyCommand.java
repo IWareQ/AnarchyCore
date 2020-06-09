@@ -20,7 +20,7 @@ public class SeeMoneyCommand extends Command {
 			return true;
 		}
 
-		if (args.length<1) {
+		if (args.length < 1) {
 			sender.sendMessage("§l§e| §fИспользование §7- §e/seemoney <игрок>");
 			return true;
 		}

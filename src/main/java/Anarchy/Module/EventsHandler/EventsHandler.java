@@ -1,5 +1,9 @@
 package Anarchy.Module.EventsHandler;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Module.Commands.Home.HomeCommand;
 import Anarchy.Module.Commands.Home.SetHomeCommand;
@@ -17,18 +21,23 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
-import cn.nukkit.event.player.*;
+import cn.nukkit.event.player.PlayerChatEvent;
+import cn.nukkit.event.player.PlayerDeathEvent;
+import cn.nukkit.event.player.PlayerEatFoodEvent;
+import cn.nukkit.event.player.PlayerFoodLevelChangeEvent;
+import cn.nukkit.event.player.PlayerInteractEvent;
+import cn.nukkit.event.player.PlayerMoveEvent;
+import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.ChangeDimensionPacket;
 import cn.nukkit.network.protocol.PlayStatusPacket;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.animal.swimming.Squid;
 import nukkitcoders.mobplugin.entities.monster.Monster;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class EventsHandler implements Listener {
 	public static int CHAT_RADIUS = 70;
@@ -50,7 +59,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		if (player.x<FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z<FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
+		if (player.x < FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z < FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
 			player.sendPopup("§c§l| §fВы пытаетесь §cвыйти §fза границу мира! §c§l|");
 			event.setCancelled(true);
 		}
@@ -60,7 +69,7 @@ public class EventsHandler implements Listener {
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		Player player = event.getPlayer();
 		Location location = event.getTo();
-		if (location.x<FunctionsAPI.BORDER[0] || location.x > FunctionsAPI.BORDER[1] || location.z<FunctionsAPI.BORDER[2] || location.z > FunctionsAPI.BORDER[3]) {
+		if (location.x < FunctionsAPI.BORDER[0] || location.x > FunctionsAPI.BORDER[1] || location.z < FunctionsAPI.BORDER[2] || location.z > FunctionsAPI.BORDER[3]) {
 			player.sendPopup("§l§c| §fВы пытаетесь §cтелепортироваться §fза границу мира! §c|");
 			event.setCancelled(true);
 		}
@@ -138,22 +147,58 @@ public class EventsHandler implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onPlayerEatFood(PlayerEatFoodEvent event) {
+		Player player = event.getPlayer();
+		if (player.getLevel() == FunctionsAPI.WORLD2) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onPlayerFoodLevelChange(PlayerFoodLevelChangeEvent event) {
+		Player player = event.getPlayer();
+		if (player.getLevel() == FunctionsAPI.WORLD2) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onPlayerMove2(final PlayerMoveEvent event) {
+		final Player player = event.getPlayer();
+		final Block block = player.getLevel().getBlock(new Vector3((double)(int) Math.round(event.getPlayer().x - 0.5), (double)(int) Math.round(event.getPlayer().y - 1.0), (double)(int) Math.round(event.getPlayer().z - 0.5)));
+		if (player.getLevel() == FunctionsAPI.WORLD2) {
+			if (block.getId() == 241) {
+				switch (block.getId()) {
+				case 241:
+					{
+						Level level = Server.getInstance().getLevelByName("world");
+						Vector3 teleportPosition = new Vector3(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 256, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
+						player.teleport(level.getSafeSpawn(teleportPosition));
+						player.sendMessage("§l§a| §r§fВы телепортированы в случайное место");
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String playerMessage = event.getMessage();
 
 		if (String.valueOf(playerMessage.charAt(0)).equals("!")) {
-			event.setFormat("§4Ⓖ " + player.getDisplayName() + " §8› §f" + playerMessage.substring(1).replaceAll("§", ""));
+			event.setFormat("§aⒼ " + player.getDisplayName() + " §8» §f" + playerMessage.substring(1).replaceAll("§", ""));
 		} else {
-			Set<CommandSender> players = new HashSet<>();
+			Set<CommandSender> players = new HashSet <>();
 			for (Player reciver: Server.getInstance().getOnlinePlayers().values()) {
-				if (reciver.level == player.level && reciver.distance(new Location(player.getX(), player.getY(), player.getZ(), reciver.getLevel()))<= CHAT_RADIUS) {
+				if (reciver.level == player.level && reciver.distance(new Location(player.getX(), player.getY(), player.getZ(), reciver.getLevel())) <= CHAT_RADIUS) {
 					players.add(reciver);
 				}
 			}
 
 			players.add(new ConsoleCommandSender());
-			event.setFormat("§fⓁ " + player.getDisplayName() + " §8› §f" + playerMessage.replaceAll("§", ""));
+			event.setFormat("§7Ⓛ " + player.getDisplayName() + " §8» §f" + playerMessage.replaceAll("§", ""));
 			event.setRecipients(players);
 		}
 	}

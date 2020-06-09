@@ -1,32 +1,30 @@
 package Anarchy.Module.Regions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import Anarchy.Module.Permissions.Utils.GroupAllow;
 import Anarchy.Utils.SQLiteUtils;
 import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RegionsAPI {
 	public static String PREFIX = "§l§7(§cПриват§7) §r";
 	public static String FREE = "§l§a| §fТерритория свободна! §l§a|",
-		BUSY = "§l§c| §fТерритория не доступна для взаимодействия! §l§c|",
-		BUSY_BY = "§l§c| §fТерритория занята Игроком §a{PLAYER} §l§c|",
-		EDIT = "§l§cВнимание! §fВы изменяете чужой регион!",
-		UNBREAK = "§l§c| §fЭтот блок невозможно сломать! §l§c|",
-		UNPLACE = "§l§c| §fЭтот блок не возможно установить тут! §l§c|",
-		BIOME = "§l§c| §fЭтот биом не доступен для строительства! §l§c|";
-	public static Map<Integer, Integer> REGIONS = new HashMap<>();
+	BUSY = "§l§c| §fТерритория не доступна для взаимодействия! §l§c|",
+	BUSY_BY = "§l§c| §fТерритория занята Игроком §a{PLAYER} §l§c|",
+	EDIT = "§l§cВнимание! §fВы изменяете чужой регион!",
+	UNBREAK = "§l§c| §fЭтот блок невозможно сломать! §l§c|",
+	UNPLACE = "§l§c| §fЭтот блок не возможно установить тут! §l§c|",
+	BIOME = "§l§c| §fЭтот биом не доступен для строительства! §l§c|";
+	public static Map <Integer, Integer> REGIONS = new HashMap <>();
 
 	public static void register() {
 		REGIONS.put(Item.IRON_BLOCK, 3);
@@ -51,12 +49,19 @@ public class RegionsAPI {
 			}
 		}
 
-		int radius = REGIONS.get(block.getId()), x = block.getFloorX(), y = block.getFloorY(), z = block.getFloorZ();
+		int radius = REGIONS.get(block.getId()),
+		x = block.getFloorX(),
+		y = block.getFloorY(),
+		z = block.getFloorZ();
 		int[] pos1 = {
-			Math.min(x - radius, x + radius), y - radius, Math.min(z - radius, z + radius)
+			Math.min(x - radius, x + radius),
+			y - radius,
+			Math.min(z - radius, z + radius)
 		};
 		int[] pos2 = {
-			Math.max(x - radius, x + radius), y + radius, Math.max(z - radius, z + radius)
+			Math.max(x - radius, x + radius),
+			y + radius,
+			Math.max(z - radius, z + radius)
 		};
 
 		if (!RegionsAPI.canCreateRegion(pos1[0], pos2[0], pos1[1], pos2[1], pos1[2], pos2[2])) {
@@ -89,7 +94,7 @@ public class RegionsAPI {
 		return SQLiteUtils.selectString("Regions.db", "SELECT `Username` FROM `AREAS` WHERE (`Region_ID` = '" + regionID + "');");
 	}
 
-	public static Map<String, String> getRegionInfo(int regionID) {
+	public static Map <String, String> getRegionInfo(int regionID) {
 		return SQLiteUtils.selectStringMap("Regions.db", "SELECT * FROM `AREAS` WHERE (`Region_ID` = '" + regionID + "');");
 	}
 

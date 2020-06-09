@@ -1,8 +1,8 @@
 package Anarchy.Utils;
 
-import cn.nukkit.math.Vector3;
-
 import java.util.SplittableRandom;
+
+import cn.nukkit.math.Vector3;
 
 public class RandomUtils {
 	public static final SplittableRandom random = new SplittableRandom();

@@ -1,5 +1,8 @@
 package Anarchy.Module.Commands.Home;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Anarchy.Module.Permissions.PermissionsAPI;
 import Anarchy.Module.Permissions.Utils.GroupAllow;
 import Anarchy.Utils.SQLiteUtils;
@@ -8,11 +11,8 @@ import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SetHomeCommand extends Command {
-	public static Map<Player, String> HOME_SET = new HashMap<>();
+	public static Map <Player, String> HOME_SET = new HashMap <>();
 
 	public SetHomeCommand() {
 		super("sethome", "Установка дома");

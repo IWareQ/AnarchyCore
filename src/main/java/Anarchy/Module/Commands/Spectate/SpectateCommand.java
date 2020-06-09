@@ -1,5 +1,8 @@
 package Anarchy.Module.Commands.Spectate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -8,11 +11,8 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.potion.Effect;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SpectateCommand extends Command {
-	public static Map<String, SpectatePlayer> SPECTATE_PLAYERS = new HashMap<>();
+	public static Map <String, SpectatePlayer> SPECTATE_PLAYERS = new HashMap <>();
 
 	public SpectateCommand() {
 		super("sp", "Наблюдение за игроками", "", new String[] {

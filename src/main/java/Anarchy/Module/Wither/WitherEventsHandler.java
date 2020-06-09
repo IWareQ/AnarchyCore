@@ -70,6 +70,7 @@ public class WitherEventsHandler implements Listener {
 					}
 				}
 			}
+
 			if (block.getSide(BlockFace.DOWN, 1) instanceof BlockSoulSand) {
 				player.sendTip("§l§e| §fЕсли Вы строите Визера, то последняя голова должна быть поставлена по середине! §l§e|");
 			}

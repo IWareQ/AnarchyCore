@@ -1,9 +1,5 @@
 package Anarchy.Utils;
 
-import Anarchy.AnarchyMain;
-import cn.nukkit.Server;
-import ru.nukkit.dblib.DbLib;
-
 import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,6 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import Anarchy.AnarchyMain;
+import cn.nukkit.Server;
+import ru.nukkit.dblib.DbLib;
 
 public class SQLiteUtils {
 	public static Connection connectToSQLite(String filename) {
@@ -25,7 +25,9 @@ public class SQLiteUtils {
 		try {
 			connection.createStatement().executeUpdate(query);
 			if (connection != null) connection.close();
-		} catch (SQLException e) { /**/ }
+		} catch(SQLException e) {
+			Server.getInstance().getLogger().alert("error: " + e);
+		}
 		return true;
 	}
 
@@ -38,7 +40,7 @@ public class SQLiteUtils {
 	}
 
 	public static Map<String, String> selectMap(String filename, String query) {
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new HashMap <>();
 		Connection connection = connectToSQLite(filename);
 		if (connection == null) return null;
 		try {
@@ -49,18 +51,20 @@ public class SQLiteUtils {
 			int count = rsmd.getColumnCount();
 
 			while (result.next()) {
-				for (int i = 1; i<= count; i++) {
+				for (int i = 1; i <= count; i++) {
 					map.put(rsmd.getColumnName(i), result.getString(i));
 				}
 			}
 
 			if (connection != null) connection.close();
-		} catch (SQLException e) { /**/ }
+		} catch(SQLException e) {
+			Server.getInstance().getLogger().alert("error: " + e);
+		}
 		return map;
 	}
 
 	public static Map<String, String> selectStringMap(String filename, String query) {
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new HashMap <>();
 		Connection connection = connectToSQLite(filename);
 		if (connection == null) return null;
 		try {
@@ -71,19 +75,21 @@ public class SQLiteUtils {
 			int count = rsmd.getColumnCount();
 
 			while (result.next()) {
-				for (int i = 1; i<= count; i++) {
+				for (int i = 1; i <= count; i++) {
 					String s = result.getString(i);
-					map.put(rsmd.getColumnName(i), s == null ? "0" : s);
+					map.put(rsmd.getColumnName(i), s == null ? "0": s);
 				}
 			}
 
 			if (connection != null) connection.close();
-		} catch (SQLException e) { /**/ }
+		} catch(SQLException e) {
+			Server.getInstance().getLogger().alert("error: " + e);
+		}
 		return map;
 	}
 
 	public static Map<String, Integer> selectIntegerMap(String filename, String query) {
-		Map<String, Integer> map = new HashMap<>();
+		Map<String, Integer> map = new HashMap <>();
 		Connection connection = connectToSQLite(filename);
 		if (connection == null) return null;
 		try {
@@ -94,18 +100,20 @@ public class SQLiteUtils {
 			int count = rsmd.getColumnCount();
 
 			while (result.next()) {
-				for (int i = 1; i<= count; i++) {
+				for (int i = 1; i <= count; i++) {
 					map.put(rsmd.getColumnName(i), result.getInt(i));
 				}
 			}
 
 			if (connection != null) connection.close();
-		} catch (SQLException e) { /**/ }
+		} catch(SQLException e) {
+			Server.getInstance().getLogger().alert("error: " + e);
+		}
 		return map;
 	}
 
 	public static ArrayList<String> selectList(String filename, String query) {
-		ArrayList<String> list = new ArrayList<>();
+		ArrayList<String> list = new ArrayList <>();
 		Connection connection = connectToSQLite(filename);
 		if (connection == null) return null;
 		try {
@@ -116,18 +124,20 @@ public class SQLiteUtils {
 			int count = rsmd.getColumnCount();
 
 			while (result.next()) {
-				for (int i = 1; i<= count; i++) {
+				for (int i = 1; i <= count; i++) {
 					list.add(result.getString(1));
 				}
 			}
 
 			if (connection != null) connection.close();
-		} catch (SQLException e) { /**/ }
+		} catch(SQLException e) {
+			Server.getInstance().getLogger().alert("error: " + e);
+		}
 		return list;
 	}
 
 	public static ArrayList<Integer> selectIntegerList(String filename, String query) {
-		ArrayList<Integer> list = new ArrayList<>();
+		ArrayList<Integer> list = new ArrayList <>();
 		Connection connection = connectToSQLite(filename);
 		if (connection == null) return null;
 		try {
@@ -138,18 +148,20 @@ public class SQLiteUtils {
 			int count = rsmd.getColumnCount();
 
 			while (result.next()) {
-				for (int i = 1; i<= count; i++) {
+				for (int i = 1; i <= count; i++) {
 					list.add(result.getInt(i));
 				}
 			}
 
 			if (connection != null) connection.close();
-		} catch (SQLException e) { /**/ }
+		} catch(SQLException e) {
+			Server.getInstance().getLogger().alert("error: " + e);
+		}
 		return list;
 	}
 
 	public static ArrayList<String> selectStringList(String filename, String query) {
-		ArrayList<String> list = new ArrayList<>();
+		ArrayList<String> list = new ArrayList <>();
 		Connection connection = connectToSQLite(filename);
 		if (connection == null) return null;
 		try {
@@ -160,13 +172,15 @@ public class SQLiteUtils {
 			int count = rsmd.getColumnCount();
 
 			while (result.next()) {
-				for (int i = 1; i<= count; i++) {
+				for (int i = 1; i <= count; i++) {
 					list.add(result.getString(i));
 				}
 			}
 
 			if (connection != null) connection.close();
-		} catch (SQLException e) { /**/ }
+		} catch(SQLException e) {
+			Server.getInstance().getLogger().alert("error: " + e);
+		}
 		return list;
 	}
 
@@ -179,7 +193,7 @@ public class SQLiteUtils {
 			if (result == null) return null;
 			res = result.getString(1);
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
+		} catch(SQLException e) {
 			res = null;
 		}
 		return res;
@@ -188,26 +202,30 @@ public class SQLiteUtils {
 	public static Integer selectInteger(String filename, String query) {
 		int res = -1;
 		Connection connection = connectToSQLite(filename);
-		if (connection == null) return -1;
+		if (connection == null) return - 1;
 		try {
 			ResultSet result = connection.createStatement().executeQuery(query);
-			if (result == null) return -1;
+			if (result == null) return - 1;
 			res = result.getInt(1);
 			if (connection != null) connection.close();
-		} catch (SQLException e) { /**/ }
+		} catch(SQLException e) {
+			Server.getInstance().getLogger().alert("error: " + e);
+		}
 		return res;
 	}
 
 	public static Long selectLong(String filename, String query) {
 		Long res = -1L;
 		Connection connection = connectToSQLite(filename);
-		if (connection == null) return -1L;
+		if (connection == null) return - 1L;
 		try {
 			ResultSet result = connection.createStatement().executeQuery(query);
-			if (result == null) return -1L;
+			if (result == null) return - 1L;
 			res = result.getLong(1);
 			if (connection != null) connection.close();
-		} catch (SQLException e) { /**/ }
+		} catch(SQLException e) {
+			Server.getInstance().getLogger().alert("error: " + e);
+		}
 		return res;
 	}
 }

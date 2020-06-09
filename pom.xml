@@ -49,16 +49,23 @@
         <dependency>
             <groupId>de.theamychan.scoreboard</groupId>
             <artifactId>ScoreboardAPI</artifactId>
-            <version>1.0</version>
+            <version>3.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/libs/ScoreboardAPI.jar</systemPath>
+            <systemPath>${basedir}/libs/ScoreboardAPI-3.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>ru.nukkitx</groupId>
             <artifactId>FormAPI</artifactId>
-            <version>2.1-SNAPSHOT-</version>
+            <version>3.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/libs/FormAPI-2.1-SNAPSHOT.jar</systemPath>
+            <systemPath>${basedir}/libs/FormAPI-3.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>kdr</groupId>
+            <artifactId>KDE</artifactId>
+            <version>3.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/KDR-3.0.jar</systemPath>
         </dependency>
     </dependencies>
     <build>
@@ -88,6 +95,20 @@
                     </execution>
                 </executions>
             </plugin>
+        	<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-jar-plugin</artifactId>
+        		<version>2.4</version>
+        		<configuration>
+        			<archive>
+        				<manifest>
+        					<mainClass>
+        						1
+        					</mainClass>
+        				</manifest>
+        			</archive>
+        		</configuration>
+        	</plugin>
         </plugins>
         <resources>
             <resource>

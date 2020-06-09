@@ -1,5 +1,7 @@
 package Anarchy.Task;
 
+import java.text.DecimalFormat;
+
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.Permissions.PermissionsAPI;
@@ -10,8 +12,6 @@ import de.theamychan.scoreboard.api.ScoreboardAPI;
 import de.theamychan.scoreboard.network.DisplaySlot;
 import de.theamychan.scoreboard.network.Scoreboard;
 import de.theamychan.scoreboard.network.ScoreboardDisplay;
-
-import java.text.DecimalFormat;
 
 public class HotbarTask extends Task {
 

@@ -20,7 +20,7 @@ public class GroupCommand extends Command {
 			return true;
 		}
 
-		if (args.length<2 || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
+		if (args.length < 2 || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
 			sender.sendMessage("§l§e| §fИспользование §7- §e/group <ID> <игрок>");
 			return true;
 		}

@@ -1,17 +1,17 @@
 package Anarchy.Manager.Sessions;
 
-import Anarchy.Manager.Sessions.Session.PlayerSession;
-import cn.nukkit.Player;
-import de.theamychan.scoreboard.network.Scoreboard;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Anarchy.Manager.Sessions.Session.PlayerSession;
+import cn.nukkit.Player;
+import de.theamychan.scoreboard.network.Scoreboard;
+
 public class PlayerSessionManager {
-	public static ArrayList<String> SCOREBOARD = new ArrayList<>();
-	public static Map<String, Scoreboard> SCOREBOARDS = new HashMap<>();
-	public static Map<String, PlayerSession> PLAYER_SESSION = new HashMap<>();
+	public static ArrayList<String> SCOREBOARD = new ArrayList <>();
+	public static Map<String, Scoreboard> SCOREBOARDS = new HashMap <>();
+	public static Map<String, PlayerSession> PLAYER_SESSION = new HashMap <>();
 
 	public static PlayerSession getPlayerSession(Player player) {
 		return PLAYER_SESSION.get(player.getName().toUpperCase());

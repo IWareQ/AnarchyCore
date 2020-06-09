@@ -1,5 +1,9 @@
 package Anarchy.Module.Permissions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import Anarchy.AnarchyMain;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
@@ -9,13 +13,9 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.permission.PermissionAttachment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 public class PermissionsAPI {
-	public static ArrayList<String> GROUPS = new ArrayList<>();
-	private static Map<Integer, GroupAllow> GROUP_ALLOWS = new HashMap<>();
+	public static ArrayList <String> GROUPS = new ArrayList <>();
+	private static Map <Integer, GroupAllow> GROUP_ALLOWS = new HashMap <>();
 	public static String PREFIX = "§7(§eПривилегии§7) §r";
 
 	public static void register() {
@@ -46,7 +46,7 @@ public class PermissionsAPI {
 	}
 
 	public static boolean isGroup(int groupID) {
-		return groupID >= 0 && groupID<PermissionsAPI.GROUPS.size();
+		return groupID >= 0 && groupID < PermissionsAPI.GROUPS.size();
 	}
 
 	public static int getGroup(Player player) {
@@ -92,66 +92,65 @@ public class PermissionsAPI {
 	public static void updatePermissions(Player player) {
 		PermissionAttachment permissionAttachment = player.addAttachment(AnarchyMain.plugin, player.getName());
 		permissionAttachment.clearPermissions();
-		Map<String, Boolean> permissionAllows = new HashMap<>();
+		Map <String, Boolean> permissionAllows = new HashMap <>();
 		int permissionGroup = getGroup(player);
 		switch (permissionGroup) {
-			case 0:
-				break;
-
-			case 1:
-				permissionAllows.put("Command.Food", true);
-				break;
-			case 2:
-				permissionAllows.put("Command.Food", true);
-				permissionAllows.put("Command.Heal", true);
-				permissionAllows.put("Command.Repair", true);
-				break;
-			case 3:
-				permissionAllows.put("Command.Food", true);
-				permissionAllows.put("Command.Heal", true);
-				permissionAllows.put("Command.Repair", true);
-				permissionAllows.put("Command.Day", true);
-				permissionAllows.put("Command.Night", true);
-				break;
-			case 4:
-				permissionAllows.put("Command.Food", true);
-				permissionAllows.put("Command.Heal", true);
-				permissionAllows.put("Command.Repair", true);
-				permissionAllows.put("Command.Day", true);
-				permissionAllows.put("Command.Night", true);
-				permissionAllows.put("Command.Near", true);
-				break;
-			case 5:
-				permissionAllows.put("Command.Food", true);
-				permissionAllows.put("Command.Heal", true);
-				permissionAllows.put("Command.Repair", true);
-				permissionAllows.put("Command.Day", true);
-				permissionAllows.put("Command.Night", true);
-				permissionAllows.put("Command.Near", true);
-				permissionAllows.put("Command.EnderChest", true);
-				break;
-			case 6:
-				permissionAllows.put("Command.Food", true);
-				permissionAllows.put("Command.Heal", true);
-				permissionAllows.put("Command.Repair", true);
-				permissionAllows.put("Command.Day", true);
-				permissionAllows.put("Command.Night", true);
-				permissionAllows.put("Command.Near", true);
-				permissionAllows.put("Command.EnderChest", true);
-				permissionAllows.put("Command.Spectate", true);
-				break;
-			case 7:
-				permissionAllows.put("Command.Food", true);
-				permissionAllows.put("Command.Heal", true);
-				permissionAllows.put("Command.Repair", true);
-				permissionAllows.put("Command.Day", true);
-				permissionAllows.put("Command.Night", true);
-				permissionAllows.put("Command.Near", true);
-				permissionAllows.put("Command.EnderChest", true);
-				permissionAllows.put("Command.Spectate", true);
-				permissionAllows.put("Command.SeeMoney", true);
+		case 0:
+			break;
+		case 1:
+			permissionAllows.put("Command.Food", true);
+			break;
+		case 2:
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			break;
+		case 3:
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			permissionAllows.put("Command.Day", true);
+			permissionAllows.put("Command.Night", true);
+			break;
+		case 4:
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			permissionAllows.put("Command.Day", true);
+			permissionAllows.put("Command.Night", true);
+			permissionAllows.put("Command.Near", true);
+			break;
+		case 5:
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			permissionAllows.put("Command.Day", true);
+			permissionAllows.put("Command.Night", true);
+			permissionAllows.put("Command.Near", true);
+			permissionAllows.put("Command.EnderChest", true);
+			break;
+		case 6:
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			permissionAllows.put("Command.Day", true);
+			permissionAllows.put("Command.Night", true);
+			permissionAllows.put("Command.Near", true);
+			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.Spectate", true);
+			break;
+		case 7:
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			permissionAllows.put("Command.Day", true);
+			permissionAllows.put("Command.Night", true);
+			permissionAllows.put("Command.Near", true);
+			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.Spectate", true);
+			permissionAllows.put("Command.SeeMoney", true);
 		}
-		for (Map.Entry<String, Boolean> entry: permissionAllows.entrySet()) {
+		for (Map.Entry <String, Boolean> entry: permissionAllows.entrySet()) {
 			permissionAttachment.setPermission(entry.getKey(), entry.getValue());
 		}
 	}

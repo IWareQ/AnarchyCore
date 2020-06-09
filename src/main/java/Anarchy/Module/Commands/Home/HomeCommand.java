@@ -1,5 +1,7 @@
 package Anarchy.Module.Commands.Home;
 
+import java.util.Map;
+
 import Anarchy.Utils.SQLiteUtils;
 import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
@@ -9,8 +11,6 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
-
-import java.util.Map;
 
 public class HomeCommand extends Command {
 	public static String PREFIX = "§l§7(§3Дом§7) §r";
@@ -32,14 +32,16 @@ public class HomeCommand extends Command {
 			return false;
 		}
 
-		Map<String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM `HOMES` WHERE UPPER(`Home_Name`) = '" + strings[0].toUpperCase() + "' AND `Username` = '" + commandSender.getName() + "';");
+		Map <String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM `HOMES` WHERE UPPER(`Home_Name`) = '" + strings[0].toUpperCase() + "' AND `Username` = '" + commandSender.getName() + "';");
 		if (homeData == null || homeData.isEmpty()) {
 			commandSender.sendMessage(PREFIX + "§fТочки дома §c" + strings[0] + " §7- §fне существует!\n§l§e| §r§fСписок всех точек §7- §e/homes");
 			return false;
 		}
 
 		Level level = Server.getInstance().getLevelByName(homeData.get("LEVEL"));
-		int x = Integer.parseInt(homeData.get("X")), y = Integer.parseInt(homeData.get("Y")), z = Integer.parseInt(homeData.get("Z"));
+		int x = Integer.parseInt(homeData.get("X")),
+		y = Integer.parseInt(homeData.get("Y")),
+		z = Integer.parseInt(homeData.get("Z"));
 		if (level.getBlock(new Position(x, y, z, level)).getId() != BlockID.BED_BLOCK) {
 			commandSender.sendMessage(PREFIX + "§fКровати нет на месте точки дома!");
 			commandSender.sendMessage("§l§e| §r§fДля удаления точки дома используйте §7- §e/delhome");

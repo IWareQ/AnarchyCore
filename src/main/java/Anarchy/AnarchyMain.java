@@ -1,5 +1,9 @@
 package Anarchy;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.Map;
+
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.AllSessionsManager;
 import Anarchy.Module.Auction.AuctionAPI;
@@ -7,7 +11,15 @@ import Anarchy.Module.Auction.AuctionEventsHandler;
 import Anarchy.Module.Auction.Commands.AuctionCommand;
 import Anarchy.Module.Auction.Commands.BuyCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
-import Anarchy.Module.Commands.*;
+import Anarchy.Module.Commands.BarCommand;
+import Anarchy.Module.Commands.DayCommand;
+import Anarchy.Module.Commands.FoodCommand;
+import Anarchy.Module.Commands.HealCommand;
+import Anarchy.Module.Commands.KickCommand;
+import Anarchy.Module.Commands.NearCommand;
+import Anarchy.Module.Commands.NightCommand;
+import Anarchy.Module.Commands.ProfileCommand;
+import Anarchy.Module.Commands.RepairCommand;
 import Anarchy.Module.Commands.Check.CheckCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
 import Anarchy.Module.Commands.Defaults.TellCommand;
@@ -20,15 +32,19 @@ import Anarchy.Module.Commands.Home.SetHomeCommand;
 import Anarchy.Module.Commands.Spectate.SpectateCommand;
 import Anarchy.Module.Commands.Teleport.TpaCommand;
 import Anarchy.Module.Commands.Teleport.TpnCommand;
-// import Anarchy.Module.Commands.Teleport.TprCommand;
+import Anarchy.Module.Commands.Teleport.TprCommand;
 import Anarchy.Module.Commands.Teleport.TpyCommand;
-import Anarchy.Module.Economy.Commands.*;
+import Anarchy.Module.Economy.Commands.AddMoneyCommand;
+import Anarchy.Module.Economy.Commands.MoneyCommand;
+import Anarchy.Module.Economy.Commands.PayCommand;
+import Anarchy.Module.Economy.Commands.SeeMoneyCommand;
+import Anarchy.Module.Economy.Commands.SetMoneyCommand;
 import Anarchy.Module.EventsHandler.EventsHandler;
-import Anarchy.Module.Permissions.Commands.GroupCommand;
 import Anarchy.Module.Permissions.PermissionsAPI;
-import Anarchy.Module.Regions.Commands.RegionCommand;
+import Anarchy.Module.Permissions.Commands.GroupCommand;
 import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Module.Regions.RegionsEventsHandler;
+import Anarchy.Module.Regions.Commands.RegionCommand;
 import Anarchy.Module.Wither.WitherEventsHandler;
 import Anarchy.Task.HotbarTask;
 import Anarchy.Task.MinuteTask;
@@ -37,10 +53,6 @@ import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.Map;
 
 public class AnarchyMain extends PluginBase {
 	public static AnarchyMain plugin;
@@ -52,11 +64,11 @@ public class AnarchyMain extends PluginBase {
 	public void onEnable() {
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		for (String pluginName: new String[] {
-				"DbLib",
-				"ScoreboardPlugin",
-				"MobPlugin",
-				"FormAPI"
-			}) {
+			"DbLib",
+			"ScoreboardPlugin",
+			"MobPlugin",
+			"FormAPI"
+		}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
 				getLogger().alert("§l§aНе хватает плагина §7- §b\"" + pluginName + "\"");
 				pluginManager.disablePlugin(this);
@@ -112,24 +124,24 @@ public class AnarchyMain extends PluginBase {
 	private void unregisterCommands() {
 		Map<String, Command> commandMap = getServer().getCommandMap().getCommands();
 		for (String command: new String[] {
-				"me",
-				"ver",
-				"say",
-				"pl",
-				"plugins",
-				"mixer",
-				"difficulty",
-				"defaultgamemode",
-				"help",
-				"?",
-				"pardon",
-				"unban",
-				"particle",
-				"tell",
-				"list",
-				"about",
-				"title"
-			}) {
+			"me",
+			"ver",
+			"say",
+			"pl",
+			"plugins",
+			"mixer",
+			"difficulty",
+			"defaultgamemode",
+			"help",
+			"?",
+			"pardon",
+			"unban",
+			"particle",
+			"tell",
+			"list",
+			"about",
+			"title"
+		}) {
 			commandMap.remove(command);
 		}
 	}
@@ -151,8 +163,9 @@ public class AnarchyMain extends PluginBase {
 			new TpaCommand(),
 			new TpyCommand(),
 			new TpnCommand(),
-			//new TprCommand(),
+			new TprCommand(),
 			new ProfileCommand(),
+			new KickCommand(),
 			new MoneyCommand(),
 			new PayCommand(),
 			new CheckCommand(),

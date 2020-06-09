@@ -1,5 +1,11 @@
 package Anarchy.Module.Commands.Donate;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import Anarchy.AnarchyMain;
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.Donate.Utils.DonateChest;
@@ -17,12 +23,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Config;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class DonateHandler extends Command implements Listener {
 	public DonateHandler() {
@@ -42,8 +42,8 @@ public class DonateHandler extends Command implements Listener {
 
 			DonateChest donateChest = new DonateChest("Купленные Предметы", dataFile);
 			Config config = new Config(dataFile, Config.YAML);
-			for (Map.Entry<String, Object> entry: config.getAll().entrySet()) {
-				ArrayList<Object> itemData = (ArrayList<Object> ) entry.getValue();
+			for (Map.Entry <String, Object> entry: config.getAll().entrySet()) {
+				ArrayList<Object> itemData = (ArrayList<Object>) entry.getValue();
 				Item item = Item.get((int) itemData.get(0), (int) itemData.get(1), (int) itemData.get(2));
 				CompoundTag compoundTag = new CompoundTag();
 				compoundTag.putString("DATE", entry.getKey());
@@ -53,14 +53,17 @@ public class DonateHandler extends Command implements Listener {
 				}
 			}
 			FakeChestsAPI.openInventory(player, donateChest);
-		} else if (strings.length >= 2 && !(commandSender instanceof Player)) {
+		} else if (strings.length >= 2) {
 			String[] split = strings[0].split(":");
 			String playerName = StringUtils.implode(strings, 1).toLowerCase();
 			commandSender.sendMessage("Игрок " + playerName + " получил " + split[0] + ":" + split[1] + " (x" + split[2] + ")");
 			Config config = new Config(AnarchyMain.datapath + "/DonateItems/" + playerName + ".yml", Config.YAML);
 			LinkedHashMap objectMap = (LinkedHashMap) config.getAll();
 			objectMap.put(UUID.randomUUID().toString(), new Object[] {
-				StringUtils.getDate(), Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2])
+				StringUtils.getDate(),
+				Integer.parseInt(split[0]),
+				Integer.parseInt(split[1]),
+				Integer.parseInt(split[2])
 			});
 			config.setAll(objectMap);
 			config.save();

@@ -13,13 +13,14 @@ public class PayCommand extends Command {
 		super("pay", "Перевод денег");
 		commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {
-			new CommandParameter("player", CommandParamType.TARGET, false), new CommandParameter("money", CommandParamType.INT, false)
+			new CommandParameter("player", CommandParamType.TARGET, false),
+			new CommandParameter("money", CommandParamType.INT, false)
 		});
 	}
 
 	@Override
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (args.length<2) {
+		if (args.length < 2) {
 			sender.sendMessage("§l§e| §fИспользование §7- §e/pay <игрок> <сумма>");
 			return true;
 		}
@@ -30,13 +31,13 @@ public class PayCommand extends Command {
 			return true;
 		}
 
-		if (!args[1].matches("^[0-9]+$") || Integer.parseInt(args[1])<0) {
+		if (!args[1].matches("^[0-9]+$") || Integer.parseInt(args[1]) < 0) {
 			sender.sendMessage(EconomyAPI.PREFIX + "§fСумма может быть только положительным числом");
 			return true;
 		}
 
 		int money = EconomyAPI.myMoney((Player) sender);
-		if (money<Integer.parseInt(args[1])) {
+		if (money < Integer.parseInt(args[1])) {
 			sender.sendMessage(EconomyAPI.PREFIX + "§fВам не хватает денег для перевода.\n§l§e| §r§fВаш баланс §7- §e" + money + "");
 			return true;
 		}

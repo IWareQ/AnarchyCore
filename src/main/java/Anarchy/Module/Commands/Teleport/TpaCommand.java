@@ -1,5 +1,8 @@
 package Anarchy.Module.Commands.Teleport;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -7,12 +10,9 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class TpaCommand extends Command {
 	public static String PREFIX = "§l§7(§aТелепорт§7) §r";
-	public static Map<Player, Player> TPA_REQUEST = new HashMap<>();
+	public static Map <Player, Player> TPA_REQUEST = new HashMap < >();
 
 	public TpaCommand() {
 		super("tpa", "Запрос телепортации");

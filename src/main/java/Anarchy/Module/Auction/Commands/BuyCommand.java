@@ -13,8 +13,9 @@ public class BuyCommand extends Command {
 
 	@Override
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		AuctionAPI.AUCTION_PAGE.put((Player) commandSender, 0);
-		AuctionAPI.showAuction((Player) commandSender, true);
+		Player player = (Player) commandSender;
+		AuctionAPI.AUCTION_PAGE.put(player, 0);
+		AuctionAPI.showAuction(player, true);
 		return false;
 	}
 }

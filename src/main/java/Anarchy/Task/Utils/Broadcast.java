@@ -1,12 +1,10 @@
 package Anarchy.Task.Utils;
 
-import Anarchy.AnarchyMain;
-
 import java.util.ArrayList;
 
 public class Broadcast {
-	public static String PREFIX = "§l§c|| §r";
-	private static ArrayList<String> BROADCAST = new ArrayList<>();
+	public static String PREFIX = "§l§e|| §r";
+	private static ArrayList<String> BROADCAST = new ArrayList <>();
 	private static int TIMER = 0;
 
 	public static void register() {

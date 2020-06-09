@@ -22,7 +22,7 @@ public class BarCommand extends Command {
 		} else {
 			PlayerSessionManager.SCOREBOARD.add(senderName);
 			HotbarTask.showScoreboard((Player) commandSender);
-			commandSender.sendMessage("§l§a| §r§fХотбар успешно §cВключен");
+			commandSender.sendMessage("§l§a| §r§fХотбар успешно §aВключен");
 		}
 		return false;
 	}

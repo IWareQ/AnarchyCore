@@ -1,8 +1,8 @@
 package Anarchy.Manager.Sessions;
 
-import Anarchy.Manager.Sessions.Session.PlayerSession;
-
 import java.util.Map;
+
+import Anarchy.Manager.Sessions.Session.PlayerSession;
 
 public class AllSessionsManager {
 	public static void saveAllSessions() {

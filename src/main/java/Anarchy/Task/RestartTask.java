@@ -9,24 +9,24 @@ public class RestartTask extends Task {
 	@Override
 	public void onRun(int i) {
 		if (MinuteTask.SECONDS == 60) {
-			Server.getInstance().broadcastMessage("§l§eПерезагрузка! §r§fСервер перезагрузится через §a1 §fминуту!");
+			Server.getInstance().broadcastMessage("§l§e| §fСервер перезагрузится через §a1 §fминуту!");
 		} else if (MinuteTask.SECONDS == 30) {
-			Server.getInstance().broadcastMessage("§l§eПерезагрузка! §r§fСервер перезагрузится через §a30 §fсекунд!");
+			Server.getInstance().broadcastMessage("§l§e| §fСервер перезагрузится через §a30 §fсекунд!");
 		} else if (MinuteTask.SECONDS == 10) {
-			Server.getInstance().broadcastMessage("§l§eПерезагрузка! §r§fСервер перезагрузится через §a10 §fсекунд!");
+			Server.getInstance().broadcastMessage("§l§e| §fСервер перезагрузится через §a10 §fсекунд!");
 		}
 
-		if (MinuteTask.SECONDS<= 10) {
+		if (MinuteTask.SECONDS <= 10) {
 			if (MinuteTask.SECONDS == 0) {
 				for (Player player: Server.getInstance().getOnlinePlayers().values()) {
-					player.close("", "§f§lПерезагрузка");
+					player.close("", "§l§eПерезагрузка");
 				}
 				Server.getInstance().shutdown();
 				return;
 			}
 
 			for (Player player: Server.getInstance().getOnlinePlayers().values()) {
-				player.sendTitle("§lПерезагрузка", "§fСервер перезагрузится через §e" + MinuteTask.SECONDS + " §f" + getSecond(MinuteTask.SECONDS), 0, 20, 0);
+				player.sendTitle("§l§c ВНИМАНИЕ", "§f§lСервер перезагрузится через §e" + MinuteTask.SECONDS + " §f" + getSecond(MinuteTask.SECONDS), 0, 20, 0);
 				player.level.addSound(player, Sound.RANDOM_CLICK, 1, 1, player);
 			}
 		}
@@ -39,14 +39,14 @@ public class RestartTask extends Task {
 			return "секунд";
 		}
 		switch (second % 10) {
-			case 1:
-				return "секунду";
-			case 2:
-			case 3:
-			case 4:
-				return "секунды";
-			default:
-				return "секунд";
+		case 1:
+			return "секунду";
+		case 2:
+		case 3:
+		case 4:
+			return "секунды";
+		default:
+			return "секунд";
 		}
 	}
 }

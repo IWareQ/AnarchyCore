@@ -1,5 +1,12 @@
 package Anarchy.Manager.FakeChests.Utils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import com.google.common.base.Preconditions;
+
 import Anarchy.AnarchyMain;
 import cn.nukkit.Player;
 import cn.nukkit.inventory.ContainerInventory;
@@ -11,17 +18,11 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.ContainerOpenPacket;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
 import cn.nukkit.scheduler.NukkitRunnable;
-import com.google.common.base.Preconditions;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class FakeChest extends ContainerInventory {
 	private static final BlockVector3 ZERO = new BlockVector3(0, 0, 0);
-	static final Map<Player, FakeChest> open = new ConcurrentHashMap<>();
-	protected final Map<Player, List<BlockVector3 >> blockPositions = new HashMap<>();
+	static final Map <Player, FakeChest> open = new ConcurrentHashMap <>();
+	protected final Map <Player, List <BlockVector3>> blockPositions = new HashMap <>();
 	private boolean closed = false;
 	private String title;
 
@@ -37,13 +38,13 @@ public abstract class FakeChest extends ContainerInventory {
 		if (open.putIfAbsent(who, this) != null) {
 			throw new IllegalStateException("Inventory was already open");
 		}
-		List<BlockVector3 > blocks = onOpenBlock(who);
+		List <BlockVector3> blocks = onOpenBlock(who);
 		blockPositions.put(who, blocks);
 		onFakeOpen(who, blocks);
 	}
 
-	protected void onFakeOpen(Player who, List<BlockVector3 > blocks) {
-		BlockVector3 blockPosition = blocks.isEmpty() ? ZERO : blocks.get(0);
+	protected void onFakeOpen(Player who, List <BlockVector3> blocks) {
+		BlockVector3 blockPosition = blocks.isEmpty() ? ZERO: blocks.get(0);
 		ContainerOpenPacket containerOpen = new ContainerOpenPacket();
 		containerOpen.windowId = who.getWindowId(this);
 		containerOpen.type = this.getType().getNetworkType();
@@ -54,17 +55,16 @@ public abstract class FakeChest extends ContainerInventory {
 		this.sendContents(who);
 	}
 
-	protected abstract List<BlockVector3 > onOpenBlock(Player who);
+	protected abstract List < BlockVector3 > onOpenBlock(Player who);
 
 	@Override
 	public void onClose(Player who) {
 		super.onClose(who);
 		open.remove(who, this);
-		List<BlockVector3 > blocks = blockPositions.get(who);
-		for (int i = 0, size = blocks.size(); i<size; i++) {
+		List <BlockVector3> blocks = blockPositions.get(who);
+		for (int i = 0, size = blocks.size(); i < size; i++) {
 			final int index = i;
-			new NukkitRunnable() {
-				@Override
+			new NukkitRunnable() {@Override
 				public void run() {
 					Vector3 blockPosition = blocks.get(index).asVector3();
 					UpdateBlockPacket updateBlock = new UpdateBlockPacket();
@@ -79,7 +79,7 @@ public abstract class FakeChest extends ContainerInventory {
 		}
 	}
 
-	public List<BlockVector3 > getPosition(Player player) {
+	public List <BlockVector3> getPosition(Player player) {
 		checkForClosed();
 		return blockPositions.getOrDefault(player, null);
 	}

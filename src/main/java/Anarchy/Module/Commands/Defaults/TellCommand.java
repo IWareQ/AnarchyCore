@@ -22,7 +22,7 @@ public class TellCommand extends Command {
 
 	@Override
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (strings.length<2) {
+		if (strings.length < 2) {
 			commandSender.sendMessage("§l§e| §fИспользование §7- §e/tell <ник> <сообщение>");
 			return true;
 		}

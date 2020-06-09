@@ -1,13 +1,13 @@
 package Anarchy.Manager.Sessions.Session;
 
-import Anarchy.Utils.SQLiteUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import Anarchy.Utils.SQLiteUtils;
+
 public class PlayerSession {
 	private Map<String, String> playerData;
-	private Map<String, String> queryData = new HashMap<>();
+	private Map<String, String> queryData = new HashMap <>();
 	private String playerName;
 	private Long startSession;
 

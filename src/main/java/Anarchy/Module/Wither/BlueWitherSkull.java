@@ -66,7 +66,7 @@ public class BlueWitherSkull extends EntityProjectile implements EntityExplosive
 			this.explode();
 			this.close();
 		} else {
-			this.level.addParticle(new SmokeParticle(this.add(this.getWidth() / 2 + RandomUtils.rand(-100.0, 100.0) / 500, this.getHeight() / 2 + RandomUtils.rand(-100.0, 100.0) / 500, this.getWidth() / 2 + RandomUtils.rand(-100.0, 100.0) / 500)));
+			this.level.addParticle(new SmokeParticle(this.add(this.getWidth() / 2 + RandomUtils.rand( - 100.0, 100.0) / 500, this.getHeight() / 2 + RandomUtils.rand( - 100.0, 100.0) / 500, this.getWidth() / 2 + RandomUtils.rand( - 100.0, 100.0) / 500)));
 		}
 		return super.onUpdate(currentTick);
 	}

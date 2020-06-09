@@ -18,7 +18,7 @@ public class AddMoneyCommand extends Command {
 			return true;
 		}
 
-		if (args.length<2) {
+		if (args.length < 2) {
 			sender.sendMessage("§l§e| §fИспользование §7- §e/addmoney <сумма> <игрок>");
 			return true;
 		}

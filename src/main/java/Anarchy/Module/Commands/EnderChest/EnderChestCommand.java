@@ -4,8 +4,6 @@ import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.inventory.Inventory;
-import cn.nukkit.inventory.InventoryHolder;
 
 public class EnderChestCommand extends Command {
 	public EnderChestCommand() {

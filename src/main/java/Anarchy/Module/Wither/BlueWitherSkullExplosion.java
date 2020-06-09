@@ -1,5 +1,9 @@
 package Anarchy.Module.Wither;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 import Anarchy.Utils.RandomUtils;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
@@ -16,15 +20,14 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
-import cn.nukkit.level.particle.HugeExplodeSeedParticle;
-import cn.nukkit.math.*;
-import cn.nukkit.network.protocol.LevelSoundEventPacket;
+import cn.nukkit.math.AxisAlignedBB;
+import cn.nukkit.math.BlockFace;
+import cn.nukkit.math.NukkitMath;
+import cn.nukkit.math.NukkitRandom;
+import cn.nukkit.math.SimpleAxisAlignedBB;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.Hash;
 import it.unimi.dsi.fastutil.longs.LongArraySet;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 class BlueWitherSkullExplosion {
 	private final int rays = 16;
@@ -32,7 +35,7 @@ class BlueWitherSkullExplosion {
 	private final Position source;
 	private final double size;
 
-	private List<Block> affectedBlocks = new ArrayList<>();
+	private List<Block> affectedBlocks = new ArrayList <>();
 	private final double stepLen = 0.3d;
 
 	private final Object what;
@@ -45,7 +48,7 @@ class BlueWitherSkullExplosion {
 	}
 
 	void explodeA() {
-		if (this.size<0.1) {
+		if (this.size < 0.1) {
 			return;
 		}
 
@@ -53,9 +56,9 @@ class BlueWitherSkullExplosion {
 		Vector3 vBlock = new Vector3(0, 0, 0);
 
 		int mRays = this.rays - 1;
-		for (int i = 0; i<this.rays; ++i) {
-			for (int j = 0; j<this.rays; ++j) {
-				for (int k = 0; k<this.rays; ++k) {
+		for (int i = 0; i < this.rays; ++i) {
+			for (int j = 0; j < this.rays; ++j) {
+				for (int k = 0; k < this.rays; ++k) {
 					if (i == 0 || i == mRays || j == 0 || j == mRays || k == 0 || k == mRays) {
 						vector.setComponents((double) i / (double) mRays * 2d - 1, (double) j / (double) mRays * 2d - 1, (double) k / (double) mRays * 2d - 1);
 						double len = vector.length();
@@ -68,10 +71,10 @@ class BlueWitherSkullExplosion {
 							int x = (int) pointerX;
 							int y = (int) pointerY;
 							int z = (int) pointerZ;
-							vBlock.x = pointerX >= x ? x : x - 1;
-							vBlock.y = pointerY >= y ? y : y - 1;
-							vBlock.z = pointerZ >= z ? z : z - 1;
-							if (vBlock.y<0 || vBlock.y > 255) {
+							vBlock.x = pointerX >= x ? x: x - 1;
+							vBlock.y = pointerY >= y ? y: y - 1;
+							vBlock.z = pointerZ >= z ? z: z - 1;
+							if (vBlock.y < 0 || vBlock.y > 255) {
 								break;
 							}
 							Block block = this.level.getBlock(vBlock);
@@ -96,7 +99,7 @@ class BlueWitherSkullExplosion {
 
 	void explodeB() {
 		LongArraySet updateBlocks = new LongArraySet();
-		List<Vector3 > send = new ArrayList<>();
+		List<Vector3> send = new ArrayList <>();
 
 		Vector3 source = (new Vector3(this.source.x, this.source.y, this.source.z)).floor();
 		double yield = (1d / this.size) * 100d;
@@ -121,10 +124,10 @@ class BlueWitherSkullExplosion {
 		double maxZ = NukkitMath.ceilDouble(this.source.z + explosionSize + 1);
 
 		AxisAlignedBB explosionBB = new SimpleAxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
-		Entity[] list = this.level.getNearbyEntities(explosionBB, this.what instanceof Entity ? (Entity) this.what : null);
+		Entity[] list = this.level.getNearbyEntities(explosionBB, this.what instanceof Entity ? (Entity) this.what: null);
 		for (Entity entity: list) {
 			double distance = entity.distance(this.source) / explosionSize;
-			if (distance<= 1) {
+			if (distance <= 1) {
 				Vector3 motion = entity.subtract(this.source).normalize();
 				int exposure = 1;
 				double impact = (1 - distance) * exposure;
@@ -142,9 +145,8 @@ class BlueWitherSkullExplosion {
 
 		ItemBlock air = new ItemBlock(new BlockAir());
 		for (Block block: this.affectedBlocks) {
-			if (block.getId() == Block.TNT) {
-				((BlockTNT) block).prime(new NukkitRandom().nextRange(10, 30), this.what instanceof Entity ? (Entity) this.what : null);
-			} else if (Math.random() * 100<yield) {
+			if (block.getId() == Block.TNT) { ((BlockTNT) block).prime(new NukkitRandom().nextRange(10, 30), this.what instanceof Entity ? (Entity) this.what: null);
+			} else if (Math.random() * 100 < yield) {
 				for (Item drop: block.getDrops(air)) {
 					this.level.dropItem(block.add(0.5, 0.5, 0.5), drop);
 				}

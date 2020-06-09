@@ -72,7 +72,7 @@ public class EntityWither extends EntityLiving {
 
 	@Override
 	public boolean onUpdate(int currentTick) {
-		if (this.server.getDifficulty()<1) {
+		if (this.server.getDifficulty() < 1) {
 			this.close();
 			return false;
 		}
@@ -93,7 +93,7 @@ public class EntityWither extends EntityLiving {
 			if (target != this.followTarget || this.canAttack) {
 				this.attackEntity((Entity) target);
 			}
-		} else if (target != null && (Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2))<= 1) {
+		} else if (target != null && (Math.pow(this.x - target.x, 2) + Math.pow(this.z - target.z, 2)) <= 1) {
 			this.moveTime = 0;
 		}
 		return true;
@@ -105,7 +105,7 @@ public class EntityWither extends EntityLiving {
 		}
 
 		Vector3 target = this.target;
-		if (!(target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
+		if (! (target instanceof EntityCreature) || !this.targetOption((EntityCreature) target, this.distanceSquared(target))) {
 			double near = Integer.MAX_VALUE;
 
 			for (Entity entity: this.getLevel().getEntities()) {
@@ -129,7 +129,9 @@ public class EntityWither extends EntityLiving {
 			return;
 		}
 
-		int x, y, z;
+		int x,
+		y,
+		z;
 		int maxY = Math.max(this.getLevel().getHighestBlockAt((int) this.x, (int) this.z) + 15, 120);
 		if (this.stayTime > 0) {
 			if (RandomUtils.rand(1, 100) > 5) {
@@ -139,50 +141,50 @@ public class EntityWither extends EntityLiving {
 			x = RandomUtils.rand(10, 30);
 			z = RandomUtils.rand(10, 30);
 			if (this.y > maxY) {
-				y = RandomUtils.rand(-12, -4);
+				y = RandomUtils.rand( - 12, -4);
 			} else {
-				y = RandomUtils.rand(-10, 10);
+				y = RandomUtils.rand( - 10, 10);
 			}
-			this.target = this.add(RandomUtils.rand() ? x : -x, y, RandomUtils.rand() ? z : -z);
+			this.target = this.add(RandomUtils.rand() ? x: -x, y, RandomUtils.rand() ? z: -z);
 		} else if (RandomUtils.rand(1, 100) == 1) {
 			x = RandomUtils.rand(10, 30);
 			z = RandomUtils.rand(10, 30);
 			if (this.y > maxY) {
-				y = RandomUtils.rand(-12, -4);
+				y = RandomUtils.rand( - 12, -4);
 			} else {
-				y = RandomUtils.rand(-10, 10);
+				y = RandomUtils.rand( - 10, 10);
 			}
 			this.stayTime = RandomUtils.rand(100, 200);
-			this.target = this.add(RandomUtils.rand() ? x : -x, y, RandomUtils.rand() ? z : -z);
-		} else if (this.moveTime<= 0 || this.target != null) {
+			this.target = this.add(RandomUtils.rand() ? x: -x, y, RandomUtils.rand() ? z: -z);
+		} else if (this.moveTime <= 0 || this.target != null) {
 			x = RandomUtils.rand(20, 100);
 			z = RandomUtils.rand(20, 100);
 			if (this.y > maxY) {
-				y = RandomUtils.rand(-12, -4);
+				y = RandomUtils.rand( - 12, -4);
 			} else {
-				y = RandomUtils.rand(-10, 10);
+				y = RandomUtils.rand( - 10, 10);
 			}
 			this.stayTime = 0;
 			this.moveTime = RandomUtils.rand(100, 200);
-			this.target = this.add(RandomUtils.rand() ? x : -x, y, RandomUtils.rand() ? z : -z);
+			this.target = this.add(RandomUtils.rand() ? x: -x, y, RandomUtils.rand() ? z: -z);
 		}
 	}
 
 	private void attackEntity(Entity player) {
-		if (this.attackDelay > 23 && RandomUtils.rand(1, 5)<3 && this.distance(player)<= 100) {
+		if (this.attackDelay > 23 && RandomUtils.rand(1, 5) < 3 && this.distance(player) <= 100) {
 			this.attackDelay = 0;
 
 			double f = 1;
-			double yaw = this.yaw + RandomUtils.rand(-120.0, 120.0) / 10;
-			double pitch = this.pitch + RandomUtils.rand(-70.0, 70.0) / 10;
+			double yaw = this.yaw + RandomUtils.rand( - 120.0, 120.0) / 10;
+			double pitch = this.pitch + RandomUtils.rand( - 70.0, 70.0) / 10;
 			Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(), this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
 			Entity k = Entity.createEntity("BlueWitherSkull", pos, this);
-			if (!(k instanceof BlueWitherSkull)) {
+			if (! (k instanceof BlueWitherSkull)) {
 				return;
 			}
 
 			BlueWitherSkull blueskull = (BlueWitherSkull) k;
-			blueskull.setMotion(new Vector3(-Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f, Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
+			blueskull.setMotion(new Vector3( - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f, -Math.sin(Math.toRadians(pitch)) * f * f, Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * f * f));
 
 			ProjectileLaunchEvent launch = new ProjectileLaunchEvent(blueskull);
 			this.server.getPluginManager().callEvent(launch);
@@ -198,9 +200,9 @@ public class EntityWither extends EntityLiving {
 	private boolean targetOption(EntityCreature creature, double distance) {
 		if (creature instanceof Player) {
 			Player player = (Player) creature;
-			return player.spawned && player.isAlive() && !player.closed && (player.isSurvival() || player.isAdventure()) && distance<= 200;
+			return player.spawned && player.isAlive() && !player.closed && (player.isSurvival() || player.isAdventure()) && distance <= 200;
 		}
-		return creature.isAlive() && !creature.closed && distance<= 200;
+		return creature.isAlive() && !creature.closed && distance <= 200;
 	}
 
 	private Vector3 updateMove(int tickDiff) {
@@ -217,7 +219,7 @@ public class EntityWither extends EntityLiving {
 				double z = this.followTarget.z - this.z;
 
 				double diff = Math.abs(x) + Math.abs(z);
-				if (this.stayTime > 0 || this.distance(this.followTarget)<= (this.getWidth() + 0.0d) / 2 + 0.05) {
+				if (this.stayTime > 0 || this.distance(this.followTarget) <= (this.getWidth() + 0.0d) / 2 + 0.05) {
 					this.motionX = 0;
 					this.motionZ = 0;
 				} else {
@@ -225,8 +227,7 @@ public class EntityWither extends EntityLiving {
 					this.motionZ = this.getSpeed() * 0.15 * (z / diff);
 					this.motionY = this.getSpeed() * 0.27 * (y / diff);
 				}
-				if (this.stayTime<= 0 || RandomUtils.rand())
-					this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+				if (this.stayTime <= 0 || RandomUtils.rand()) this.yaw = Math.toDegrees( - Math.atan2(x / diff, z / diff));
 			}
 
 			Vector3 before = this.target;
@@ -237,7 +238,7 @@ public class EntityWither extends EntityLiving {
 				double z = this.target.z - this.z;
 
 				double diff = Math.abs(x) + Math.abs(z);
-				if (this.stayTime > 0 || this.distance(this.target)<= (this.getWidth() + 0.0d) / 2 + 0.05) {
+				if (this.stayTime > 0 || this.distance(this.target) <= (this.getWidth() + 0.0d) / 2 + 0.05) {
 					this.motionX = 0;
 					this.motionZ = 0;
 				} else {
@@ -245,8 +246,7 @@ public class EntityWither extends EntityLiving {
 					this.motionZ = this.getSpeed() * 0.15 * (z / diff);
 					this.motionY = this.getSpeed() * 0.27 * (y / diff);
 				}
-				if (this.stayTime<= 0 || RandomUtils.rand())
-					this.yaw = Math.toDegrees(-Math.atan2(x / diff, z / diff));
+				if (this.stayTime <= 0 || RandomUtils.rand()) this.yaw = Math.toDegrees( - Math.atan2(x / diff, z / diff));
 			}
 
 			double dx = this.motionX * tickDiff;
@@ -269,7 +269,7 @@ public class EntityWither extends EntityLiving {
 			if (this.isOnGround()) {
 				this.motionY = RandomUtils.rand(0.15, 0.20);
 			} else {
-				this.motionY = RandomUtils.rand(-0.15, 0.15);
+				this.motionY = RandomUtils.rand( - 0.15, 0.15);
 			}
 
 			this.updateMovement();
@@ -303,13 +303,13 @@ public class EntityWither extends EntityLiving {
 	@Override
 	public boolean entityBaseTick(int tickDiff) {
 		super.entityBaseTick(tickDiff);
-		if (getServer().getDifficulty() == 0 || ageTime<0) {
+		if (getServer().getDifficulty() == 0 || ageTime < 0) {
 			this.close();
 			return true;
 		}
 
 		ageTime--;
-		if (this.attackDelay<400) {
+		if (this.attackDelay < 400) {
 			this.attackDelay++;
 		}
 

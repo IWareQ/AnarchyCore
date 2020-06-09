@@ -3,7 +3,6 @@ package Anarchy.Module.Economy.Commands;
 import Anarchy.Module.Auth.AuthAPI;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Utils.StringUtils;
-import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
@@ -19,7 +18,7 @@ public class SetMoneyCommand extends Command {
 			return true;
 		}
 
-		if (args.length<2) {
+		if (args.length < 2) {
 			sender.sendMessage("§l§e| §fИспользование §7- §e/setmoney <сумма> <игрок>");
 			return true;
 		}
