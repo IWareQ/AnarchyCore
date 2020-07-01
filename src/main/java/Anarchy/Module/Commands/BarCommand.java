@@ -7,22 +7,23 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class BarCommand extends Command {
+	
 	public BarCommand() {
-		super("bar", "Настройки хотбара");
+		super("bar", "Включить/Выключить ХотБар");
 		commandParameters.clear();
 	}
-
-	@Override
+	
+	@Override()
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		String senderName = commandSender.getName();
-		if (PlayerSessionManager.SCOREBOARD.contains(senderName)) {
-			PlayerSessionManager.SCOREBOARDS.get(senderName).hideFor((Player) commandSender);
-			PlayerSessionManager.SCOREBOARD.remove(senderName);
-			commandSender.sendMessage("§l§a| §r§fХотбар успешно §cВыключен");
+		String playerName = commandSender.getName();
+		if (PlayerSessionManager.SCOREBOARD.contains(playerName)) {
+			PlayerSessionManager.SCOREBOARDS.get(playerName).hideFor((Player)commandSender);
+			PlayerSessionManager.SCOREBOARD.remove(playerName);
+			commandSender.sendMessage("§l§c| §r§fХотбар §6успешно §fотключен");
 		} else {
-			PlayerSessionManager.SCOREBOARD.add(senderName);
-			HotbarTask.showScoreboard((Player) commandSender);
-			commandSender.sendMessage("§l§a| §r§fХотбар успешно §aВключен");
+			PlayerSessionManager.SCOREBOARD.add(playerName);
+			HotbarTask.showScoreboard((Player)commandSender);
+			commandSender.sendMessage("§l§a| §r§fХотбар §6успешно §fвключен");
 		}
 		return false;
 	}

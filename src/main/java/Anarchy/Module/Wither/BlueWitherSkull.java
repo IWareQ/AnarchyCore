@@ -14,50 +14,50 @@ import cn.nukkit.potion.Effect;
 
 public class BlueWitherSkull extends EntityProjectile implements EntityExplosive {
 	private static final int NETWORK_ID = 89;
-
-	@Override
+	
+	@Override()
 	public int getNetworkId() {
 		return NETWORK_ID;
 	}
-
-	@Override
+	
+	@Override()
 	public float getWidth() {
-		return 0.25f;
+		return 0.25F;
 	}
-
-	@Override
+	
+	@Override()
 	public float getLength() {
-		return 0.25f;
+		return 0.25F;
 	}
-
-	@Override
+	
+	@Override()
 	public float getHeight() {
-		return 0.25f;
+		return 0.25F;
 	}
-
-	@Override
+	
+	@Override()
 	public float getGravity() {
-		return 0.01f;
+		return 0.01F;
 	}
-
-	@Override
+	
+	@Override()
 	public float getDrag() {
-		return 0.01f;
+		return 0.01F;
 	}
-
+	
 	public BlueWitherSkull(FullChunk chunk, CompoundTag nbt) {
 		this(chunk, nbt, null);
 	}
-
+	
 	public BlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity) {
 		this(chunk, nbt, shootingEntity, false);
 	}
-
+	
 	public BlueWitherSkull(FullChunk chunk, CompoundTag nbt, Entity shootingEntity, boolean critical) {
 		super(chunk, nbt, shootingEntity);
 	}
-
-	@Override
+	
+	@Override()
 	public boolean onUpdate(int currentTick) {
 		if (this.closed) {
 			return false;
@@ -66,23 +66,23 @@ public class BlueWitherSkull extends EntityProjectile implements EntityExplosive
 			this.explode();
 			this.close();
 		} else {
-			this.level.addParticle(new SmokeParticle(this.add(this.getWidth() / 2 + RandomUtils.rand( - 100.0, 100.0) / 500, this.getHeight() / 2 + RandomUtils.rand( - 100.0, 100.0) / 500, this.getWidth() / 2 + RandomUtils.rand( - 100.0, 100.0) / 500)));
+			this.level.addParticle(new SmokeParticle(this.add(this.getWidth() / 2 + RandomUtils.rand(-100.0, 100.0) / 500, this.getHeight() / 2 + RandomUtils.rand(-100.0, 100.0) / 500, this.getWidth() / 2 + RandomUtils.rand(-100.0, 100.0) / 500)));
 		}
 		return super.onUpdate(currentTick);
 	}
-
-	@Override
+	
+	@Override()
 	public void onCollideWithEntity(Entity entity) {
 		super.onCollideWithEntity(entity);
 		entity.addEffect(Effect.getEffect(Effect.WITHER).setAmplifier(1).setDuration(140));
 	}
-
-	@Override
+	
+	@Override()
 	public void explode() {
 		ExplosionPrimeEvent ev = new ExplosionPrimeEvent(this, 1.1);
 		Server.getInstance().getPluginManager().callEvent(ev);
 		if (!ev.isCancelled()) {
-			BlueWitherSkullExplosion blueWitherSkullExplosion = new BlueWitherSkullExplosion(this, (float) ev.getForce(), this.shootingEntity);
+			BlueWitherSkullExplosion blueWitherSkullExplosion = new BlueWitherSkullExplosion(this, (float)ev.getForce(), this.shootingEntity);
 			if (ev.isBlockBreaking() && this.level.getGameRules().getBoolean(GameRule.MOB_GRIEFING)) {
 				blueWitherSkullExplosion.explodeA();
 			}

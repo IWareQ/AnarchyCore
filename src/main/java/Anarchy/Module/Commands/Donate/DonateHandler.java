@@ -10,6 +10,7 @@ import Anarchy.AnarchyMain;
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.Donate.Utils.DonateChest;
 import Anarchy.Utils.StringUtils;
+import FormAPI.Forms.Elements.SimpleForm;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -25,56 +26,66 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Config;
 
 public class DonateHandler extends Command implements Listener {
+	
 	public DonateHandler() {
-		super("donate", "Описание донат услуг");
+		super("donate", "Описание Донат Услуг");
 		new File(AnarchyMain.datapath + "/DonateItems/").mkdirs();
 	}
-
-	@Override
+	
+	@Override()
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (strings.length == 1 && strings[0].equals("my")) {
-			Player player = (Player) commandSender;
+		Player player = (Player)commandSender;
+		new SimpleForm("Описание Донат Услуг", " ").addButton("§l§6Вип").addButton("§l§aПремиум").addButton("§l§dEnigma").addButton("§l§cHydra").send(player, (target,form,data)->{
+			if (data == -1) return;
+			if (data == 0) {
+				new SimpleForm("§fОписание §7- §l§6Вип", "Префикс §7- (§6Вип§7)\n §7• §6/food §7- §f восстановить голод\n §7• §fКоличество приватов §7- §63").send(player);
+			}
+			if (data == 1) {
+				new SimpleForm("§fОписание §7- §l§aПремиум", "Префикс §7- (§aПремиум§7)\n §7• §6/food §7- §f восстановить голод\n §7• §6/heal §7- §f восстановить здоровье\n §7• §6/repair §7- §f починить предмет в руке\n §7• §fКоличество приватов §7- §63").send(player);
+			}
+			if (data == 2) {
+				new SimpleForm("§fОписание §7- §l§dEnigma", "Префикс §7- (§dEnigma§7)\n §7• §6/food §7- §f восстановить голод\n §7• §6/heal §7- §f восстановить здоровье\n §7• §6/repair §7- §f починить предмет в руке\n §7• §6/day §7- §f сменить §9Ночь §fна §eДень\n §7• §6/night §7- §f сменить §eДень §fна §9Ночь\n §7• §fКоличество приватов §7- §63\n §7• §fКоличество точек дома §7- §61").send(player);
+			}
+			if (data == 3) {
+				new SimpleForm("§fОписание §7- §l§cHydra", "Префикс §7- (§cHydra§7)\n §7• §6/food §7- §f восстановить голод\n §7• §6/heal §7- §f восстановить здоровье\n §7• §6/repair §7- §f починить предмет в руке\n §7• §6/day §7- §f сменить §9Ночь §fна §eДень\n §7• §6/night §7- §f сменить §eДень §fна §9Ночь\n §7• §6/near §7- §f узнать кто рядом с тобой в радиусе §e70 §fблоков\n §7• §fКоличество приватов §7- §64\n §7• §fКоличество точек дома §7- §61").send(player);
+			}
+		});
+		if (strings.length == 1 && strings[0].equals("test")) {
 			File dataFile = new File(AnarchyMain.datapath + "/DonateItems/" + player.getName().toLowerCase() + ".yml");
 			if (!dataFile.exists()) {
-				player.sendMessage("§l§c| §r§fУ Вас §cнет §fактивный покупок!");
+				player.sendMessage("§l§c| §r§fСписок активных покупок §6пуст§7!");
 				return false;
 			}
-
 			DonateChest donateChest = new DonateChest("Купленные Предметы", dataFile);
 			Config config = new Config(dataFile, Config.YAML);
-			for (Map.Entry <String, Object> entry: config.getAll().entrySet()) {
-				ArrayList<Object> itemData = (ArrayList<Object>) entry.getValue();
-				Item item = Item.get((int) itemData.get(0), (int) itemData.get(1), (int) itemData.get(2));
+			for (Map.Entry<String, Object> entry : config.getAll().entrySet()) {
+				ArrayList<Object> itemData = (ArrayList<Object>)entry.getValue();
+				Item item = Item.get((int)itemData.get(0), (int)itemData.get(1), (int)itemData.get(2));
 				CompoundTag compoundTag = new CompoundTag();
 				compoundTag.putString("DATE", entry.getKey());
 				item.setNamedTag(compoundTag);
 				if (donateChest.canAddItem(item)) {
-					donateChest.addItem(item.setLore("§r§fДата покупки: §c" + entry.getKey()));
+					donateChest.addItem(item.setLore("§r§fДата покупки §7- §6" + entry.getKey()));
 				}
 			}
 			FakeChestsAPI.openInventory(player, donateChest);
 		} else if (strings.length >= 2) {
 			String[] split = strings[0].split(":");
 			String playerName = StringUtils.implode(strings, 1).toLowerCase();
-			commandSender.sendMessage("Игрок " + playerName + " получил " + split[0] + ":" + split[1] + " (x" + split[2] + ")");
+			commandSender.sendMessage("§l§e| §r§fИгрок §e" + playerName + " §fполучил §6" + split[0] + "§f:§6" + split[1] + " §7(§fx§6" + split[2] + "7)");
 			Config config = new Config(AnarchyMain.datapath + "/DonateItems/" + playerName + ".yml", Config.YAML);
-			LinkedHashMap objectMap = (LinkedHashMap) config.getAll();
-			objectMap.put(UUID.randomUUID().toString(), new Object[] {
-				StringUtils.getDate(),
-				Integer.parseInt(split[0]),
-				Integer.parseInt(split[1]),
-				Integer.parseInt(split[2])
-			});
+			LinkedHashMap objectMap = (LinkedHashMap)config.getAll();
+			objectMap.put(UUID.randomUUID().toString(), new Object[]{StringUtils.getDate(), Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2])});
 			config.setAll(objectMap);
 			config.save();
 		}
 		return false;
 	}
-
+	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onInventoryTransaction(InventoryTransactionEvent event) {
-		for (InventoryAction action: event.getTransaction().getActions()) {
-			if (action instanceof SlotChangeAction && ((SlotChangeAction) action).getInventory() instanceof DonateChest) {
+		for (InventoryAction action : event.getTransaction().getActions()) {
+			if (action instanceof SlotChangeAction && ((SlotChangeAction)action).getInventory() instanceof DonateChest) {
 				Item sourceItem = action.getSourceItem();
 				Player player = event.getTransaction().getSource();
 				if (sourceItem.hasCompoundTag() && sourceItem.getNamedTag().getString("DATE") != null) {

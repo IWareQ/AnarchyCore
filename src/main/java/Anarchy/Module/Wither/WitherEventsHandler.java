@@ -16,13 +16,13 @@ import cn.nukkit.level.Level;
 import cn.nukkit.math.BlockFace;
 
 public class WitherEventsHandler implements Listener {
-
+	
 	public static void register() {
 		Server.getInstance().getPluginManager().registerEvents(new WitherEventsHandler(), AnarchyMain.plugin);
 		Entity.registerEntity(EntityWither.class.getSimpleName(), EntityWither.class);
 		Entity.registerEntity("BlueWitherSkull", BlueWitherSkull.class);
 	}
-
+	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
@@ -70,9 +70,8 @@ public class WitherEventsHandler implements Listener {
 					}
 				}
 			}
-
 			if (block.getSide(BlockFace.DOWN, 1) instanceof BlockSoulSand) {
-				player.sendTip("§l§e| §fЕсли Вы строите Визера, то последняя голова должна быть поставлена по середине! §l§e|");
+				player.sendTip("§l§e| §fЕсли Вы строите §6Визера§7, §fто последняя голова должна быть поставлена по середине§7! §l§e|");
 			}
 		}
 	}

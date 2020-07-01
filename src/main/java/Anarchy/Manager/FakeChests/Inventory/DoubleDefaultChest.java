@@ -16,26 +16,28 @@ import cn.nukkit.network.protocol.BlockEntityDataPacket;
 import cn.nukkit.scheduler.NukkitRunnable;
 
 public class DoubleDefaultChest extends DefaultChest {
+	
 	public DoubleDefaultChest(String title) {
 		super(InventoryType.DOUBLE_CHEST, title);
 	}
-
-	@Override
+	
+	@Override()
 	public void onOpen(Player who) {
 		this.viewers.add(who);
-		List <BlockVector3> blocks = onOpenBlock(who);
+		List<BlockVector3> blocks = onOpenBlock(who);
 		blockPositions.put(who, blocks);
-		new NukkitRunnable() {
-			@Override
+		new NukkitRunnable(){
+			
+			@Override()
 			public void run() {
 				onFakeOpen(who, blocks);
 			}
 		}.runTaskLater(AnarchyMain.plugin, 10);
 	}
-
-	@Override
-	protected List < BlockVector3 > onOpenBlock(Player who) {
-		BlockVector3 blockPositionA = new BlockVector3((int) who.x, ((int) who.y) + 2, (int) who.z);
+	
+	@Override()
+	protected List<BlockVector3> onOpenBlock(Player who) {
+		BlockVector3 blockPositionA = new BlockVector3((int)who.x, ((int)who.y) + 2, (int)who.z);
 		BlockVector3 blockPositionB = blockPositionA.add(1, 0, 0);
 		placeChest(who, blockPositionA);
 		placeChest(who, blockPositionB);
@@ -43,7 +45,7 @@ public class DoubleDefaultChest extends DefaultChest {
 		pair(who, blockPositionB, blockPositionA);
 		return Arrays.asList(blockPositionA, blockPositionB);
 	}
-
+	
 	private void pair(Player who, BlockVector3 pos1, BlockVector3 pos2) {
 		BlockEntityDataPacket blockEntityData = new BlockEntityDataPacket();
 		blockEntityData.x = pos1.x;
@@ -52,12 +54,12 @@ public class DoubleDefaultChest extends DefaultChest {
 		blockEntityData.namedTag = getDoubleNbt(pos1, pos2, getTitle());
 		who.dataPacket(blockEntityData);
 	}
-
+	
 	private static byte[] getDoubleNbt(BlockVector3 pos, BlockVector3 pairPos, String name) {
-		CompoundTag tag = new CompoundTag().putString("id", BlockEntity.CHEST).putInt("x", pos.x).putInt("y", pos.y).putInt("z", pos.z).putInt("pairx", pairPos.x).putInt("pairz", pairPos.z).putString("CustomName", name == null ? "Двойной сундук": name);
+		CompoundTag tag = new CompoundTag().putString("id", BlockEntity.CHEST).putInt("x", pos.x).putInt("y", pos.y).putInt("z", pos.z).putInt("pairx", pairPos.x).putInt("pairz", pairPos.z).putString("CustomName", name == null ? "Двойной сундук" : name);
 		try {
 			return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN, true);
-		} catch(IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException("Unable to create NBT for Double Chest");
 		}
 	}

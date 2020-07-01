@@ -6,26 +6,25 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.level.Sound;
 
 public class FoodCommand extends Command {
+	
 	public FoodCommand() {
-		super("food", "Восполнение голода");
+		super("food", "Восстановить Голод");
 		setPermission("Command.Food");
 		commandParameters.clear();
 	}
-
-	@Override
+	
+	@Override()
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
 		if (!commandSender.hasPermission("Command.Food")) {
 			return false;
 		}
-
-		Player player = (Player) commandSender;
+		Player player = (Player)commandSender;
 		if (player.getGamemode() != 0) {
-			commandSender.sendMessage("§l§c| §r§fДля использования перейдите в §2Выживание");
+			commandSender.sendMessage("§l§c| §r§fДля использования перейдите в §6Выживание");
 			return false;
 		}
-
-		player.getFoodData().setLevel(player.getFoodData().getMaxLevel(), 12f);
-		player.sendMessage("§l§a| §r§fВы пополнили уровень Вашего голода");
+		player.getFoodData().setLevel(player.getFoodData().getMaxLevel(), 12.0F);
+		player.sendMessage("§l§a| §r§fВы §6успешно §fпополнили уровень Вашего §eГолода");
 		player.getLevel().addSound(player, Sound.RANDOM_EAT, 1, 1, player);
 		return false;
 	}

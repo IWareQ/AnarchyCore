@@ -11,16 +11,16 @@ import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.math.BlockVector3;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor()
 public class FakeChestsEventListener implements Listener {
 	private final FakeChests fakeChests = new FakeChests();
-
+	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
 		List<BlockVector3> positions = fakeChests.getFakeInventoryPositions(event.getPlayer());
 		if (block != null && positions != null) {
-			for (BlockVector3 pos: positions) {
+			for (BlockVector3 pos : positions) {
 				if (pos.x == block.x && pos.y == block.y && pos.z == block.z) {
 					event.setCancelled();
 					return;

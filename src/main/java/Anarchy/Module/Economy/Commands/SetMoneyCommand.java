@@ -7,29 +7,27 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class SetMoneyCommand extends Command {
+	
 	public SetMoneyCommand() {
-		super("setmoney", "Установка баланса");
+		super("setmoney", "Установить монет");
 		this.setPermission("Command.SetMoney");
 	}
-
-	@Override
+	
+	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (!sender.hasPermission("Command.SetMoney")) {
 			return true;
 		}
-
 		if (args.length < 2) {
-			sender.sendMessage("§l§e| §fИспользование §7- §e/setmoney <сумма> <игрок>");
+			sender.sendMessage("§l§e| §r§fИспользование §7- §e/setmoney §7(§6сумма§7) (§6игрок§7)");
 			return true;
 		}
-
 		String nickname = StringUtils.implode(args, 1);
 		if (!AuthAPI.isRegistered(nickname)) {
-			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §a" + nickname + " §7- §fне зарегистрирован!");
+			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §e" + nickname + " §7- §fне зарегистрирован§7!");
 			return true;
 		}
-
-		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §a" + nickname + " §fтеперь имеет §e" + args[0] + "");
+		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §e" + nickname + " §fтеперь имеет §e" + args[0] + "");
 		EconomyAPI.setMoney(nickname, Integer.parseInt(args[0]));
 		return true;
 	}

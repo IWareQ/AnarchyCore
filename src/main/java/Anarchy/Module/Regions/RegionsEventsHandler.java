@@ -23,6 +23,7 @@ import cn.nukkit.level.Sound;
 import cn.nukkit.scheduler.NukkitRunnable;
 
 public class RegionsEventsHandler implements Listener {
+	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
@@ -32,12 +33,11 @@ public class RegionsEventsHandler implements Listener {
 			event.setCancelled();
 			return;
 		}
-
 		if (RegionsAPI.REGIONS.containsKey(block.getId())) {
 			RegionsAPI.placeRegion(player, block, event);
 		}
 	}
-
+	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
@@ -47,36 +47,33 @@ public class RegionsEventsHandler implements Listener {
 			event.setCancelled();
 			return;
 		}
-
 		int regionID = RegionsAPI.getRegionIDByLocation(block.getLocation());
 		if (regionID != -1) {
 			Map<String, String> info = RegionsAPI.getRegionInfo(regionID);
 			if (block.getFloorX() == Integer.parseInt(info.get("Main_X")) && block.getFloorY() == Integer.parseInt(info.get("Main_Y")) && block.getFloorZ() == Integer.parseInt(info.get("Main_Z"))) {
 				if (RegionsAPI.isRegionOwner(player.getName(), regionID)) {
-					player.sendMessage(RegionsAPI.PREFIX + "§fВы удалили свой приват!");
+					player.sendMessage(RegionsAPI.PREFIX + "§fПриват §6успешно §fудален§7!");
 					player.getLevel().addSound(player, Sound.MOB_ENDERDRAGON_DEATH, 1, 1, player);
-					SQLiteUtils.query("Regions.db", "DELETE FROM `AREAS` WHERE `Region_ID` = '" + regionID + "';");
-					SQLiteUtils.query("Regions.db", "DELETE FROM `MEMBERS` WHERE `Region_ID` = '" + regionID + "';");
+					SQLiteUtils.query("Regions.db", "DELETE FROM `AREAS` WHERE `Region_ID` = \'" + regionID + "\';");
+					SQLiteUtils.query("Regions.db", "DELETE FROM `MEMBERS` WHERE `Region_ID` = \'" + regionID + "\';");
 				} else {
-					player.sendMessage(RegionsAPI.PREFIX + "§fВы не можете удалить чужой регион!");
+					player.sendMessage(RegionsAPI.PREFIX + "§fВы не можете удалить чужой регион§7!");
 					event.setCancelled();
 				}
 			}
 		}
 	}
-
+	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
 		Item item = event.getItem();
-
 		if (item != null && item.getId() == Item.STICK) {
 			if (player.level != FunctionsAPI.WORLD) {
 				player.sendPopup(RegionsAPI.BIOME);
 				return;
 			}
-
 			int regionID = RegionsAPI.getRegionIDByLocation(block.getLocation());
 			if (regionID != -1) {
 				player.sendPopup(RegionsAPI.BUSY_BY.replace("{PLAYER}", RegionsAPI.getRegionOwner(regionID)));
@@ -88,30 +85,30 @@ public class RegionsEventsHandler implements Listener {
 			event.setCancelled();
 			return;
 		}
-
 		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
 			player.sendPopup(RegionsAPI.BUSY);
 			event.setCancelled();
 		}
 	}
-
+	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onEntityExplode(EntityExplodeEvent event) {
 		List<Block> blocks = event.getBlockList();
 		Iterator iterator = blocks.iterator();
 		while (iterator.hasNext()) {
-			Block block = (Block) iterator.next();
+			Block block = (Block)iterator.next();
 			int id = block.getId();
 			if (RegionsAPI.REGIONS.get(id) != null) {
 				iterator.remove();
 			} else if (id == 54 || id == 146) {
 				iterator.remove();
-				new NukkitRunnable() {
+				new NukkitRunnable(){
+					
 					public void run() {
-						BlockEntityChest chest = (BlockEntityChest) block.level.getBlockEntity(block);
+						BlockEntityChest chest = (BlockEntityChest)block.level.getBlockEntity(block);
 						if (chest != null) {
 							Map<Integer, Item> map = chest.getInventory().getContents();
-							for (Map.Entry<Integer, Item> entry: map.entrySet()) {
+							for (Map.Entry<Integer, Item> entry : map.entrySet()) {
 								block.level.dropItem(block, entry.getValue());
 							}
 							block.level.setBlock(block, new BlockAir());

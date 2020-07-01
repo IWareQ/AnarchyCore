@@ -18,30 +18,31 @@ import cn.nukkit.network.protocol.BlockEntityDataPacket;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
 
 public class DefaultChest extends FakeChest {
+	
 	public DefaultChest() {
 		super(InventoryType.CHEST, null, null);
 	}
-
+	
 	public DefaultChest(String title) {
 		super(InventoryType.CHEST, null, title);
 	}
-
+	
 	public DefaultChest(InventoryType type, String title) {
 		super(type, null, title);
 	}
-
-	@Override
-	protected List <BlockVector3> onOpenBlock(Player who) {
-		BlockVector3 blockPosition = new BlockVector3((int) who.x, ((int) who.y) + 2, (int) who.z);
+	
+	@Override()
+	protected List<BlockVector3> onOpenBlock(Player who) {
+		BlockVector3 blockPosition = new BlockVector3((int)who.x, ((int)who.y) + 2, (int)who.z);
 		placeChest(who, blockPosition);
 		return Collections.singletonList(blockPosition);
 	}
-
-	@Override
+	
+	@Override()
 	public void onClose(Player who) {
 		super.onClose(who);
 	}
-
+	
 	protected void placeChest(Player who, BlockVector3 pos) {
 		UpdateBlockPacket updateBlock = new UpdateBlockPacket();
 		updateBlock.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(BlockID.CHEST, 0);
@@ -50,7 +51,6 @@ public class DefaultChest extends FakeChest {
 		updateBlock.y = pos.y;
 		updateBlock.z = pos.z;
 		who.dataPacket(updateBlock);
-
 		BlockEntityDataPacket blockEntityData = new BlockEntityDataPacket();
 		blockEntityData.x = pos.x;
 		blockEntityData.y = pos.y;
@@ -58,12 +58,12 @@ public class DefaultChest extends FakeChest {
 		blockEntityData.namedTag = getNbt(pos, getTitle());
 		who.dataPacket(blockEntityData);
 	}
-
+	
 	private static byte[] getNbt(BlockVector3 pos, String name) {
-		CompoundTag tag = new CompoundTag().putString("id", BlockEntity.CHEST).putInt("x", pos.x).putInt("y", pos.y).putInt("z", pos.z).putString("CustomName", name == null ? "Сундук": name);
+		CompoundTag tag = new CompoundTag().putString("id", BlockEntity.CHEST).putInt("x", pos.x).putInt("y", pos.y).putInt("z", pos.z).putString("CustomName", name == null ? "Сундук" : name);
 		try {
 			return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN, true);
-		} catch(IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException("Unable to create NBT for Chest");
 		}
 	}

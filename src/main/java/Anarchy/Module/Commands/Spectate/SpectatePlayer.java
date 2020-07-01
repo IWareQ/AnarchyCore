@@ -9,8 +9,8 @@ import cn.nukkit.level.Position;
 public class SpectatePlayer {
 	public String spectateName;
 	public Position playerPosition;
-	public Map <Integer, Item> playerInventory;
-
+	public Map<Integer, Item> playerInventory;
+	
 	public SpectatePlayer(Player player, Player spectatePlayer) {
 		this.spectateName = spectatePlayer.getName();
 		this.playerPosition = player.getPosition();

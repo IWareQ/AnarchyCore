@@ -9,34 +9,31 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class GroupCommand extends Command {
+	
 	public GroupCommand() {
 		super("group", "Выдача группы");
 		this.setPermission("Command.Group");
 	}
-
-	@Override
+	
+	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			return true;
 		}
-
 		if (args.length < 2 || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
-			sender.sendMessage("§l§e| §fИспользование §7- §e/group <ID> <игрок>");
+			sender.sendMessage("§l§e| §r§fИспользование §7- §e/group §7(§6ID§7) (§6игрок§7)");
 			return true;
 		}
-
 		String nickname = StringUtils.implode(args, 1);
 		if (!AuthAPI.isRegistered(nickname)) {
-			sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §a" + nickname + " §7- §fне зарегистрирован!");
+			sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §e" + nickname + " §7- §fне зарегистрирован§7!");
 			return true;
 		}
-
 		if (!StringUtils.isInteger(args[0]) || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
-			sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §c" + nickname + " §7- §fне существует!");
+			sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §6" + nickname + " §7- §fне существует§7!");
 			return true;
 		}
-
-		sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §a" + nickname + " §fполучил группу " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
+		sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §e" + nickname + " §fполучил группу §7- " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
 		Player player = Server.getInstance().getPlayerExact(nickname);
 		if (player != null) {
 			player.sendMessage(PermissionsAPI.PREFIX + "§fВы получили привилегию §7(" + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])) + "§7)");

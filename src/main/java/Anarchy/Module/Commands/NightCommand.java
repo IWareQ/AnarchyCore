@@ -7,23 +7,23 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.level.Level;
 
 public class NightCommand extends Command {
+	
 	public NightCommand() {
-		super("night", "Установка ночи");
+		super("night", "Сменить Днь на Ночь");
 		setPermission("Command.Night");
 		commandParameters.clear();
 	}
-
-	@Override
+	
+	@Override()
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
 		if (!commandSender.hasPermission("Command.Night")) {
 			return false;
 		}
-
-		Level level = ((Player) commandSender).getLevel();
+		Level level = ((Player)commandSender).getLevel();
 		level.setTime(14000);
-		for (Player player: Server.getInstance().getOnlinePlayers().values()) {
+		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 			if (player.level == level) {
-				player.sendMessage("§l§e| §r§fИгрок §a" + commandSender.getName() + " §fустановил§7(§fа§7) §9Ночь");
+				player.sendMessage("§l§e| §r§fИгрок §e" + commandSender.getName() + " §fустановил§7(§fа§7) §9Ночь");
 			}
 		}
 		return false;

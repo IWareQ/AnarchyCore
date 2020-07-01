@@ -11,15 +11,19 @@ import Anarchy.Module.Auction.AuctionEventsHandler;
 import Anarchy.Module.Auction.Commands.AuctionCommand;
 import Anarchy.Module.Auction.Commands.BuyCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
+import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
 import Anarchy.Module.Commands.DayCommand;
 import Anarchy.Module.Commands.FoodCommand;
+import Anarchy.Module.Commands.GamemodeCommand;
 import Anarchy.Module.Commands.HealCommand;
 import Anarchy.Module.Commands.KickCommand;
 import Anarchy.Module.Commands.NearCommand;
 import Anarchy.Module.Commands.NightCommand;
 import Anarchy.Module.Commands.ProfileCommand;
 import Anarchy.Module.Commands.RepairCommand;
+import Anarchy.Module.Commands.ShopCommand;
+import Anarchy.Module.Commands.ExchangerCommand;
 import Anarchy.Module.Commands.Check.CheckCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
 import Anarchy.Module.Commands.Defaults.TellCommand;
@@ -45,7 +49,8 @@ import Anarchy.Module.Permissions.Commands.GroupCommand;
 import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Module.Regions.RegionsEventsHandler;
 import Anarchy.Module.Regions.Commands.RegionCommand;
-import Anarchy.Module.Wither.WitherEventsHandler;
+//import Anarchy.Module.Wither.WitherEventsHandler;
+//import Anarchy.Task.CombatLoggerTask;
 import Anarchy.Task.HotbarTask;
 import Anarchy.Task.MinuteTask;
 import Anarchy.Task.Utils.Broadcast;
@@ -59,29 +64,22 @@ public class AnarchyMain extends PluginBase {
 	public static String folder;
 	public static String datapath;
 	public static int port;
-
-	@Override
+	
+	@Override()
 	public void onEnable() {
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
-		for (String pluginName: new String[] {
-			"DbLib",
-			"ScoreboardPlugin",
-			"MobPlugin",
-			"FormAPI"
-		}) {
+		for (String pluginName : new String[]{"DbLib", "ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
-				getLogger().alert("§l§aНе хватает плагина §7- §b\"" + pluginName + "\"");
+				getLogger().alert("§l§fНе найден §6плагин §7- §e" + pluginName);
 				pluginManager.disablePlugin(this);
 				return;
 			}
 		}
-
 		plugin = this;
 		folder = "";
 		port = Server.getInstance().getPort();
 		datapath = folder + port;
 		new File(datapath).mkdirs();
-
 		SQLProvider.register();
 		registerAll();
 		registerEvents();
@@ -90,102 +88,51 @@ public class AnarchyMain extends PluginBase {
 		registerTask();
 		getLogger().info("§fПлагин §aАктивирован");
 	}
-
-	@Override
+	
+	@Override()
 	public void onDisable() {
 		unregisterAll();
 		getLogger().info("§fПлагин §cДезактивирован");
 	}
-
+	
 	private void registerAll() {
 		FunctionsAPI.register();
 		RegionsAPI.register();
 		PermissionsAPI.register();
 		AuctionAPI.register();
 		Broadcast.register();
-		AuthEventsHandler.register();
-		WitherEventsHandler.register();
+		//WitherEventsHandler.register();
 	}
-
+	
 	private void unregisterAll() {
 		AllSessionsManager.saveAllSessions();
 		AuctionAPI.unregister();
 	}
-
+	
 	private void registerEvents() {
 		PluginManager pluginManager = getServer().getPluginManager();
 		pluginManager.registerEvents(new RegionsEventsHandler(), this);
-		pluginManager.registerEvents(new AuthEventsHandler(), this);
 		pluginManager.registerEvents(new AuctionEventsHandler(), this);
 		pluginManager.registerEvents(new EventsHandler(), this);
+		pluginManager.registerEvents(new AuthEventsHandler(), this);
 		pluginManager.registerEvents(new DonateHandler(), this);
 	}
-
+	
 	private void unregisterCommands() {
 		Map<String, Command> commandMap = getServer().getCommandMap().getCommands();
-		for (String command: new String[] {
-			"me",
-			"ver",
-			"say",
-			"pl",
-			"plugins",
-			"mixer",
-			"difficulty",
-			"defaultgamemode",
-			"help",
-			"?",
-			"pardon",
-			"unban",
-			"particle",
-			"tell",
-			"list",
-			"about",
-			"title"
-		}) {
+		for (String command : new String[]{"me", "ver", "say", "pl", "plugins", "mixer", "difficulty", "defaultgamemode", "help", "?", "pardon", "unban", "particle", "tell", "gm", "gamemode", "list", "about", "title"}) {
 			commandMap.remove(command);
 		}
 	}
-
+	
 	private void registerCommands() {
-		Command[] commands = new Command[] {
-			new DonateHandler(),
-			new EnderChestCommand(),
-			new SpectateCommand(),
-			new DayCommand(),
-			new NightCommand(),
-			new FoodCommand(),
-			new NearCommand(),
-			new RepairCommand(),
-			new HealCommand(),
-			new RegionCommand(),
-			new TellCommand(),
-			new ListCommand(),
-			new TpaCommand(),
-			new TpyCommand(),
-			new TpnCommand(),
-			new TprCommand(),
-			new ProfileCommand(),
-			new KickCommand(),
-			new MoneyCommand(),
-			new PayCommand(),
-			new CheckCommand(),
-			new AddMoneyCommand(),
-			new SetMoneyCommand(),
-			new SeeMoneyCommand(),
-			new GroupCommand(),
-			new BuyCommand(),
-			new AuctionCommand(),
-			new BarCommand(),
-			new HomeCommand(),
-			new HomesCommand(),
-			new SetHomeCommand(),
-			new DelHomeCommand()
-		};
+		Command[] commands = new Command[]{new DonateHandler(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), new TprCommand(), new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new BuyCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new HomesCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
-
+	
 	private void registerTask() {
 		this.getServer().getScheduler().scheduleRepeatingTask(new MinuteTask(), 60 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new HotbarTask(), 30 * 20);
+		//this.getServer().getScheduler().scheduleRepeatingTask(new CombatLoggerTask(), 30);
 	}
 }

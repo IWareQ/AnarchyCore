@@ -11,8 +11,8 @@ public class MinuteTask extends Task {
 	private static int TIMER_SAVEDATA = 0;
 	public static int TIMER_RESTART = 60;
 	public static int SECONDS = 60;
-
-	@Override
+	
+	@Override()
 	public void onRun(int i) {
 		AuctionAPI.updateAuction();
 		if (TIMER_RESTART == 1) {
@@ -21,17 +21,14 @@ public class MinuteTask extends Task {
 			this.cancel();
 			return;
 		}
-
 		if (TIMER_BROADCAST == 0) {
 			TIMER_BROADCAST = 3;
 			Server.getInstance().broadcastMessage(Broadcast.getBroadcast());
 		}
-
 		if (TIMER_SAVEDATA == 0) {
 			TIMER_SAVEDATA = 5;
 			AllSessionsManager.saveAllSessions();
 		}
-
 		--TIMER_BROADCAST;
 		--TIMER_SAVEDATA;
 		--TIMER_RESTART;

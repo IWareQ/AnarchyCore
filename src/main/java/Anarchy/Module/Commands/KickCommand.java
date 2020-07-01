@@ -1,46 +1,44 @@
 package Anarchy.Module.Commands;
 
+import FormAPI.Forms.Elements.CustomForm;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import ru.nukkitx.forms.elements.CustomForm;
 
 public class KickCommand extends Command {
+	
 	public KickCommand() {
-		super("kick", "Кикнуть игрока с сервера");
+		super("kick", "Выгнать Игрока с Сервера");
 		setPermission("Command.Check");
 		commandParameters.clear();
-		this.commandParameters.put("default", new CommandParameter[] {
-			new CommandParameter("player", CommandParamType.TARGET, false)
-		});
+		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
-
-	@Override
+	
+	@Override()
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
 		if (!commandSender.hasPermission("Command.Kick")) {
 			return false;
 		}
-
 		if (strings.length != 1) {
-			commandSender.sendMessage("§l§e| §fИспользование §7- §e/kick <игрок>");
+			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/kick §7(§6игрок§7)");
 			return true;
 		}
-
 		Player kickPlayer = Server.getInstance().getPlayer(strings[0]);
 		String playerName = kickPlayer.getName();
-		Player player = (Player) commandSender;
-
+		Player player = (Player)commandSender;
 		if (kickPlayer == null) {
-			commandSender.sendMessage("§fИгрок §a" + strings[0] + " §7- §cОффлайн");
+			commandSender.sendMessage("§fИгрок §e" + strings[0] + " §7- §6Оффлайн");
 			return true;
 		}
-
-		new CustomForm("Кикнуть игрока " + playerName).addLabel("Текст").addInput("Причина").addToggle("Отправить сообщение о кике в общий чат сервера §7•").send(player, (target, form, data) -> {
+		new CustomForm("§fВыгнать Игрока §e" + playerName).addLabel("Текст").addInput("Причина").addToggle("Отправить сообщение о кике в общий чат сервера §7•").send(player, (target, form, data) -> {
 			if (data == null) return;
-			kickPlayer.close("", "§l§c| §r§fВас кикнули с сервера! §l§e| §r§fПричина §7- " + data.get(1).toString());
+			kickPlayer.close("", "§l§c| §r§fВас кикнули с сервера§7! §l§e| §r§fПричина §7- §6" + data.get(1).toString());
+			if ((boolean)data.get(2)) {
+				Server.getInstance().broadcastMessage("§l§e| §r§fАдминистратор §7" + player + " §fвыгнал Игрока §6" + kickPlayer + " §fс сервера§7, §fпо причине §7- §6" + data.get(1).toString());
+			}
 		});
 		return false;
 	}

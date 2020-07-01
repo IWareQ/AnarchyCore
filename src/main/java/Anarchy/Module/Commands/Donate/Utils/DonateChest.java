@@ -12,13 +12,13 @@ import cn.nukkit.utils.Config;
 
 public class DonateChest extends DoubleDefaultChest {
 	private static File dataFile;
-
+	
 	public DonateChest(String title, File file) {
 		super(title);
 		dataFile = file;
 	}
-
-	@Override
+	
+	@Override()
 	public void onClose(Player who) {
 		super.onClose(who);
 		dataFile.delete();
@@ -26,18 +26,12 @@ public class DonateChest extends DoubleDefaultChest {
 			dataFile.delete();
 			return;
 		}
-
 		Config config = new Config(dataFile, Config.YAML);
 		LinkedHashMap objectMap = new LinkedHashMap();
-		for (Map.Entry<Integer, Item> entry: this.getContents().entrySet()) {
+		for (Map.Entry<Integer, Item> entry : this.getContents().entrySet()) {
 			Item item = entry.getValue();
 			CompoundTag compoundTag = item.getNamedTag();
-			objectMap.put(compoundTag.getString("UUID"), new Object[] {
-				compoundTag.getString("DATE"),
-				item.getId(),
-				item.getDamage(),
-				item.getCount()
-			});
+			objectMap.put(compoundTag.getString("UUID"), new Object[]{compoundTag.getString("DATE"), item.getId(), item.getDamage(), item.getCount()});
 		}
 		config.setAll(objectMap);
 		config.save();
