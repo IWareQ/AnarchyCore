@@ -139,7 +139,7 @@ public class RegionCommand extends Command {
 			break;
 			
 			case "help": 
-			new SimpleForm("§fРегионы", "  ").addButton("Информация о Регионах").addButton("Мои Регионы").addButton("Список регионов§7, §fгде Вас добавили").send(player, (target,form,data) -> {
+			new SimpleForm("§6Регионы", "  ").addButton("§fИнформация о Регионах").addButton("§fМои Регионы").addButton("§fСписок регионов§7, §fгде Вас добавили").send(player, (target,form,data) -> {
 				if (data == -1) return;
 				if (data == 0) {
 					new SimpleForm("Информация о Регионах", "Хочешь создать свой регион? Не проблема! Можешь следовать пунктам:\n\n§l§e| §r§fДобудь блок привата\n§e§l| §r§fПроверь, нет ли вблизи другого региона\n§l§e| §r§fПоставь блок для привата и будь уверене §7- §fтвою постройку не тронут!\n\nБлоки, которыми можно приватить:\n\n§l§e| §r§fЖелезный блок §7(§fприватит 3 × 3§7)\n§l§e| §r§fАлмазный блок §7(§fприватит 6 × 6§7)\n§l§e| §r§fИзумрудный блок §7(§fприватит 10 × 10§7)").send(player);
@@ -155,7 +155,7 @@ public class RegionCommand extends Command {
 						Map<String, String> regionInfo = RegionsAPI.getRegionInfo(region_id);
 						stringBuilder.append("\n §7→ §fРегион §7(§f").append(regionInfo.get("Main_X")).append("§7, §f").append(regionInfo.get("Main_Y")).append("§7, §f").append(regionInfo.get("Main_Z")).append("§7)");
 					}
-					new SimpleForm("§fРегионы§7, §fв которых Вы состоите §7- " + stringBuilder.toString()).send(player);
+					new SimpleForm("§fРегионы§7, §fв которых Вы состоите", "§fВаши регионы" + stringBuilder.toString()).send(player);
 				}
 				if (data == 2) {
 					ArrayList<Integer> regionsData = SQLiteUtils.selectIntegerList("Regions.db", "SELECT `Region_ID` FROM `MEMBERS` WHERE `Username` = \'" + playerName + "\';");
@@ -168,7 +168,7 @@ public class RegionCommand extends Command {
 						Map<String, String> regionInfo = RegionsAPI.getRegionInfo(region_id);
 						stringBuilder.append("\n §7→ §fРегион Игрока §e").append(regionInfo.get("Username")).append(" §7(§f").append(regionInfo.get("Main_X")).append("§7, §f").append(regionInfo.get("Main_Y")).append("§7, §f").append(regionInfo.get("Main_Z")).append("§7)");
 					}
-					new SimpleForm("§fРегионы§7, §fв которых Вы состоите §7- " + stringBuilder.toString()).send(player);
+					new SimpleForm("§fРегионы§7, §fв которых Вы состоите", "§fВы состоите в " + stringBuilder.toString()).send(player);
 				}
 			});
 			

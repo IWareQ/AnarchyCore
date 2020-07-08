@@ -5,13 +5,13 @@ import java.text.DecimalFormat;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.Permissions.PermissionsAPI;
+import ScoreboardPlugin.API.ScoreboardAPI;
+import ScoreboardPlugin.Network.DisplaySlot;
+import ScoreboardPlugin.Network.Scoreboard;
+import ScoreboardPlugin.Network.ScoreboardDisplay;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.scheduler.Task;
-import de.theamychan.scoreboard.api.ScoreboardAPI;
-import de.theamychan.scoreboard.network.DisplaySlot;
-import de.theamychan.scoreboard.network.Scoreboard;
-import de.theamychan.scoreboard.network.ScoreboardDisplay;
 
 public class HotbarTask extends Task {
 	

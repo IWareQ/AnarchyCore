@@ -6,8 +6,8 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 
 public class FunctionsAPI {
-	public static Integer[] BORDER = new Integer[]{-5000, 5000, -5000, 5000};
-	public static Integer[] RANDOM_TP = new Integer[]{-3000, 3000, -3000, 3000};
+	public static Integer[] BORDER = new Integer[]{-2000, 2000, -2000, 2000};
+	public static Integer[] RANDOM_TP = new Integer[]{-1000, 1000, -1000, 1000};
 	public static Level WORLD;
 	public static Level NETHER;
 	public static Level WORLD2;

@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Anarchy.Manager.Sessions.Session.PlayerSession;
+import ScoreboardPlugin.Network.Scoreboard;
 import cn.nukkit.Player;
-import de.theamychan.scoreboard.network.Scoreboard;
 
 public class PlayerSessionManager {
 	public static ArrayList<String> SCOREBOARD = new ArrayList<>();

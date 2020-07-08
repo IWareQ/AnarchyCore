@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Anarchy</groupId>
 	<artifactId>Anarchy</artifactId>
-	<version>3.0-SNAPSHOT</version>
+	<version>3.2</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -27,9 +27,9 @@
 		<dependency>
 			<groupId>MobPlugin</groupId>
 			<artifactId>MobPlugin</artifactId>
-			<version>3.0</version>
+			<version>1.13.2</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/MobPlugin.jar</systemPath>
+			<systemPath>${basedir}/libs/MobPlugin-1.13.4.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -38,31 +38,31 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>de.theamychan.scoreboard</groupId>
-			<artifactId>ScoreboardAPI</artifactId>
+			<groupId>ScoreboardPlugin</groupId>
+			<artifactId>ScoreboardPlugin</artifactId>
 			<version>3.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/ScoreboardAPI-3.0.jar</systemPath>
+			<systemPath>${basedir}/libs/ScoreboardPlugin-3.0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>FormAPI</groupId>
 			<artifactId>FormAPI</artifactId>
 			<version>3.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/FormAPI.jar</systemPath>
+			<systemPath>${basedir}/libs/FormAPI-3.0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>DbLib</groupId>
 			<artifactId>DbLib</artifactId>
 			<version>3.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/DbLib.jar</systemPath>
+			<systemPath>${basedir}/libs/DbLib-3.0.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-		<finalName>AnarchyOnline</finalName>
+		<finalName>AnarchyOnline-3.2</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -1,5 +1,8 @@
 package Anarchy.Module.Commands;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -8,6 +11,8 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 
 public class RepairCommand extends Command {
+    public static Map<CommandSender, Long> COOLDOWN = new HashMap<>();
+    public static int ADD_COOLDOWN = 1;
 	
 	public RepairCommand() {
 		super("repair", "Починить предмет в руке");
@@ -20,6 +25,12 @@ public class RepairCommand extends Command {
 		if (!commandSender.hasPermission("Command.Repair")) {
 			return false;
 		}
+		Long cooldownTime = COOLDOWN.get(commandSender);
+		Long nowTime = System.currentTimeMillis() / 1000L;
+			if (cooldownTime != null && cooldownTime > nowTime) {
+				commandSender.sendMessage("§l§7(§6Задержка§7) §r§fСледующее использование будет доступно через §c6" + (cooldownTime - nowTime) + " §fсекунд");
+				return false;
+			}
 		PlayerInventory inventory = ((Player)commandSender).getInventory();
 		Item item = inventory.getItemInHand();
 		if (!item.isArmor() && !item.isTool()) {
@@ -31,6 +42,7 @@ public class RepairCommand extends Command {
 		inventory.setItemInHand(item);
 		commandSender.sendMessage("§l§a| §r§fПредмет в руке починен§7!");
 		player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
+		COOLDOWN.put(commandSender, nowTime + ADD_COOLDOWN);
 		return false;
 	}
 }

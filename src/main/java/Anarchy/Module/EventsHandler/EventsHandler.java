@@ -69,7 +69,7 @@ public class EventsHandler implements Listener {
 		Player player = event.getPlayer();
 		Block block = player.getLevel().getBlock(new Vector3((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0), (double)(int)Math.round(event.getPlayer().z - 0.5)));
 		if (player.x < FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z < FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
-			player.sendPopup("§c§l| §fВы пытаетесь §6выйти §fза границу мира§7! §c§l|");
+			player.sendTip("§c§l| §fВы пытаетесь §6выйти §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
 		}
 		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
@@ -79,8 +79,9 @@ public class EventsHandler implements Listener {
 					{
 						Level level = Server.getInstance().getLevelByName("world");
 						Vector3 teleportPosition = new Vector3(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 256, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
-						level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
+						//level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
 						player.teleport(level.getSafeSpawn(teleportPosition));
+						level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0] >> 4, FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2] >> 4, FunctionsAPI.RANDOM_TP[3]) >> 4);
 						player.sendMessage("§l§a| §r§fВы телепортированы в случайное место§7!");
 						event.setCancelled(true);
 						return;
@@ -96,7 +97,7 @@ public class EventsHandler implements Listener {
 		Player player = event.getPlayer();
 		Location location = event.getTo();
 		if (location.x < FunctionsAPI.BORDER[0] || location.x > FunctionsAPI.BORDER[1] || location.z < FunctionsAPI.BORDER[2] || location.z > FunctionsAPI.BORDER[3]) {
-			player.sendPopup("§l§c| §fВы пытаетесь §6телепортироваться §fза границу мира§7! §c|");
+			player.sendTip("§l§c| §fВы пытаетесь §6телепортироваться §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
 		}
 	}
@@ -160,14 +161,14 @@ public class EventsHandler implements Listener {
 			if (damager instanceof Player) {
 				if (entity instanceof Animal) {
 					if (entity instanceof Squid) {
-						((Player)damager).sendTitle("§7+ §e3");
+						((Player)damager).sendTip("§7+ §e3");
 						EconomyAPI.addMoney(((Player)damager), 3);
 					} else {
-						((Player)damager).sendTitle("§7+ §e1");
+						((Player)damager).sendTip("§7+ §e1");
 						EconomyAPI.addMoney(((Player)damager), 1);
 					}
 				} else if (entity instanceof Monster) {
-					((Player)damager).sendTitle("§7+ §e2");
+					((Player)damager).sendTip("§7+ §e2");
 					EconomyAPI.addMoney(((Player)damager), 2);
 				}
 			}
