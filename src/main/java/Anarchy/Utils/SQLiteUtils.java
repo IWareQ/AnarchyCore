@@ -27,7 +27,7 @@ public class SQLiteUtils {
 			connection.createStatement().executeUpdate(query);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("Error Query -  " + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §fquery §7- §e" + e);
 		}
 		return true;
 	}
@@ -56,7 +56,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("Error buildQueryFromMap -  " + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6selectMap §7- §e" + e);
 		}
 		return map;
 	}
@@ -78,7 +78,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("Error selectStringMap - " + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6selectStringMap §7- §e" + e);
 		}
 		return map;
 	}
@@ -99,7 +99,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("Error selectIntegerMap - " + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6selectIntegerMap §7- §e" + e);
 		}
 		return map;
 	}
@@ -120,7 +120,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("Error selectList - " + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6selectList §7- §e" + e);
 		}
 		return list;
 	}
@@ -141,7 +141,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("Error selectIntegerList - " + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6selectIntegerList §7- §e" + e);
 		}
 		return list;
 	}
@@ -162,7 +162,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("Error selectStringList - " + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6selectStringList §7- §e" + e);
 		}
 		return list;
 	}
@@ -178,7 +178,7 @@ public class SQLiteUtils {
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
 			res = null;
-			Server.getInstance().getLogger().alert("Error selectString - " + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6selectString §7- §e" + e);
 		}
 		return res;
 	}
@@ -193,7 +193,7 @@ public class SQLiteUtils {
 			res = result.getInt(1);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			// Server.getInstance().getLogger().alert("Error selectInteger - " + e);
+			//Server.getInstance().getLogger().alert("§l§fОшибка в §6selectInteger §7- §e" + e);
 		}
 		return res;
 	}
@@ -208,7 +208,7 @@ public class SQLiteUtils {
 			res = result.getLong(1);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("Error selectLong - " + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6selectLong §7- §e" + e);
 		}
 		return res;
 	}

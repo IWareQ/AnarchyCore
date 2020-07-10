@@ -10,11 +10,11 @@ public class RestartTask extends Task {
 	@Override()
 	public void onRun(int i) {
 		if (MinuteTask.SECONDS == 60) {
-			Server.getInstance().broadcastMessage("§l§e| §fСервер перезагрузится через §a1 §fминуту!");
+			Server.getInstance().broadcastMessage("§l§e| §fСервер перезагрузится через §61 §fминуту!");
 		} else if (MinuteTask.SECONDS == 30) {
-			Server.getInstance().broadcastMessage("§l§e| §fСервер перезагрузится через §a30 §fсекунд!");
+			Server.getInstance().broadcastMessage("§l§e| §fСервер перезагрузится через §630 §fсекунд!");
 		} else if (MinuteTask.SECONDS == 10) {
-			Server.getInstance().broadcastMessage("§l§e| §fСервер перезагрузится через §a10 §fсекунд!");
+			Server.getInstance().broadcastMessage("§l§e| §fСервер перезагрузится через §610 §fсекунд!");
 		}
 		if (MinuteTask.SECONDS <= 10) {
 			if (MinuteTask.SECONDS == 0) {

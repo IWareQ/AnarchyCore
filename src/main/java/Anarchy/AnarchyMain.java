@@ -86,13 +86,13 @@ public class AnarchyMain extends PluginBase {
 		unregisterCommands();
 		registerCommands();
 		registerTask();
-		getLogger().info("§fПлагин §aАктивирован");
+		getLogger().info("§l§fПлагин §aАктивирован");
 	}
 	
 	@Override()
 	public void onDisable() {
 		unregisterAll();
-		getLogger().info("§fПлагин §cДезактивирован");
+		getLogger().info("§l§fПлагин §cДеактивирован");
 	}
 	
 	private void registerAll() {

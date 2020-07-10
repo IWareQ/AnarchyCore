@@ -42,7 +42,7 @@ public class RegionsAPI {
 		if (groupAllow != null) {
 			int regionCount = RegionsAPI.getRegionsCount(player.getName());
 			if (regionCount >= groupAllow.MAX_REGIONS) {
-				player.sendMessage(RegionsAPI.PREFIX + "§fМаксимальное количество регионов §7- §6" + regionCount + "\n§l§e| §r§fЧтобы содать новый регион потребуется удалить §e§l1 §r§fиз старых§7!");
+				player.sendMessage(RegionsAPI.PREFIX + "§fМаксимальное количество регионов §7- §6" + regionCount + "\n§l§e| §r§fЧтобы содать новый регион потребуется удалить §6§l1 §r§fиз старых§7!");
 				event.setCancelled();
 				return;
 			}

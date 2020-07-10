@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Anarchy</groupId>
 	<artifactId>Anarchy</artifactId>
-	<version>3.2</version>
+	<version>3.3</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -62,7 +62,7 @@
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-		<finalName>AnarchyOnline-3.2</finalName>
+		<finalName>AnarchyOnline-3.3</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -73,21 +73,20 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
-			if (block.getId() == 241) {
-				switch (block.getId()) {
-					case 241: 
-					{
+			if (block.getId() == 416) {
+				/*switch (block.getId()) {
+					case 416: 
+					{*/
 						Level level = Server.getInstance().getLevelByName("world");
 						Vector3 teleportPosition = new Vector3(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 256, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
-						//level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
+						level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
 						player.teleport(level.getSafeSpawn(teleportPosition));
-						level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0] >> 4, FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2] >> 4, FunctionsAPI.RANDOM_TP[3]) >> 4);
-						player.sendMessage("§l§a| §r§fВы телепортированы в случайное место§7!");
+						player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.\n§fС этого начинается Ваше приключение§7!");
 						event.setCancelled(true);
 						return;
-					}
+					/*}
 					
-				}
+				}*/
 			}
 		}
 	}
@@ -179,6 +178,13 @@ public class EventsHandler implements Listener {
 	public void onPlayerEatFood(PlayerEatFoodEvent event) {
 		Player player = event.getPlayer();
 		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onEntityDamage(EntityDamageEvent  event) {
+		if (event.getEntity().getLevel().equals(FunctionsAPI.WORLD2)) {
 			event.setCancelled(true);
 		}
 	}
