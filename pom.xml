@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Anarchy</groupId>
 	<artifactId>Anarchy</artifactId>
-	<version>3.3</version>
+	<version>3.4</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>MobPlugin</groupId>
 			<artifactId>MobPlugin</artifactId>
-			<version>1.13.2</version>
+			<version>1.13.4</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/MobPlugin-1.13.4.jar</systemPath>
 		</dependency>
@@ -62,7 +62,7 @@
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-		<finalName>AnarchyOnline-3.3</finalName>
+		<finalName>AnarchyOnline-3.4</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
