@@ -46,7 +46,7 @@ public class AuctionAPI extends PluginBase {
 					try {
 						compoundTag = NBTIO.read((byte[])itemData.get(7), ByteOrder.LITTLE_ENDIAN);
 					} catch (IOException e) {
-						Server.getInstance().getLogger().alert("Error register - " + e);
+						Server.getInstance().getLogger().alert("§l§fОшибка в §fregister §7- §e" + e);
 					}
 				}
 				if (compoundTag == null) {
@@ -72,7 +72,7 @@ public class AuctionAPI extends PluginBase {
 				Item item = tradeItem.sellItem;
 				config.set(entry.getKey(), item.hasCompoundTag() ? new Object[]{tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[]{tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount()});
 			} catch (IOException e) {
-				Server.getInstance().getLogger().alert("Error unregister - " + e);
+				Server.getInstance().getLogger().alert("§l§fОшибка в §funregister §7- §e" + e);
 			}
 		}
 		config.save();
@@ -101,7 +101,7 @@ public class AuctionAPI extends PluginBase {
 					config.set(tradeItem.UUID, tradeItem.sellItem.hasCompoundTag() ? new Object[]{tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount(), NBTIO.write(tradeItem.sellItem.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[]{tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount()});
 					config.save();
 				} catch (IOException e) {
-					Server.getInstance().getLogger().alert("Error updateAuction - " + e);
+					Server.getInstance().getLogger().alert("§l§fОшибка в §fupdateAuction §7- §e " + e);
 				}
 				iterator.remove();
 			}
