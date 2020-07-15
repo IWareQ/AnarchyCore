@@ -29,6 +29,10 @@ import cn.nukkit.utils.Config;
 
 public class DonateHandler extends Command implements Listener {
 	
+	public static String getDate() {
+		return new SimpleDateFormat("dd:MM:yyyy").format(Calendar.getInstance().getTime());
+	}
+	
 	public DonateHandler() {
 		super("donate", "Описание Донат Услуг");
 		new File(AnarchyMain.datapath + "/DonateItems/").mkdirs();
@@ -65,12 +69,12 @@ public class DonateHandler extends Command implements Listener {
 			Config config = new Config(dataFile, Config.YAML);
 			for (Map.Entry<String, Object> entry : config.getAll().entrySet()) {
 				ArrayList<Object> itemData = (ArrayList<Object>)entry.getValue();
-				Item item = Item.get(Integer.parseInt((String)itemData.get(0).toString()), Integer.parseInt((String)itemData.get(1).toString()), Integer.parseInt((String)itemData.get(2).toString()));
+				Item item = Item.get(Integer.parseInt((String)itemData.get(1).toString()), Integer.parseInt((String)itemData.get(2).toString()), Integer.parseInt((String)itemData.get(3).toString()));
 				CompoundTag compoundTag = new CompoundTag();
-				compoundTag.putString("DATE", entry.getKey());
+				compoundTag.putString("DATE", (String)itemData.get(0));
 				item.setNamedTag(compoundTag);
 				if (donateChest.canAddItem(item)) {
-					donateChest.addItem(item.setLore("§r§fДата покупки §7- §6" + entry.getKey()));
+					donateChest.addItem(item.setLore("§r§fДата покупки §7- §6" + itemData.get(0)));
 				}
 			}
 			FakeChestsAPI.openInventory(player, donateChest);
@@ -80,7 +84,7 @@ public class DonateHandler extends Command implements Listener {
 			commandSender.sendMessage("§l§e| §r§fИгрок §e" + playerName + " §fполучил §6" + split[0] + "§f:§6" + split[1] + " §7(§fx§6" + split[2] + "§7)");
 			Config config = new Config(AnarchyMain.datapath + "/DonateItems/" + playerName + ".yml", Config.YAML);
 			LinkedHashMap objectMap = (LinkedHashMap)config.getAll();
-			objectMap.put(UUID.randomUUID().toString(), new Object[]{/*StringUtils.getDate(),*/ Integer.parseInt((String)split[0]), Integer.parseInt((String)split[1]), Integer.parseInt((String)split[2])});
+			objectMap.put(UUID.randomUUID().toString(), new Object[]{(String)getDate().toString(), Integer.parseInt((String)split[0]), Integer.parseInt((String)split[1]), Integer.parseInt((String)split[2])});
 			config.setAll(objectMap);
 			config.save();
 		}
