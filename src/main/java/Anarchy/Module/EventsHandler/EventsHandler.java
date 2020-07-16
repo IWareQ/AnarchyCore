@@ -79,8 +79,8 @@ public class EventsHandler implements Listener {
 					{*/
 						Level level = Server.getInstance().getLevelByName("world");
 						Vector3 teleportPosition = new Vector3(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 256, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
-						level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
 						player.teleport(level.getSafeSpawn(teleportPosition));
+						level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
 						player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.\n§fС этого начинается Ваше приключение§7!");
 						event.setCancelled(true);
 						return;

@@ -59,11 +59,11 @@ public class StringUtils {
 	}
 	
 	public static String getDate() {
-		return new SimpleDateFormat("HH:mm:ss dd.MM.yyyy").format(Calendar.getInstance().getTime());
+		return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
 	}
 	
 	public static String getDate(Long date) {
-		return new SimpleDateFormat("HH:mm:ss dd.MM.yyyy").format(new Date(date));
+		return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(date));
 	}
 	
 	public static String getOnlineString(String playerName) {
