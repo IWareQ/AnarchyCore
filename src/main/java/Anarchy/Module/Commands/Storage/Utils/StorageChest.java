@@ -1,19 +1,18 @@
-package Anarchy.Module.Commands.Donate.Utils;
+package Anarchy.Module.Commands.Storage.Utils;
 
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import Anarchy.Manager.FakeChests.Inventory.DoubleDefaultChest;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Config;
 
-public class DonateChest extends DoubleDefaultChest {
+public class StorageChest extends DoubleDefaultChest {
 	private static File dataFile;
 	
-	public DonateChest(String title, File file) {
+	public StorageChest(String title, File file) {
 		super(title);
 		dataFile = file;
 	}

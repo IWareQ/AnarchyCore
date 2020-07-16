@@ -14,6 +14,8 @@ import Anarchy.Module.Auth.AuthEventsHandler;
 import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
 import Anarchy.Module.Commands.DayCommand;
+import Anarchy.Module.Commands.DonateCommand;
+import Anarchy.Module.Commands.ExchangerCommand;
 import Anarchy.Module.Commands.FoodCommand;
 import Anarchy.Module.Commands.GamemodeCommand;
 import Anarchy.Module.Commands.HealCommand;
@@ -23,17 +25,16 @@ import Anarchy.Module.Commands.NightCommand;
 import Anarchy.Module.Commands.ProfileCommand;
 import Anarchy.Module.Commands.RepairCommand;
 import Anarchy.Module.Commands.ShopCommand;
-import Anarchy.Module.Commands.ExchangerCommand;
 import Anarchy.Module.Commands.Check.CheckCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
 import Anarchy.Module.Commands.Defaults.TellCommand;
-import Anarchy.Module.Commands.Donate.DonateHandler;
 import Anarchy.Module.Commands.EnderChest.EnderChestCommand;
 import Anarchy.Module.Commands.Home.DelHomeCommand;
 import Anarchy.Module.Commands.Home.HomeCommand;
 import Anarchy.Module.Commands.Home.HomesCommand;
 import Anarchy.Module.Commands.Home.SetHomeCommand;
 import Anarchy.Module.Commands.Spectate.SpectateCommand;
+import Anarchy.Module.Commands.Storage.StorageHandler;
 import Anarchy.Module.Commands.Teleport.TpaCommand;
 import Anarchy.Module.Commands.Teleport.TpnCommand;
 //import Anarchy.Module.Commands.Teleport.TprCommand;
@@ -50,7 +51,6 @@ import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Module.Regions.RegionsEventsHandler;
 import Anarchy.Module.Regions.Commands.RegionCommand;
 //import Anarchy.Module.Wither.WitherEventsHandler;
-//import Anarchy.Task.CombatLoggerTask;
 import Anarchy.Task.HotbarTask;
 import Anarchy.Task.MinuteTask;
 import Anarchy.Task.Utils.Broadcast;
@@ -115,7 +115,7 @@ public class AnarchyMain extends PluginBase {
 		pluginManager.registerEvents(new AuctionEventsHandler(), this);
 		pluginManager.registerEvents(new EventsHandler(), this);
 		pluginManager.registerEvents(new AuthEventsHandler(), this);
-		pluginManager.registerEvents(new DonateHandler(), this);
+		pluginManager.registerEvents(new StorageHandler(), this);
 	}
 	
 	private void unregisterCommands() {
@@ -126,13 +126,12 @@ public class AnarchyMain extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new DonateHandler(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), /* new TprCommand(), */ new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new BuyCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new HomesCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
+		Command[] commands = new Command[]{new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), /* new TprCommand(), */ new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new BuyCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new HomesCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	
 	private void registerTask() {
 		this.getServer().getScheduler().scheduleRepeatingTask(new MinuteTask(), 60 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new HotbarTask(), 30 * 20);
-		//this.getServer().getScheduler().scheduleRepeatingTask(new CombatLoggerTask(), 30);
 	}
 }

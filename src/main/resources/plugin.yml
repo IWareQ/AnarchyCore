@@ -1,6 +1,6 @@
 name: Anarchy
 main: Anarchy.AnarchyMain
-version: "3.5"
+version: "${pom.version}"
 api: ["1.0.11"]
 author: Jl1mbo
 LOAD: POSTWORLD
