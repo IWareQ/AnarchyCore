@@ -17,13 +17,13 @@ import cn.nukkit.level.Position;
 
 public class RegionsAPI {
 	public static String PREFIX = "§l§7(§6Регионы§7) §r";
-	public static String FREE = "§l§a| §fТерритория свободна§7! §l§a|";
-	public static String BUSY = "§l§c| §fТерритория не доступна для взаимодействия§7! §l§c|";
-	public static String BUSY_BY = "§l§c| §fТерритория занята Игроком §e{PLAYER} §l§c|";
-	public static String EDIT = "§l§cВнимание§7! §fВы изменяете чужой регион§7!";
-	public static String UNBREAK = "§l§c| §fЭтот блок невозможно сломать§7! §l§c|";
-	public static String UNPLACE = "§l§c| §fЭтот блок не возможно установить тут§7! §l§c|";
-	public static String BIOME = "§l§c| §fЭтот биом не доступен для строительства§7! §l§c|";
+	public static String FREE = "  §l§fТерритория свободна§7!";
+	public static String BUSY = "  §l§fТерритория не доступна для взаимодействия§7!";
+	public static String BUSY_BY = "  §l§fТерритория занята Игроком §e{PLAYER}";
+	public static String EDIT = "  §l§cВнимание§7! §fВы изменяете чужой регион§7!";
+	public static String UNBREAK = "  §l§fЭтот блок невозможно сломать§7!";
+	public static String UNPLACE = "  §l§fЭтот блок не возможно установить тут§7!";
+	public static String BIOME = "  §l§fЭтот биом не доступен для строительства§7!";
 	public static Map<Integer, Integer> REGIONS = new HashMap<>();
 	
 	public static void register() {
@@ -65,7 +65,7 @@ public class RegionsAPI {
 	public static boolean canInteractHere(Player player, Location location) {
 		int region_id = getRegionIDByLocation(location);
 		if (region_id != -1) {
-			return isRegionMember(player.getName(), region_id) || isRegionOwner(player.getName(), region_id);
+			return isRegionMember(player.getName(), region_id) || isRegionOwner(player.getName(), region_id) || (player.hasPermission("Access.Admin"));
 		}
 		return true;
 	}

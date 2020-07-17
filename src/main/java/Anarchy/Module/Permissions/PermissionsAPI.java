@@ -146,8 +146,9 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.Spectate", true);
-			permissionAllows.put("Admin.Chat", true);
+			permissionAllows.put("Access.Admin", true);
 			permissionAllows.put("Command.A", true);
+			permissionAllows.put("Command.Gamemode", true);
 			break;
 			
 			case 7: 
@@ -160,8 +161,9 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.Spectate", true);
 			permissionAllows.put("Command.SeeMoney", true);
-			permissionAllows.put("Admin.Chat", true);
+			permissionAllows.put("Access.Admin", true);
 			permissionAllows.put("Command.A", true);
+			permissionAllows.put("Command.Gamemode", true);
 			break;
 			
 			case 8:
@@ -174,8 +176,9 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.Spectate", true);
 			permissionAllows.put("Command.SeeMoney", true);
-			permissionAllows.put("Admin.Chat", true);
+			permissionAllows.put("Access.Admin", true);
 			permissionAllows.put("Command.A", true);
+			permissionAllows.put("Command.Gamemode", true);
 		}
 		for (Map.Entry<String, Boolean> entry : permissionAllows.entrySet()) {
 			permissionAttachment.setPermission(entry.getKey(), entry.getValue());

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Anarchy</groupId>
 	<artifactId>Anarchy</artifactId>
-	<version>3.6</version>
+	<version>3.7</version>
 	<build>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<defaultGoal>install</defaultGoal>
@@ -80,7 +80,7 @@
 			<artifactId>MobPlugin</artifactId>
 			<version>1.13.4</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/MobPlugin-1.13.4.jar</systemPath>
+			<systemPath>${basedir}/libs/MobPlugin-1.13.5.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>ScoreboardPlugin</groupId>

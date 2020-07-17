@@ -29,7 +29,7 @@ public class RegionsEventsHandler implements Listener {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
 		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
-			player.sendPopup(RegionsAPI.BUSY);
+			player.sendTip(RegionsAPI.BUSY);
 			event.setCancelled();
 			return;
 		}
@@ -43,7 +43,7 @@ public class RegionsEventsHandler implements Listener {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
 		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
-			player.sendPopup(RegionsAPI.BUSY);
+			player.sendTip(RegionsAPI.BUSY);
 			event.setCancelled();
 			return;
 		}
@@ -71,22 +71,22 @@ public class RegionsEventsHandler implements Listener {
 		Item item = event.getItem();
 		if (item != null && item.getId() == Item.STICK) {
 			if (player.level != FunctionsAPI.WORLD) {
-				player.sendPopup(RegionsAPI.BIOME);
+				player.sendTip(RegionsAPI.BIOME);
 				return;
 			}
 			int regionID = RegionsAPI.getRegionIDByLocation(block.getLocation());
 			if (regionID != -1) {
-				player.sendPopup(RegionsAPI.BUSY_BY.replace("{PLAYER}", RegionsAPI.getRegionOwner(regionID)));
+				player.sendTip(RegionsAPI.BUSY_BY.replace("{PLAYER}", RegionsAPI.getRegionOwner(regionID)));
 				player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
 			} else {
-				player.sendPopup(RegionsAPI.FREE);
+				player.sendTip(RegionsAPI.FREE);
 				player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 			}
 			event.setCancelled();
 			return;
 		}
 		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
-			player.sendPopup(RegionsAPI.BUSY);
+			player.sendTip(RegionsAPI.BUSY);
 			event.setCancelled();
 		}
 	}

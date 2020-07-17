@@ -192,7 +192,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
+		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
 			event.setCancelled(true);
 		}
 	}
@@ -200,7 +200,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
+		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
 			event.setCancelled(true);
 		}
 	}
@@ -208,7 +208,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayetBucketEmpty(PlayerBucketEmptyEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
+		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
 			event.setCancelled(true);
 		}
 	}
@@ -224,7 +224,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
+		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
 			player.sendMessage("§l§e| §r§fКоманды §6заблокированны§7, §fпереместитесь в игровую зону§7!");
 			event.setCancelled(true);
 		}

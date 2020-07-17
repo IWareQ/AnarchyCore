@@ -29,7 +29,7 @@ public class RegionCommand extends Command {
 			case "add": 
 			{
 				if (args.length != 2) {
-					player.sendMessage("§l§e| §r§fИспользование §7- §e/rg add §7(§eигрок§7)");
+					player.sendMessage("§l§e| §r§fИспользование §7- §e/rg add §7(§6игрок§7)");
 					return true;
 				}
 				int regionID = RegionsAPI.getRegionIDByPosition(player);
@@ -59,7 +59,7 @@ public class RegionCommand extends Command {
 			case "del": 
 			{
 				if (args.length != 2) {
-					player.sendMessage("§l§e| §r§fИспользование §7- §e/rg del §7(§eигрок§7)");
+					player.sendMessage("§l§e| §r§fИспользование §7- §e/rg del §7(§6игрок§7)");
 					return true;
 				}
 				int regionID = RegionsAPI.getRegionIDByPosition(player);
@@ -138,7 +138,7 @@ public class RegionCommand extends Command {
 			}
 			break;
 			
-			case "help": 
+			default: 
 			new SimpleForm("§6Регионы", "  ").addButton("§fИнформация о Регионах").addButton("§fМои Регионы").addButton("§fСписок регионов§7, §fгде Вас добавили").send(player, (target,form,data) -> {
 				if (data == -1) return;
 				if (data == 0) {

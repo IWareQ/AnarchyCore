@@ -31,7 +31,7 @@ public class GamemodeCommand extends Command {
 				player.sendMessage("§l§a| §r§fРежим §7(§eВыживание§7) §6успешно §fвключен");
 				for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 					if (admin.hasPermission("Admin.Chat")) {
-						admin.sendPopup("§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eВыживание§7)");
+						admin.sendTip("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eВыживание§7)");
 					}
 				}
 			}
@@ -43,7 +43,7 @@ public class GamemodeCommand extends Command {
 				player.sendMessage("§l§a| §r§fРежим §7(§eТворчество§7) §6успешно §fвключен");
 				for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 					if (admin.hasPermission("Admin.Chat")) {
-						admin.sendPopup("§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eТворчество§7)");
+						admin.sendPopup("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eТворчество§7)");
 					}
 				}
 			}
@@ -55,7 +55,7 @@ public class GamemodeCommand extends Command {
 				player.sendMessage("§l§a| §r§fРежим §7(§eПриключение§7) §6успешно §fвключен");
 				for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 					if (admin.hasPermission("Admin.Chat")) {
-						admin.sendPopup("§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eПриключение§7)");
+						admin.sendPopup("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eПриключение§7)");
 					}
 				}
 			}
@@ -67,7 +67,7 @@ public class GamemodeCommand extends Command {
 				player.sendMessage("§l§a| §r§fРежим §7(§eСпектатор§7) §6успешно §fвключен");
 				for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 					if (admin.hasPermission("Admin.Chat")) {
-						admin.sendPopup("§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eСпектор§7)");
+						admin.sendPopup("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eСпектор§7)");
 					}
 				}
 			}
