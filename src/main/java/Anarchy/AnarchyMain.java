@@ -37,7 +37,6 @@ import Anarchy.Module.Commands.Spectate.SpectateCommand;
 import Anarchy.Module.Commands.Storage.StorageHandler;
 import Anarchy.Module.Commands.Teleport.TpaCommand;
 import Anarchy.Module.Commands.Teleport.TpnCommand;
-//import Anarchy.Module.Commands.Teleport.TprCommand;
 import Anarchy.Module.Commands.Teleport.TpyCommand;
 import Anarchy.Module.Economy.Commands.AddMoneyCommand;
 import Anarchy.Module.Economy.Commands.MoneyCommand;
@@ -50,7 +49,6 @@ import Anarchy.Module.Permissions.Commands.GroupCommand;
 import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Module.Regions.RegionsEventsHandler;
 import Anarchy.Module.Regions.Commands.RegionCommand;
-//import Anarchy.Module.Wither.WitherEventsHandler;
 import Anarchy.Task.HotbarTask;
 import Anarchy.Task.MinuteTask;
 import Anarchy.Task.Utils.Broadcast;
@@ -101,7 +99,6 @@ public class AnarchyMain extends PluginBase {
 		PermissionsAPI.register();
 		AuctionAPI.register();
 		Broadcast.register();
-		//WitherEventsHandler.register();
 	}
 	
 	private void unregisterAll() {
