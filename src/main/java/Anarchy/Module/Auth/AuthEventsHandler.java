@@ -27,6 +27,7 @@ public class AuthEventsHandler implements Listener {
 		if (!(player.hasPlayedBefore())) {
 			player.teleport(new Location(-7, 148, 93, FunctionsAPI.WORLD2));
 			player.setSpawn(new Position(-7, 148, 93, FunctionsAPI.WORLD2));
+		}
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
