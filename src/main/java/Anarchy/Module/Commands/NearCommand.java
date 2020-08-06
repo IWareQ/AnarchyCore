@@ -23,10 +23,10 @@ public class NearCommand extends Command {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Player list : Server.getInstance().getOnlinePlayers().values()) {
 			if (list.distance(player) < RADIUS && list.gamemode != 3) {
-				stringBuilder.append("§7, §6").append(list.getName());
+				stringBuilder.append("§7, §3").append(list.getName());
 			}
 		}
-		commandSender.sendMessage("§l§e| §r§fИгроки в радиусе §6" + RADIUS + " §fблоков §7- §6" + (stringBuilder.length() != 0 ? stringBuilder.toString().substring(4) : "..."));
+		commandSender.sendMessage("§l§e| §r§fИгроки в радиусе §3" + RADIUS + " §fблоков §7- §3" + (stringBuilder.length() != 0 ? stringBuilder.toString().substring(4) : "..."));
 		return false;
 	}
 }

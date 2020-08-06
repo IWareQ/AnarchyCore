@@ -28,6 +28,7 @@ import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
+import cn.nukkit.event.entity.EntityLevelChangeEvent;
 import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
@@ -36,14 +37,19 @@ import cn.nukkit.event.player.PlayerEatFoodEvent;
 import cn.nukkit.event.player.PlayerFoodLevelChangeEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
+import cn.nukkit.event.player.PlayerRespawnEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
+import cn.nukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import cn.nukkit.event.server.DataPacketSendEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.ChangeDimensionPacket;
+import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.PlayStatusPacket;
+import cn.nukkit.network.protocol.StartGamePacket;
 import cn.nukkit.utils.Config;
 
 public class EventsHandler implements Listener {
@@ -51,17 +57,41 @@ public class EventsHandler implements Listener {
 	Config config = new Config(dataFile, Config.YAML);
 	public static int CHAT_RADIUS = 70;
 	
-	public static void changeDimension(Player player, int dimension) {
-		ChangeDimensionPacket cdp = new ChangeDimensionPacket();
-		cdp.dimension = dimension;
-		cdp.x = (float)player.x;
-		cdp.y = (float)player.y;
-		cdp.z = (float)player.z;
-		cdp.respawn = true;
-		player.dataPacket(cdp);
-		PlayStatusPacket psp = new PlayStatusPacket();
-		psp.status = 3;
-		player.dataPacket(psp);
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onDataPacketSend(DataPacketSendEvent event) {
+		DataPacket packet = event.getPacket();
+		Player player = event.getPlayer();
+		if (packet instanceof StartGamePacket) {
+			StartGamePacket startGamePacket = (StartGamePacket)packet;
+			startGamePacket.dimension = (byte)player.getLevel().getDimension();
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		Player player = event.getPlayer();
+		player.teleport(player.getSpawn(), TeleportCause.PLUGIN);
+	}
+	
+	public void onLevelChange(EntityLevelChangeEvent event) {
+		Entity entity = event.getEntity();
+		if (entity instanceof Player) {
+			Player player = (Player)entity;
+			int fromLevelDimension = event.getOrigin().getDimension();
+			int toLevelDimension = event.getTarget().getDimension();
+			ChangeDimensionPacket changeDimensionPacket = new ChangeDimensionPacket();
+			changeDimensionPacket.dimension = toLevelDimension;
+			changeDimensionPacket.x = (float)player.x;
+			changeDimensionPacket.y = (float)player.y;
+			changeDimensionPacket.z = (float)player.z;
+			changeDimensionPacket.respawn = true;
+			PlayStatusPacket playStatusPacket = new PlayStatusPacket();
+			playStatusPacket.status = PlayStatusPacket.PLAYER_SPAWN;
+			if (fromLevelDimension != toLevelDimension) {
+				player.dataPacket(changeDimensionPacket);
+				player.dataPacket(playStatusPacket);
+			}
+		}
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
@@ -74,19 +104,13 @@ public class EventsHandler implements Listener {
 		}
 		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
 			if (block.getId() == 416) {
-				/*switch (block.getId()) {
-					case 416: 
-					{*/
-						Level level = Server.getInstance().getLevelByName("world");
-						Vector3 teleportPosition = new Vector3(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 256, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
-						player.teleport(level.getSafeSpawn(teleportPosition));
-						level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
-						player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.\n§fС этого начинается Ваше приключение§7!");
-						event.setCancelled(true);
-						return;
-					/*}
-					
-				}*/
+				Level level = Server.getInstance().getLevelByName("world");
+				Vector3 teleportPosition = new Vector3(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 68, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
+				player.teleport(level.getSafeSpawn(teleportPosition));
+				level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
+				player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.");
+				event.setCancelled(true);
+				return;
 			}
 		}
 	}
@@ -96,7 +120,7 @@ public class EventsHandler implements Listener {
 		Player player = event.getPlayer();
 		Location location = event.getTo();
 		if (location.x < FunctionsAPI.BORDER[0] || location.x > FunctionsAPI.BORDER[1] || location.z < FunctionsAPI.BORDER[2] || location.z > FunctionsAPI.BORDER[3]) {
-			player.sendTip("§l§c| §fВы пытаетесь §6телепортироваться §fза границу мира§7! §c|§r");
+			player.sendTip("§l§c| §fВы пытаетесь §3телепортироваться §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
 		}
 	}
@@ -114,13 +138,13 @@ public class EventsHandler implements Listener {
 					return;
 				}
 				player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
-				player.sendMessage(HomeCommand.PREFIX + "§fНовая точка дома §6упешно §fустановлена");
+				player.sendMessage(HomeCommand.PREFIX + "§fНовая точка дома §3упешно §fустановлена");
 				SQLiteUtils.query("Homes.db", "INSERT INTO `HOMES` (`Home_Name`, `Username`, `X`, `Y`, `Z`, `LEVEL`) VALUES (\'" + SetHomeCommand.HOME_SET.get(player) + "\', \'" + playerName + "\', " + block.getFloorX() + ", " + block.getFloorY() + ", " + block.getFloorZ() + ", \'" + player.getLevel().getName() + "\');");
 				SetHomeCommand.HOME_SET.remove(player);
 				event.setCancelled();
 			} else {
 				player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
-				player.sendMessage(HomeCommand.PREFIX + "§fУстановка новой точки дома §6отменена§7!");
+				player.sendMessage(HomeCommand.PREFIX + "§fУстановка новой точки дома §3отменена§7!");
 				SetHomeCommand.HOME_SET.remove(player);
 			}
 		}
@@ -134,11 +158,11 @@ public class EventsHandler implements Listener {
 			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
 			if (damager instanceof Player) {
 				player.sendMessage("§c§l| §r§fВы были убиты Игроком §e" + damager.getName());
-				event.setDeathMessage("§e§l| §r§fИгрок §6" + player.getName() + " §fпогиб от руки Игрока §e" + damager.getName());
+				event.setDeathMessage("§e§l| §r§fИгрок §3" + player.getName() + " §fпогиб от руки Игрока §e" + damager.getName());
 				int money = EconomyAPI.myMoney(player) * 20 / 100;
 				if (money != 0) {
 					player.sendMessage("§c§l| §r§fПри смерти Вы потеряли §e" + money + " §7(§f20%§7)");
-					((Player) damager).sendMessage("§a§l| §r§fВо время убийства§7, §fВы украли §e" + money + " §fу Игрока §e" + player.getName());
+					((Player)damager).sendMessage("§a§l| §r§fВо время убийства§7, §fВы украли §e" + money + " §fу Игрока §e" + player.getName());
 					EconomyAPI.reduceMoney(player, money);
 					EconomyAPI.addMoney((Player)damager, money);
 					addKill((Player)damager);
@@ -183,7 +207,7 @@ public class EventsHandler implements Listener {
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onEntityDamage(EntityDamageEvent  event) {
+	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity().getLevel().equals(FunctionsAPI.WORLD2)) {
 			event.setCancelled(true);
 		}
@@ -225,7 +249,7 @@ public class EventsHandler implements Listener {
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
 		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
-			player.sendMessage("§l§e| §r§fКоманды §6заблокированны§7, §fпереместитесь в игровую зону§7!");
+			player.sendMessage("§l§e| §r§fКоманды §3заблокированны§7, §fпереместитесь в игровую зону§7!");
 			event.setCancelled(true);
 		}
 	}
@@ -248,16 +272,20 @@ public class EventsHandler implements Listener {
 			event.setRecipients(players);
 		}
 	}
+	
 	public void addKill(Player player) {
 		config.set("Kills." + player.getName(), getKills(player) + 1);
 		config.save();
 	}
+	
 	public int getKills(Player player) {
 		return config.getInt("Kills." + player.getName(), 0);
 	}
+	
 	public int getDeaths(Player player) {
 		return config.getInt("Deaths." + player.getName(), 0);
 	}
+	
 	public void addDeaths(Player player) {
 		config.set("Deaths." + player.getName(), getDeaths(player) + 1);
 		config.save();

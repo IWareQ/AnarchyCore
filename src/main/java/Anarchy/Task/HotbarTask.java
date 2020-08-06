@@ -28,16 +28,16 @@ public class HotbarTask extends Task {
 	public static void showScoreboard(Player player) {
 		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player);
 		Scoreboard scoreboard = ScoreboardAPI.createScoreboard();
-		ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "§6Hall§fMine");
+		ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "§3DEATH §fMC");
 		scoreboardDisplay.addLine("§r§f15§7/§f06§7/§f2020", 0);
 		scoreboardDisplay.addLine(" ", 1);
-		scoreboardDisplay.addLine("§fНик §7- §6" + player.getName(), 2);
+		scoreboardDisplay.addLine("§fНик §7- §3" + player.getName(), 2);
 		scoreboardDisplay.addLine("§fСтатус §7- " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")), 3);
 		scoreboardDisplay.addLine(" ", 4);
-		scoreboardDisplay.addLine("§fБаланс §7- §6" + playerSession.getInteger("Money") + "", 5);
-		scoreboardDisplay.addLine("§fОнлайн §7- §6" + Server.getInstance().getOnlinePlayers().size(), 6);
-		scoreboardDisplay.addLine("§fВ Игре §7- §6" + playerSession.getSessionTime() / 60 + " §fмин§7.", 7);
-		scoreboardDisplay.addLine("§fВсего §7- §6" + new DecimalFormat("#.#").format((float)(playerSession.getInteger("Gametime") + playerSession.getSessionTime()) / 3600).replace("§7,", "§7.") + " §fч§7.", 8);
+		scoreboardDisplay.addLine("§fБаланс §7- §3" + playerSession.getInteger("Money") + "", 5);
+		scoreboardDisplay.addLine("§fОнлайн §7- §3" + Server.getInstance().getOnlinePlayers().size(), 6);
+		scoreboardDisplay.addLine("§fВ Игре §7- §3" + playerSession.getSessionTime() / 60 + " §fмин§7.", 7);
+		scoreboardDisplay.addLine("§fВсего §7- §3" + new DecimalFormat("#.#").format((float)(playerSession.getInteger("Gametime") + playerSession.getSessionTime()) / 3600).replace("§7,", "§7.") + " §fч§7.", 8);
 		scoreboard.showFor(player);
 		PlayerSessionManager.SCOREBOARDS.put(player.getName(), scoreboard);
 	}

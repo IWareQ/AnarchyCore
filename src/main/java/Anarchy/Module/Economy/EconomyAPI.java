@@ -6,7 +6,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 
 public class EconomyAPI {
-	public static String PREFIX = "§l§7(§6Экономика§7) §r";
+	public static String PREFIX = "§l§7(§3Экономика§7) §r";
 	
 	public static Integer myMoney(Player player) {
 		return PlayerSessionManager.getPlayerSession(player.getName()).getInteger("Money");

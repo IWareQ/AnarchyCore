@@ -28,13 +28,13 @@ public class RepairCommand extends Command {
 		Long cooldownTime = COOLDOWN.get(commandSender);
 		Long nowTime = System.currentTimeMillis() / 1000L;
 			if (cooldownTime != null && cooldownTime > nowTime) {
-				commandSender.sendMessage("§l§7(§6Задержка§7) §r§fСледующее использование будет доступно через §c6" + (cooldownTime - nowTime) + " §fсекунд");
+				commandSender.sendMessage("§l§7(§3Задержка§7) §r§fСледующее использование будет доступно через §c6" + (cooldownTime - nowTime) + " §fсекунд");
 				return false;
 			}
 		PlayerInventory inventory = ((Player)commandSender).getInventory();
 		Item item = inventory.getItemInHand();
 		if (!item.isArmor() && !item.isTool()) {
-			commandSender.sendMessage("§l§e| §r§fЧинить можно только §6Инструменты §fи §6Броню");
+			commandSender.sendMessage("§l§e| §r§fЧинить можно только §3Инструменты §fи §3Броню");
 			return false;
 		}
 		Player player = (Player)commandSender;

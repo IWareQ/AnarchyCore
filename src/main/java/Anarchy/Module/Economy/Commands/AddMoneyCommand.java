@@ -19,7 +19,7 @@ public class AddMoneyCommand extends Command {
 			return true;
 		}
 		if (args.length < 2) {
-			sender.sendMessage("§l§e| §r§fИспользование §7- §e/addmoney §7(§6сумма§7) (§6игрок7)");
+			sender.sendMessage("§l§e| §r§fИспользование §7- §e/addmoney §7(§3сумма§7) (§3игрок7)");
 			return true;
 		}
 		String nickname = StringUtils.implode(args, 1);

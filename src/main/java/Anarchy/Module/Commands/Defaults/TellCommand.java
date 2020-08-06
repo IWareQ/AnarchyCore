@@ -10,7 +10,7 @@ import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.level.Sound;
 
 public class TellCommand extends Command {
-	private static String PREFIX = "§l§7(§6Сообщения§7) §r";
+	private static String PREFIX = "§l§7(§3Сообщения§7) §r";
 	
 	public TellCommand() {
 		super("tell", "Отправить Личное Сообщение");
@@ -21,12 +21,12 @@ public class TellCommand extends Command {
 	@Override()
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
 		if (strings.length < 2) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/tell §7(§6игрок§7) (§6текст§7)");
+			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/tell §7(§3игрок§7) (§3текст§7)");
 			return true;
 		}
 		Player tellPlayer = Server.getInstance().getPlayer(strings[0]);
 		if (tellPlayer == null) {
-			commandSender.sendMessage("§l§e| §r§fИгрок §e" + strings[0] + " §7- §6Оффлайн");
+			commandSender.sendMessage("§l§e| §r§fИгрок §e" + strings[0] + " §7- §3Оффлайн");
 			return true;
 		}
 		String message = StringUtils.implode(strings, 1);

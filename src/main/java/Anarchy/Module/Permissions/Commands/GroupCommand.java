@@ -21,7 +21,7 @@ public class GroupCommand extends Command {
 			return true;
 		}
 		if (args.length < 2 || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
-			sender.sendMessage("§l§e| §r§fИспользование §7- §e/group §7(§6ID§7) (§6игрок§7)");
+			sender.sendMessage("§l§e| §r§fИспользование §7- §e/group §7(§3ID§7) (§3игрок§7)");
 			return true;
 		}
 		String nickname = StringUtils.implode(args, 1);
@@ -30,7 +30,7 @@ public class GroupCommand extends Command {
 			return true;
 		}
 		if (!StringUtils.isInteger(args[0]) || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
-			sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §6" + nickname + " §7- §fне существует§7!");
+			sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §3" + nickname + " §7- §fне существует§7!");
 			return true;
 		}
 		sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §e" + nickname + " §fполучил группу §7- " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));

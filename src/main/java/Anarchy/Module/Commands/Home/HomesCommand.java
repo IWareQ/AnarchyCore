@@ -21,7 +21,7 @@ public class HomesCommand extends Command {
 		}
 		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = 0; i < homesData.size(); i += 4) {
-			stringBuilder.append("§7, §e").append(homesData.get(i)).append(" §7(§6").append(homesData.get(i + 1)).append("§7, §6").append(homesData.get(i + 2)).append("§7, §6").append(homesData.get(i + 3)).append("§7)");
+			stringBuilder.append("§7, §e").append(homesData.get(i)).append(" §7(§3").append(homesData.get(i + 1)).append("§7, §3").append(homesData.get(i + 2)).append("§7, §3").append(homesData.get(i + 3)).append("§7)");
 		}
 		commandSender.sendMessage(HomeCommand.PREFIX + "§fТочки Ваших домов §7- " + stringBuilder.substring(4));
 		return false;

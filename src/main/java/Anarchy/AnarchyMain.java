@@ -37,6 +37,7 @@ import Anarchy.Module.Commands.Spectate.SpectateCommand;
 import Anarchy.Module.Commands.Storage.StorageHandler;
 import Anarchy.Module.Commands.Teleport.TpaCommand;
 import Anarchy.Module.Commands.Teleport.TpnCommand;
+import Anarchy.Module.Commands.Teleport.TprCommand;
 import Anarchy.Module.Commands.Teleport.TpyCommand;
 import Anarchy.Module.Economy.Commands.AddMoneyCommand;
 import Anarchy.Module.Economy.Commands.MoneyCommand;
@@ -68,7 +69,7 @@ public class AnarchyMain extends PluginBase {
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		for (String pluginName : new String[]{"DbLib", "ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
-				getLogger().alert("§l§fНе найден §6плагин §7- §e" + pluginName);
+				getLogger().alert("§l§fНе найден §3плагин §7- §e" + pluginName);
 				pluginManager.disablePlugin(this);
 				return;
 			}
@@ -84,13 +85,13 @@ public class AnarchyMain extends PluginBase {
 		unregisterCommands();
 		registerCommands();
 		registerTask();
-		getLogger().info("§l§fПлагин §aАктивирован§7!");
+		getLogger().info("§l§fПлагин §aАктивирован§7! (§fАвтор §7- @§3extranons§7)");
 	}
 	
 	@Override()
 	public void onDisable() {
 		unregisterAll();
-		getLogger().info("§l§fПлагин §cДеактивирован§7!");
+		getLogger().info("§l§fПлагин §cДеактивирован§7! (§fАвтор §7- @§3extranons§7)");
 	}
 	
 	private void registerAll() {
@@ -123,7 +124,7 @@ public class AnarchyMain extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), /* new TprCommand(), */ new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new BuyCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new HomesCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
+		Command[] commands = new Command[]{new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), /* new TprCommand(), */ new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new BuyCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new HomesCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	

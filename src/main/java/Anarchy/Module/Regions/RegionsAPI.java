@@ -16,7 +16,7 @@ import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 
 public class RegionsAPI {
-	public static String PREFIX = "§l§7(§6Регионы§7) §r";
+	public static String PREFIX = "§l§7(§3Регионы§7) §r";
 	public static String FREE = "  §l§fТерритория свободна§7!";
 	public static String BUSY = "  §l§fТерритория не доступна для взаимодействия§7!";
 	public static String BUSY_BY = "  §l§fТерритория занята Игроком §e{PLAYER}";
@@ -42,7 +42,7 @@ public class RegionsAPI {
 		if (groupAllow != null) {
 			int regionCount = RegionsAPI.getRegionsCount(player.getName());
 			if (regionCount >= groupAllow.MAX_REGIONS) {
-				player.sendMessage(RegionsAPI.PREFIX + "§fМаксимальное количество регионов §7- §6" + regionCount + "\n§l§e| §r§fЧтобы содать новый регион потребуется удалить §6§l1 §r§fиз старых§7!");
+				player.sendMessage(RegionsAPI.PREFIX + "§fМаксимальное количество регионов §7- §3" + regionCount + "\n§l§e| §r§fЧтобы содать новый регион потребуется удалить §3§l1 §r§fиз старых§7!");
 				event.setCancelled();
 				return;
 			}

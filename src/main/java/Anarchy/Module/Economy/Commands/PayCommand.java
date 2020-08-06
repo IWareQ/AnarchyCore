@@ -19,12 +19,12 @@ public class PayCommand extends Command {
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (args.length < 2) {
-			sender.sendMessage("§l§e| §r§fИспользование §7- §e/pay §7(§6игрок§7) (§6сумма§7)");
+			sender.sendMessage("§l§e| §r§fИспользование §7- §e/pay §7(§3игрок§7) (§3сумма§7)");
 			return true;
 		}
 		Player player = Server.getInstance().getPlayer(args[0]);
 		if (player == null) {
-			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §e" + args[0] + " §7- §6Оффлайн!");
+			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §e" + args[0] + " §7- §3Оффлайн!");
 			return true;
 		}
 		if (!args[1].matches("^[0-9]+$") || Integer.parseInt(args[1]) < 0) {
@@ -33,10 +33,10 @@ public class PayCommand extends Command {
 		}
 		int money = EconomyAPI.myMoney((Player)sender);
 		if (money < Integer.parseInt(args[1])) {
-			sender.sendMessage(EconomyAPI.PREFIX + "§fВам не хватает §6монет §fдля перевода§7.\n§l§e| §r§fВаш баланс §7- §e" + money + "");
+			sender.sendMessage(EconomyAPI.PREFIX + "§fВам не хватает §3монет §fдля перевода§7.\n§l§e| §r§fВаш баланс §7- §e" + money + "");
 			return true;
 		}
-		sender.sendMessage(EconomyAPI.PREFIX + "§fВы §6успешно §fперевели §e" + args[1] + " §fИгроку §e" + player.getName());
+		sender.sendMessage(EconomyAPI.PREFIX + "§fВы §3успешно §fперевели §e" + args[1] + " §fИгроку §e" + player.getName());
 		player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §e" + sender.getName() + " §fперевел Вам §e" + args[1] + "");
 		EconomyAPI.reduceMoney((Player)sender, Integer.parseInt(args[1]));
 		EconomyAPI.addMoney(player, Integer.parseInt(args[1]));

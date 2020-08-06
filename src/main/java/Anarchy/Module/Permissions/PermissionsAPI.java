@@ -16,7 +16,7 @@ import cn.nukkit.permission.PermissionAttachment;
 public class PermissionsAPI {
 	public static ArrayList<String> GROUPS = new ArrayList<>();
 	private static Map<Integer, GroupAllow> GROUP_ALLOWS = new HashMap<>();
-	public static String PREFIX = "§7(§6Привилегии§7) §r";
+	public static String PREFIX = "§7(§3Привилегии§7) §r";
 	
 	public static void register() {
 		registerGroups();
@@ -25,11 +25,11 @@ public class PermissionsAPI {
 	
 	private static void registerGroups() {
 		GROUPS.add("§7Игрок§r"); // 0
-		GROUPS.add("§6Вип§r"); // 1
-		GROUPS.add("§aПремиум§r"); // 2
-		GROUPS.add("§dEnigma§r"); // 3
-		GROUPS.add("§cHydra§r"); // 4
-		GROUPS.add("§eMerlin§r"); // 5
+		GROUPS.add("§eГерой§r"); // 1
+		GROUPS.add("§3Страж§r"); // 2
+		GROUPS.add("§7Лорд§r"); // 3
+		GROUPS.add("§6Принц§r"); // 4
+		GROUPS.add("§eКороль§r"); // 5
 		GROUPS.add("§1Модератор§r"); // 6
 		GROUPS.add("§4Администратор§r"); // 7
 		GROUPS.add("§eSupport§r"); // 8
@@ -107,13 +107,11 @@ public class PermissionsAPI {
 			case 2: 
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
-			permissionAllows.put("Command.Repair", true);
 			break;
 			
 			case 3: 
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
-			permissionAllows.put("Command.Repair", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			break;
@@ -124,7 +122,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Repair", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true);
 			break;
 			
 			case 5: 
@@ -133,7 +130,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Repair", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
 			break;
 			

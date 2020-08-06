@@ -19,7 +19,7 @@ public class GamemodeCommand extends Command {
 			return false;
 		}
 		if (strings.length == 0) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/gm §60§7/§61§7/§62§7/§63");
+			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/gm §30§7/§31§7/§32§7/§33");
 			return true;
 		}
 		Player player = (Player)commandSender;
@@ -28,7 +28,7 @@ public class GamemodeCommand extends Command {
 			case "0": 
 			{
 				player.setGamemode(0);
-				player.sendMessage("§l§a| §r§fРежим §7(§eВыживание§7) §6успешно §fвключен");
+				player.sendMessage("§l§a| §r§fРежим §7(§eВыживание§7) §3успешно §fвключен");
 				for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 					if (admin.hasPermission("Admin.Chat")) {
 						admin.sendTip("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eВыживание§7)");
@@ -40,10 +40,10 @@ public class GamemodeCommand extends Command {
 			case "1": 
 			{
 				player.setGamemode(1);
-				player.sendMessage("§l§a| §r§fРежим §7(§eТворчество§7) §6успешно §fвключен");
+				player.sendMessage("§l§a| §r§fРежим §7(§eТворчество§7) §3успешно §fвключен");
 				for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 					if (admin.hasPermission("Admin.Chat")) {
-						admin.sendPopup("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eТворчество§7)");
+						admin.sendTip("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eТворчество§7)");
 					}
 				}
 			}
@@ -52,10 +52,10 @@ public class GamemodeCommand extends Command {
 			case "2": 
 			{
 				player.setGamemode(2);
-				player.sendMessage("§l§a| §r§fРежим §7(§eПриключение§7) §6успешно §fвключен");
+				player.sendMessage("§l§a| §r§fРежим §7(§eПриключение§7) §3успешно §fвключен");
 				for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 					if (admin.hasPermission("Admin.Chat")) {
-						admin.sendPopup("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eПриключение§7)");
+						admin.sendTip("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eПриключение§7)");
 					}
 				}
 			}
@@ -64,10 +64,10 @@ public class GamemodeCommand extends Command {
 			case "3": 
 			{
 				player.setGamemode(3);
-				player.sendMessage("§l§a| §r§fРежим §7(§eСпектатор§7) §6успешно §fвключен");
+				player.sendMessage("§l§a| §r§fРежим §7(§eСпектатор§7) §3успешно §fвключен");
 				for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 					if (admin.hasPermission("Admin.Chat")) {
-						admin.sendPopup("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eСпектор§7)");
+						admin.sendTip("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eСпектор§7)");
 					}
 				}
 			}

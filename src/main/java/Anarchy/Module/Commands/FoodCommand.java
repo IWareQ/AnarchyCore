@@ -20,11 +20,11 @@ public class FoodCommand extends Command {
 		}
 		Player player = (Player)commandSender;
 		if (player.getGamemode() != 0) {
-			commandSender.sendMessage("§l§c| §r§fДля использования перейдите в §6Выживание");
+			commandSender.sendMessage("§l§c| §r§fДля использования перейдите в §3Выживание");
 			return false;
 		}
 		player.getFoodData().setLevel(player.getFoodData().getMaxLevel(), 12.0F);
-		player.sendMessage("§l§a| §r§fВы §6успешно §fпополнили уровень Вашего §eГолода");
+		player.sendMessage("§l§a| §r§fВы §3успешно §fпополнили уровень Вашего §eГолода");
 		player.getLevel().addSound(player, Sound.RANDOM_EAT, 1, 1, player);
 		return false;
 	}

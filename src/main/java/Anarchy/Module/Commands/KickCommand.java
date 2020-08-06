@@ -23,21 +23,21 @@ public class KickCommand extends Command {
 			return false;
 		}
 		if (strings.length != 1) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/kick §7(§6игрок§7)");
+			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/kick §7(§3игрок§7)");
 			return true;
 		}
 		Player kickPlayer = Server.getInstance().getPlayer(strings[0]);
 		String playerName = kickPlayer.getName();
 		Player player = (Player)commandSender;
 		if (kickPlayer == null) {
-			commandSender.sendMessage("§fИгрок §e" + strings[0] + " §7- §6Оффлайн");
+			commandSender.sendMessage("§fИгрок §e" + strings[0] + " §7- §3Оффлайн");
 			return true;
 		}
 		new CustomForm("§fВыгнать Игрока §e" + playerName).addLabel("Текст").addInput("Причина").addToggle("Отправить сообщение о кике в общий чат сервера §7•").send(player, (target, form, data) -> {
 			if (data == null) return;
-			kickPlayer.close("", "§l§c| §r§fВас кикнули с сервера§7! §l§e| §r§fПричина §7- §6" + data.get(1).toString());
+			kickPlayer.close("", "§l§c| §r§fВас кикнули с сервера§7! §l§e| §r§fПричина §7- §3" + data.get(1).toString());
 			if ((boolean)data.get(2)) {
-				Server.getInstance().broadcastMessage("§l§e| §r§fАдминистратор §7" + player + " §fвыгнал Игрока §6" + kickPlayer + " §fс сервера§7, §fпо причине §7- §6" + data.get(1).toString());
+				Server.getInstance().broadcastMessage("§l§e| §r§fАдминистратор §7" + player + " §fвыгнал Игрока §3" + kickPlayer + " §fс сервера§7, §fпо причине §7- §3" + data.get(1).toString());
 			}
 		});
 		return false;

@@ -19,11 +19,11 @@ public class BarCommand extends Command {
 		if (PlayerSessionManager.SCOREBOARD.contains(playerName)) {
 			PlayerSessionManager.SCOREBOARDS.get(playerName).hideFor((Player)commandSender);
 			PlayerSessionManager.SCOREBOARD.remove(playerName);
-			commandSender.sendMessage("§l§c| §r§fХотбар §6успешно §fотключен");
+			commandSender.sendMessage("§l§c| §r§fХотбар §3успешно §fотключен");
 		} else {
 			PlayerSessionManager.SCOREBOARD.add(playerName);
 			HotbarTask.showScoreboard((Player)commandSender);
-			commandSender.sendMessage("§l§a| §r§fХотбар §6успешно §fвключен");
+			commandSender.sendMessage("§l§a| §r§fХотбар §3успешно §fвключен");
 		}
 		return false;
 	}

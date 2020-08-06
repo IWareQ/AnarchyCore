@@ -12,7 +12,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 
 public class HomeCommand extends Command {
-	public static String PREFIX = "§l§7(§6Дом§7) §r";
+	public static String PREFIX = "§l§7(§3Дом§7) §r";
 	
 	public HomeCommand() {
 		super("home", "Телепортироватся домой");
@@ -22,11 +22,11 @@ public class HomeCommand extends Command {
 	@Override()
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
 		if (strings.length != 1) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/home §7(§6название§7)");
+			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/home §7(§3название§7)");
 			return false;
 		}
 		if (!StringUtils.isValidString(strings[0])) {
-			commandSender.sendMessage(PREFIX + "§fВы можете использовать только §6буквы§7, §6цифры §fи §6нижнее подчеркивание");
+			commandSender.sendMessage(PREFIX + "§fВы можете использовать только §3буквы§7, §3цифры §fи §3нижнее подчеркивание");
 			return false;
 		}
 		Map<String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM `HOMES` WHERE UPPER(`Home_Name`) = \'" + strings[0].toUpperCase() + "\' AND `Username` = \'" + commandSender.getName() + "\';");
@@ -46,7 +46,7 @@ public class HomeCommand extends Command {
 			commandSender.sendMessage(PREFIX + "§fКровать застроена блоками§7!\n §l§e| §r§fДля удаления точки дома используйте §7- §e/delhome");
 			return false;
 		}
-		commandSender.sendMessage(PREFIX + "§fВы §6успешно §fтелепортированы домой§7!");
+		commandSender.sendMessage(PREFIX + "§fВы §3успешно §fтелепортированы домой§7!");
 		level.loadChunk(x >> 4, z >> 4);
 		((Player)commandSender).teleport(new Position(x + 0.5, y + 1, z + 0.5, level));
 		return false;

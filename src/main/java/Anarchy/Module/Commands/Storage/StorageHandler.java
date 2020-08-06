@@ -37,10 +37,10 @@ public class StorageHandler extends Command implements Listener {
 			Player player = (Player)commandSender;
 			File dataFile = new File(AnarchyMain.datapath + "/StorageItems/" + player.getName().toLowerCase() + ".yml");
 			if (!dataFile.exists()) {
-				player.sendMessage("§l§c| §r§fСписок активных покупок §6пуст§7!");
+				player.sendMessage("§l§c| §r§fСписок активных покупок §3пуст§7!");
 				return false;
 			}
-			StorageChest storageChest = new StorageChest("§l§6Хранилище купленных Предметов", dataFile);
+			StorageChest storageChest = new StorageChest("§l§3Хранилище купленных Предметов", dataFile);
 			Config config = new Config(dataFile, Config.YAML);
 			for (Map.Entry<String, Object> entry : config.getAll().entrySet()) {
 				ArrayList<Object> itemData = (ArrayList<Object>)entry.getValue();
@@ -49,14 +49,14 @@ public class StorageHandler extends Command implements Listener {
 				compoundTag.putString("DATE", (String)itemData.get(0));
 				item.setNamedTag(compoundTag);
 				if (storageChest.canAddItem(item)) {
-					storageChest.addItem(item.setLore("§r§fДата покупки §7- §6" + itemData.get(0)));
+					storageChest.addItem(item.setLore("§r§fДата покупки §7- §3" + itemData.get(0)));
 				}
 			}
 			FakeChestsAPI.openInventory(player, storageChest);
 		} else if (strings.length >= 2 && !(commandSender instanceof Player)) {
 			String[] split = strings[0].split(":");
 			String playerName = StringUtils.implode(strings, 1).toLowerCase();
-			commandSender.sendMessage("§l§e| §r§fИгрок §e" + playerName + " §fполучил §6" + split[0] + "§f:§6" + split[1] + " §7(§fx§6" + split[2] + "§7)");
+			commandSender.sendMessage("§l§e| §r§fИгрок §e" + playerName + " §fполучил §3" + split[0] + "§f:§3" + split[1] + " §7(§fx§3" + split[2] + "§7)");
 			Config config = new Config(AnarchyMain.datapath + "/StorageItems/" + playerName + ".yml", Config.YAML);
 			LinkedHashMap objectMap = (LinkedHashMap)config.getAll();
 			objectMap.put(UUID.randomUUID().toString(), new Object[]{(String)StringUtils.getDate().toString(), Integer.parseInt((String)split[0]), Integer.parseInt((String)split[1]), Integer.parseInt((String)split[2])});

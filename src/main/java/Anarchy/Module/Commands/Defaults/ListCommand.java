@@ -19,11 +19,11 @@ public class ListCommand extends Command {
 		int onlineCount = 0;
 		for (Player player : sender.getServer().getOnlinePlayers().values()) {
 			if (player.isOnline() && PlayerSessionManager.hasPlayerSession(player)) {
-				players.append("§7, §6").append(player.getDisplayName());
+				players.append("§7, §3").append(player.getDisplayName());
 			}
 			++onlineCount;
 		}
-		sender.sendMessage("§l§e| §r§fНа сервере §e" + onlineCount + " §fиз §e" + Server.getInstance().getMaxPlayers() + " §fИгроков\n§fИгроки §7- §6" + (players.length() > 0 ? players.substring(4) : "§7..."));
+		sender.sendMessage("§l§e| §r§fНа сервере §e" + onlineCount + " §fиз §e" + Server.getInstance().getMaxPlayers() + " §fИгроков\n§fИгроки §7- §3" + (players.length() > 0 ? players.substring(4) : "§7..."));
 		return true;
 	}
 }

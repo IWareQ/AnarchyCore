@@ -29,7 +29,7 @@ public class RegionCommand extends Command {
 			case "add": 
 			{
 				if (args.length != 2) {
-					player.sendMessage("§l§e| §r§fИспользование §7- §e/rg add §7(§6игрок§7)");
+					player.sendMessage("§l§e| §r§fИспользование §7- §e/rg add §7(§3игрок§7)");
 					return true;
 				}
 				int regionID = RegionsAPI.getRegionIDByPosition(player);
@@ -39,7 +39,7 @@ public class RegionCommand extends Command {
 				}
 				Player addPlayer = Server.getInstance().getPlayer(args[1]);
 				if (addPlayer == null) {
-					player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §e" + args[1] + " §7- §6Оффлайн");
+					player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §e" + args[1] + " §7- §3Оффлайн");
 					return true;
 				}
 				if (player == addPlayer) {
@@ -59,7 +59,7 @@ public class RegionCommand extends Command {
 			case "del": 
 			{
 				if (args.length != 2) {
-					player.sendMessage("§l§e| §r§fИспользование §7- §e/rg del §7(§6игрок§7)");
+					player.sendMessage("§l§e| §r§fИспользование §7- §e/rg del §7(§3игрок§7)");
 					return true;
 				}
 				int regionID = RegionsAPI.getRegionIDByPosition(player);
@@ -122,7 +122,7 @@ public class RegionCommand extends Command {
 				}
 				ArrayList<String> membersData = SQLiteUtils.selectList("Regions.db", "SELECT `Username` FROM `MEMBERS` WHERE `Region_ID` = \'" + regionID + "\';");
 				if (membersData == null || membersData.isEmpty()) {
-					player.sendMessage(RegionsAPI.PREFIX + "§fВ Вашем регионе §6нет §fучастников§7!");
+					player.sendMessage(RegionsAPI.PREFIX + "§fВ Вашем регионе §3нет §fучастников§7!");
 					return true;
 				}
 				StringBuilder regionMembers = new StringBuilder();
@@ -139,7 +139,7 @@ public class RegionCommand extends Command {
 			break;
 			
 			default: 
-			new SimpleForm("§6Регионы", "  ").addButton("§fИнформация о Регионах").addButton("§fМои Регионы").addButton("§fСписок регионов§7, §fгде Вас добавили").send(player, (target,form,data) -> {
+			new SimpleForm("§3Регионы", "  ").addButton("§fИнформация о Регионах").addButton("§fМои Регионы").addButton("§fСписок регионов§7, §fгде Вас добавили").send(player, (target,form,data) -> {
 				if (data == -1) return;
 				if (data == 0) {
 					new SimpleForm("Информация о Регионах", "Хочешь создать свой регион? Не проблема! Можешь следовать пунктам:\n\n§l§e| §r§fДобудь блок привата\n§e§l| §r§fПроверь, нет ли вблизи другого региона\n§l§e| §r§fПоставь блок для привата и будь уверене §7- §fтвою постройку не тронут!\n\nБлоки, которыми можно приватить:\n\n§l§e| §r§fЖелезный блок §7(§fприватит 3 × 3§7)\n§l§e| §r§fАлмазный блок §7(§fприватит 6 × 6§7)\n§l§e| §r§fИзумрудный блок §7(§fприватит 10 × 10§7)").send(player);

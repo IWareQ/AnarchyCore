@@ -30,7 +30,7 @@ public class SpectateCommand extends Command {
 		if (strings.length == 0) {
 			SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 			if (spectatePlayer == null) {
-				commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/sp §7(§6игрок§7)");
+				commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/sp §7(§3игрок§7)");
 				return false;
 			} else {
 				player.setGamemode(0);
@@ -44,12 +44,12 @@ public class SpectateCommand extends Command {
 		} else {
 			SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 			if (spectatePlayer != null) {
-				commandSender.sendMessage("§l§c| §r§fВы уже наблюдаете за Игроком §e" + spectatePlayer.spectateName + "\n§l§e| §r§fДля окончания слежки введите §6§l/sp");
+				commandSender.sendMessage("§l§c| §r§fВы уже наблюдаете за Игроком §e" + spectatePlayer.spectateName + "\n§l§e| §r§fДля окончания слежки введите §3§l/sp");
 				return false;
 			}
 			Player specPlayer = Server.getInstance().getPlayer(strings[0]);
 			if (specPlayer == null) {
-				commandSender.sendMessage("§l§c| §r§fИгрок §r" + strings[0] + " §7- §6Оффлайн");
+				commandSender.sendMessage("§l§c| §r§fИгрок §r" + strings[0] + " §7- §3Оффлайн");
 				return false;
 			}
 			if (player == specPlayer) {
@@ -61,7 +61,7 @@ public class SpectateCommand extends Command {
 			player.setGamemode(3);
 			player.getInventory().clearAll();
 			player.teleport(specPlayer);
-			player.sendMessage("§l§a| §r§fВы начали наблюдать за Игроком §e" + specPlayer.getName() + "\n§l§e| §r§fДля окончания наблюдения введите §6§l/sp");
+			player.sendMessage("§l§a| §r§fВы начали наблюдать за Игроком §e" + specPlayer.getName() + "\n§l§e| §r§fДля окончания наблюдения введите §3§l/sp");
 		}
 		return false;
 	}

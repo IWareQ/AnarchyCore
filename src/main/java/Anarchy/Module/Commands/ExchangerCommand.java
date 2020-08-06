@@ -18,7 +18,7 @@ public class ExchangerCommand extends Command {
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
 		Player player = (Player)commandSender;
 		PlayerInventory playerInventory = player.getInventory();
-		new SimpleForm("§l§fОбменщик", "Данная возможность обмена позволяет получить желаемый §6предмет §fили §6ресурс §fза определённую плату§7. §fДля совершения обмена необходимые ресурсы должны быть в §6Инвентаре").addButton("§63 §fПороха\n§fза §e1 §fИзумруд").addButton("§61 §fЭлитра\n§fза §e32 §fИзумруда").addButton("§61 §fШалкер\n§fза §e22 §fАлмаза и §e1 §fсундук").addButton("§61 §fЗачарованное Яблоко\n§fза §e5 §fЗолотых блоков и §e16 §fЗолотых яблок").addButton("§61 §fТотем Бессмертия\n§fза §e2 §fАдских звезды").addButton("§66 §fИзумрудной руды\n§fза §e22 §fАлмаза").addButton("§612 §fАлмазов\n§fза §e48 §fЗолота").addButton("§627 §fЗолота\n§fза §e64 §fЖелеза").addButton("§632 §fЖелеза\n§fза §e96 §fУгля").addButton("§616 §fГубки\n§fза §e10 §fИзумрудов").send(player, (target, form, data)->{
+		new SimpleForm("§l§fОбменщик", "Данная возможность обмена позволяет получить желаемый §3предмет §fили §3ресурс §fза определённую плату§7. §fДля совершения обмена необходимые ресурсы должны быть в §3Инвентаре").addButton("§33 §fПороха\n§fза §e1 §fИзумруд").addButton("§31 §fЭлитра\n§fза §e32 §fИзумруда").addButton("§31 §fШалкер\n§fза §e22 §fАлмаза и §e1 §fсундук").addButton("§31 §fЗачарованное Яблоко\n§fза §e5 §fЗолотых блоков и §e16 §fЗолотых яблок").addButton("§31 §fТотем Бессмертия\n§fза §e2 §fАдских звезды").addButton("§36 §fИзумрудной руды\n§fза §e22 §fАлмаза").addButton("§312 §fАлмазов\n§fза §e48 §fЗолота").addButton("§327 §fЗолота\n§fза §e64 §fЖелеза").addButton("§332 §fЖелеза\n§fза §e96 §fУгля").addButton("§316 §fГубки\n§fза §e10 §fИзумрудов").send(player, (target, form, data)->{
 			if (data == -1) return;
 			if (data == 0) {
 				Item itemGive = Item.get(388, 0, 1);
@@ -26,7 +26,7 @@ public class ExchangerCommand extends Command {
 				if (playerInventory.contains(itemGive)) {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e1 §fИзумруд на §e3 §fПороха§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e1 §fИзумруд на §e3 §fПороха§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e1§7-§fго Изумруда§7!");
 				}
@@ -37,7 +37,7 @@ public class ExchangerCommand extends Command {
 				if (playerInventory.contains(itemGive)) {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e32 §fИзумруда на §e1§7-§fну §fЭлитру§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e32 §fИзумруда на §e1§7-§fну §fЭлитру§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e32§7-§fух Изумрудов§7!");
 				}
@@ -50,7 +50,7 @@ public class ExchangerCommand extends Command {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
 					playerInventory.removeItem(itemGiveTwo);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e22 §fАлмаза и §e1 §fСундук на §e1 §fШалкеровый ящик§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e22 §fАлмаза и §e1 §fСундук на §e1 §fШалкеровый ящик§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e22§7-§fух Алмазов и §e1§7-§fго Сундука§7!");
 				}
@@ -63,7 +63,7 @@ public class ExchangerCommand extends Command {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
 					playerInventory.removeItem(itemGiveTwo);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e5 §fЗолотых блоков и §e16§7-§fти Золотых Яблок на §e1§7-§fно §fЗачарованное Яблоко§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e5 §fЗолотых блоков и §e16§7-§fти Золотых Яблок на §e1§7-§fно §fЗачарованное Яблоко§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e5 §fЗолотых блоков и §e16§7-§fти Золотых Яблок§7!");
 				}
@@ -74,7 +74,7 @@ public class ExchangerCommand extends Command {
 				if (playerInventory.contains(itemGive)) {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e2§7-§fве Адских звезды на §e1 §fТотем Бессмертия§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e2§7-§fве Адских звезды на §e1 §fТотем Бессмертия§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e2§7-§fве Адских звезды§7!");
 				}
@@ -85,7 +85,7 @@ public class ExchangerCommand extends Command {
 				if (playerInventory.contains(itemGive)) {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e22 §fАлмаза на §e6 §fИзумрудов§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e22 §fАлмаза на §e6 §fИзумрудов§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e22§7-§fух Алмазов§7!");
 				}
@@ -96,7 +96,7 @@ public class ExchangerCommand extends Command {
 				if (playerInventory.contains(itemGive)) {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e48 §fЗолота на §e12 §fАлмазов§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e48 §fЗолота на §e12 §fАлмазов§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e48 §fЗолота§7!");
 				}
@@ -107,7 +107,7 @@ public class ExchangerCommand extends Command {
 				if (playerInventory.contains(itemGive)) {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e64 §fЖелеза на §e27 §fЗолота§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e64 §fЖелеза на §e27 §fЗолота§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e64 §fЖелеза§7!");
 				}
@@ -118,7 +118,7 @@ public class ExchangerCommand extends Command {
 				if (playerInventory.contains(itemGive)) {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e96 §fУгля на §e64 §fЖелеза§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e96 §fУгля на §e64 §fЖелеза§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e96 §fУгля§7!");
 				}
@@ -129,7 +129,7 @@ public class ExchangerCommand extends Command {
 				if (playerInventory.contains(itemGive)) {
 					playerInventory.addItem(itemTake);
 					playerInventory.removeItem(itemGive);
-					player.sendMessage("§l§a| §r§fВы §6успешно §fобменяли §e10 §fИзумрудов на §e16 §fГубки§7!");
+					player.sendMessage("§l§a| §r§fВы §3успешно §fобменяли §e10 §fИзумрудов на §e16 §fГубки§7!");
 				} else {
 					player.sendMessage("§l§c| §r§fНе хватает §e10§7-§fти §fИзумрудов§7!");
 				}

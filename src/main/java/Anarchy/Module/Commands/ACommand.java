@@ -20,7 +20,7 @@ public class ACommand extends Command {
 			return false;
 		}
 		if (args.length < 1) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/a §7(§6текст§7)");
+			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/a §7(§3текст§7)");
 			return true;
 		}
 		Player player = (Player)commandSender;

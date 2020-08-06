@@ -23,7 +23,7 @@ public class HealCommand extends Command {
 			return false;
 		}
 		player.setHealth(20);
-		commandSender.sendMessage("§l§a| §r§fВы §6успешно §fпополнили уровень Вашего §eЗдоровья");
+		commandSender.sendMessage("§l§a| §r§fВы §3успешно §fпополнили уровень Вашего §eЗдоровья");
 		return false;
 	}
 }
