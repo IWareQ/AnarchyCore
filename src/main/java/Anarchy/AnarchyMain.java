@@ -15,6 +15,7 @@ import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
 import Anarchy.Module.Commands.DayCommand;
 import Anarchy.Module.Commands.DonateCommand;
+import Anarchy.Module.Commands.EpCommand;
 import Anarchy.Module.Commands.ExchangerCommand;
 import Anarchy.Module.Commands.FoodCommand;
 import Anarchy.Module.Commands.GamemodeCommand;
@@ -31,7 +32,6 @@ import Anarchy.Module.Commands.Defaults.TellCommand;
 import Anarchy.Module.Commands.EnderChest.EnderChestCommand;
 import Anarchy.Module.Commands.Home.DelHomeCommand;
 import Anarchy.Module.Commands.Home.HomeCommand;
-import Anarchy.Module.Commands.Home.HomesCommand;
 import Anarchy.Module.Commands.Home.SetHomeCommand;
 import Anarchy.Module.Commands.Spectate.SpectateCommand;
 import Anarchy.Module.Commands.Storage.StorageHandler;
@@ -124,7 +124,7 @@ public class AnarchyMain extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), /* new TprCommand(), */ new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new BuyCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new HomesCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
+		Command[] commands = new Command[]{new EpCommand(), new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new BuyCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	

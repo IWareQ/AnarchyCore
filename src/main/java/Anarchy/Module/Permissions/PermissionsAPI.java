@@ -36,9 +36,9 @@ public class PermissionsAPI {
 	}
 	
 	private static void registerGroupsAllows() {
-		GROUP_ALLOWS.put(0, new GroupAllow(2, 0)); // 0
-		GROUP_ALLOWS.put(1, new GroupAllow(3, 0)); // 1
-		GROUP_ALLOWS.put(2, new GroupAllow(3, 0)); // 2
+		GROUP_ALLOWS.put(0, new GroupAllow(2, 1)); // 0
+		GROUP_ALLOWS.put(1, new GroupAllow(3, 1)); // 1
+		GROUP_ALLOWS.put(2, new GroupAllow(3, 1)); // 2
 		GROUP_ALLOWS.put(3, new GroupAllow(3, 1)); // 3
 		GROUP_ALLOWS.put(4, new GroupAllow(4, 1)); // 4
 		GROUP_ALLOWS.put(5, new GroupAllow(5, 2)); // 5
@@ -86,9 +86,11 @@ public class PermissionsAPI {
 	public static void updateTag(Player player) {
 		String playerName = player.getName();
 		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player.getName());
-		String tag = GROUPS.get(playerSession.getInteger("Permission")) + " §f" + playerName;
-		player.setNameTag(tag);
-		player.setDisplayName(tag);
+		String device = String.valueOf(player.getLoginChainData().getDeviceOS()).replace("0", "Неизвестно").replace("1", "Android").replace("2", "iOS").replace("3", "MacOS").replace("4", "FireOS").replace("5", "GearVR").replace("6", "HoloLens").replace("10", "PS 4").replace("7", "Win 10").replace("8", "Win").replace("9", "Dedicated").replace("11", "Switch");
+		String displayName = GROUPS.get(playerSession.getInteger("Permission")) + " §f" + playerName;
+		String nameTag = GROUPS.get(playerSession.getInteger("Permission")) + " §f" + playerName + "\n§7" + device;
+		player.setNameTag(nameTag);
+		player.setDisplayName(displayName);
 	}
 	
 	public static void updatePermissions(Player player) {

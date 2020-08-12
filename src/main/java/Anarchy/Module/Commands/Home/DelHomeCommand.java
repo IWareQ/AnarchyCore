@@ -1,7 +1,7 @@
 package Anarchy.Module.Commands.Home;
 
 import Anarchy.Utils.SQLiteUtils;
-import Anarchy.Utils.StringUtils;
+import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
@@ -14,20 +14,16 @@ public class DelHomeCommand extends Command {
 	
 	@Override()
 	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (strings.length != 1) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/delhome §7(§3название§7)");
-			return false;
+		Player player = (Player)commandSender;
+		String playerName = player.getName();
+		String upperCase = playerName.toUpperCase();
+		Integer homeId = SQLiteUtils.selectInteger("Homes.db", "SELECT `Home_ID` FROM `HOMES` WHERE UPPER(`Username`) = \'" + upperCase + "\';");
+		if (homeId == -1) {
+			player.sendMessage(HomeCommand.PREFIX + "§fВы еще не создали точку дома§7, §fдля создания используйте §7/§3sethome");
+		} else {
+			commandSender.sendMessage(HomeCommand.PREFIX + "§fТочка дома §3успешно §fудалена");
+			SQLiteUtils.query("Homes.db", "DELETE FROM `HOMES` WHERE UPPER(`Username`) = \'" + upperCase + "\';");
 		}
-		if (!StringUtils.isValidString(strings[0])) {
-			commandSender.sendMessage(HomeCommand.PREFIX + "§fВы можете использовать только §3буквы§7, §3цифры §fи §3нижнее подчеркивание");
-			return false;
-		}
-		if (SQLiteUtils.selectInteger("Homes.db", "SELECT `X` FROM `HOMES` WHERE UPPER(`Home_Name`) = \'" + strings[0].toUpperCase() + "\' AND `Username` = \'" + commandSender.getName() + "\';") == -1) {
-			commandSender.sendMessage(HomeCommand.PREFIX + "§fТочки дома §e" + strings[0] + " §fне существует§7!\n§l§e| §r§fСписок всех точек §7- §e/homes");
-			return false;
-		}
-		commandSender.sendMessage(HomeCommand.PREFIX + "§fТочка дома §e" + strings[0] + " §3успешно §fудалена");
-		SQLiteUtils.query("Homes.db", "DELETE FROM `HOMES` WHERE UPPER(`Home_Name`) = \'" + strings[0].toUpperCase() + "\' AND `Username` = \'" + commandSender.getName() + "\';");
 		return false;
 	}
 }

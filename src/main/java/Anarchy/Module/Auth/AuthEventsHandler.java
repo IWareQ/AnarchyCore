@@ -16,6 +16,7 @@ import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
+import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.SetLocalPlayerAsInitializedPacket;
 
 public class AuthEventsHandler implements Listener {
@@ -23,7 +24,8 @@ public class AuthEventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onDataPacketReceive(DataPacketReceiveEvent event) {
 		Player player = event.getPlayer();
-		if (!(event.getPacket() instanceof SetLocalPlayerAsInitializedPacket)) return;
+		DataPacket dataPacket = event.getPacket();
+		if (!(dataPacket instanceof SetLocalPlayerAsInitializedPacket)) return;
 		if (!(player.hasPlayedBefore())) {
 			player.teleport(new Location(-7, 148, 93, FunctionsAPI.WORLD2));
 			player.setSpawn(new Position(-7, 148, 93, FunctionsAPI.WORLD2));

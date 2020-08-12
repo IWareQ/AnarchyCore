@@ -33,8 +33,6 @@ import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
-import cn.nukkit.event.player.PlayerEatFoodEvent;
-import cn.nukkit.event.player.PlayerFoodLevelChangeEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerRespawnEvent;
@@ -102,6 +100,11 @@ public class EventsHandler implements Listener {
 			player.sendTip("§c§l| §fВы пытаетесь §6выйти §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
 		}
+		if (player.getFloorY() <= 0) {
+			Level level = Server.getInstance().getLevelByName("world2");
+			player.teleport(level.getSafeSpawn());
+			player.sendMessage("§l§3| §r§fВы упали§7, §fно вас спас бог :)");
+		}
 		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
 			if (block.getId() == 416) {
 				Level level = Server.getInstance().getLevelByName("world");
@@ -122,31 +125,6 @@ public class EventsHandler implements Listener {
 		if (location.x < FunctionsAPI.BORDER[0] || location.x > FunctionsAPI.BORDER[1] || location.z < FunctionsAPI.BORDER[2] || location.z > FunctionsAPI.BORDER[3]) {
 			player.sendTip("§l§c| §fВы пытаетесь §3телепортироваться §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
-		}
-	}
-	
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onPlayerInteract(PlayerInteractEvent event) {
-		Player player = event.getPlayer();
-		String playerName = player.getName();
-		Block block = event.getBlock();
-		if (SetHomeCommand.HOME_SET.containsKey(player)) {
-			if (block != null && block.getId() == Item.BED_BLOCK) {
-				if (block.getLevel().getBlock(block.add(0, 1, 0)).getId() != 0) {
-					player.sendMessage(HomeCommand.PREFIX + "§fРасчистите место над кроватью§7!");
-					event.setCancelled();
-					return;
-				}
-				player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
-				player.sendMessage(HomeCommand.PREFIX + "§fНовая точка дома §3упешно §fустановлена");
-				SQLiteUtils.query("Homes.db", "INSERT INTO `HOMES` (`Home_Name`, `Username`, `X`, `Y`, `Z`, `LEVEL`) VALUES (\'" + SetHomeCommand.HOME_SET.get(player) + "\', \'" + playerName + "\', " + block.getFloorX() + ", " + block.getFloorY() + ", " + block.getFloorZ() + ", \'" + player.getLevel().getName() + "\');");
-				SetHomeCommand.HOME_SET.remove(player);
-				event.setCancelled();
-			} else {
-				player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
-				player.sendMessage(HomeCommand.PREFIX + "§fУстановка новой точки дома §3отменена§7!");
-				SetHomeCommand.HOME_SET.remove(player);
-			}
 		}
 	}
 	
@@ -199,14 +177,6 @@ public class EventsHandler implements Listener {
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onPlayerEatFood(PlayerEatFoodEvent event) {
-		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
-			event.setCancelled(true);
-		}
-	}
-	
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity().getLevel().equals(FunctionsAPI.WORLD2)) {
 			event.setCancelled(true);
@@ -237,13 +207,6 @@ public class EventsHandler implements Listener {
 		}
 	}
 	
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onPlayerFoodLevelChange(PlayerFoodLevelChangeEvent event) {
-		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
-			event.setCancelled(true);
-		}
-	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {

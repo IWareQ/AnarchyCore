@@ -21,5 +21,6 @@ public class FunctionsAPI {
 		WORLD.getGameRules().setGameRule(GameRule.SHOW_COORDINATES, true);
 		NETHER.getGameRules().setGameRule(GameRule.SHOW_COORDINATES, true);
 		WORLD2.getGameRules().setGameRule(GameRule.SHOW_COORDINATES, false);
+		WORLD.getGameRules().setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
 	}
 }

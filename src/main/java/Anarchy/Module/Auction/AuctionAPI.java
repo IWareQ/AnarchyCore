@@ -13,7 +13,6 @@ import Anarchy.AnarchyMain;
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Auction.Utils.TradeItem;
 import Anarchy.Module.Auction.Utils.Inventory.AuctionChest;
-//import Anarchy.Module.Auction.Utils.Inventory.ShopChest;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
@@ -147,10 +146,8 @@ public class AuctionAPI extends PluginBase {
 		if (playerPage >= 0) {
 			auctionChest.setItem(49, Item.get(Item.EMERALD).setCustomName("§r§eОбновление страницы\n\n§r§e• §fНажмите§7, §fчтобы обновить страницу"));
 			auctionChest.setItem(53, Item.get(Item.SIGN).setCustomName("§r§eСправка\n\n§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §eМонет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§e/auc §7(§6цена§7)\n§r§fили\n§r§e/auc §7(§6цена§7) (§6описание§7)"));
-			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§eВаши Предметы на Продаже\n\n§r§e• §fНажмите§7, §fчтобы открыть"));
+			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§eВаши Предметы на Продаже\n\n§r§e• §fНажмите§7, §fчтоб�� открыть"));
 		}
-		/* ShopChest shopChest = new ShopChest("Продажа предметов");
-		shopChest.setItem(6, Item.get(Item.BED).setCustomName("§r§eКровать\n\n§r§e• §fНажмите§7, §fчтобы продать")); */
 		if (firstTime) {
 			FakeChestsAPI.openInventory(player, auctionChest);
 		}
