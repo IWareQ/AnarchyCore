@@ -32,19 +32,19 @@ public class PermissionsAPI {
 		GROUPS.add("§eКороль§r"); // 5
 		GROUPS.add("§1Модератор§r"); // 6
 		GROUPS.add("§4Администратор§r"); // 7
-		GROUPS.add("§eSupport§r"); // 8
+		GROUPS.add("§6Основатель§r"); // 8
 	}
 	
 	private static void registerGroupsAllows() {
-		GROUP_ALLOWS.put(0, new GroupAllow(2, 1)); // 0
-		GROUP_ALLOWS.put(1, new GroupAllow(3, 1)); // 1
-		GROUP_ALLOWS.put(2, new GroupAllow(3, 1)); // 2
-		GROUP_ALLOWS.put(3, new GroupAllow(3, 1)); // 3
-		GROUP_ALLOWS.put(4, new GroupAllow(4, 1)); // 4
-		GROUP_ALLOWS.put(5, new GroupAllow(5, 2)); // 5
-		GROUP_ALLOWS.put(6, new GroupAllow(9, 9)); // 6
-		GROUP_ALLOWS.put(7, new GroupAllow(9, 9)); // 7
-		GROUP_ALLOWS.put(8, new GroupAllow(9, 9)); // 8
+		GROUP_ALLOWS.put(0, new GroupAllow(2)); // 0
+		GROUP_ALLOWS.put(1, new GroupAllow(3)); // 1
+		GROUP_ALLOWS.put(2, new GroupAllow(3)); // 2
+		GROUP_ALLOWS.put(3, new GroupAllow(3)); // 3
+		GROUP_ALLOWS.put(4, new GroupAllow(4)); // 4
+		GROUP_ALLOWS.put(5, new GroupAllow(5)); // 5
+		GROUP_ALLOWS.put(6, new GroupAllow(9)); // 6
+		GROUP_ALLOWS.put(7, new GroupAllow(9)); // 7
+		GROUP_ALLOWS.put(8, new GroupAllow(9)); // 8
 	}
 	
 	public static boolean isGroup(int groupID) {
@@ -144,7 +144,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.Spectate", true);
-			permissionAllows.put("Access.Admin", true);
 			permissionAllows.put("Command.A", true);
 			permissionAllows.put("Command.Gamemode", true);
 			break;

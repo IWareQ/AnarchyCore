@@ -5,7 +5,7 @@ import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Level;
 
 public class FunctionsAPI {
-	public static Integer[] BORDER = new Integer[]{-2000, 2000, -2000, 2000};
+	public static Integer[] BORDER = new Integer[]{-1000, 1000, -1000, 1000};
 	public static Integer[] RANDOM_TP = new Integer[]{-1000, 1000, -1000, 1000};
 	public static Level WORLD;
 	public static Level NETHER;

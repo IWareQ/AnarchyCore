@@ -19,9 +19,9 @@ public class DelHomeCommand extends Command {
 		String upperCase = playerName.toUpperCase();
 		Integer homeId = SQLiteUtils.selectInteger("Homes.db", "SELECT `Home_ID` FROM `HOMES` WHERE UPPER(`Username`) = \'" + upperCase + "\';");
 		if (homeId == -1) {
-			player.sendMessage(HomeCommand.PREFIX + "§fВы еще не создали точку дома§7, §fдля создания используйте §7/§3sethome");
+			player.sendMessage(HomeCommand.PREFIX + "§fТочки дома не обнаружено§7, §fдля создания используйте §7/§3sethome");
 		} else {
-			commandSender.sendMessage(HomeCommand.PREFIX + "§fТочка дома §3успешно §fудалена");
+			commandSender.sendMessage(HomeCommand.PREFIX + "§fТочка дома §3успешно §fудалена§7!");
 			SQLiteUtils.query("Homes.db", "DELETE FROM `HOMES` WHERE UPPER(`Username`) = \'" + upperCase + "\';");
 		}
 		return false;

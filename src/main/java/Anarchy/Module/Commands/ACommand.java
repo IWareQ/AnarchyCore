@@ -26,7 +26,7 @@ public class ACommand extends Command {
 		Player player = (Player)commandSender;
 		String message = StringUtils.implode(args, 0);
 		for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
-			if (admin.hasPermission("Access.Admin")) {
+			if (admin.hasPermission("Command.A")) {
 				admin.sendMessage("§cⒶ " + player.getDisplayName() + " §8» §f" + message);
 			}
 		}

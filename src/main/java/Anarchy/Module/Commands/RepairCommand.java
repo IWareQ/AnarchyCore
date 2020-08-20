@@ -12,7 +12,7 @@ import cn.nukkit.level.Sound;
 
 public class RepairCommand extends Command {
     public static Map<CommandSender, Long> COOLDOWN = new HashMap<>();
-    public static int ADD_COOLDOWN = 1;
+    public static int ADD_COOLDOWN = 100;
 	
 	public RepairCommand() {
 		super("repair", "Починить предмет в руке");
@@ -28,7 +28,7 @@ public class RepairCommand extends Command {
 		Long cooldownTime = COOLDOWN.get(commandSender);
 		Long nowTime = System.currentTimeMillis() / 1000L;
 			if (cooldownTime != null && cooldownTime > nowTime) {
-				commandSender.sendMessage("§l§7(§3Задержка§7) §r§fСледующее использование будет доступно через §c6" + (cooldownTime - nowTime) + " §fсекунд");
+				commandSender.sendMessage("§l§7(§3Задержка§7) §r§fСледующее использование будет доступно через §3" + (cooldownTime - nowTime) + " §fсекунд");
 				return false;
 			}
 		PlayerInventory inventory = ((Player)commandSender).getInventory();

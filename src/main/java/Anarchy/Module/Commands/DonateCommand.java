@@ -14,19 +14,10 @@ public class DonateCommand extends Command {
 	@Override()
 	public boolean execute(CommandSender commandSender, String s, String[] args) {
 		Player player = (Player)commandSender;
-		new SimpleForm("Описание Донат Услуг", " ").addButton("§l§3Вип").addButton("§l§aПремиум").addButton("§l§dEnigma").addButton("§l§cHydra").send(player, (target, form, data)->{
+		new SimpleForm("Описание Донат Услуг", "§l§fЕсли Вас §3устраивает §fлюбая привилегия§7, §fто Вы можете пройти на наш §3сайт §fи приобрести ее§7!\n\n§l§fНаш сайт §7- §3deathmc§7.§3mcpetrade§7.§3ru").addButton("§l§fДля чего нужен Донат§7?").send(player, (target, form, data)->{
 			if (data == -1) return;
 			if (data == 0) {
-				new SimpleForm("§fОписание §7- §l§3Вип", "Префикс §7- (§3Вип§7)\n§7• §3/food §7- §f восстановить голод\n§7• §fКоличество приватов §7- §33").send(player);
-			}
-			if (data == 1) {
-				new SimpleForm("§fОписание §7- §l§aПремиум", "Префикс §7- (§aПремиум§7)\n§7• §3/food §7- §f восстановить голод\n§7• §3/heal §7- §f восстановить здоровье\n§7• §3/repair §7- §f починить предмет в руке\n§7• §fКоличество приватов §7- §33").send(player);
-			}
-			if (data == 2) {
-				new SimpleForm("§fОписание §7- §l§dEnigma", "Префикс §7- (§dEnigma§7)\n§7• §3/food §7- §f восстановить голод\n§7• §3/heal §7- §f восстановить здоровье\n§7• §3/repair §7- §f починить предмет в руке\n§7• §3/day §7- §f сменить §9Ночь §fна §eДень\n§7• §3/night §7- §f сменить §eДень §fна §9Ночь\n§7• §fКоличество приватов §7- §33\n§7• §fКоличество точек дома §7- §31").send(player);
-			}
-			if (data == 3) {
-				new SimpleForm("§fОписание §7- §l§cHydra", "Префикс §7- (§cHydra§7)\n§7• §3/food §7- §f восстановить голод\n§7• §3/heal §7- §f восстановить здоровье\n§7• §3/repair §7- §f починить предмет в руке\n§7• §3/day §7- §f сменить §9Ночь §fна §eДень\n§7• §3/night §7- §f сменить §eДень §fна §9Ночь\n§7• §3/near §7- §f узнать кто рядом с тобой в радиусе §e70 §fблоков\n§7• §fКоличество приватов §7- §34\n§7• §fКоличество точек дома §7- §31").send(player);
+				new SimpleForm("§l§fДля чего нужен Донат§7?", "§l§fДля того чтобы проект §3жил §fи §3развивался §fему нужны деньги §7:§fc\n§l§fК сожалению для всего в этом мире нужны деньги§7...\n§l§fДеньги идут на§7:\n§l§e• §fОплату хостинга §7(§fстоитдостаточно дорого§7);\n§l§e• §fЗарплату сотрудникам§7;\n§l§e• §fРазработка собственных §3плагинов §fи §3режимов§7.\n\n§l§fНа это все идет много средств§7.\n\n§l§fИ мы безумно сильно благодарны за поддержку §3Проекта§7!").send(player);
 			}
 		});
 		return false;

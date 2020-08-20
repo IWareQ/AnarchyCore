@@ -9,7 +9,6 @@ import Anarchy.Manager.Sessions.AllSessionsManager;
 import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Module.Auction.AuctionEventsHandler;
 import Anarchy.Module.Auction.Commands.AuctionCommand;
-import Anarchy.Module.Auction.Commands.BuyCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
 import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
@@ -124,7 +123,7 @@ public class AnarchyMain extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new EpCommand(), new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new BuyCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
+		Command[] commands = new Command[]{new EpCommand(), new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	

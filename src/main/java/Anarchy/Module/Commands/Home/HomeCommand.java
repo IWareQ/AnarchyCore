@@ -25,15 +25,15 @@ public class HomeCommand extends Command {
 		String upperCase = playerName.toUpperCase();
 		Map<String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM `HOMES` WHERE UPPER(`Username`) = \'" + upperCase + "\';");
 		if (homeData == null || homeData.isEmpty()) {
-			commandSender.sendMessage(PREFIX + "§fВы еще не поставили ни 1 точки дома");
+			player.sendMessage(PREFIX + "§fТочек дома не обнаружено§7, §fдля создания используйте §7/§3sethome");
 		} else {
-		Level level = Server.getInstance().getLevelByName(homeData.get("LEVEL"));
-		int x = Integer.parseInt(homeData.get("X"));
-		int y = Integer.parseInt(homeData.get("Y"));
-		int z = Integer.parseInt(homeData.get("Z"));
-		commandSender.sendMessage(PREFIX + "§fВы §3успешно §fтелепортированы домой§7!");
-		player.teleport(new Position(x, y, z, level));
-	}
+			Level level = Server.getInstance().getLevelByName("world");
+			int x = Integer.parseInt(homeData.get("X"));
+			int y = Integer.parseInt(homeData.get("Y"));
+			int z = Integer.parseInt(homeData.get("Z"));
+			player.sendMessage(PREFIX + "§fВы §3успешно §fтелепортированы домой§7!");
+			player.teleport(new Position(x, y, z, level));
+		}
 		return false;
 	}
 }

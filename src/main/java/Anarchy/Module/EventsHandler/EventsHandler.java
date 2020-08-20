@@ -7,10 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import Anarchy.AnarchyMain;
 import Anarchy.Manager.Functions.FunctionsAPI;
-import Anarchy.Module.Commands.Home.HomeCommand;
-import Anarchy.Module.Commands.Home.SetHomeCommand;
 import Anarchy.Module.Economy.EconomyAPI;
-import Anarchy.Utils.SQLiteUtils;
 import MobPlugin.Entities.Animal.Animal;
 import MobPlugin.Entities.Animal.Swimming.Squid;
 import MobPlugin.Entities.Monster.Monster;
@@ -28,69 +25,21 @@ import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
-import cn.nukkit.event.entity.EntityLevelChangeEvent;
 import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
-import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
-import cn.nukkit.event.player.PlayerRespawnEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
-import cn.nukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import cn.nukkit.event.server.DataPacketSendEvent;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
-import cn.nukkit.level.Sound;
 import cn.nukkit.math.Vector3;
-import cn.nukkit.network.protocol.ChangeDimensionPacket;
-import cn.nukkit.network.protocol.DataPacket;
-import cn.nukkit.network.protocol.PlayStatusPacket;
-import cn.nukkit.network.protocol.StartGamePacket;
 import cn.nukkit.utils.Config;
 
 public class EventsHandler implements Listener {
 	File dataFile = new File(AnarchyMain.datapath + "/KDR.yml");
 	Config config = new Config(dataFile, Config.YAML);
 	public static int CHAT_RADIUS = 70;
-	
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onDataPacketSend(DataPacketSendEvent event) {
-		DataPacket packet = event.getPacket();
-		Player player = event.getPlayer();
-		if (packet instanceof StartGamePacket) {
-			StartGamePacket startGamePacket = (StartGamePacket)packet;
-			startGamePacket.dimension = (byte)player.getLevel().getDimension();
-		}
-	}
-	
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		Player player = event.getPlayer();
-		player.teleport(player.getSpawn(), TeleportCause.PLUGIN);
-	}
-	
-	public void onLevelChange(EntityLevelChangeEvent event) {
-		Entity entity = event.getEntity();
-		if (entity instanceof Player) {
-			Player player = (Player)entity;
-			int fromLevelDimension = event.getOrigin().getDimension();
-			int toLevelDimension = event.getTarget().getDimension();
-			ChangeDimensionPacket changeDimensionPacket = new ChangeDimensionPacket();
-			changeDimensionPacket.dimension = toLevelDimension;
-			changeDimensionPacket.x = (float)player.x;
-			changeDimensionPacket.y = (float)player.y;
-			changeDimensionPacket.z = (float)player.z;
-			changeDimensionPacket.respawn = true;
-			PlayStatusPacket playStatusPacket = new PlayStatusPacket();
-			playStatusPacket.status = PlayStatusPacket.PLAYER_SPAWN;
-			if (fromLevelDimension != toLevelDimension) {
-				player.dataPacket(changeDimensionPacket);
-				player.dataPacket(playStatusPacket);
-			}
-		}
-	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {

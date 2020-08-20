@@ -43,9 +43,10 @@ public class AuthEventsHandler implements Listener {
 		if (accountID == -1) {
 			SQLiteUtils.query("Users.db", "INSERT INTO `USERS` (`Username`) VALUES (\'" + playerName + "\');");
 			SQLiteUtils.query("Auth.db", "INSERT INTO `AUTH` (`Username`, `IP_Reg`, `Date_Reg`) VALUES (\'" + playerName + "\', \'" + ip + "\', \'" + date + "\');");
-			Server.getInstance().getLogger().info("§l§7(§3Система§7) §fИгрок §e" + playerName + " §fне зарегистрирован§7!\n§fРегистрируем§7!");
+			Server.getInstance().getLogger().info("§l§7(§3Система§7) §fИгрок §e" + playerName + " §fне зарегистрирован§7! §fРегистрируем§7!");
+			player.sendMessage("Новый игрок кек");
 		}
-		player.sendMessage("§l§e| §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§e| §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§3death§fanarchy §l§e| §r§fНаш сайт §7- §fскоро");
+		player.sendMessage("§l§e| §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§e| §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§3death§fanarchy §l§e| §r§fНаш сайт §7- §3deathmc§7.§3mcpetrade§7.§3ru");
 		PlayerSessionManager.startPlayerSession(player);
 		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
 			HotbarTask.showScoreboard(player);
