@@ -15,15 +15,16 @@ public class ListCommand extends Command {
 	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		StringBuilder players = new StringBuilder();
+		Player player = (Player)sender;
+		StringBuilder stringBuilder = new StringBuilder();
 		int onlineCount = 0;
-		for (Player player : sender.getServer().getOnlinePlayers().values()) {
-			if (player.isOnline() && PlayerSessionManager.hasPlayerSession(player)) {
-				players.append("§7, §3").append(player.getDisplayName());
+		for (Player players : sender.getServer().getOnlinePlayers().values()) {
+			if (players.isOnline() && PlayerSessionManager.hasPlayerSession(players)) {
+				stringBuilder.append("§7, §3").append(players.getDisplayName());
 			}
 			++onlineCount;
 		}
-		sender.sendMessage("§l§e| §r§fНа сервере §e" + onlineCount + " §fиз §e" + Server.getInstance().getMaxPlayers() + " §fИгроков\n§fИгроки §7- §3" + (players.length() > 0 ? players.substring(4) : "§7..."));
+		player.sendMessage("§l§e| §r§fНа сервере §3" + onlineCount + " §fиз §3" + Server.getInstance().getMaxPlayers() + " §fИгроков\n§fИгроки §7- §3" + (stringBuilder.length() > 0 ? stringBuilder.substring(4) : "§7..."));
 		return true;
 	}
 }

@@ -19,20 +19,22 @@ public class TellCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (strings.length < 2) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/tell §7(§3игрок§7) (§3текст§7)");
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		String playerName = player.getName();
+		if (args.length < 2) {
+			player.sendMessage("§l§e| §r§fИспользование §7- §e/tell §7(§3игрок§7) (§3текст§7)");
 			return true;
 		}
-		Player tellPlayer = Server.getInstance().getPlayer(strings[0]);
+		Player tellPlayer = Server.getInstance().getPlayer(args[0]);
 		if (tellPlayer == null) {
-			commandSender.sendMessage("§l§e| §r§fИгрок §e" + strings[0] + " §7- §3Оффлайн");
+			player.sendMessage("§l§e| §r§fИгрок §e" + args[0] + " §7- §3Оффлайн");
 			return true;
 		}
-		String message = StringUtils.implode(strings, 1);
-		commandSender.sendMessage(PREFIX + "§fЛичное сообщение для §e" + tellPlayer.getName() + "\n§fТекст §7- §f" + message);
-		tellPlayer.sendMessage(PREFIX + "§fЛичное сообщение от §e" + commandSender.getName() + "\n§fТекст §7- §f" + message);
-		tellPlayer.sendPopup("§l§9| §fНовое Личное Сообщение! §9|");
+		String message = StringUtils.implode(args, 1);
+		player.sendMessage(PREFIX + "§fЛичное сообщение для §3" + tellPlayer.getName() + "\n§fТекст §7- §f" + message);
+		tellPlayer.sendMessage(PREFIX + "§fЛичное сообщение от §3" + playerName + "\n§fТекст §7- §f" + message);
+		tellPlayer.sendTip("§l§fНовое Личное Сообщение§7!");
 		tellPlayer.getLevel().addSound(tellPlayer, Sound.RANDOM_CLICK, 1, 1, tellPlayer);
 		return true;
 	}

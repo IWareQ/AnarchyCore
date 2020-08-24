@@ -15,18 +15,22 @@ public class NearCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (!commandSender.hasPermission("Command.Near")) {
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		StringBuilder stringBuilder = new StringBuilder();
+		if (!(player instanceof Player)) {
+			player.sendMessage("§fЭту команду можно использовать только в игре");
 			return false;
 		}
-		Player player = (Player)commandSender;
-		StringBuilder stringBuilder = new StringBuilder();
-		for (Player list : Server.getInstance().getOnlinePlayers().values()) {
-			if (list.distance(player) < RADIUS && list.gamemode != 3) {
-				stringBuilder.append("§7, §3").append(list.getName());
+		if (!player.hasPermission("Command.Near")) {
+			return false;
+		}
+		for (Player players : Server.getInstance().getOnlinePlayers().values()) {
+			if (players.distance(player) < RADIUS && players.gamemode != 3) {
+				stringBuilder.append("§7, §3").append(players.getName());
 			}
 		}
-		commandSender.sendMessage("§l§e| §r§fИгроки в радиусе §3" + RADIUS + " §fблоков §7- §3" + (stringBuilder.length() != 0 ? stringBuilder.toString().substring(4) : "..."));
+		player.sendMessage("§l§e| §r§fИгроки в радиусе §3" + RADIUS + " §fблоков §7- §3" + (stringBuilder.length() != 0 ? stringBuilder.toString().substring(4) : "..."));
 		return false;
 	}
 }

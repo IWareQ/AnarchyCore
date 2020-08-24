@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Anarchy</groupId>
 	<artifactId>Anarchy</artifactId>
-	<version>4.1</version>
+	<version>4.2</version>
 	<build>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<defaultGoal>install</defaultGoal>
@@ -76,7 +76,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>MobPlugin</groupId>
+			<groupId>nukkitcoders.mobplugin.MobPlugin</groupId>
 			<artifactId>MobPlugin</artifactId>
 			<version>1.15.0</version>
 			<scope>system</scope>

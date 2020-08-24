@@ -15,15 +15,15 @@ public class ACommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] args) {
-		if (!commandSender.hasPermission("Command.A")) {
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		if (!player.hasPermission("Command.A")) {
 			return false;
 		}
 		if (args.length < 1) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/a §7(§3текст§7)");
+			player.sendMessage("§l§e| §r§fИспользование §7- §e/a §7(§3текст§7)");
 			return true;
 		}
-		Player player = (Player)commandSender;
 		String message = StringUtils.implode(args, 0);
 		for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 			if (admin.hasPermission("Command.A")) {

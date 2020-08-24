@@ -19,8 +19,8 @@ public class HomeCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		Player player = (Player)commandSender;
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
 		String playerName = player.getName();
 		String upperCase = playerName.toUpperCase();
 		Map<String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM `HOMES` WHERE UPPER(`Username`) = \'" + upperCase + "\';");

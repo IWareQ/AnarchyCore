@@ -30,25 +30,24 @@ public class CheckCommand extends Command implements Listener {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (!commandSender.hasPermission("Command.Check")) {
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		if (!player.hasPermission("Command.Check")) {
 			return false;
 		}
-		if (strings.length != 1) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/check §7(§3игрок§7)");
+		if (args.length != 1) {
+			player.sendMessage("§l§e| §r§fИспользование §7- §e/check §7(§3игрок§7)");
 			return true;
 		}
-		Player infoPlayer = Server.getInstance().getPlayer(strings[0]);
+		Player infoPlayer = Server.getInstance().getPlayer(args[0]);
 		if (infoPlayer == null) {
-			commandSender.sendMessage("§fИгрок §e" + strings[0] + " §7- §3Оффлайн");
+			player.sendMessage("§fИгрок §e" + args[0] + " §7- §3Оффлайн");
 			return true;
 		}
 		String playerName = infoPlayer.getName();
 		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(infoPlayer);
-		Player player = (Player)commandSender;
-		Long clientId = player.getClientId();
 		String device = String.valueOf(infoPlayer.getLoginChainData().getDeviceOS()).replace("0", "Неизвестно").replace("1", "Android").replace("2", "iOS").replace("3", "MacOS").replace("4", "FireOS").replace("5", "GearVR").replace("6", "HoloLens").replace("10", "PS 4").replace("7", "Win 10").replace("8", "Win").replace("9", "Dedicated").replace("11", "Switch");
-		new SimpleForm("Профиль Игрока", "§7• §fИмя Пользователя §7- §e" + playerName + "\n\n §7- §fОбщее Время на Сервере §7- §3" + new DecimalFormat("#.#").format((float)(playerSession.getInteger("Gametime") + playerSession.getSessionTime()) / 3600).replace("§7,", "§7.") + " §fч§7.\n §7- §fСостояние Счета §7- §e" + playerSession.getInteger("Money") + " \n §7- §fУ§7/§fС: §5" + getKDR(infoPlayer)+ " §7(§fУ: §4" + getKills(infoPlayer) + "§7, §fС: §4" + getDeaths(infoPlayer) + "§7)\n §7- §fГруппа §7- " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n\n §fУстройство §7- §f" + device + " §7(§a1§7.§a14§7.§a60§7)\n §fКлиент ID §7- §f" + clientId).addButton("Инвентарь").addButton("Эндер Сундук").addButton("Очистить Инвентарь").send(player, (target,form,data)->{
+		new SimpleForm("Профиль Игрока", "§7• §fИмя Пользователя §7- §e" + playerName + "\n\n §7- §fОбщее Время на Сервере §7- §3" + new DecimalFormat("#.#").format((float)(playerSession.getInteger("Gametime") + playerSession.getSessionTime()) / 3600).replace("§7,", "§7.") + " §fч§7.\n §7- §fСостояние Счета §7- §e" + playerSession.getInteger("Money") + " \n §7- §fУ§7/§fС: §5" + getKDR(infoPlayer)+ " §7(§fУ: §4" + getKills(infoPlayer) + "§7, §fС: §4" + getDeaths(infoPlayer) + "§7)\n §7- §fГруппа §7- " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n\n §fУстройство §7- §f" + device + " §7(§a1§7.§a14§7.§a60§7)\n §fКлиент ID §7- §f").addButton("Инвентарь").addButton("Эндер Сундук").addButton("Очистить Инвентарь").send(player, (target,form,data)->{
 			if (data == -1) return;
 			if (data == 0) {
 				InventoryChest inventoryChest = new InventoryChest("§3" + playerName + " §7- §fИнвентарь");
@@ -69,8 +68,8 @@ public class CheckCommand extends Command implements Listener {
 		return false;
 	}
 	
-	public int getKills(Player p) {
-		return config.getInt("Kills." + p.getName(), 0);
+	public int getKills(Player player) {
+		return config.getInt("Kills." + player.getName(), 0);
 	}
 	
 	public int getDeaths(Player player) {

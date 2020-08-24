@@ -7,10 +7,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import Anarchy.AnarchyMain;
 import Anarchy.Manager.Functions.FunctionsAPI;
+import Anarchy.Manager.Sessions.PlayerSessionManager;
+import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.Economy.EconomyAPI;
-import MobPlugin.Entities.Animal.Animal;
-import MobPlugin.Entities.Animal.Swimming.Squid;
-import MobPlugin.Entities.Monster.Monster;
+import Anarchy.Module.Permissions.PermissionsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -35,6 +35,9 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.Config;
+import nukkitcoders.mobplugin.entities.animal.Animal;
+import nukkitcoders.mobplugin.entities.animal.swimming.Squid;
+import nukkitcoders.mobplugin.entities.monster.Monster;
 
 public class EventsHandler implements Listener {
 	File dataFile = new File(AnarchyMain.datapath + "/KDR.yml");
@@ -170,8 +173,10 @@ public class EventsHandler implements Listener {
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String playerMessage = event.getMessage();
+		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player.getName());
+		String displayName = PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + " §f" + player.getName();
 		if (String.valueOf(playerMessage.charAt(0)).equals("!")) {
-			event.setFormat("§aⒼ " + player.getDisplayName() + " §8» §7" + playerMessage.substring(1).replaceAll("§", ""));
+			event.setFormat("§aⒼ " + displayName + " §8» §7" + playerMessage.substring(1).replaceAll("§", ""));
 		} else {
 			Set<CommandSender> players = new HashSet<>();
 			for (Player all : Server.getInstance().getOnlinePlayers().values()) {
@@ -180,7 +185,7 @@ public class EventsHandler implements Listener {
 				}
 			}
 			players.add(new ConsoleCommandSender());
-			event.setFormat("§6Ⓛ " + player.getDisplayName() + " §8» §7" + playerMessage.replaceAll("§", ""));
+			event.setFormat("§6Ⓛ " + displayName + " §8» §7" + playerMessage.replaceAll("§", ""));
 			event.setRecipients(players);
 		}
 	}

@@ -18,13 +18,13 @@ public class RegionCommand extends Command {
 		super("rg", "Система регионов");
 	}
 	
-	public boolean execute(CommandSender commandSender, String s, String[] args) {
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		String playerName = player.getName();
 		if (args.length == 0) {
-			commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/rg help");
+			player.sendMessage("§l§e| §r§fИспользование §7- §e/rg help");
 			return true;
 		}
-		Player player = (Player)commandSender;
-		String playerName = player.getName();
 		switch (args[0]) {
 			case "add": 
 			{

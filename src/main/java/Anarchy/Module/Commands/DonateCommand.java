@@ -8,12 +8,12 @@ import cn.nukkit.command.CommandSender;
 public class DonateCommand extends Command {
 	
 	public DonateCommand() {
-		super("donate", "Описание Донат Услуг");
+		super("donate", "§fОписание Донат Услуг");
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] args) {
-		Player player = (Player)commandSender;
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
 		new SimpleForm("Описание Донат Услуг", "§l§fЕсли Вас §3устраивает §fлюбая привилегия§7, §fто Вы можете пройти на наш §3сайт §fи приобрести ее§7!\n\n§l§fНаш сайт §7- §3deathmc§7.§3mcpetrade§7.§3ru").addButton("§l§fДля чего нужен Донат§7?").send(player, (target, form, data)->{
 			if (data == -1) return;
 			if (data == 0) {

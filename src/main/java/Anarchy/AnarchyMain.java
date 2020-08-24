@@ -10,6 +10,7 @@ import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Module.Auction.AuctionEventsHandler;
 import Anarchy.Module.Auction.Commands.AuctionCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
+import Anarchy.Module.Boss.SilverfishBoss;
 import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
 import Anarchy.Module.Commands.DayCommand;
@@ -25,6 +26,7 @@ import Anarchy.Module.Commands.NightCommand;
 import Anarchy.Module.Commands.ProfileCommand;
 import Anarchy.Module.Commands.RepairCommand;
 import Anarchy.Module.Commands.ShopCommand;
+import Anarchy.Module.Commands.TestCommand;
 import Anarchy.Module.Commands.Check.CheckCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
 import Anarchy.Module.Commands.Defaults.TellCommand;
@@ -54,6 +56,7 @@ import Anarchy.Task.MinuteTask;
 import Anarchy.Task.Utils.Broadcast;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
+import cn.nukkit.entity.Entity;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 
@@ -81,6 +84,7 @@ public class AnarchyMain extends PluginBase {
 		SQLProvider.register();
 		registerAll();
 		registerEvents();
+		registerEntity();
 		unregisterCommands();
 		registerCommands();
 		registerTask();
@@ -122,8 +126,12 @@ public class AnarchyMain extends PluginBase {
 		}
 	}
 	
+	public static void registerEntity() {
+		Entity.registerEntity(SilverfishBoss.class.getSimpleName(), SilverfishBoss.class);
+	}
+	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new EpCommand(), new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
+		Command[] commands = new Command[]{new TestCommand(), new EpCommand(), new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	

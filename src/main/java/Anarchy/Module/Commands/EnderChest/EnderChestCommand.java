@@ -14,14 +14,14 @@ public class EnderChestCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (!commandSender.hasPermission("Command.EnderChest")) {
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		if (!player.hasPermission("Command.EnderChest")) {
 			return false;
 		}
-		Player player = (Player)commandSender;
 		EnderChest enderChest = new EnderChest("Эндер Сундук");
 		enderChest.setContents(player.getEnderChestInventory().getContents());
-		FakeChestsAPI.openInventory((Player)commandSender, enderChest);
+		FakeChestsAPI.openInventory(player, enderChest);
 		return false;
 	}
 }

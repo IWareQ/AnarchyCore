@@ -14,8 +14,8 @@ public class SetHomeCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		Player player = (Player)commandSender;
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
 		String playerName = player.getName();
 		String upperCase = playerName.toUpperCase();
 		int x = player.getFloorX();

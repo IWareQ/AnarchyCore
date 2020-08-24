@@ -14,13 +14,17 @@ public class FoodCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (!commandSender.hasPermission("Command.Food")) {
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		if (!(player instanceof Player)) {
+			player.sendMessage("§fЭту команду можно использовать только в игре");
 			return false;
 		}
-		Player player = (Player)commandSender;
+		if (!player.hasPermission("Command.Food")) {
+			return false;
+		}
 		if (player.getGamemode() != 0) {
-			commandSender.sendMessage("§l§c| §r§fДля использования перейдите в §3Выживание");
+			player.sendMessage("§l§c| §r§fДля использования перейдите в §3Выживание");
 			return false;
 		}
 		player.getFoodData().setLevel(player.getFoodData().getMaxLevel(), 12.0F);

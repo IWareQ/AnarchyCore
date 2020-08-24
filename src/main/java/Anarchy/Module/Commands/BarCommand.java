@@ -14,16 +14,17 @@ public class BarCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		String playerName = commandSender.getName();
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		String playerName = player.getName();
 		if (PlayerSessionManager.SCOREBOARD.contains(playerName)) {
-			PlayerSessionManager.SCOREBOARDS.get(playerName).hideFor((Player)commandSender);
+			PlayerSessionManager.SCOREBOARDS.get(playerName).hideFor(player);
 			PlayerSessionManager.SCOREBOARD.remove(playerName);
-			commandSender.sendMessage("§l§c| §r§fХотбар §3успешно §fотключен");
+			player.sendMessage("§l§c| §r§fХотбар §3успешно §fотключен");
 		} else {
 			PlayerSessionManager.SCOREBOARD.add(playerName);
-			HotbarTask.showScoreboard((Player)commandSender);
-			commandSender.sendMessage("§l§a| §r§fХотбар §3успешно §fвключен");
+			HotbarTask.showScoreboard(player);
+			player.sendMessage("§l§a| §r§fХотбар §3успешно §fвключен");
 		}
 		return false;
 	}

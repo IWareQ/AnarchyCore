@@ -109,7 +109,7 @@ public class AuctionEventsHandler implements Listener {
 									compoundTag.remove("UUID");
 									playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(compoundTag));
 									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-									player.sendMessage(AuctionAPI.PREFIX + "§fПредмет §3" + sourceItem.clearCustomName().setNamedTag(compoundTag) + " §fуспешно куплен за §e" + tradeItem.itemPrice + "");
+									player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §e" + tradeItem.itemPrice + "");
 									Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.sellerName);
 									if (sellerPlayer != null) {
 										sellerPlayer.sendMessage(AuctionAPI.PREFIX + "§fИгрок §3" + player.getName() + " §fкупил Ваш товар за §e" + tradeItem.itemPrice + "");

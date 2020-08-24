@@ -21,28 +21,28 @@ public class RepairCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (!commandSender.hasPermission("Command.Repair")) {
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		if (!player.hasPermission("Command.Repair")) {
 			return false;
 		}
-		Long cooldownTime = COOLDOWN.get(commandSender);
+		Long cooldownTime = COOLDOWN.get(player);
 		Long nowTime = System.currentTimeMillis() / 1000L;
 			if (cooldownTime != null && cooldownTime > nowTime) {
-				commandSender.sendMessage("§l§7(§3Задержка§7) §r§fСледующее использование будет доступно через §3" + (cooldownTime - nowTime) + " §fсекунд");
+				player.sendMessage("§l§7(§3Задержка§7) §r§fСледующее использование будет доступно через §3" + (cooldownTime - nowTime) + " §fсек§7.");
 				return false;
 			}
-		PlayerInventory inventory = ((Player)commandSender).getInventory();
+		PlayerInventory inventory = player.getInventory();
 		Item item = inventory.getItemInHand();
 		if (!item.isArmor() && !item.isTool()) {
-			commandSender.sendMessage("§l§e| §r§fЧинить можно только §3Инструменты §fи §3Броню");
+			player.sendMessage("§l§e| §r§fЧинить можно только §3Инструменты §fи §3Броню");
 			return false;
 		}
-		Player player = (Player)commandSender;
 		item.setDamage(0);
 		inventory.setItemInHand(item);
-		commandSender.sendMessage("§l§a| §r§fПредмет в руке починен§7!");
+		player.sendMessage("§l§a| §r§fПредмет в руке починен§7!");
 		player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
-		COOLDOWN.put(commandSender, nowTime + ADD_COOLDOWN);
+		COOLDOWN.put(player, nowTime + ADD_COOLDOWN);
 		return false;
 	}
 }
