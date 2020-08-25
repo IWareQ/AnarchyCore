@@ -11,30 +11,31 @@ import cn.nukkit.command.CommandSender;
 public class SeeMoneyCommand extends Command {
 	
 	public SeeMoneyCommand() {
-		super("seemoney", "Посмотреть баланс Игрока");
+		super("seemoney", "§l§fПосмотреть баланс Игрока");
 		this.setPermission("Command.SeeMoney");
 	}
 	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (!sender.hasPermission("Command.SeeMoney")) {
+		Player player = (Player)sender;
+		if (!player.hasPermission("Command.SeeMoney")) {
 			return true;
 		}
 		if (args.length < 1) {
-			sender.sendMessage("§l§e| §r§fИспользование §7- §e/seemoney §7(§3игрок§7)");
+			sender.sendMessage("§l§6| §r§fИспользование §7- §6/seemoney §7(§3игрок§7)");
 			return true;
 		}
-		Player player = Server.getInstance().getPlayer(args[0]);
-		if (player != null) {
-			sender.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §e" + player.getName() + " §7- §e" + EconomyAPI.myMoney(player) + "");
+		Player seePlayer = Server.getInstance().getPlayer(args[0]);
+		if (seePlayer != null) {
+			player.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §3" + seePlayer.getName() + " §7- §6" + EconomyAPI.myMoney(seePlayer) + "");
 			return true;
 		}
 		String nickname = StringUtils.implode(args, 0);
 		if (!AuthAPI.isRegistered(nickname)) {
-			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §e" + nickname + " §7- §fне зарегистрирован§7!");
+			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + nickname + " §7- §fне зарегистрирован§7!");
 			return true;
 		}
-		sender.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §e" + nickname + " §7- §e" + EconomyAPI.myMoney(nickname) + "");
+		player.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §3" + nickname + " §7- §6" + EconomyAPI.myMoney(nickname) + "");
 		return true;
 	}
 }

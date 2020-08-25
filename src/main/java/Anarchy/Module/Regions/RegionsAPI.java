@@ -19,8 +19,8 @@ public class RegionsAPI {
 	public static String PREFIX = "§l§7(§3Регионы§7) §r";
 	public static String FREE = "  §l§fТерритория свободна§7!";
 	public static String BUSY = "  §l§fТерритория не доступна для взаимодействия§7!";
-	public static String BUSY_BY = "  §l§fТерритория занята Игроком §e{PLAYER}";
-	public static String EDIT = "  §l§cВнимание§7! §fВы изменяете чужой регион§7!";
+	public static String BUSY_BY = "  §l§fТерритория занята Игроком §3{PLAYER}";
+	//public static String EDIT = "  §l§cВнимание§7! §fВы изменяете чужой регион§7!";
 	public static String UNBREAK = "  §l§fЭтот блок невозможно сломать§7!";
 	public static String UNPLACE = "  §l§fЭтот блок не возможно установить тут§7!";
 	public static String BIOME = "  §l§fЭтот биом не доступен для строительства§7!";
@@ -42,7 +42,7 @@ public class RegionsAPI {
 		if (groupAllow != null) {
 			int regionCount = RegionsAPI.getRegionsCount(player.getName());
 			if (regionCount >= groupAllow.MAX_REGIONS) {
-				player.sendMessage(RegionsAPI.PREFIX + "§fМаксимальное количество регионов §7- §3" + regionCount + "\n§l§e| §r§fЧтобы содать новый регион потребуется удалить §3§l1 §r§fиз старых§7!");
+				player.sendMessage(RegionsAPI.PREFIX + "§fМаксимальное количество регионов §7- §3" + regionCount + "\n§l§6| §r§fЧтобы содать новый регион потребуется удалить §31 §fиз старых§7!");
 				event.setCancelled();
 				return;
 			}
@@ -54,18 +54,18 @@ public class RegionsAPI {
 		int[] pos1 = {Math.min(x - radius, x + radius), y - radius, Math.min(z - radius, z + radius)};
 		int[] pos2 = {Math.max(x - radius, x + radius), y + radius, Math.max(z - radius, z + radius)};
 		if (!RegionsAPI.canCreateRegion(pos1[0], pos2[0], pos1[1], pos2[1], pos1[2], pos2[2])) {
-			player.sendMessage(PREFIX + "§fРядом уже установлен чужой регион§7!\n§l§e| §r§fДля проверки владений используйте палку§7!");
+			player.sendMessage(PREFIX + "§fРядом уже установлен чужой регион§7!\n§l§6| §r§fДля проверки владений используйте палку§7!");
 			event.setCancelled();
 			return;
 		}
-		player.sendMessage(PREFIX + "§fПриват создан§7! (§fРадиус §e" + radius + " §fбл§7.)\n§l§e| §r§fДля проверки владений используйте палку§7!");
+		player.sendMessage(PREFIX + "§fПриват §3успешно §fсоздан§7! (§fРадиус §3" + radius + " §fбл§7.)\n§l§6| §r§fДля проверки владений используйте палку§7!");
 		SQLiteUtils.query("Regions.db", "INSERT INTO `AREAS` (`DATE_REG`, `Username`, `Main_X`, `Main_Y`, `Main_Z`, `Pos1_X`, `Pos1_Y`, `Pos1_Z`, `Pos2_X`, `Pos2_Y`, `Pos2_Z`) VALUES (\'" + StringUtils.getDate() + "\', \'" + player.getName() + "\', \'" + x + "\', \'" + y + "\', \'" + z + "\', \'" + pos1[0] + "\', \'" + pos1[1] + "\', \'" + pos1[2] + "\', \'" + pos2[0] + "\', \'" + pos2[1] + "\', \'" + pos2[2] + "\');");
 	}
 	
 	public static boolean canInteractHere(Player player, Location location) {
 		int region_id = getRegionIDByLocation(location);
 		if (region_id != -1) {
-			return isRegionMember(player.getName(), region_id) || isRegionOwner(player.getName(), region_id) || (player.hasPermission("Access.Admin"));
+			return isRegionMember(player.getName(), region_id) || isRegionOwner(player.getName(), region_id);
 		}
 		return true;
 	}

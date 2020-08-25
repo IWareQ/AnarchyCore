@@ -1,5 +1,8 @@
 package Anarchy.Module.Commands;
 
+import Anarchy.Manager.Sessions.PlayerSessionManager;
+import Anarchy.Manager.Sessions.Session.PlayerSession;
+import Anarchy.Module.Permissions.PermissionsAPI;
 import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -9,7 +12,7 @@ import cn.nukkit.command.CommandSender;
 public class ACommand extends Command {
 	
 	public ACommand() {
-		super("a", "Админ-Чат");
+		super("a", "§l§fАдмин-Чат");
 		setPermission("Command.A");
 		commandParameters.clear();
 	}
@@ -21,13 +24,15 @@ public class ACommand extends Command {
 			return false;
 		}
 		if (args.length < 1) {
-			player.sendMessage("§l§e| §r§fИспользование §7- §e/a §7(§3текст§7)");
+			player.sendMessage("§l§6| §r§fИспользование §7- /§6a §7(§3текст§7)");
 			return true;
 		}
+		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player.getName());
+		String displayName = PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + " §f" + player.getName();
 		String message = StringUtils.implode(args, 0);
-		for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
-			if (admin.hasPermission("Command.A")) {
-				admin.sendMessage("§cⒶ " + player.getDisplayName() + " §8» §f" + message);
+		for (Player adminChat : Server.getInstance().getOnlinePlayers().values()) {
+			if (adminChat.hasPermission("Command.A")) {
+				adminChat.sendMessage("§cⒶ " + displayName + " §8» §f" + message);
 			}
 		}
 		return false;

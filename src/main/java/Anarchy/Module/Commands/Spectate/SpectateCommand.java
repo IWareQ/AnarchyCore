@@ -30,7 +30,7 @@ public class SpectateCommand extends Command {
 		if (strings.length == 0) {
 			SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 			if (spectatePlayer == null) {
-				commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/sp §7(§3игрок§7)");
+				commandSender.sendMessage("§l§6| §r§fИспользование §7- §6/sp §7(§3игрок§7)");
 				return false;
 			} else {
 				player.setGamemode(0);
@@ -38,13 +38,13 @@ public class SpectateCommand extends Command {
 				player.getInventory().setContents(spectatePlayer.playerInventory);
 				spectatePlayer.playerPosition.level.loadChunk(spectatePlayer.playerPosition.getFloorX() >> 4, spectatePlayer.playerPosition.getFloorZ() >> 4);
 				player.teleport(spectatePlayer.playerPosition);
-				player.sendMessage("§l§a| §r§fВы закончили наблюдение за Игроком §e" + spectatePlayer.spectateName);
+				player.sendMessage("§l§a| §r§fВы закончили наблюдение за Игроком §6" + spectatePlayer.spectateName);
 				SPECTATE_PLAYERS.remove(player.getName());
 			}
 		} else {
 			SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 			if (spectatePlayer != null) {
-				commandSender.sendMessage("§l§c| §r§fВы уже наблюдаете за Игроком §e" + spectatePlayer.spectateName + "\n§l§e| §r§fДля окончания слежки введите §3§l/sp");
+				commandSender.sendMessage("§l§c| §r§fВы уже наблюдаете за Игроком §6" + spectatePlayer.spectateName + "\n§l§6| §r§fДля окончания слежки введите §3§l/sp");
 				return false;
 			}
 			Player specPlayer = Server.getInstance().getPlayer(strings[0]);
@@ -61,7 +61,7 @@ public class SpectateCommand extends Command {
 			player.setGamemode(3);
 			player.getInventory().clearAll();
 			player.teleport(specPlayer);
-			player.sendMessage("§l§a| §r§fВы начали наблюдать за Игроком §e" + specPlayer.getName() + "\n§l§e| §r§fДля окончания наблюдения введите §3§l/sp");
+			player.sendMessage("§l§a| §r§fВы начали наблюдать за Игроком §6" + specPlayer.getName() + "\n§l§6| §r§fДля окончания наблюдения введите §3§l/sp");
 		}
 		return false;
 	}

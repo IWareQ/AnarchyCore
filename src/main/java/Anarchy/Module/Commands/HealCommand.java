@@ -15,19 +15,15 @@ public class HealCommand extends Command {
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		Player player = (Player)sender;
-		if (!(player instanceof Player)) {
-			player.sendMessage("§fЭту команду можно использовать только в игре");
-			return false;
-		}
 		if (!player.hasPermission("Command.Heal")) {
 			return false;
 		}
 		if (player.getGamemode() != 0) {
-			player.sendMessage("§l§a| §r§fДля использования перейдите в §eВыживание");
+			player.sendMessage("§l§6| §r§fДля использования перейдите в §3Выживание");
 			return false;
 		}
 		player.setHealth(20);
-		player.sendMessage("§l§a| §r§fВы §3успешно §fпополнили уровень Вашего §eЗдоровья");
+		player.sendMessage("§l§a| §r§fВы §3успешно §fпополнили уровень Вашего §6Здоровья");
 		return false;
 	}
 }

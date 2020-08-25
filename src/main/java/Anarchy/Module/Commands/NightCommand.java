@@ -24,7 +24,7 @@ public class NightCommand extends Command {
 		
 		FunctionsAPI.WORLD.setTime(14000);
 		for (Player players: Server.getInstance().getOnlinePlayers().values()) {
-				players.sendMessage("§l§e| §r§fИгрок §3" + playerName + " §fустановил§7(§fа§7) §9Ночь");
+				players.sendMessage("§l§6| §r§fИгрок §3" + playerName + " §fустановил§7(§fа§7) §9Ночь");
 		}
 		return false;
 	}

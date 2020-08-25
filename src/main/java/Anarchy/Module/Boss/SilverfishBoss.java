@@ -1,26 +1,26 @@
 package Anarchy.Module.Boss;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityArthropod;
-import cn.nukkit.entity.mob.EntitySilverfish;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-import nukkitcoders.mobplugin.route.WalkerRouteFinder;
+import nukkitcoders.mobplugin.entities.monster.walking.Spider;
+import nukkitcoders.mobplugin.utils.Utils;
 
-public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
+public class SilverfishBoss extends Spider implements EntityArthropod {
 
-    public static final int NETWORK_ID = EntitySilverfish.NETWORK_ID;
+    public static final int NETWORK_ID = 40;
 
     public SilverfishBoss(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-        this.route = new WalkerRouteFinder(this);
     }
 
     @Override
@@ -30,30 +30,30 @@ public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
 
     @Override
     public float getWidth() {
-        return 0.4f;
+        return 0.7f;
     }
 
     @Override
     public float getHeight() {
-        return 0.3f;
+        return 0.5f;
     }
 
     @Override
     public double getSpeed() {
-        return 1.4;
+        return 1.3;
     }
 
     @Override
     public void initEntity() {
         super.initEntity();
 
-        this.setMaxHealth(8);
-        this.setDamage(new float[] { 0, 1, 1, 1 });
+        this.setMaxHealth(20);
+        this.setDamage(new float[] { 0, 2, 3, 3 });
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 23 && this.distanceSquared(player) < 1) {
+        if (this.attackDelay > 23 && this.distanceSquared(player) < 1.32) {
             this.attackDelay = 0;
             HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
             damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
@@ -74,17 +74,25 @@ public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
     }
 
     @Override
-    public int getKillExperience() {
-        return 5;
+    public Item[] getDrops() {
+        List<Item> drops = new ArrayList<>();
+
+        drops.add(Item.get(Item.STRING, 0, Utils.rand(0, 2)));
+
+        for (int i = 0; i < (Utils.rand(0, 20) == 0 ? 1 : 0); i++) {
+            drops.add(Item.get(Item.SPIDER_EYE, 0, 1));
+        }
+
+        return drops.toArray(new Item[0]);
     }
 
     @Override
-    public boolean entityBaseTick(int tickDiff) {
-        if (getServer().getDifficulty() == 0) {
-            this.close();
-            return true;
-        }
+    public int getKillExperience() {
+        return 1500;
+    }
 
-        return super.entityBaseTick(tickDiff);
+    @Override
+    public String getName() {
+        return "Cave Spider";
     }
 }

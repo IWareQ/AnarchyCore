@@ -35,7 +35,7 @@ public class RepairCommand extends Command {
 		PlayerInventory inventory = player.getInventory();
 		Item item = inventory.getItemInHand();
 		if (!item.isArmor() && !item.isTool()) {
-			player.sendMessage("§l§e| §r§fЧинить можно только §3Инструменты §fи §3Броню");
+			player.sendMessage("§l§6| §r§fЧинить можно только §3Инструменты §fи §3Броню");
 			return false;
 		}
 		item.setDamage(0);

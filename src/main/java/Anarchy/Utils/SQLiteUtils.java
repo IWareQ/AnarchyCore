@@ -27,7 +27,7 @@ public class SQLiteUtils {
 			connection.createStatement().executeUpdate(query);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §fquery §7- §e" + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §fquery §7- §6" + e);
 		}
 		return true;
 	}
@@ -56,7 +56,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectMap §7- §e" + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectMap §7- §6" + e);
 		}
 		return map;
 	}
@@ -78,7 +78,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectStringMap §7- §e" + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectStringMap §7- §6" + e);
 		}
 		return map;
 	}
@@ -99,7 +99,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectIntegerMap §7- §e" + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectIntegerMap §7- §6" + e);
 		}
 		return map;
 	}
@@ -120,7 +120,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectList §7- §e" + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectList §7- §6" + e);
 		}
 		return list;
 	}
@@ -141,7 +141,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectIntegerList §7- §e" + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectIntegerList §7- §6" + e);
 		}
 		return list;
 	}
@@ -162,7 +162,7 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectStringList §7- §e" + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectStringList §7- §6" + e);
 		}
 		return list;
 	}
@@ -178,7 +178,7 @@ public class SQLiteUtils {
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
 			res = null;
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectString §7- §e" + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectString §7- §6" + e);
 		}
 		return res;
 	}
@@ -193,7 +193,7 @@ public class SQLiteUtils {
 			res = result.getInt(1);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			//Server.getInstance().getLogger().alert("§l§fОшибка в §3selectInteger §7- §e" + e);
+			//Server.getInstance().getLogger().alert("§l§fОшибка в §3selectInteger §7- §6" + e);
 		}
 		return res;
 	}
@@ -208,7 +208,7 @@ public class SQLiteUtils {
 			res = result.getLong(1);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectLong §7- §e" + e);
+			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectLong §7- §6" + e);
 		}
 		return res;
 	}

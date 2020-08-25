@@ -18,8 +18,8 @@ public class TpnCommand extends Command {
 			commandSender.sendMessage(TpaCommand.PREFIX + "§fВы не имеете запросов на телепортацию, или Игрок покинул сервер");
 			return true;
 		}
-		calledPlayer.sendMessage(TpaCommand.PREFIX + "§fИгрок §e" + commandSender.getName() + " §fотклонил Ваш запрос§7!");
-		commandSender.sendMessage(TpaCommand.PREFIX + "§fЗапрос Игрока §e" + calledPlayer.getName() + " §fотклонен§7!");
+		calledPlayer.sendMessage(TpaCommand.PREFIX + "§fИгрок §3" + commandSender.getName() + " §fотклонил Ваш запрос§7!");
+		commandSender.sendMessage(TpaCommand.PREFIX + "§fЗапрос Игрока §3" + calledPlayer.getName() + " §fотклонен§7!");
 		TpaCommand.TPA_REQUEST.remove(commandSender);
 		return true;
 	}

@@ -45,7 +45,7 @@ public class AuctionAPI extends PluginBase {
 					try {
 						compoundTag = NBTIO.read((byte[])itemData.get(7), ByteOrder.LITTLE_ENDIAN);
 					} catch (IOException e) {
-						Server.getInstance().getLogger().alert("§l§fОшибка в §fregister §7- §e" + e);
+						Server.getInstance().getLogger().alert("§l§fОшибка в §fregister §7- §6" + e);
 					}
 				}
 				if (compoundTag == null) {
@@ -71,7 +71,7 @@ public class AuctionAPI extends PluginBase {
 				Item item = tradeItem.sellItem;
 				config.set(entry.getKey(), item.hasCompoundTag() ? new Object[]{tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[]{tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount()});
 			} catch (IOException e) {
-				Server.getInstance().getLogger().alert("§l§fОшибка в §funregister §7- §e" + e);
+				Server.getInstance().getLogger().alert("§l§fОшибка в §funregister §7- §6" + e);
 			}
 		}
 		config.save();
@@ -92,7 +92,7 @@ public class AuctionAPI extends PluginBase {
 			if (!tradeItem.isValid()) {
 				Player player = Server.getInstance().getPlayerExact(tradeItem.sellerName);
 				if (player != null) {
-					player.sendMessage(PREFIX + "§fВаш товар никто не купил§7, §fпоэтому мы вернули его обртано\n§l§e| §r§fСмотрите вкладку §7(§3Хранилище§7) §fв §e/auc");
+					player.sendMessage(PREFIX + "§fВаш товар никто не купил§7, §fпоэтому мы вернули его обртано\n§l§6| §r§fСмотрите вкладку §7(§3Хранилище§7) §fв §7/§6auc");
 				}
 				try {
 					File dataFile = new File(AnarchyMain.datapath + "/Auction/PlayerItems/" + tradeItem.sellerName + ".yml");
@@ -100,7 +100,7 @@ public class AuctionAPI extends PluginBase {
 					config.set(tradeItem.UUID, tradeItem.sellItem.hasCompoundTag() ? new Object[]{tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount(), NBTIO.write(tradeItem.sellItem.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[]{tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount()});
 					config.save();
 				} catch (IOException e) {
-					Server.getInstance().getLogger().alert("§l§fОшибка в §fupdateAuction §7- §e " + e);
+					Server.getInstance().getLogger().alert("§l§fОшибка в §fupdateAuction §7- §6 " + e);
 				}
 				iterator.remove();
 			}
@@ -116,7 +116,7 @@ public class AuctionAPI extends PluginBase {
 			auctionChest = AUCTION_CHEST.get(player);
 			auctionChest.clearAll();
 		}
-		auctionChest.setTitle("§fТорговая Площадка §7(§3" + AUCTION.size() + "§7)");
+		auctionChest.setTitle("§l§fТорговая Площадка §7(§3" + AUCTION.size() + "§7)");
 		int tradeSize = AUCTION.size();
 		if (tradeSize == 0) {
 			player.sendMessage(AuctionAPI.PREFIX + "§fАукцион пуст§7!");
@@ -126,7 +126,7 @@ public class AuctionAPI extends PluginBase {
 		int stop;
 		if (tradeSize > start + AUCTION_CHEST_SIZE) {
 			stop = start + AUCTION_CHEST_SIZE;
-			auctionChest.setItem(52, Item.get(Item.PAPER).setCustomName("§r§eСледующая Страница").setLore("§r§e• §fНажмите§7, §fчтобы перейти"));
+			auctionChest.setItem(52, Item.get(Item.PAPER).setCustomName("§r§6Следующая Страница").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
 		} else {
 			stop = tradeSize;
 		}
@@ -137,16 +137,16 @@ public class AuctionAPI extends PluginBase {
 			CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 			compoundTag.putString("UUID", tradeItem.UUID);
 			item.setNamedTag(compoundTag);
-			item.setCustomName("§r§fПродавец §7- §e" + tradeItem.sellerName + "\n§r§fСтоимость §7- §e" + tradeItem.itemPrice + "\n§r§fДо окончания §7- §3" + (tradeItem.getTime() / 3600) + " §fч§7. §3" + (tradeItem.getTime() / 60 % 60) + " §fмин§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §e" + tradeItem.aboutMessage) + "\n\n§r§e• §fНажмите§7, §fчтобы купить");
+			item.setCustomName("§r§fПродавец §7- §6" + tradeItem.sellerName + "\n§r§fСтоимость §7- §6" + tradeItem.itemPrice + "\n§r§fДо окончания §7- §3" + (tradeItem.getTime() / 3600) + " §fч§7. §3" + (tradeItem.getTime() / 60 % 60) + " §fмин§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §6" + tradeItem.aboutMessage) + "\n\n§r§6• §fНажмите§7, §fчтобы купить");
 			auctionChest.addItem(item);
 		}
 		if (playerPage != 0) {
-			auctionChest.setItem(51, Item.get(Item.PAPER).setCustomName("§r§eПредыдущая Страница").setLore("§r§e• §fНажмите§7, §fчтобы перейти"));
+			auctionChest.setItem(51, Item.get(Item.PAPER).setCustomName("§r§6Предыдущая Страница").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
 		}
 		if (playerPage >= 0) {
-			auctionChest.setItem(49, Item.get(Item.EMERALD).setCustomName("§r§eОбновление страницы").setLore("§r§e• §fНажмите§7, §fчтобы обновить страницу"));
-			auctionChest.setItem(53, Item.get(Item.SIGN).setCustomName("§r§eСправка").setLore("§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §eМонет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§e/auc §7(§3цена§7)\n§r§fили\n§r§e/auc §7(§3цена§7) (§3описание§7)"));
-			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§eВаши Предметы на Продаже").setLore("§r§e• §fНажмите§7, §fчтобы открыть"));
+			auctionChest.setItem(49, Item.get(Item.EMERALD).setCustomName("§r§6Обновление страницы").setLore("§r§6• §fНажмите§7, §fчтобы обновить страницу"));
+			auctionChest.setItem(53, Item.get(Item.SIGN).setCustomName("§r§6Справка").setLore("§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §6Монет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§6/auc §7(§3цена§7)\n§r§fили\n§r§6/auc §7(§3цена§7) (§3описание§7)"));
+			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§6Ваши Предметы на Продаже").setLore("§r§6• §fНажмите§7, §fчтобы открыть"));
 		}
 		if (firstTime) {
 			FakeChestsAPI.openInventory(player, auctionChest);

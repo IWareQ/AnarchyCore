@@ -9,7 +9,7 @@ import cn.nukkit.command.CommandSender;
 public class DayCommand extends Command {
 	
 	public DayCommand() {
-		super("day", "§fСменить Ночь на День");
+		super("day", "§l§fСменить §9Ночь §fна §eДень");
 		setPermission("Command.Day");
 		commandParameters.clear();
 	}
@@ -24,7 +24,7 @@ public class DayCommand extends Command {
 		
 		FunctionsAPI.WORLD.setTime(1000);
 		for (Player players: Server.getInstance().getOnlinePlayers().values()) {
-				players.sendMessage("§l§e| §r§fИгрок §3" + playerName + " §fустановил§7(§fа§7) §eДень");
+				players.sendMessage("§l§6| §r§fИгрок §3" + playerName + " §fустановил§7(§fа§7) §eДень");
 		}
 		return false;
 	}

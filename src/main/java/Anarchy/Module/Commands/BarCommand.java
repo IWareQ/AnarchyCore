@@ -9,7 +9,7 @@ import cn.nukkit.command.CommandSender;
 public class BarCommand extends Command {
 	
 	public BarCommand() {
-		super("bar", "Включить/Выключить ХотБар");
+		super("bar", "§l§fВключить§7/§fВыключить ХотБар");
 		commandParameters.clear();
 	}
 	
@@ -20,7 +20,7 @@ public class BarCommand extends Command {
 		if (PlayerSessionManager.SCOREBOARD.contains(playerName)) {
 			PlayerSessionManager.SCOREBOARDS.get(playerName).hideFor(player);
 			PlayerSessionManager.SCOREBOARD.remove(playerName);
-			player.sendMessage("§l§c| §r§fХотбар §3успешно §fотключен");
+			player.sendMessage("§l§a| §r§fХотбар §3успешно §fотключен");
 		} else {
 			PlayerSessionManager.SCOREBOARD.add(playerName);
 			HotbarTask.showScoreboard(player);

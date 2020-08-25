@@ -55,7 +55,7 @@ public class EventsHandler implements Listener {
 		if (player.getFloorY() <= 0) {
 			Level level = Server.getInstance().getLevelByName("world2");
 			player.teleport(level.getSafeSpawn());
-			player.sendMessage("§l§3| §r§fВы упали§7, §fно вас спас бог :)");
+			player.sendMessage("§l§c| §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн");
 		}
 		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
 			if (block.getId() == 416) {
@@ -87,12 +87,12 @@ public class EventsHandler implements Listener {
 		if (cause instanceof EntityDamageByEntityEvent) {
 			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
 			if (damager instanceof Player) {
-				player.sendMessage("§c§l| §r§fВы были убиты Игроком §e" + damager.getName());
-				event.setDeathMessage("§e§l| §r§fИгрок §3" + player.getName() + " §fпогиб от руки Игрока §e" + damager.getName());
+				player.sendMessage("§c§l| §r§fВы были убиты Игроком §3" + damager.getName());
+				event.setDeathMessage("§6§l| §r§fИгрок §3" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
 				int money = EconomyAPI.myMoney(player) * 20 / 100;
 				if (money != 0) {
-					player.sendMessage("§c§l| §r§fПри смерти Вы потеряли §e" + money + " §7(§f20%§7)");
-					((Player)damager).sendMessage("§a§l| §r§fВо время убийства§7, §fВы украли §e" + money + " §fу Игрока §e" + player.getName());
+					player.sendMessage("§c§l| §r§fПри смерти Вы потеряли §6" + money + " §7(§f20%§7)");
+					((Player)damager).sendMessage("§a§l| §r§fВо время убийства§7, §fВы украли §6" + money + " §fу Игрока §3" + player.getName());
 					EconomyAPI.reduceMoney(player, money);
 					EconomyAPI.addMoney((Player)damager, money);
 					addKill((Player)damager);
@@ -101,7 +101,7 @@ public class EventsHandler implements Listener {
 				return;
 			}
 		}
-		event.setDeathMessage("§e§l| §r§fИгрок §e" + player.getName() + " §fпогиб");
+		event.setDeathMessage("§6§l| §r§fИгрок §3" + player.getName() + " §fпогиб");
 		addDeaths(player);
 	}
 	
@@ -114,14 +114,14 @@ public class EventsHandler implements Listener {
 			if (damager instanceof Player) {
 				if (entity instanceof Animal) {
 					if (entity instanceof Squid) {
-						((Player)damager).sendTip("§7+ §e3");
+						((Player)damager).sendTip("§7+ §63");
 						EconomyAPI.addMoney(((Player)damager), 3);
 					} else {
-						((Player)damager).sendTip("§7+ §e1");
+						((Player)damager).sendTip("§7+ §61");
 						EconomyAPI.addMoney(((Player)damager), 1);
 					}
 				} else if (entity instanceof Monster) {
-					((Player)damager).sendTip("§7+ §e2");
+					((Player)damager).sendTip("§7+ §62");
 					EconomyAPI.addMoney(((Player)damager), 2);
 				}
 			}
@@ -164,7 +164,7 @@ public class EventsHandler implements Listener {
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
 		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
-			player.sendMessage("§l§e| §r§fКоманды §3заблокированны§7, §fпереместитесь в игровую зону§7!");
+			player.sendMessage("§l§6| §r§fКоманды §3заблокированны§7, §fпереместитесь в игровую зону§7!");
 			event.setCancelled(true);
 		}
 	}
@@ -179,9 +179,9 @@ public class EventsHandler implements Listener {
 			event.setFormat("§aⒼ " + displayName + " §8» §7" + playerMessage.substring(1).replaceAll("§", ""));
 		} else {
 			Set<CommandSender> players = new HashSet<>();
-			for (Player all : Server.getInstance().getOnlinePlayers().values()) {
-				if (all.level == player.level && all.distance(new Location(player.getX(), player.getY(), player.getZ(), all.getLevel())) <= CHAT_RADIUS) {
-					players.add(all);
+			for (Player playerChat : Server.getInstance().getOnlinePlayers().values()) {
+				if (playerChat.level == player.level && playerChat.distance(new Location(player.getX(), player.getY(), player.getZ(), playerChat.getLevel())) <= CHAT_RADIUS) {
+					players.add(playerChat);
 				}
 			}
 			players.add(new ConsoleCommandSender());

@@ -15,17 +15,13 @@ import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
 import Anarchy.Module.Commands.DayCommand;
 import Anarchy.Module.Commands.DonateCommand;
-import Anarchy.Module.Commands.EpCommand;
-import Anarchy.Module.Commands.ExchangerCommand;
 import Anarchy.Module.Commands.FoodCommand;
 import Anarchy.Module.Commands.GamemodeCommand;
 import Anarchy.Module.Commands.HealCommand;
 import Anarchy.Module.Commands.KickCommand;
 import Anarchy.Module.Commands.NearCommand;
 import Anarchy.Module.Commands.NightCommand;
-import Anarchy.Module.Commands.ProfileCommand;
 import Anarchy.Module.Commands.RepairCommand;
-import Anarchy.Module.Commands.ShopCommand;
 import Anarchy.Module.Commands.TestCommand;
 import Anarchy.Module.Commands.Check.CheckCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
@@ -71,7 +67,7 @@ public class AnarchyMain extends PluginBase {
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		for (String pluginName : new String[]{"DbLib", "ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
-				getLogger().alert("§l§fНе найден §3плагин §7- §e" + pluginName);
+				getLogger().alert("§l§fНе найден §3плагин §7- §6" + pluginName);
 				pluginManager.disablePlugin(this);
 				return;
 			}
@@ -131,7 +127,7 @@ public class AnarchyMain extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new TestCommand(), new EpCommand(), new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), new ProfileCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand(), new ExchangerCommand(), new ShopCommand()};
+		Command[] commands = new Command[]{new TestCommand(), new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	

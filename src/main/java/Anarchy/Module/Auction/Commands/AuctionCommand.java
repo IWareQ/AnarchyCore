@@ -42,14 +42,14 @@ public class AuctionCommand extends Command {
 				}
 			}
 			if (config.getAll().size() + count > AuctionAPI.AUCTION_MAX_SELLS) {
-				commandSender.sendMessage(AuctionAPI.PREFIX + "§fВы достигли лимита§7!\n§l§e| §r§fСнимите товар с продажи или заберите предметы с §3Хранилища");
+				commandSender.sendMessage(AuctionAPI.PREFIX + "§fВы достигли лимита§7!\n§l§6| §r§fСнимите товар с продажи или заберите предметы с §3Хранилища");
 				return false;
 			}
 			if (!StringUtils.isInteger(strings[0])) {
 				if (strings.length == 1) {
-					commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/auc §7(§3цена§7)");
+					commandSender.sendMessage("§l§6| §r§fИспользование §7- §6/auc §7(§3цена§7)");
 				} else {
-					commandSender.sendMessage("§l§e| §r§fИспользование §7- §e/auc §7(§3цена§7) (§3описание§7)");
+					commandSender.sendMessage("§l§6| §r§fИспользование §7- §6/auc §7(§3цена§7) (§3описание§7)");
 				}
 				return false;
 			}
@@ -61,11 +61,11 @@ public class AuctionCommand extends Command {
 			}
 			int itemPrice = Integer.parseInt(strings[0]);
 			if (itemPrice <= 0 || itemPrice > AuctionAPI.AUCTION_MAX_PRICE) {
-				commandSender.sendMessage(AuctionAPI.PREFIX + "§fМаксимальная цена за предмет §7- §e" + AuctionAPI.AUCTION_MAX_PRICE + "");
+				commandSender.sendMessage(AuctionAPI.PREFIX + "§fМаксимальная цена за предмет §7- §6" + AuctionAPI.AUCTION_MAX_PRICE + "");
 				return false;
 			}
-			commandSender.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §3успешно §fвыставлен§7! (§fx§e" + sellItem.count + "§7) §fза §e" + itemPrice + "");
-			Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §e" + playerName + " §fвыставил предмет на продажу§7!");
+			commandSender.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §3успешно §fвыставлен§7! (§fx§6" + sellItem.count + "§7) §fза §6" + itemPrice + "");
+			Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §6" + playerName + " §fвыставил предмет на продажу§7!");
 			String UUID = java.util.UUID.randomUUID().toString();
 			AuctionAPI.AUCTION.put(UUID, new TradeItem(sellItem, commandSender.getName(), strings.length > 1 && !StringUtils.implode(strings, 1).trim().equals("") ? StringUtils.implode(strings, 1) : null, itemPrice, AuctionAPI.getTradeTime(), UUID));
 			playerInventory.setItemInHand(Item.get(Item.AIR));

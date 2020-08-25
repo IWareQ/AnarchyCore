@@ -8,7 +8,7 @@ import cn.nukkit.command.CommandSender;
 public class GamemodeCommand extends Command {
 	
 	public GamemodeCommand() {
-		super("gm", "Сменить режим игры");
+		super("gm", "§l§fСменить режим игры");
 		setPermission("Command.Gamemode");
 		commandParameters.clear();
 	}
@@ -17,25 +17,21 @@ public class GamemodeCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		Player player = (Player)sender;
 		String playerName = player.getName();
-		if (!(player instanceof Player)) {
-			player.sendMessage("§fЭту команду можно использовать только в игре");
-			return false;
-		}
 		if (!player.hasPermission("Command.Gamemode")) {
 			return false;
 		}
 		if (args.length == 0) {
-			player.sendMessage("§l§e| §r§fИспользование §7- §e/gm §30§7/§31§7/§32§7/§33");
+			player.sendMessage("§l§6| §r§fИспользование §7- /§6gm §30§7/§31§7/§32§7/§33");
 			return true;
 		}
 		switch (args[0]) {
 			case "0": 
 			{
 				player.setGamemode(0);
-				player.sendMessage("§l§a| §r§fРежим §7(§eВыживание§7) §3успешно §fвключен");
+				player.sendMessage("§l§a| §r§fРежим §7(§6Выживание§7) §3успешно §fвключен");
 				for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 					if (admin.hasPermission("Admin.Chat")) {
-						admin.sendTip("§l§7(§cА§7) §fАдминистратор §e" + playerName + " §7- §fсменил режим игры на §7(§eВыживание§7)");
+						admin.sendTip("§l§7(§cА§7) §fАдминистратор §3" + playerName + " §7- §fсменил режим игры на §7(§6Выживание§7)");
 					}
 				}
 			}
@@ -44,10 +40,10 @@ public class GamemodeCommand extends Command {
 			case "1": 
 			{
 				if (!player.hasPermission("Access.Admin")) {
-					player.sendMessage("§l§e| §r§fТворческий режим может использовать только §6Основатель §fи §4Администратор§7!");
+					player.sendMessage("§l§6| §r§fТворческий режим может использовать только §6Основатель §fи §4Администратор§7!");
 				} else {
 					player.setGamemode(1);
-					player.sendMessage("§l§a| §r§fРежим §7(§eТворчество§7) §3успешно §fвключен");
+					player.sendMessage("§l§a| §r§fРежим §7(§6Творчество§7) §3успешно §fвключен");
 					for (Player admin : Server.getInstance().getOnlinePlayers().values()) {
 						if (admin.hasPermission("Admin.Chat")) {
 							admin.sendTip("\u00a7l\u00a77(\u00a7c\u0410\u00a77) \u00a7f\u0410\u0434\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0442\u043e\u0440 \u00a7e" + playerName + " \u00a77- \u00a7f\u0441\u043c\u0435\u043d\u0438\u043b \u0440\u0435\u0436\u0438\u043c \u0438\u0433\u0440\u044b \u043d\u0430 \u00a77(\u00a7e\u0422\u0432\u043e\u0440\u0447\u0435\u0441\u0442\u0432\u043e\u00a77)");

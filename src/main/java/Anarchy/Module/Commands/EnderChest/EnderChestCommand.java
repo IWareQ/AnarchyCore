@@ -8,7 +8,7 @@ import cn.nukkit.command.CommandSender;
 public class EnderChestCommand extends Command {
 	
 	public EnderChestCommand() {
-		super("ec", "Открыть Эндер Сундук");
+		super("ec", "§l§fОткрыть Эндер Сундук");
 		setPermission("Command.EnderChest");
 		commandParameters.clear();
 	}
@@ -19,7 +19,7 @@ public class EnderChestCommand extends Command {
 		if (!player.hasPermission("Command.EnderChest")) {
 			return false;
 		}
-		EnderChest enderChest = new EnderChest("Эндер Сундук");
+		EnderChest enderChest = new EnderChest("§l§fЭндер Сундук");
 		enderChest.setContents(player.getEnderChestInventory().getContents());
 		FakeChestsAPI.openInventory(player, enderChest);
 		return false;

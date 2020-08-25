@@ -34,7 +34,7 @@ public class AuctionEventsHandler implements Listener {
 					AuctionChest inventory = (AuctionChest)slotChange.getInventory();
 					Item sourceItem = action.getSourceItem();
 					switch (sourceItem.getName()) {
-						case "§r§eСледующая Страница":
+						case "§r§6Следующая Страница":
 						{
 							AuctionAPI.AUCTION_PAGE.put(player, AuctionAPI.AUCTION_PAGE.get(player) + 1);
 							AuctionAPI.showAuction(player, false);
@@ -43,7 +43,7 @@ public class AuctionEventsHandler implements Listener {
 						}
 						break;
 						
-						case "§r§eОбновление страницы":
+						case "§r§6Обновление страницы":
 						{
 							AuctionAPI.showAuction(player, false);
 							AuctionAPI.showAuction(player, true);
@@ -51,13 +51,13 @@ public class AuctionEventsHandler implements Listener {
 						}
 						break;
 						
-						case "§r§eСправка":
+						case "§r§6Справка":
 						{
 							player.getLevel().addSound(player, Sound.MOB_VILLAGER_HAGGLE, 1, 1, player);
 						}
 						break;
 						
-						case "§r§eПредыдущая Страница":
+						case "§r§6Предыдущая Страница":
 						{
 							AuctionAPI.AUCTION_PAGE.put(player, AuctionAPI.AUCTION_PAGE.get(player) - 1);
 							AuctionAPI.showAuction(player, false);
@@ -66,7 +66,7 @@ public class AuctionEventsHandler implements Listener {
 						}
 						break;
 						
-						case "§r§eВаши Предметы на Продаже": 
+						case "§r§6Ваши Предметы на Продаже": 
 						{
 							String playerName = player.getName();
 							SellChest sellChest = new SellChest("Ваши Предметы на Продаже");
@@ -77,7 +77,7 @@ public class AuctionEventsHandler implements Listener {
 									CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 									compoundTag.putString("UUID", tradeItem.UUID);
 									item.setNamedTag(compoundTag);
-									sellChest.addItem(item.setCustomName("§r§fСтоимость §7- §e" + tradeItem.itemPrice + "\n§r§fДо окончания §7- §3" + (tradeItem.getTime() / 3600) + " §fч§7. §3" + (tradeItem.getTime() / 60 % 60) + " §fмин§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §e" + tradeItem.aboutMessage)));
+									sellChest.addItem(item.setCustomName("§r§fСтоимость §7- §6" + tradeItem.itemPrice + "\n§r§fДо окончания §7- §3" + (tradeItem.getTime() / 3600) + " §fч§7. §3" + (tradeItem.getTime() / 60 % 60) + " §fмин§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §6" + tradeItem.aboutMessage)));
 								}
 							}
 							if (sellChest.isEmpty()) {
@@ -94,7 +94,7 @@ public class AuctionEventsHandler implements Listener {
 							TradeItem tradeItem = AuctionAPI.AUCTION.get(compoundTag.getString("UUID"));
 							if (tradeItem != null) {
 								if (tradeItem.sellerName.equals(player.getName())) {
-									player.sendMessage(AuctionAPI.PREFIX + "§fВы пытаетесь купить свой товар§7!\n§l§e| §r§fДля снятия используйте вкладку §7(§3Ваши Предметы на Продаже§7)");
+									player.sendMessage(AuctionAPI.PREFIX + "§fВы пытаетесь купить свой товар§7!\n§l§6| §r§fДля снятия используйте вкладку §7(§3Ваши Предметы на Продаже§7)");
 									player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
 									return;
 								}
@@ -109,10 +109,10 @@ public class AuctionEventsHandler implements Listener {
 									compoundTag.remove("UUID");
 									playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(compoundTag));
 									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-									player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §e" + tradeItem.itemPrice + "");
+									player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §6" + tradeItem.itemPrice + "");
 									Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.sellerName);
 									if (sellerPlayer != null) {
-										sellerPlayer.sendMessage(AuctionAPI.PREFIX + "§fИгрок §3" + player.getName() + " §fкупил Ваш товар за §e" + tradeItem.itemPrice + "");
+										sellerPlayer.sendMessage(AuctionAPI.PREFIX + "§fИгрок §3" + player.getName() + " §fкупил Ваш товар за §6" + tradeItem.itemPrice + "");
 										EconomyAPI.addMoney(sellerPlayer, tradeItem.itemPrice);
 									} else {
 										EconomyAPI.addMoney(tradeItem.sellerName, tradeItem.itemPrice);
