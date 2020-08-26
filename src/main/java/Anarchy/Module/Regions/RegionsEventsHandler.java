@@ -4,13 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import Anarchy.AnarchyMain;
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Utils.SQLiteUtils;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockAir;
-import cn.nukkit.blockentity.BlockEntityChest;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
@@ -20,7 +17,6 @@ import cn.nukkit.event.entity.EntityExplodeEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
-import cn.nukkit.scheduler.NukkitRunnable;
 
 public class RegionsEventsHandler implements Listener {
 	
@@ -99,23 +95,6 @@ public class RegionsEventsHandler implements Listener {
 			Block block = (Block)iterator.next();
 			int id = block.getId();
 			if (RegionsAPI.REGIONS.get(id) != null) {
-				iterator.remove();
-			} else if (id == 54 || id == 146) {
-				iterator.remove();
-				new NukkitRunnable(){
-					
-					public void run() {
-						BlockEntityChest chest = (BlockEntityChest)block.level.getBlockEntity(block);
-						if (chest != null) {
-							Map<Integer, Item> map = chest.getInventory().getContents();
-							for (Map.Entry<Integer, Item> entry : map.entrySet()) {
-								block.level.dropItem(block, entry.getValue());
-							}
-							block.level.setBlock(block, new BlockAir());
-						}
-					}
-				}.runTaskLater(AnarchyMain.plugin, 20);
-			} else if (id == 52) {
 				iterator.remove();
 			}
 		}

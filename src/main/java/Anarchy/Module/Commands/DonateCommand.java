@@ -14,6 +14,10 @@ public class DonateCommand extends Command {
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		Player player = (Player)sender;
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
+			return true;
+		}
 		new SimpleForm("Описание Донат Услуг", "§l§fЕсли Вас §3устраивает §fлюбая привилегия§7, §fто Вы можете пройти на наш §3сайт §fи приобрести ее§7!\n\n§l§fНаш сайт §7- §3deathmc§7.§3mcpetrade§7.§3ru").addButton("§l§fДля чего нужен Донат§7?").send(player, (target, form, data)->{
 			if (data == -1) return;
 			if (data == 0) {

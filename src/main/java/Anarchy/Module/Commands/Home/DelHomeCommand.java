@@ -18,6 +18,10 @@ public class DelHomeCommand extends Command {
 		String playerName = player.getName();
 		String upperCase = playerName.toUpperCase();
 		Integer homeId = SQLiteUtils.selectInteger("Homes.db", "SELECT `Home_ID` FROM `HOMES` WHERE UPPER(`Username`) = \'" + upperCase + "\';");
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
+			return true;
+		}
 		if (homeId == -1) {
 			player.sendMessage(HomeCommand.PREFIX + "§fТочки дома не обнаружено§7, §fдля создания используйте §7/§3sethome");
 		} else {

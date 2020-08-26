@@ -17,6 +17,10 @@ public class BarCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		Player player = (Player)sender;
 		String playerName = player.getName();
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
+			return true;
+		}
 		if (PlayerSessionManager.SCOREBOARD.contains(playerName)) {
 			PlayerSessionManager.SCOREBOARDS.get(playerName).hideFor(player);
 			PlayerSessionManager.SCOREBOARD.remove(playerName);

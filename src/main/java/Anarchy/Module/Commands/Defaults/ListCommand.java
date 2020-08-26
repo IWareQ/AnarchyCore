@@ -15,7 +15,6 @@ public class ListCommand extends Command {
 	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		Player player = (Player)sender;
 		int onlineCount = 0;
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Player players : sender.getServer().getOnlinePlayers().values()) {
@@ -24,7 +23,7 @@ public class ListCommand extends Command {
 			}
 			++onlineCount;
 		}
-		player.sendMessage("§l§6| §r§fНа сервере §3" + onlineCount + " §fиз §3" + Server.getInstance().getMaxPlayers() + " §fИгроков\n§fИгроки §7- §6" + (stringBuilder.length() > 0 ? stringBuilder.substring(4) : "§7..."));
+		sender.sendMessage("§l§6| §r§fНа сервере §3" + onlineCount + " §fиз §3" + Server.getInstance().getMaxPlayers() + " §fИгроков\n§fИгроки §7- §6" + (stringBuilder.length() > 0 ? stringBuilder.substring(4) : "§7..."));
 		return true;
 	}
 }

@@ -22,15 +22,19 @@ public class SpectateCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (!commandSender.hasPermission("Command.Spectate")) {
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
+			return true;
+		}
+		if (!player.hasPermission("Command.Spectate")) {
 			return false;
 		}
-		Player player = (Player)commandSender;
-		if (strings.length == 0) {
+		if (args.length == 0) {
 			SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 			if (spectatePlayer == null) {
-				commandSender.sendMessage("§l§6| §r§fИспользование §7- §6/sp §7(§3игрок§7)");
+				player.sendMessage("§l§6| §r§fИспользование §7- §6/sp §7(§3игрок§7)");
 				return false;
 			} else {
 				player.setGamemode(0);
@@ -44,16 +48,16 @@ public class SpectateCommand extends Command {
 		} else {
 			SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 			if (spectatePlayer != null) {
-				commandSender.sendMessage("§l§c| §r§fВы уже наблюдаете за Игроком §6" + spectatePlayer.spectateName + "\n§l§6| §r§fДля окончания слежки введите §3§l/sp");
+				player.sendMessage("§l§c| §r§fВы уже наблюдаете за Игроком §6" + spectatePlayer.spectateName + "\n§l§6| §r§fДля окончания слежки введите §3§l/sp");
 				return false;
 			}
-			Player specPlayer = Server.getInstance().getPlayer(strings[0]);
+			Player specPlayer = Server.getInstance().getPlayer(args[0]);
 			if (specPlayer == null) {
-				commandSender.sendMessage("§l§c| §r§fИгрок §r" + strings[0] + " §7- §3Оффлайн");
+				player.sendMessage("§l§c| §r§fИгрок §r" + args[0] + " §7- §3Оффлайн");
 				return false;
 			}
 			if (player == specPlayer) {
-				commandSender.sendMessage("§l§c| §r§fВы пытаетесь наблюдать за собой§7!");
+				player.sendMessage("§l§c| §r§fВы пытаетесь наблюдать за собой§7!");
 				return false;
 			}
 			SPECTATE_PLAYERS.put(player.getName(), new SpectatePlayer(player, specPlayer));

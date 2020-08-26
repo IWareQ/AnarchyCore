@@ -24,6 +24,10 @@ public class HomeCommand extends Command {
 		String playerName = player.getName();
 		String upperCase = playerName.toUpperCase();
 		Map<String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM `HOMES` WHERE UPPER(`Username`) = \'" + upperCase + "\';");
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
+			return true;
+		}
 		if (homeData == null || homeData.isEmpty()) {
 			player.sendMessage(PREFIX + "§fТочек дома не обнаружено§7, §fдля создания используйте §7/§3sethome");
 		} else {

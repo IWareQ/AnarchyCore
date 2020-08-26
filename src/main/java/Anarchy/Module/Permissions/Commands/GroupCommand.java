@@ -17,25 +17,28 @@ public class GroupCommand extends Command {
 	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		Player player = (Player)sender;
+		if (sender instanceof Player) {
+			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Консоли");
+			return true;
+		}
 		if (args.length < 2 || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
-			player.sendMessage("§l§6| §r§fИспользование §7- §6/group §7(§3ID§7) (§3игрок§7)");
+			sender.sendMessage("§l§6| §r§fИспользование §7- §6/group §7(§3ID§7) (§3игрок§7)");
 			return true;
 		}
 		String nickname = StringUtils.implode(args, 1);
 		if (!AuthAPI.isRegistered(nickname)) {
-			player.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §7- §fне зарегистрирован§7!");
+			sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §7- §fне зарегистрирован§7!");
 			return true;
 		}
 		if (!StringUtils.isInteger(args[0]) || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
-			player.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §3" + nickname + " §7- §fне существует§7!");
+			sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §3" + nickname + " §7- §fне существует§7!");
 			return true;
 		}
 		sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fполучил группу §7- " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
 		Player addPermission = Server.getInstance().getPlayerExact(nickname);
-		if (player != null) {
-			player.sendMessage(PermissionsAPI.PREFIX + "§fВы получили привилегию §7(" + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])) + "§7)");
-			PermissionsAPI.setGroup(player, Integer.parseInt(args[0]));
+		if (addPermission != null) {
+			addPermission.sendMessage(PermissionsAPI.PREFIX + "§fВы получили привилегию §7(" + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])) + "§7)");
+			PermissionsAPI.setGroup(addPermission, Integer.parseInt(args[0]));
 			PermissionsAPI.updatePermissions(addPermission);
 			PermissionsAPI.updateTag(addPermission);
 			return true;

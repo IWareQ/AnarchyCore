@@ -21,6 +21,10 @@ public class RegionCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		Player player = (Player)sender;
 		String playerName = player.getName();
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
+			return true;
+		}
 		if (args.length == 0) {
 			player.sendMessage("§l§6| §r§fИспользование §7- §6/rg help");
 			return true;

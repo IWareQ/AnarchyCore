@@ -22,7 +22,7 @@ public class SeeMoneyCommand extends Command {
 			return true;
 		}
 		if (args.length < 1) {
-			sender.sendMessage("§l§6| §r§fИспользование §7- §6/seemoney §7(§3игрок§7)");
+			sender.sendMessage("§l§6| §r§fИспользование §7- /§6seemoney §7(§3игрок§7)");
 			return true;
 		}
 		Player seePlayer = Server.getInstance().getPlayer(args[0]);

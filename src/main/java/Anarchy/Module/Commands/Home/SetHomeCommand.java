@@ -22,6 +22,10 @@ public class SetHomeCommand extends Command {
 		int y = player.getFloorY();
 		int z = player.getFloorZ();
 		Integer homeId = SQLiteUtils.selectInteger("Homes.db", "SELECT `Home_ID` FROM `HOMES` WHERE UPPER(`Username`) = \'" + upperCase + "\';");
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
+			return true;
+		}
 		if (player.getLevel() != FunctionsAPI.WORLD) {
 			player.sendMessage(HomeCommand.PREFIX + "§fВ этом мире §3запрещено §fставить точку Дома§7!");
 		} else if (homeId == -1) {
