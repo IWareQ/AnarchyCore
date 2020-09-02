@@ -50,6 +50,11 @@ public class PlayerSession {
 		return Integer.parseInt(this.playerData.get(key));
 	}
 	
+	public Double getDouble(String key) {
+		return Double.parseDouble(this.playerData.get(key));
+		
+	}
+	
 	public Long getLong(String key) {
 		return Long.getLong(this.playerData.get(key));
 	}
@@ -72,6 +77,11 @@ public class PlayerSession {
 	}
 	
 	public void setInteger(String key, int value) {
+		playerData.remove(key);
+		playerData.put(key, String.valueOf(value));
+	}
+	
+	public void setDouble(String key, Double value) {
 		playerData.remove(key);
 		playerData.put(key, String.valueOf(value));
 	}

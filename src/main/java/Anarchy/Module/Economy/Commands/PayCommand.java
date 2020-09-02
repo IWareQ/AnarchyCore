@@ -1,6 +1,7 @@
 package Anarchy.Module.Economy.Commands;
 
 import Anarchy.Module.Economy.EconomyAPI;
+import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -32,19 +33,19 @@ public class PayCommand extends Command {
 			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + args[0] + " §7- §3Оффлайн!");
 			return true;
 		}
-		if (!args[1].matches("^[0-9]+$") || Integer.parseInt(args[1]) < 0) {
+		if (!StringUtils.isDouble(args[1]) || Double.parseDouble(args[1]) < 0) {
 			player.sendMessage(EconomyAPI.PREFIX + "§fСумма может быть только положительным числом");
 			return true;
 		}
-		int money = EconomyAPI.myMoney(player);
-		if (money < Integer.parseInt(args[1])) {
+		Double money = EconomyAPI.myMoney(player);
+		if (money < Double.parseDouble(args[1])) {
 			player.sendMessage(EconomyAPI.PREFIX + "§fВам не хватает §3монет §fдля перевода§7.\n§l§6| §r§fВаш баланс §7- §6" + money + "");
 			return true;
 		}
 		player.sendMessage(EconomyAPI.PREFIX + "§fВы §3успешно §fперевели §6" + args[1] + " §fИгроку §3" + player.getName());
 		payPlayer.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + sender.getName() + " §fперевел Вам §6" + args[1] + "");
-		EconomyAPI.reduceMoney(player, Integer.parseInt(args[1]));
-		EconomyAPI.addMoney(payPlayer, Integer.parseInt(args[1]));
+		EconomyAPI.reduceMoney(player, Double.parseDouble(args[1]));
+		EconomyAPI.addMoney(payPlayer, Double.parseDouble(args[1]));
 		return true;
 	}
 }

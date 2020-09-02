@@ -17,6 +17,7 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.inventory.InventoryTransactionEvent;
+import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
@@ -27,7 +28,7 @@ import cn.nukkit.utils.Config;
 public class StorageHandler extends Command implements Listener {
 	
 	public StorageHandler() {
-		super("storage", "Хранилище купленных Предметов"); //Для выдачи предмета в Хранилище - /storage ID:META:COUNT USERNAME
+		super("storage", "Хранилище купленных Предметов");
 		new File(AnarchyMain.datapath + "/StorageItems/").mkdirs();
 	}
 	
@@ -71,10 +72,13 @@ public class StorageHandler extends Command implements Listener {
 		for (InventoryAction action : event.getTransaction().getActions()) {
 			if (action instanceof SlotChangeAction && ((SlotChangeAction)action).getInventory() instanceof StorageChest) {
 				Item sourceItem = action.getSourceItem();
+				CompoundTag compoundTag = sourceItem.getNamedTag();
 				Player player = event.getTransaction().getSource();
+				PlayerInventory playerInventory = player.getInventory();
 				if (sourceItem.hasCompoundTag() && sourceItem.getNamedTag().getString("DATE") != null) {
-					sourceItem.clearCustomBlockData();
-					player.level.addSound(player, Sound.RANDOM_ORB, 1, 1, player);
+					playerInventory.addItem(sourceItem.setNamedTag(compoundTag).clearCustomName());
+					player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+					player.sendMessage("§l§a| §r§fПредмет был успешно взят");
 				} else {
 					player.level.addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
 					event.setCancelled();

@@ -78,7 +78,7 @@ public class SilverfishBoss extends Spider implements EntityArthropod {
 	
 	@Override()
 	public int getKillExperience() {
-		return 1500;
+		return 1; // 1500
 	}
 	
 	@Override()

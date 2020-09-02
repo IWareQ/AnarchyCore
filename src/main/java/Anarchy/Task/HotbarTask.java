@@ -36,7 +36,7 @@ public class HotbarTask extends Task {
 		scoreboardDisplay.addLine("§fНик §7- §3" + playerName, 2);
 		scoreboardDisplay.addLine("§fСтатус §7- " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")), 3);
 		scoreboardDisplay.addLine(" ", 4);
-		scoreboardDisplay.addLine("§fБаланс §7- §6" + playerSession.getInteger("Money"), 5);
+		scoreboardDisplay.addLine("§fБаланс §7- §6" + String.format("%.1f", playerSession.getDouble("Money")), 5);
 		scoreboardDisplay.addLine("§fОнлайн §7- §3" + Server.getInstance().getOnlinePlayers().size(), 6);
 		scoreboardDisplay.addLine("§fВ Игре §7- §3" + playerSession.getSessionTime() / 60 + " §fмин§7.", 7);
 		scoreboardDisplay.addLine("§fВсего §7- §3" + new DecimalFormat("#.#").format((float)(playerSession.getInteger("Gametime") + playerSession.getSessionTime()) / 3600).replace("§7,", "§7.") + " §fч§7.", 8);

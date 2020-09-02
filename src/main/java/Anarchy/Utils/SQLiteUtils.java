@@ -198,6 +198,21 @@ public class SQLiteUtils {
 		return res;
 	}
 	
+	public static Double selectDouble(String filename, String query) {
+		Double res = -1.0;
+		Connection connection = connectToSQLite(filename);
+		if (connection == null) return -1.0;
+		try {
+			ResultSet result = connection.createStatement().executeQuery(query);
+			if (result == null) return -1.0;
+			res = result.getDouble(1);
+			if (connection != null) connection.close();
+		} catch (SQLException e) {
+			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectDouble §7- §6" + e);
+		}
+		return res;
+	}
+	
 	public static Long selectLong(String filename, String query) {
 		Long res = -1L;
 		Connection connection = connectToSQLite(filename);

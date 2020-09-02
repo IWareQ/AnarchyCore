@@ -11,6 +11,8 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
@@ -20,20 +22,22 @@ public class AuctionCommand extends Command {
 	public AuctionCommand() {
 		super("auc", "Открыть Аукцион", "", new String[]{"ah"});
 		commandParameters.clear();
+		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("money", CommandParamType.INT, false)});
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (strings.length >= 1) {
-			Long cooldownTime = AuctionAPI.AUCTION_COOLDOWN.get(commandSender);
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		String playerName = player.getName();
+		if (args.length >= 1) {
+			Long cooldownTime = AuctionAPI.AUCTION_COOLDOWN.get(player);
 			Long nowTime = System.currentTimeMillis() / 1000L;
 			if (cooldownTime != null && cooldownTime > nowTime) {
-				commandSender.sendMessage(AuctionAPI.PREFIX + "§fСледующее использование будет доступно через §c" + (cooldownTime - nowTime) + " §fсек§7.");
+				player.sendMessage(AuctionAPI.PREFIX + "§fСледующее использование будет доступно через §c" + (cooldownTime - nowTime) + " §fсек§7.");
 				return false;
 			}
 			int count = 0;
-			String playerName = commandSender.getName();
-			File dataFile = new File(AnarchyMain.datapath + "/Auction/PlayerItems/" + commandSender.getName() + ".yml");
+			File dataFile = new File(AnarchyMain.datapath + "/Auction/PlayerItems/" + playerName + ".yml");
 			Config config = new Config(dataFile, Config.YAML);
 			for (Map.Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 				TradeItem tradeItem = entry.getValue();
@@ -42,36 +46,35 @@ public class AuctionCommand extends Command {
 				}
 			}
 			if (config.getAll().size() + count > AuctionAPI.AUCTION_MAX_SELLS) {
-				commandSender.sendMessage(AuctionAPI.PREFIX + "§fВы достигли лимита§7!\n§l§6| §r§fСнимите товар с продажи или заберите предметы с §3Хранилища");
+				player.sendMessage(AuctionAPI.PREFIX + "§fВы достигли лимита§7!\n§l§6| §r§fСнимите товар с продажи или заберите предметы с §3Хранилища");
 				return false;
 			}
-			if (!StringUtils.isInteger(strings[0])) {
-				if (strings.length == 1) {
-					commandSender.sendMessage("§l§6| §r§fИспользование §7- §6/auc §7(§3цена§7)");
+			if (!StringUtils.isDouble(args[0])) {
+				if (args.length == 1) {
+					player.sendMessage("§l§6| §r§fИспользование §7- §6/auc §7(§3цена§7)");
 				} else {
-					commandSender.sendMessage("§l§6| §r§fИспользование §7- §6/auc §7(§3цена§7) (§3описание§7)");
+					player.sendMessage("§l§6| §r§fИспользование §7- §6/auc §7(§3цена§7) (§3описание§7)");
 				}
 				return false;
 			}
-			PlayerInventory playerInventory = ((Player)commandSender).getInventory();
+			PlayerInventory playerInventory = player.getInventory();
 			Item sellItem = playerInventory.getItemInHand();
 			if (sellItem == null || sellItem.getId() == Item.AIR) {
-				commandSender.sendMessage(AuctionAPI.PREFIX + "§fЧтобы выставить предмет на продажу§7, §fвозьмите его в руку");
+				player.sendMessage(AuctionAPI.PREFIX + "§fЧтобы выставить предмет на продажу§7, §fвозьмите его в руку");
 				return false;
 			}
-			int itemPrice = Integer.parseInt(strings[0]);
+			Double itemPrice = Double.parseDouble(args[0]);
 			if (itemPrice <= 0 || itemPrice > AuctionAPI.AUCTION_MAX_PRICE) {
-				commandSender.sendMessage(AuctionAPI.PREFIX + "§fМаксимальная цена за предмет §7- §6" + AuctionAPI.AUCTION_MAX_PRICE + "");
+				player.sendMessage(AuctionAPI.PREFIX + "§fМаксимальная цена за предмет §7- §6" + AuctionAPI.AUCTION_MAX_PRICE + "");
 				return false;
 			}
-			commandSender.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §3успешно §fвыставлен§7! (§fx§6" + sellItem.count + "§7) §fза §6" + itemPrice + "");
+			player.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §3успешно §fвыставлен§7! (§fx§6" + sellItem.count + "§7) §fза §6" + String.format("%.1f", itemPrice) + "");
 			Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §6" + playerName + " §fвыставил предмет на продажу§7!");
 			String UUID = java.util.UUID.randomUUID().toString();
-			AuctionAPI.AUCTION.put(UUID, new TradeItem(sellItem, commandSender.getName(), strings.length > 1 && !StringUtils.implode(strings, 1).trim().equals("") ? StringUtils.implode(strings, 1) : null, itemPrice, AuctionAPI.getTradeTime(), UUID));
+			AuctionAPI.AUCTION.put(UUID, new TradeItem(sellItem, playerName, args.length > 1 && !StringUtils.implode(args, 1).trim().equals("") ? StringUtils.implode(args, 1) : null, itemPrice, AuctionAPI.getTradeTime(), UUID));
 			playerInventory.setItemInHand(Item.get(Item.AIR));
-			AuctionAPI.AUCTION_COOLDOWN.put(commandSender, nowTime + AuctionAPI.AUCTION_ADD_COOLDOWN);
+			AuctionAPI.AUCTION_COOLDOWN.put(player, nowTime + AuctionAPI.AUCTION_ADD_COOLDOWN);
 		} else {
-			Player player = (Player)commandSender;
 			AuctionAPI.AUCTION_PAGE.put(player, 0);
 			AuctionAPI.showAuction(player, true);
 		}

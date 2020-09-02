@@ -11,6 +11,7 @@ import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Module.Permissions.PermissionsAPI;
+import Anarchy.Utils.RandomUtils;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -36,7 +37,6 @@ import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.animal.Animal;
-import nukkitcoders.mobplugin.entities.animal.swimming.Squid;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 
 public class EventsHandler implements Listener {
@@ -89,10 +89,10 @@ public class EventsHandler implements Listener {
 			if (damager instanceof Player) {
 				player.sendMessage("§c§l| §r§fВы были убиты Игроком §3" + damager.getName());
 				event.setDeathMessage("§6§l| §r§fИгрок §3" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
-				int money = EconomyAPI.myMoney(player) * 20 / 100;
+				Double money = EconomyAPI.myMoney(player) * 20 / 100;
 				if (money != 0) {
-					player.sendMessage("§c§l| §r§fПри смерти Вы потеряли §6" + money + " §7(§f20%§7)");
-					((Player)damager).sendMessage("§a§l| §r§fВо время убийства§7, §fВы украли §6" + money + " §fу Игрока §3" + player.getName());
+					player.sendMessage("§c§l| §r§fПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20%§7)");
+					((Player)damager).sendMessage("§a§l| §r§fВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §3" + player.getName());
 					EconomyAPI.reduceMoney(player, money);
 					EconomyAPI.addMoney((Player)damager, money);
 					addKill((Player)damager);
@@ -111,22 +111,17 @@ public class EventsHandler implements Listener {
 		EntityDamageEvent cause = entity.getLastDamageCause();
 		if (cause instanceof EntityDamageByEntityEvent) {
 			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
-			if (damager instanceof Player) {
+			Player player = (Player)damager;
+			double money = RandomUtils.rand(0.1, 5.0);
 				if (entity instanceof Animal) {
-					if (entity instanceof Squid) {
-						((Player)damager).sendTip("§7+ §63");
-						EconomyAPI.addMoney(((Player)damager), 3);
-					} else {
-						((Player)damager).sendTip("§7+ §61");
-						EconomyAPI.addMoney(((Player)damager), 1);
-					}
+					player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
+					EconomyAPI.addMoney(player, money);
 				} else if (entity instanceof Monster) {
-					((Player)damager).sendTip("§7+ §62");
-					EconomyAPI.addMoney(((Player)damager), 2);
+					player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
+					EconomyAPI.addMoney(player, money);
 				}
 			}
 		}
-	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event) {

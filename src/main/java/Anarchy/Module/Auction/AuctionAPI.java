@@ -27,10 +27,10 @@ public class AuctionAPI extends PluginBase {
 	public static Map<CommandSender, Long> AUCTION_COOLDOWN = new HashMap<>();
 	public static Map<Player, AuctionChest> AUCTION_CHEST = new HashMap<>();
 	public static Map<Player, Integer> AUCTION_PAGE = new HashMap<>();
-	public static int AUCTION_MAX_PRICE = 100000;
-	public static int AUCTION_CHEST_SIZE = 45;
+	public static double AUCTION_MAX_PRICE = 10000.0;
+	public static int AUCTION_CHEST_SIZE = 45; // 45
 	public static int AUCTION_MAX_SELLS = 200; // 10
-	public static int AUCTION_ADD_COOLDOWN = 10; // 60
+	public static int AUCTION_ADD_COOLDOWN = 60; // 60
 	public static String PREFIX = "§l§7(§3Аукцион§7) §r";
 	
 	public static void register() {
@@ -54,7 +54,7 @@ public class AuctionAPI extends PluginBase {
 				compoundTag.putString("UUID", entry.getKey());
 				Item item = Item.get((int)itemData.get(4), (int)itemData.get(5), (int)itemData.get(6));
 				item.setNamedTag(compoundTag);
-				AUCTION.put(entry.getKey(), new TradeItem(item, itemData.get(0).toString(), itemData.get(1) == null ? null : itemData.get(1).toString(), (int)itemData.get(2), Long.valueOf(itemData.get(3).toString()), entry.getKey()));
+				AUCTION.put(entry.getKey(), new TradeItem(item, itemData.get(0).toString(), itemData.get(1) == null ? null : itemData.get(1).toString(), (double)itemData.get(2), Long.valueOf(itemData.get(3).toString()), entry.getKey()));
 			}
 		}
 	}
@@ -126,7 +126,6 @@ public class AuctionAPI extends PluginBase {
 		int stop;
 		if (tradeSize > start + AUCTION_CHEST_SIZE) {
 			stop = start + AUCTION_CHEST_SIZE;
-			auctionChest.setItem(52, Item.get(Item.PAPER).setCustomName("§r§6Следующая Страница").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
 		} else {
 			stop = tradeSize;
 		}
@@ -140,12 +139,11 @@ public class AuctionAPI extends PluginBase {
 			item.setCustomName("§r§fПродавец §7- §6" + tradeItem.sellerName + "\n§r§fСтоимость §7- §6" + tradeItem.itemPrice + "\n§r§fДо окончания §7- §3" + (tradeItem.getTime() / 3600) + " §fч§7. §3" + (tradeItem.getTime() / 60 % 60) + " §fмин§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §6" + tradeItem.aboutMessage) + "\n\n§r§6• §fНажмите§7, §fчтобы купить");
 			auctionChest.addItem(item);
 		}
-		if (playerPage != 0) {
-			auctionChest.setItem(51, Item.get(Item.PAPER).setCustomName("§r§6Предыдущая Страница").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
-		}
 		if (playerPage >= 0) {
 			auctionChest.setItem(49, Item.get(Item.EMERALD).setCustomName("§r§6Обновление страницы").setLore("§r§6• §fНажмите§7, §fчтобы обновить страницу"));
-			auctionChest.setItem(53, Item.get(Item.SIGN).setCustomName("§r§6Справка").setLore("§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §6Монет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§6/auc §7(§3цена§7)\n§r§fили\n§r§6/auc §7(§3цена§7) (§3описание§7)"));
+			auctionChest.setItem(52, Item.get(Item.PAPER).setCustomName("§r§6Листнуть назад").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
+			auctionChest.setItem(53, Item.get(Item.PAPER).setCustomName("§r§6Листнуть вперед").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
+			auctionChest.setItem(50, Item.get(Item.SIGN).setCustomName("§r§6Справка").setLore("§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §6Монет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§6/auc §7(§3цена§7)\n§r§fили\n§r§6/auc §7(§3цена§7) (§3описание§7)"));
 			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§6Ваши Предметы на Продаже").setLore("§r§6• §fНажмите§7, §fчтобы открыть"));
 		}
 		if (firstTime) {

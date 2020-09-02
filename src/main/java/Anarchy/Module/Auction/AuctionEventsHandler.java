@@ -34,16 +34,27 @@ public class AuctionEventsHandler implements Listener {
 					AuctionChest inventory = (AuctionChest)slotChange.getInventory();
 					Item sourceItem = action.getSourceItem();
 					switch (sourceItem.getName()) {
-						case "§r§6Следующая Страница":
+						case "§r§6Листнуть вперед": 
 						{
-							AuctionAPI.AUCTION_PAGE.put(player, AuctionAPI.AUCTION_PAGE.get(player) + 1);
-							AuctionAPI.showAuction(player, false);
-							AuctionAPI.showAuction(player, true);
-							player.getLevel().addSound(player, Sound.ITEM_BOOK_PAGE_TURN, 1, 1, player);
+							int playerPage = AuctionAPI.AUCTION_PAGE.get(player);
+							int tradeSize = AuctionAPI.AUCTION.size();
+							int start = playerPage * AuctionAPI.AUCTION_CHEST_SIZE;
+							int stop;
+							if (tradeSize > start + AuctionAPI.AUCTION_CHEST_SIZE) {
+								stop = start + AuctionAPI.AUCTION_CHEST_SIZE;
+								AuctionAPI.AUCTION_PAGE.put(player, AuctionAPI.AUCTION_PAGE.get(player) + 1);
+								AuctionAPI.showAuction(player, false);
+								AuctionAPI.showAuction(player, true);
+								player.getLevel().addSound(player, Sound.ITEM_BOOK_PAGE_TURN, 1, 1, player);
+							} else {
+								player.sendMessage(AuctionAPI.PREFIX + "§fВы уже находитесь на самой последней странице§7!");
+								player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
+								stop = tradeSize;
+							}
 						}
 						break;
 						
-						case "§r§6Обновление страницы":
+						case "§r§6Обновить страницу": 
 						{
 							AuctionAPI.showAuction(player, false);
 							AuctionAPI.showAuction(player, true);
@@ -51,25 +62,31 @@ public class AuctionEventsHandler implements Listener {
 						}
 						break;
 						
-						case "§r§6Справка":
+						case "§r§6Справка": 
 						{
 							player.getLevel().addSound(player, Sound.MOB_VILLAGER_HAGGLE, 1, 1, player);
 						}
 						break;
 						
-						case "§r§6Предыдущая Страница":
+						case "§r§6Листнуть назад": 
 						{
-							AuctionAPI.AUCTION_PAGE.put(player, AuctionAPI.AUCTION_PAGE.get(player) - 1);
-							AuctionAPI.showAuction(player, false);
-							AuctionAPI.showAuction(player, true);
-							player.getLevel().addSound(player, Sound.ITEM_BOOK_PAGE_TURN, 1, 1, player);
+							int playerPage = AuctionAPI.AUCTION_PAGE.get(player);
+							if (playerPage == 0) {
+								player.sendMessage(AuctionAPI.PREFIX + "§fВы уже находитесь на первой странице§7!");
+								player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
+							} else {
+								AuctionAPI.AUCTION_PAGE.put(player, AuctionAPI.AUCTION_PAGE.get(player) - 1);
+								AuctionAPI.showAuction(player, false);
+								AuctionAPI.showAuction(player, true);
+								player.getLevel().addSound(player, Sound.ITEM_BOOK_PAGE_TURN, 1, 1, player);
+							}
 						}
 						break;
 						
 						case "§r§6Ваши Предметы на Продаже": 
 						{
 							String playerName = player.getName();
-							SellChest sellChest = new SellChest("Ваши Предметы на Продаже");
+							SellChest sellChest = new SellChest("§l§fВаши Предметы на Продаже");
 							for (Map.Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 								TradeItem tradeItem = entry.getValue();
 								if (tradeItem.sellerName.equals(playerName)) {
@@ -77,7 +94,7 @@ public class AuctionEventsHandler implements Listener {
 									CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 									compoundTag.putString("UUID", tradeItem.UUID);
 									item.setNamedTag(compoundTag);
-									sellChest.addItem(item.setCustomName("§r§fСтоимость §7- §6" + tradeItem.itemPrice + "\n§r§fДо окончания §7- §3" + (tradeItem.getTime() / 3600) + " §fч§7. §3" + (tradeItem.getTime() / 60 % 60) + " §fмин§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §6" + tradeItem.aboutMessage)));
+									sellChest.addItem(item.setCustomName("§r§fСтоимость §7- §6" + String.format("%.1f", tradeItem.itemPrice) + "\n§r§fДо окончания §7- §3" + (tradeItem.getTime() / 3600) + " §fч§7. §3" + (tradeItem.getTime() / 60 % 60) + " §fмин§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §6" + tradeItem.aboutMessage)));
 								}
 							}
 							if (sellChest.isEmpty()) {
@@ -109,10 +126,10 @@ public class AuctionEventsHandler implements Listener {
 									compoundTag.remove("UUID");
 									playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(compoundTag));
 									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-									player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §6" + tradeItem.itemPrice + "");
+									player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §6" + String.format("%.1f", tradeItem.itemPrice) + "");
 									Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.sellerName);
 									if (sellerPlayer != null) {
-										sellerPlayer.sendMessage(AuctionAPI.PREFIX + "§fИгрок §3" + player.getName() + " §fкупил Ваш товар за §6" + tradeItem.itemPrice + "");
+										sellerPlayer.sendMessage(AuctionAPI.PREFIX + "§fИгрок §3" + player.getName() + " §fкупил Ваш товар за §6" + String.format("%.1f", tradeItem.itemPrice) + "");
 										EconomyAPI.addMoney(sellerPlayer, tradeItem.itemPrice);
 									} else {
 										EconomyAPI.addMoney(tradeItem.sellerName, tradeItem.itemPrice);
@@ -153,12 +170,14 @@ public class AuctionEventsHandler implements Listener {
 					}
 				} else if (slotChange.getInventory() instanceof TakeChest) {
 					Item sourceItem = action.getSourceItem();
-					PlayerInventory playerInventory = player.getInventory(); // получение инвенторя
+					PlayerInventory playerInventory = player.getInventory();
+					// получение инвенторя
 					CompoundTag compoundTag = sourceItem.getNamedTag();
 					if (compoundTag.getString("UUID") != null) {
 						compoundTag.remove("UUID");
 						sourceItem.setNamedTag(compoundTag);
-						playerInventory.addItem(sourceItem.setNamedTag(compoundTag).clearCustomName()); // ставит обычный тэг предмета
+						playerInventory.addItem(sourceItem.setNamedTag(compoundTag).clearCustomName());
+						// ставит обычный тэг предмета
 						player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
 						player.sendMessage(AuctionAPI.PREFIX + "§fВы забрали предмет с Хранилища");
 					} else {

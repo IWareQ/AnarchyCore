@@ -3,14 +3,14 @@ package Anarchy.Module.Auction.Utils;
 import cn.nukkit.item.Item;
 
 public class TradeItem {
-	public int itemPrice;
+	public Double itemPrice;
 	public Item sellItem;
 	public String UUID;
 	public String sellerName;
 	public String aboutMessage;
 	public Long sellTime;
 	
-	public TradeItem(Item sellItem, String sellerName, String aboutMessage, int itemPrice, Long sellTime, String UUID) {
+	public TradeItem(Item sellItem, String sellerName, String aboutMessage, Double itemPrice, Long sellTime, String UUID) {
 		this.UUID = UUID;
 		this.sellItem = sellItem;
 		this.sellerName = sellerName;

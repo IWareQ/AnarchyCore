@@ -31,12 +31,9 @@ public class PermissionsAPI {
 		GROUPS.add("§6Принц§r"); // 4
 		GROUPS.add("§eКороль§r"); // 5
 		GROUPS.add("§cYou§fTube§r"); // 6
-		GROUPS.add("Титан§r"); // 7
-		GROUPS.add("Бог§r"); // 8
-		GROUPS.add("Тартар§r"); // 9
-		GROUPS.add("§1Модератор§r"); // 10
-		GROUPS.add("§4Администратор§r"); // 11
-		GROUPS.add("§6Основатель§r"); // 12
+		GROUPS.add("§1Модератор§r"); // 7
+		GROUPS.add("§4Администратор§r"); // 8
+		GROUPS.add("§6Основатель§r"); // 9
 	}
 	
 	private static void registerGroupsAllows() {
@@ -50,9 +47,6 @@ public class PermissionsAPI {
 		GROUP_ALLOWS.put(7, new GroupAllow(5)); // 7
 		GROUP_ALLOWS.put(8, new GroupAllow(5)); // 8
 		GROUP_ALLOWS.put(9, new GroupAllow(5)); // 9
-		GROUP_ALLOWS.put(10, new GroupAllow(5)); // 10
-		GROUP_ALLOWS.put(11, new GroupAllow(5)); // 11
-		GROUP_ALLOWS.put(12, new GroupAllow(100)); // 12
 		
 	}
 	
@@ -152,7 +146,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Coordinate", true);
 			break;
 			
-			case 7: // Титан
+			case 7: // Модератор
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -163,7 +157,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.ClearChat", true);
 			break;
 			
-			case 8: // Бог
+			case 8: // Администратор
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -174,40 +168,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Near", true);
 			break;
 			
-			case 9: // Тартар
-			permissionAllows.put("Command.Food", true);
-			permissionAllows.put("Command.Heal", true);
-			permissionAllows.put("Command.Repair", true);
-			permissionAllows.put("Command.Day", true);
-			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true);
-			permissionAllows.put("Command.EnderChest", true);
-			permissionAllows.put("Command.Near", true);
-			break;
-			
-			case 10: // Модератор
-			permissionAllows.put("Command.Food", true);
-			permissionAllows.put("Command.Heal", true);
-			permissionAllows.put("Command.Repair", true);
-			permissionAllows.put("Command.Day", true);
-			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true);
-			permissionAllows.put("Command.EnderChest", true);
-			permissionAllows.put("Command.Near", true);
-			break;
-			
-			case 11: // Администратор
-			permissionAllows.put("Command.Food", true);
-			permissionAllows.put("Command.Heal", true);
-			permissionAllows.put("Command.Repair", true);
-			permissionAllows.put("Command.Day", true);
-			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true);
-			permissionAllows.put("Command.EnderChest", true);
-			permissionAllows.put("Command.Near", true);
-			break;
-			
-			case 12: // Основатель
+			case 9: // Основатель
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);

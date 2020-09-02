@@ -7,12 +7,15 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 
 public class SeeMoneyCommand extends Command {
 	
 	public SeeMoneyCommand() {
 		super("seemoney", "§l§fПосмотреть баланс Игрока");
 		this.setPermission("Command.SeeMoney");
+		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	
 	@Override()

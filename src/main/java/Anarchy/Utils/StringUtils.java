@@ -20,27 +20,27 @@ public class StringUtils {
 	}
 	
 	public static String implode(String[] args) {
-		StringBuilder s = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();
 		for (String arg : args) {
-			s.append(" ").append(arg);
+			stringBuilder.append(" ").append(arg);
 		}
-		return s.toString().substring(1);
+		return stringBuilder.toString().substring(1);
 	}
 	
 	public static String implode(String[] args, int start) {
-		StringBuilder s = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = start; i < args.length; i++) {
-			s.append(" ").append(args[i]);
+			stringBuilder.append(" ").append(args[i]);
 		}
-		return s.toString().substring(1);
+		return stringBuilder.toString().substring(1);
 	}
 	
 	public static String implode(String[] args, int start, int stop) {
-		StringBuilder s = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = start; i < stop; i++) {
-			s.append(" " + args[i]);
+			stringBuilder.append(" " + args[i]);
 		}
-		return s.toString().substring(1);
+		return stringBuilder.toString().substring(1);
 	}
 	
 	public static boolean isValidString(String string) {
@@ -49,13 +49,13 @@ public class StringUtils {
 	
 	public String convertStreamToString(InputStream input) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-		StringBuilder sb = new StringBuilder();
+		StringBuilder stringBuilder = new StringBuilder();
 		String line;
 		while ((line = reader.readLine()) != null) {
-			sb.append(line);
+			stringBuilder.append(line);
 		}
 		input.close();
-		return sb.toString();
+		return stringBuilder.toString();
 	}
 	
 	public static String getDate() {
@@ -72,5 +72,9 @@ public class StringUtils {
 	
 	public static boolean isInteger(String string) {
 		return string.matches("^[0-9]+$");
+	}
+	
+	public static boolean isDouble(String string) {
+		return string.matches("^[0.1-9.0]+$");
 	}
 }
