@@ -3,6 +3,7 @@ package Anarchy.Module.Boss;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityArthropod;
@@ -11,14 +12,16 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.entities.monster.walking.Spider;
+import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
+import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
 
-public class SilverfishBoss extends Spider implements EntityArthropod {
-	public static final int NETWORK_ID = 40;
+public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
+	public static final int NETWORK_ID = 39;
 	
 	public SilverfishBoss(FullChunk chunk, CompoundTag nbt) {
 		super(chunk, nbt);
+		this.route = new WalkerRouteFinder(this);
 	}
 	
 	@Override()
@@ -28,29 +31,29 @@ public class SilverfishBoss extends Spider implements EntityArthropod {
 	
 	@Override()
 	public float getWidth() {
-		return 0.7F;
+		return 0.4F;
 	}
 	
 	@Override()
 	public float getHeight() {
-		return 0.5F;
+		return 0.3F;
 	}
 	
 	@Override()
 	public double getSpeed() {
-		return 1.3;
+		return 1.4;
 	}
 	
 	@Override()
 	public void initEntity() {
 		super.initEntity();
-		this.setMaxHealth(20);
-		this.setDamage(new float[]{0, 2, 3, 3});
+		this.setMaxHealth(50);
+		this.setDamage(new float[]{5, 5, 5, 5});
 	}
 	
 	@Override()
 	public void attackEntity(Entity player) {
-		if (this.attackDelay > 23 && this.distanceSquared(player) < 1.32) {
+		if (this.attackDelay > 23 && this.distanceSquared(player) < 1) {
 			this.attackDelay = 0;
 			HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
 			damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
@@ -69,20 +72,22 @@ public class SilverfishBoss extends Spider implements EntityArthropod {
 	@Override()
 	public Item[] getDrops() {
 		List<Item> drops = new ArrayList<>();
-		drops.add(Item.get(Item.STRING, 0, Utils.rand(0, 2)));
-		for (int i = 0; i < (Utils.rand(0, 20) == 0 ? 1 : 0); i++) {
-			drops.add(Item.get(Item.SPIDER_EYE, 0, 1));
-		}
+		drops.add(Item.get(Item.IRON_INGOT, 0, 9));
+		drops.add(Item.get(Item.IRON_NUGGET, 0, Utils.rand(10, 30)));
 		return drops.toArray(new Item[0]);
 	}
 	
 	@Override()
 	public int getKillExperience() {
-		return 1; // 1500
+		return 1500;
 	}
 	
 	@Override()
-	public String getName() {
-		return "Cave Spider";
+	public boolean entityBaseTick(int tickDiff) {
+		if (getServer().getDifficulty() == 0) {
+			this.close();
+			return true;
+		}
+		return super.entityBaseTick(tickDiff);
 	}
 }

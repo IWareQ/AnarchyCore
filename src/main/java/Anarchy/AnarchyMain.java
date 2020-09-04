@@ -13,6 +13,7 @@ import Anarchy.Module.Auth.AuthEventsHandler;
 import Anarchy.Module.Boss.SilverfishBoss;
 import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
+import Anarchy.Module.Commands.CoordinateCommand;
 import Anarchy.Module.Commands.DayCommand;
 import Anarchy.Module.Commands.DonateCommand;
 import Anarchy.Module.Commands.FoodCommand;
@@ -33,9 +34,9 @@ import Anarchy.Module.Commands.Home.SetHomeCommand;
 import Anarchy.Module.Commands.Spectate.SpectateCommand;
 import Anarchy.Module.Commands.Storage.StorageHandler;
 import Anarchy.Module.Commands.Teleport.TpaCommand;
-import Anarchy.Module.Commands.Teleport.TpnCommand;
+import Anarchy.Module.Commands.Teleport.TpcCommand;
+import Anarchy.Module.Commands.Teleport.TpdCommand;
 import Anarchy.Module.Commands.Teleport.TprCommand;
-import Anarchy.Module.Commands.Teleport.TpyCommand;
 import Anarchy.Module.Economy.Commands.AddMoneyCommand;
 import Anarchy.Module.Economy.Commands.MoneyCommand;
 import Anarchy.Module.Economy.Commands.PayCommand;
@@ -95,9 +96,9 @@ public class AnarchyMain extends PluginBase {
 	
 	private void registerAll() {
 		FunctionsAPI.register();
-		RegionsAPI.register();
-		PermissionsAPI.register();
 		AuctionAPI.register();
+		PermissionsAPI.register();
+		RegionsAPI.register();
 		Broadcast.register();
 	}
 	
@@ -108,11 +109,11 @@ public class AnarchyMain extends PluginBase {
 	
 	private void registerEvents() {
 		PluginManager pluginManager = getServer().getPluginManager();
-		pluginManager.registerEvents(new RegionsEventsHandler(), this);
 		pluginManager.registerEvents(new AuctionEventsHandler(), this);
-		pluginManager.registerEvents(new EventsHandler(), this);
 		pluginManager.registerEvents(new AuthEventsHandler(), this);
 		pluginManager.registerEvents(new StorageHandler(), this);
+		pluginManager.registerEvents(new EventsHandler(), this);
+		pluginManager.registerEvents(new RegionsEventsHandler(), this);
 	}
 	
 	private void unregisterCommands() {
@@ -127,7 +128,7 @@ public class AnarchyMain extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new TestCommand(), new TprCommand(), new StorageHandler(), new DonateCommand(), new EnderChestCommand(), new SpectateCommand(), new DayCommand(), new NightCommand(), new FoodCommand(), new NearCommand(), new RepairCommand(), new HealCommand(), new RegionCommand(), new TellCommand(), new ListCommand(), new TpaCommand(), new TpyCommand(), new TpnCommand(), new KickCommand(), new MoneyCommand(), new PayCommand(), new ACommand(), new CheckCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new AuctionCommand(), new BarCommand(), new HomeCommand(), new SetHomeCommand(), new GamemodeCommand(), new DelHomeCommand()};
+		Command[] commands = new Command[]{new AuctionCommand(), new CheckCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	

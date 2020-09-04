@@ -4,7 +4,6 @@ import Anarchy.Module.Auth.AuthAPI;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
@@ -28,17 +27,12 @@ public class SeeMoneyCommand extends Command {
 			sender.sendMessage("§l§6| §r§fИспользование §7- /§6seemoney §7(§3игрок§7)");
 			return true;
 		}
-		Player seePlayer = Server.getInstance().getPlayer(args[0]);
-		if (seePlayer != null) {
-			player.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §3" + seePlayer.getName() + " §7- §6" + EconomyAPI.myMoney(seePlayer) + "");
+		String seeMoneyPlayer = StringUtils.implode(args, 0);
+		if (!AuthAPI.isRegistered(seeMoneyPlayer)) {
+			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + seeMoneyPlayer + " §7- §fне зарегистрирован§7!");
 			return true;
 		}
-		String nickname = StringUtils.implode(args, 0);
-		if (!AuthAPI.isRegistered(nickname)) {
-			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + nickname + " §7- §fне зарегистрирован§7!");
-			return true;
-		}
-		player.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §3" + nickname + " §7- §6" + EconomyAPI.myMoney(nickname) + "");
+		player.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §3" + seeMoneyPlayer + " §7- §6" + String.format("%.1f", EconomyAPI.myMoney(seeMoneyPlayer)) + "");
 		return true;
 	}
 }

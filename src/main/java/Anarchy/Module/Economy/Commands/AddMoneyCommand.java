@@ -31,13 +31,13 @@ public class AddMoneyCommand extends Command {
 			player.sendMessage("§l§6| §r§fИспользование §7- /§6addmoney §7(§3игрок§7) (§3сумма§7)");
 			return true;
 		}
-		String nickname = StringUtils.implode(args, 0);
-		if (!AuthAPI.isRegistered(nickname)) {
-			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + nickname + " §7- §fне зарегистрирован§7!");
+		String target = StringUtils.implode(args, 0);
+		if (!AuthAPI.isRegistered(target)) {
+			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + target + " §7- §fне зарегистрирован§7!");
 			return true;
 		}
-		player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + nickname + " §fполучил §6" + args[1] + "");
-		EconomyAPI.setMoney(nickname, EconomyAPI.myMoney(nickname) + Integer.parseInt(args[1]));
+		player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + target + " §fполучил §6" + String.format("%.1f", args[1]) + "");
+		EconomyAPI.addMoney(target, Double.parseDouble(args[1]));
 		return true;
 	}
 }

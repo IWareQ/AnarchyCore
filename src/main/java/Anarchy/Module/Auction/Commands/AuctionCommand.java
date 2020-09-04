@@ -33,7 +33,7 @@ public class AuctionCommand extends Command {
 			Long cooldownTime = AuctionAPI.AUCTION_COOLDOWN.get(player);
 			Long nowTime = System.currentTimeMillis() / 1000L;
 			if (cooldownTime != null && cooldownTime > nowTime) {
-				player.sendMessage(AuctionAPI.PREFIX + "§fСледующее использование будет доступно через §c" + (cooldownTime - nowTime) + " §fсек§7.");
+				player.sendMessage(AuctionAPI.PREFIX + "§fСледующее использование будет доступно через §6" + (cooldownTime - nowTime) + " §fсек§7.");
 				return false;
 			}
 			int count = 0;
@@ -46,14 +46,14 @@ public class AuctionCommand extends Command {
 				}
 			}
 			if (config.getAll().size() + count > AuctionAPI.AUCTION_MAX_SELLS) {
-				player.sendMessage(AuctionAPI.PREFIX + "§fВы достигли лимита§7!\n§l§6| §r§fСнимите товар с продажи или заберите предметы с §3Хранилища");
+				player.sendMessage(AuctionAPI.PREFIX + "§fВы уже разместили или храните максимальное колличество лотов §7(§6" + AuctionAPI.AUCTION_MAX_SELLS + "§7)");
 				return false;
 			}
 			if (!StringUtils.isDouble(args[0])) {
 				if (args.length == 1) {
-					player.sendMessage("§l§6| §r§fИспользование §7- §6/auc §7(§3цена§7)");
+					player.sendMessage("§l§6| §r§fИспользование §7- /§6auc §7(§3цена§7)");
 				} else {
-					player.sendMessage("§l§6| §r§fИспользование §7- §6/auc §7(§3цена§7) (§3описание§7)");
+					player.sendMessage("§l§6| §r§fИспользование §7- /§6auc §7(§3цена§7) (§3описание§7)");
 				}
 				return false;
 			}
@@ -68,7 +68,7 @@ public class AuctionCommand extends Command {
 				player.sendMessage(AuctionAPI.PREFIX + "§fМаксимальная цена за предмет §7- §6" + AuctionAPI.AUCTION_MAX_PRICE + "");
 				return false;
 			}
-			player.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §3успешно §fвыставлен§7! (§fx§6" + sellItem.count + "§7) §fза §6" + String.format("%.1f", itemPrice) + "");
+			player.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §6успешно §fвыставлен за §6" + String.format("%.1f", itemPrice) + "§7, §fв колличестве " + sellItem.count + " §fшт§7.");
 			Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §6" + playerName + " §fвыставил предмет на продажу§7!");
 			String UUID = java.util.UUID.randomUUID().toString();
 			AuctionAPI.AUCTION.put(UUID, new TradeItem(sellItem, playerName, args.length > 1 && !StringUtils.implode(args, 1).trim().equals("") ? StringUtils.implode(args, 1) : null, itemPrice, AuctionAPI.getTradeTime(), UUID));

@@ -31,13 +31,13 @@ public class SetMoneyCommand extends Command {
 			player.sendMessage("§l§6| §r§fИспользование §7- /§6setmoney §7(§игрок§7) (§3сумма§7)");
 			return true;
 		}
-		String nickname = StringUtils.implode(args, 0);
-		if (!AuthAPI.isRegistered(nickname)) {
-			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + nickname + " §7- §fне зарегистрирован§7!");
+		String setMoneyPlayer = StringUtils.implode(args, 0);
+		if (!AuthAPI.isRegistered(setMoneyPlayer)) {
+			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + setMoneyPlayer + " §7- §fне зарегистрирован§7!");
 			return true;
 		}
-		player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + nickname + " §fтеперь имеет §6" + args[1] + "");
-		EconomyAPI.setMoney(nickname, Double.parseDouble(args[1]));
+		player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + setMoneyPlayer + " §fтеперь имеет §6" + String.format("%.1f", args[1]) + "");
+		EconomyAPI.setMoney(setMoneyPlayer, Double.parseDouble(args[1]));
 		return true;
 	}
 }

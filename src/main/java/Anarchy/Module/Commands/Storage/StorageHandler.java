@@ -17,7 +17,6 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.inventory.InventoryTransactionEvent;
-import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
@@ -72,11 +71,8 @@ public class StorageHandler extends Command implements Listener {
 		for (InventoryAction action : event.getTransaction().getActions()) {
 			if (action instanceof SlotChangeAction && ((SlotChangeAction)action).getInventory() instanceof StorageChest) {
 				Item sourceItem = action.getSourceItem();
-				CompoundTag compoundTag = sourceItem.getNamedTag();
 				Player player = event.getTransaction().getSource();
-				PlayerInventory playerInventory = player.getInventory();
 				if (sourceItem.hasCompoundTag() && sourceItem.getNamedTag().getString("DATE") != null) {
-					playerInventory.addItem(sourceItem.setNamedTag(compoundTag).clearCustomName());
 					player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 					player.sendMessage("§l§a| §r§fПредмет был успешно взят");
 				} else {

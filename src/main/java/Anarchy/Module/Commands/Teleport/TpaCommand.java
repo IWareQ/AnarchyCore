@@ -21,21 +21,22 @@ public class TpaCommand extends Command {
 	}
 	
 	@Override()
-	public boolean execute(CommandSender commandSender, String s, String[] strings) {
-		if (strings.length != 1) {
-			commandSender.sendMessage("§l§6| §r§fИспользование §7- /§6tpa §7(§3игрок§7)");
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		Player player = (Player)sender;
+		if (args.length != 1) {
+			player.sendMessage("§l§6| §r§fИспользование §7- /§6tpa §7(§3игрок§7)");
 			return true;
 		}
-		Player calledPlayer = Server.getInstance().getPlayer(strings[0]);
-		if (calledPlayer == null) {
-			commandSender.sendMessage("§l§6| §r§fИгрок §6" + strings[0] + " §7- §3Оффлайн");
+		Player target = Server.getInstance().getPlayer(args[0]);
+		if (target == null) {
+			player.sendMessage("§l§6| §r§fИгрок §6" + args[0] + " §7- §3Оффлайн");
 			return true;
 		}
-		commandSender.sendMessage(PREFIX + "§fЗапрос на телепортицию к Игроку §6" + calledPlayer.getName() + " §3успешно §fотправлен§7!");
-		calledPlayer.sendMessage(PREFIX + "§fИгрок §3" + commandSender.getName() + " §fхочет телепортироваться к Вам§7!");
-		calledPlayer.sendMessage("§l§a| §r§7/§atpy §7- §fпринять запрос");
-		calledPlayer.sendMessage("§l§c| §r§7/§ctpn §7- §fотклонить запрос");
-		TPA_REQUEST.put(calledPlayer, (Player)commandSender);
+		player.sendMessage(PREFIX + "§fЗапрос на телепортицию к Игроку §6" + target.getName() + " §3успешно §fотправлен§7!");
+		target.sendMessage(PREFIX + "§fИгрок §3" + player.getName() + " §fхочет телепортироваться к Вам§7!");
+		target.sendMessage("§l§a| §r§7/§atpc §7- §fпринять запрос");
+		target.sendMessage("§l§c| §r§7/§ctpd §7- §fотклонить запрос");
+		TPA_REQUEST.put(target, player);
 		return false;
 	}
 }
