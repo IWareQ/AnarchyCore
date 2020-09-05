@@ -15,7 +15,7 @@ import cn.nukkit.permission.PermissionAttachment;
 
 public class PermissionsAPI {
 	public static ArrayList<String> GROUPS = new ArrayList<>();
-	private static Map<Integer, GroupAllow> GROUP_ALLOWS = new HashMap<>();
+	public static Map<Integer, GroupAllow> GROUP_ALLOWS = new HashMap<>();
 	public static String PREFIX = "§7(§3Привилегии§7) §r";
 	
 	public static void register() {
@@ -155,6 +155,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.ClearChat", true);
+			permissionAllows.put("Command.Spectate", true);
 			break;
 			
 			case 8: // Администратор

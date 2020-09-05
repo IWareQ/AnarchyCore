@@ -9,6 +9,7 @@ import Anarchy.AnarchyMain;
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
+import Anarchy.Module.CombatLogger.CombatLoggerAPI;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import Anarchy.Utils.RandomUtils;
@@ -84,6 +85,7 @@ public class EventsHandler implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		EntityDamageEvent cause = player.getLastDamageCause();
+		CombatLoggerAPI.removeCombat(player);
 		if (cause instanceof EntityDamageByEntityEvent) {
 			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
 			if (damager instanceof Player) {
@@ -122,13 +124,6 @@ public class EventsHandler implements Listener {
 				}
 			}
 		}
-	
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onEntityDamage(EntityDamageEvent event) {
-		if (event.getEntity().getLevel().equals(FunctionsAPI.WORLD2)) {
-			event.setCancelled(true);
-		}
-	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event) {

@@ -20,9 +20,8 @@ public class GroupCommand extends Command {
 	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (sender instanceof Player) {
-			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Консоли");
-			return true;
+		if (!sender.hasPermission("Command.Group")) {
+			return false;
 		}
 		if (args.length < 2 || !PermissionsAPI.isGroup(Integer.parseInt(args[1]))) {
 			sender.sendMessage("§l§6| §r§fИспользование §7- /§6group (§3игрок§7) (§3ID§7)");

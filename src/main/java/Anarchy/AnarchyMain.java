@@ -48,6 +48,7 @@ import Anarchy.Module.Permissions.Commands.GroupCommand;
 import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Module.Regions.RegionsEventsHandler;
 import Anarchy.Module.Regions.Commands.RegionCommand;
+import Anarchy.Task.CombatLoggerTask;
 import Anarchy.Task.HotbarTask;
 import Anarchy.Task.MinuteTask;
 import Anarchy.Task.Utils.Broadcast;
@@ -135,5 +136,6 @@ public class AnarchyMain extends PluginBase {
 	private void registerTask() {
 		this.getServer().getScheduler().scheduleRepeatingTask(new MinuteTask(), 60 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new HotbarTask(), 30 * 20);
+		this.getServer().getScheduler().scheduleRepeatingTask(new CombatLoggerTask(), 20);
 	}
 }

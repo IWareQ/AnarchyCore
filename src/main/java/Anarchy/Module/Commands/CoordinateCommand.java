@@ -3,12 +3,15 @@ package Anarchy.Module.Commands;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.level.GameRule;
+import cn.nukkit.level.Level;
+import cn.nukkit.network.protocol.GameRulesChangedPacket;
 
 public class CoordinateCommand extends Command {
 	
 	public CoordinateCommand() {
 		super("coordinate", "§l§fВключить§7/§fВыключить координаты");
-		setPermission("Command.Day");
+		setPermission("Command.Coordinate");
 		commandParameters.clear();
 	}
 	
@@ -22,7 +25,26 @@ public class CoordinateCommand extends Command {
 		if (!player.hasPermission("Command.Coordinate")) {
 			return false;
 		}
-		player.sendMessage("Эта команда скоро будет работать");
+		switch (args[0]) {
+			case "on": 
+			{
+				Level level = player.getLevel();
+				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
+				gameRulesChanged.gameRules = level.getGameRules();
+				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
+				player.sendMessage("§l§a| §r§fКоординаты успешно включены§7!");
+			}
+			break;
+			
+			case "off": 
+			{
+				Level level = player.getLevel();
+				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
+				gameRulesChanged.gameRules = level.getGameRules();
+				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
+				player.sendMessage("§l§a| §r§fКоординаты успешно отключены§7!");
+			}
+		}
 		return false;
 	}
 }

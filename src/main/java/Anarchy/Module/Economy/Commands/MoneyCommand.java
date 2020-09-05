@@ -19,7 +19,7 @@ public class MoneyCommand extends Command {
 			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
 			return true;
 		}
-		player.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс §7- §6" + EconomyAPI.myMoney(player) + "");
+		player.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс §7- §6" + String.format("%.1f", EconomyAPI.myMoney(player)) + "");
 		return true;
 	}
 }

@@ -9,6 +9,9 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
+import cn.nukkit.level.GameRule;
+import cn.nukkit.level.Level;
+import cn.nukkit.network.protocol.GameRulesChangedPacket;
 import cn.nukkit.potion.Effect;
 
 public class SpectateCommand extends Command {
@@ -37,6 +40,11 @@ public class SpectateCommand extends Command {
 				player.sendMessage("§l§6| §r§fИспользование §7- §6/sp §7(§3игрок§7)");
 				return false;
 			} else {
+				Level level = player.getLevel();
+				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
+				gameRulesChanged.gameRules = level.getGameRules();
+				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
+				player.dataPacket(gameRulesChanged);
 				player.setGamemode(0);
 				player.removeAllEffects();
 				player.getInventory().setContents(spectatePlayer.playerInventory);
@@ -60,6 +68,11 @@ public class SpectateCommand extends Command {
 				player.sendMessage("§l§c| §r§fВы пытаетесь наблюдать за собой§7!");
 				return false;
 			}
+			Level level = player.getLevel();
+			GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
+			gameRulesChanged.gameRules = level.getGameRules();
+			gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
+			player.dataPacket(gameRulesChanged);
 			SPECTATE_PLAYERS.put(player.getName(), new SpectatePlayer(player, specPlayer));
 			player.addEffect(Effect.getEffect(Effect.NIGHT_VISION).setAmplifier(0).setDuration(9999999 * 20).setVisible(false));
 			player.setGamemode(3);

@@ -78,7 +78,7 @@ public class AuctionAPI extends PluginBase {
 	}
 	
 	public static Long getTradeTime() {
-		return System.currentTimeMillis() / 1000L + 25999200; // 259200
+		return System.currentTimeMillis() / 1000L + 30; // 259200
 	}
 	
 	public static int getPagesCount() {
@@ -92,7 +92,7 @@ public class AuctionAPI extends PluginBase {
 			if (!tradeItem.isValid()) {
 				Player player = Server.getInstance().getPlayerExact(tradeItem.sellerName);
 				if (player != null) {
-					player.sendMessage(PREFIX + "§fВаш товар никто не купил§7, §fпоэтому мы вернули его обртано\n§l§6| §r§fСмотрите вкладку §7(§3Хранилище§7) §fв §7/§6auc");
+					player.sendMessage(PREFIX + "§fВаш товар никто не купил§7, §fпоэтому мы вернули его обртано\n§l§6| §r§fСмотрите вкладку §7(§6Хранилище§7) §fв §7/§6ah");
 				}
 				try {
 					File dataFile = new File(AnarchyMain.datapath + "/Auction/PlayerItems/" + tradeItem.sellerName + ".yml");
@@ -136,7 +136,7 @@ public class AuctionAPI extends PluginBase {
 			CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 			compoundTag.putString("UUID", tradeItem.UUID);
 			item.setNamedTag(compoundTag);
-			item.setCustomName("§r§fПродавец §7- §6" + tradeItem.sellerName + "\n§r§fСтоимость §7- §6" + tradeItem.itemPrice + "\n§r§fДо окончания §7- §3" + (tradeItem.getTime() / 3600) + " §fч§7. §3" + (tradeItem.getTime() / 60 % 60) + " §fмин§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §6" + tradeItem.aboutMessage) + "\n\n§r§6• §fНажмите§7, §fчтобы купить");
+			item.setCustomName("§r§fПродавец §7- §6" + tradeItem.sellerName + "\n§r§fСтоимость §7- §6" + tradeItem.itemPrice + "\n§r§fДо окончания §7- §6" + (tradeItem.getTime() / 3600) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §6" + tradeItem.aboutMessage) + "\n\n§r§6• §fНажмите§7, §fчтобы купить");
 			auctionChest.addItem(item);
 		}
 		if (playerPage >= 0) {
@@ -144,7 +144,8 @@ public class AuctionAPI extends PluginBase {
 			auctionChest.setItem(52, Item.get(Item.PAPER).setCustomName("§r§6Листнуть назад").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
 			auctionChest.setItem(53, Item.get(Item.PAPER).setCustomName("§r§6Листнуть вперед").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
 			auctionChest.setItem(50, Item.get(Item.SIGN).setCustomName("§r§6Справка").setLore("§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §6Монет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§6/auc §7(§3цена§7)\n§r§fили\n§r§6/auc §7(§3цена§7) (§3описание§7)"));
-			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§6Ваши Предметы на Продаже").setLore("§r§6• §fНажмите§7, §fчтобы открыть"));
+			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§6Ваши Предметы на Продаже").setLore("§r§6• §fНажмите§7, §fчтобы открыть§7!"));
+			auctionChest.setItem(47, Item.get(Item.MINECART_WITH_CHEST).setCustomName("§r§6Хранилище").setLore("§r§6• §fНажмите§7, §fчтобы открыть§7!"));
 		}
 		if (firstTime) {
 			FakeChestsAPI.openInventory(player, auctionChest);

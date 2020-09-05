@@ -27,12 +27,12 @@ public class SeeMoneyCommand extends Command {
 			sender.sendMessage("§l§6| §r§fИспользование §7- /§6seemoney §7(§3игрок§7)");
 			return true;
 		}
-		String seeMoneyPlayer = StringUtils.implode(args, 0);
-		if (!AuthAPI.isRegistered(seeMoneyPlayer)) {
-			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + seeMoneyPlayer + " §7- §fне зарегистрирован§7!");
+		String target = StringUtils.implode(args, 0);
+		if (!AuthAPI.isRegistered(target)) {
+			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + target + " §7- §fне зарегистрирован§7!");
 			return true;
 		}
-		player.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §3" + seeMoneyPlayer + " §7- §6" + String.format("%.1f", EconomyAPI.myMoney(seeMoneyPlayer)) + "");
+		player.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §3" + target + " §7- §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "");
 		return true;
 	}
 }

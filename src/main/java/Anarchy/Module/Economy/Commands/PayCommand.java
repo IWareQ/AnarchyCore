@@ -28,8 +28,8 @@ public class PayCommand extends Command {
 			player.sendMessage("§l§6| §r§fИспользование §7- /§6pay §7(§3игрок§7) (§3сумма§7)");
 			return true;
 		}
-		Player payPlayer = Server.getInstance().getPlayer(args[0]);
-		if (payPlayer == null) {
+		Player target = Server.getInstance().getPlayer(args[0]);
+		if (target == null) {
 			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + args[0] + " §7- §3Оффлайн!");
 			return true;
 		}
@@ -39,13 +39,13 @@ public class PayCommand extends Command {
 		}
 		Double money = EconomyAPI.myMoney(player);
 		if (money < Double.parseDouble(args[1])) {
-			player.sendMessage(EconomyAPI.PREFIX + "§fВам не хватает §3монет §fдля перевода§7.\n§l§6| §r§fВаш баланс §7- §6" + money + "");
+			player.sendMessage(EconomyAPI.PREFIX + "§fВам не хватает §3монет §fдля перевода§7.\n§l§6| §r§fВаш баланс §7- §6" + String.format("%.1f", money) + "");
 			return true;
 		}
-		player.sendMessage(EconomyAPI.PREFIX + "§fВы §3успешно §fперевели §6" + args[1] + " §fИгроку §3" + player.getName());
-		payPlayer.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + sender.getName() + " §fперевел Вам §6" + args[1] + "");
+		player.sendMessage(EconomyAPI.PREFIX + "§fВы §3успешно §fперевели §6" + String.format("%.1f", args[1]) + " §fИгроку §3" + player.getName());
+		target.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + sender.getName() + " §fперевел Вам §6" + String.format("%.1f", args[1]) + "");
 		EconomyAPI.reduceMoney(player, Double.parseDouble(args[1]));
-		EconomyAPI.addMoney(payPlayer, Double.parseDouble(args[1]));
+		EconomyAPI.addMoney(target, Double.parseDouble(args[1]));
 		return true;
 	}
 }
