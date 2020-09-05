@@ -29,7 +29,7 @@ public class AuctionAPI extends PluginBase {
 	public static Map<Player, Integer> AUCTION_PAGE = new HashMap<>();
 	public static double AUCTION_MAX_PRICE = 10000.0;
 	public static int AUCTION_CHEST_SIZE = 45; // 45
-	public static int AUCTION_MAX_SELLS = 200; // 10
+	public static int AUCTION_MAX_SELLS = 10; // 10
 	public static int AUCTION_ADD_COOLDOWN = 60; // 60
 	public static String PREFIX = "§l§7(§3Аукцион§7) §r";
 	
@@ -78,7 +78,7 @@ public class AuctionAPI extends PluginBase {
 	}
 	
 	public static Long getTradeTime() {
-		return System.currentTimeMillis() / 1000L + 30; // 259200
+		return System.currentTimeMillis() / 1000L + 259200; // 259200
 	}
 	
 	public static int getPagesCount() {
