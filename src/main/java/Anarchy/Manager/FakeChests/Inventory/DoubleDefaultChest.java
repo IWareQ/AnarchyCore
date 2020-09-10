@@ -22,37 +22,37 @@ public class DoubleDefaultChest extends DefaultChest {
 	}
 	
 	@Override()
-	public void onOpen(Player who) {
-		this.viewers.add(who);
-		List<BlockVector3> blocks = onOpenBlock(who);
-		blockPositions.put(who, blocks);
+	public void onOpen(Player player) {
+		this.viewers.add(player);
+		List<BlockVector3> blocks = onOpenBlock(player);
+		blockPositions.put(player, blocks);
 		new NukkitRunnable(){
 			
 			@Override()
 			public void run() {
-				onFakeOpen(who, blocks);
+				onFakeOpen(player, blocks);
 			}
 		}.runTaskLater(AnarchyMain.plugin, 10);
 	}
 	
 	@Override()
-	protected List<BlockVector3> onOpenBlock(Player who) {
-		BlockVector3 blockPositionA = new BlockVector3((int)who.x, ((int)who.y) + 2, (int)who.z);
+	protected List<BlockVector3> onOpenBlock(Player player) {
+		BlockVector3 blockPositionA = new BlockVector3((int)player.x, ((int)player.y) + 2, (int)player.z);
 		BlockVector3 blockPositionB = blockPositionA.add(1, 0, 0);
-		placeChest(who, blockPositionA);
-		placeChest(who, blockPositionB);
-		pair(who, blockPositionA, blockPositionB);
-		pair(who, blockPositionB, blockPositionA);
+		placeChest(player, blockPositionA);
+		placeChest(player, blockPositionB);
+		pair(player, blockPositionA, blockPositionB);
+		pair(player, blockPositionB, blockPositionA);
 		return Arrays.asList(blockPositionA, blockPositionB);
 	}
 	
-	private void pair(Player who, BlockVector3 pos1, BlockVector3 pos2) {
+	private void pair(Player player, BlockVector3 pos1, BlockVector3 pos2) {
 		BlockEntityDataPacket blockEntityData = new BlockEntityDataPacket();
 		blockEntityData.x = pos1.x;
 		blockEntityData.y = pos1.y;
 		blockEntityData.z = pos1.z;
 		blockEntityData.namedTag = getDoubleNbt(pos1, pos2, getTitle());
-		who.dataPacket(blockEntityData);
+		player.dataPacket(blockEntityData);
 	}
 	
 	private static byte[] getDoubleNbt(BlockVector3 pos, BlockVector3 pairPos, String name) {

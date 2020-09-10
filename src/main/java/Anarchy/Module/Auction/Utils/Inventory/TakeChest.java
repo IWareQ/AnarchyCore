@@ -21,7 +21,7 @@ public class TakeChest extends DoubleDefaultChest {
 	}
 	
 	@Override()
-	public void onClose(Player who) {
+	public void onClose(Player player) {
 		dataFile.delete();
 		if (this.getContents().isEmpty()) {
 			return;
@@ -36,6 +36,6 @@ public class TakeChest extends DoubleDefaultChest {
 			}
 		}
 		config.save();
-		super.onClose(who);
+		super.onClose(player);
 	}
 }

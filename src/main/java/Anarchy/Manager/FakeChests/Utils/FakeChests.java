@@ -2,6 +2,7 @@ package Anarchy.Manager.FakeChests.Utils;
 
 import java.util.List;
 import java.util.Optional;
+
 import cn.nukkit.Player;
 import cn.nukkit.math.BlockVector3;
 
@@ -16,7 +17,7 @@ public class FakeChests {
 		return Optional.ofNullable(FakeChest.open.get(player));
 	}
 	
-	public void removeFakeInventory(FakeChest inventory) {
-		inventory.close();
+	public void removeFakeInventory(FakeChest fakeChest) {
+		fakeChest.close();
 	}
 }

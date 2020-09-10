@@ -10,8 +10,8 @@ public class InventoryChest extends DoubleDefaultChest {
 	}
 	
 	@Override()
-	public void onClose(Player who) {
-		who.getInventory().setContents(getContents());
-		super.onClose(who);
+	public void onClose(Player player) {
+		player.getInventory().setContents(getContents());
+		super.onClose(player);
 	}
 }

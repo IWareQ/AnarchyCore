@@ -1,5 +1,7 @@
 package Anarchy.Task;
 
+import Anarchy.Module.CombatLogger.CombatLoggerAPI;
+import Anarchy.Module.Commands.Spectate.SpectateAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Sound;
@@ -19,6 +21,8 @@ public class RestartTask extends Task {
 		if (MinuteTask.SECONDS <= 10) {
 			if (MinuteTask.SECONDS == 0) {
 				for (Player player : Server.getInstance().getOnlinePlayers().values()) {
+					CombatLoggerAPI.removeCombat(player);
+					SpectateAPI.removeSpectate(player);
 					player.close("", "§l§6Перезагрузка");
 				}
 				Server.getInstance().shutdown();

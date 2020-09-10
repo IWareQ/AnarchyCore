@@ -52,7 +52,6 @@ public class PlayerSession {
 	
 	public Double getDouble(String key) {
 		return Double.parseDouble(this.playerData.get(key));
-		
 	}
 	
 	public Long getLong(String key) {

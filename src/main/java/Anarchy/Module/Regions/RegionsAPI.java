@@ -20,7 +20,6 @@ public class RegionsAPI {
 	public static String FREE = "  §l§fТерритория свободна§7!";
 	public static String BUSY = "  §l§fТерритория не доступна для взаимодействия§7!";
 	public static String BUSY_BY = "  §l§fТерритория занята Игроком §3{PLAYER}";
-	//public static String EDIT = "  §l§cВнимание§7! §fВы изменяете чужой регион§7!";
 	public static String UNBREAK = "  §l§fЭтот блок невозможно сломать§7!";
 	public static String UNPLACE = "  §l§fЭтот блок не возможно установить тут§7!";
 	public static String BIOME = "  §l§fЭтот биом не доступен для строительства§7!";
@@ -75,7 +74,7 @@ public class RegionsAPI {
 	}
 	
 	public static boolean isRegionMember(String playerName, int regionID) {
-		return SQLiteUtils.selectInteger("Regions.db", "SELECT `Member_ID` FROM `MEMBERS` WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "' AND `Region_ID` = '" + regionID + "';") != -1;
+		return SQLiteUtils.selectInteger("Regions.db", "SELECT `Member_ID` FROM `MEMBERS` WHERE UPPER(`Username`) = \'" + playerName.toUpperCase() + "\' AND `Region_ID` = \'" + regionID + "\';") != -1;
 	}
 	
 	public static String getRegionOwner(int regionID) {

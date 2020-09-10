@@ -3,6 +3,7 @@ package Anarchy.Module.Commands.Storage.Utils;
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import Anarchy.Manager.FakeChests.Inventory.DoubleDefaultChest;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
@@ -18,8 +19,8 @@ public class StorageChest extends DoubleDefaultChest {
 	}
 	
 	@Override()
-	public void onClose(Player who) {
-		super.onClose(who);
+	public void onClose(Player player) {
+		super.onClose(player);
 		dataFile.delete();
 		if (this.getContents().isEmpty()) {
 			dataFile.delete();

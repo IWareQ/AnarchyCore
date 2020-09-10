@@ -25,10 +25,9 @@ public class DayCommand extends Command {
 		if (!player.hasPermission("Command.Day")) {
 			return false;
 		}
-		
 		FunctionsAPI.WORLD.setTime(1000);
-		for (Player players: Server.getInstance().getOnlinePlayers().values()) {
-				players.sendMessage("§l§6| §r§fИгрок §3" + playerName + " §fустановил§7(§fа§7) §eДень");
+		for (Player players : Server.getInstance().getOnlinePlayers().values()) {
+			players.sendMessage("§l§6| §r§fИгрок §3" + playerName + " §fустановил§7(§fа§7) §eДень");
 		}
 		return false;
 	}

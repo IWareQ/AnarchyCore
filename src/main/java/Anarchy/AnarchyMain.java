@@ -11,6 +11,7 @@ import Anarchy.Module.Auction.AuctionEventsHandler;
 import Anarchy.Module.Auction.Commands.AuctionCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
 import Anarchy.Module.Boss.SilverfishBoss;
+import Anarchy.Module.CombatLogger.CombatLoggerEventsHandler;
 import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
 import Anarchy.Module.Commands.CoordinateCommand;
@@ -26,12 +27,14 @@ import Anarchy.Module.Commands.RepairCommand;
 import Anarchy.Module.Commands.TestCommand;
 import Anarchy.Module.Commands.Check.CheckCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
+import Anarchy.Module.Commands.Defaults.StopCommand;
 import Anarchy.Module.Commands.Defaults.TellCommand;
 import Anarchy.Module.Commands.EnderChest.EnderChestCommand;
 import Anarchy.Module.Commands.Home.DelHomeCommand;
 import Anarchy.Module.Commands.Home.HomeCommand;
 import Anarchy.Module.Commands.Home.SetHomeCommand;
 import Anarchy.Module.Commands.Spectate.SpectateCommand;
+import Anarchy.Module.Commands.Spectate.SpectateEventsHandler;
 import Anarchy.Module.Commands.Storage.StorageHandler;
 import Anarchy.Module.Commands.Teleport.TpaCommand;
 import Anarchy.Module.Commands.Teleport.TpcCommand;
@@ -59,6 +62,7 @@ import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 
 public class AnarchyMain extends PluginBase {
+	public static String PREFIX = "§l§7(§3Система§7) §r";
 	public static AnarchyMain plugin;
 	public static String folder;
 	public static String datapath;
@@ -79,7 +83,6 @@ public class AnarchyMain extends PluginBase {
 		port = Server.getInstance().getPort();
 		datapath = folder + port;
 		new File(datapath).mkdirs();
-		SQLProvider.register();
 		registerAll();
 		registerEvents();
 		registerEntity();
@@ -100,6 +103,7 @@ public class AnarchyMain extends PluginBase {
 		AuctionAPI.register();
 		PermissionsAPI.register();
 		RegionsAPI.register();
+		SQLProvider.register();
 		Broadcast.register();
 	}
 	
@@ -112,6 +116,8 @@ public class AnarchyMain extends PluginBase {
 		PluginManager pluginManager = getServer().getPluginManager();
 		pluginManager.registerEvents(new AuctionEventsHandler(), this);
 		pluginManager.registerEvents(new AuthEventsHandler(), this);
+		pluginManager.registerEvents(new CombatLoggerEventsHandler(), this);
+		pluginManager.registerEvents(new SpectateEventsHandler(), this);
 		pluginManager.registerEvents(new StorageHandler(), this);
 		pluginManager.registerEvents(new EventsHandler(), this);
 		pluginManager.registerEvents(new RegionsEventsHandler(), this);
@@ -119,7 +125,7 @@ public class AnarchyMain extends PluginBase {
 	
 	private void unregisterCommands() {
 		Map<String, Command> commandMap = getServer().getCommandMap().getCommands();
-		for (String command : new String[]{"me", "ver", "say", "pl", "plugins", "mixer", "difficulty", "defaultgamemode", "help", "?", "pardon", "unban", "particle", "tell", "gm", "gamemode", "list", "about", "title"}) {
+		for (String command : new String[]{"me", "ver", "say", "pl", "plugins", "mixer", "difficulty", "defaultgamemode", "help", "?", "pardon",  "particle", "tell", "gm", "gamemode", "list", "about", "title"}) {
 			commandMap.remove(command);
 		}
 	}
@@ -129,7 +135,7 @@ public class AnarchyMain extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new AuctionCommand(), new CheckCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		Command[] commands = new Command[]{new StopCommand(), new AuctionCommand(), new CheckCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	

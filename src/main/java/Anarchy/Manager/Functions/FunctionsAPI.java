@@ -15,6 +15,7 @@ public class FunctionsAPI {
 		Server.getInstance().loadLevel("nether");
 		Server.getInstance().loadLevel("world");
 		Server.getInstance().loadLevel("world2");
+		Server.getInstance().loadLevel("world3");
 		NETHER = Server.getInstance().getLevelByName("nether");
 		WORLD = Server.getInstance().getLevelByName("world");
 		WORLD2 = Server.getInstance().getLevelByName("world2");

@@ -31,9 +31,13 @@ public class PermissionsAPI {
 		GROUPS.add("§6Принц§r"); // 4
 		GROUPS.add("§eКороль§r"); // 5
 		GROUPS.add("§cYou§fTube§r"); // 6
-		GROUPS.add("§1Модератор§r"); // 7
-		GROUPS.add("§4Администратор§r"); // 8
-		GROUPS.add("§6Основатель§r"); // 9
+		GROUPS.add("§bТитан§r"); // 7
+		GROUPS.add("§bБог§r"); // 8
+		GROUPS.add("§bТарТар§r"); // 9
+		GROUPS.add("§bПомощник§r"); // 10
+		GROUPS.add("§1Модератор§r"); // 11
+		GROUPS.add("§4Администратор§r"); // 12
+		GROUPS.add("§6Основатель§r"); // 13
 	}
 	
 	private static void registerGroupsAllows() {
@@ -43,11 +47,14 @@ public class PermissionsAPI {
 		GROUP_ALLOWS.put(3, new GroupAllow(3)); // 3
 		GROUP_ALLOWS.put(4, new GroupAllow(4)); // 4
 		GROUP_ALLOWS.put(5, new GroupAllow(4)); // 5
-		GROUP_ALLOWS.put(6, new GroupAllow(5)); // 6
-		GROUP_ALLOWS.put(7, new GroupAllow(5)); // 7
+		GROUP_ALLOWS.put(6, new GroupAllow(4)); // 6
+		GROUP_ALLOWS.put(7, new GroupAllow(4)); // 7
 		GROUP_ALLOWS.put(8, new GroupAllow(5)); // 8
-		GROUP_ALLOWS.put(9, new GroupAllow(5)); // 9
-		
+		GROUP_ALLOWS.put(9, new GroupAllow(6)); // 9
+		GROUP_ALLOWS.put(10, new GroupAllow(5)); // 10
+		GROUP_ALLOWS.put(11, new GroupAllow(5)); // 11
+		GROUP_ALLOWS.put(13, new GroupAllow(5)); // 12
+		GROUP_ALLOWS.put(13, new GroupAllow(5)); // 13
 	}
 	
 	public static boolean isGroup(int groupID) {
@@ -146,7 +153,34 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Coordinate", true);
 			break;
 			
-			case 7: // Модератор
+			case 7: // Титан
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			permissionAllows.put("Command.Day", true);
+			permissionAllows.put("Command.Night", true);
+			permissionAllows.put("Command.EnderChest", true);
+			break;
+			
+			case 8: // Бог
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			permissionAllows.put("Command.Day", true);
+			permissionAllows.put("Command.Night", true);
+			permissionAllows.put("Command.EnderChest", true);
+			break;
+			
+			case 9: // ТарТар
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			permissionAllows.put("Command.Day", true);
+			permissionAllows.put("Command.Night", true);
+			permissionAllows.put("Command.EnderChest", true);
+			break;
+			
+			case 10: // Помощник
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -155,10 +189,30 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.ClearChat", true);
+			permissionAllows.put("bansystem.command.checkmute", true);
+			permissionAllows.put("bansystem.command.mute", true);
+			permissionAllows.put("bansystem.command.mutelog", true);
+			break;
+			
+			case 11: // Модератор
+			permissionAllows.put("Command.Food", true);
+			permissionAllows.put("Command.Heal", true);
+			permissionAllows.put("Command.Repair", true);
+			permissionAllows.put("Command.Day", true);
+			permissionAllows.put("Command.Night", true);
+			permissionAllows.put("Command.Near", true);
+			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.ClearChat", true);
+			permissionAllows.put("bansystem.command.checkmute", true);
+			permissionAllows.put("bansystem.command.mute", true);
+			permissionAllows.put("bansystem.command.mutelog", true);
+			permissionAllows.put("bansystem.command.checkban", true);
+			permissionAllows.put("bansystem.command.ban", true);
+			permissionAllows.put("bansystem.command.banlog", true);
 			permissionAllows.put("Command.Spectate", true);
 			break;
 			
-			case 8: // Администратор
+			case 12: // Администратор
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -169,7 +223,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Near", true);
 			break;
 			
-			case 9: // Основатель
+			case 13: // Основатель
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -178,6 +232,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.Near", true);
+			
 		}
 		for (Map.Entry<String, Boolean> entry : permissionAllows.entrySet()) {
 			permissionAttachment.setPermission(entry.getKey(), entry.getValue());

@@ -52,6 +52,7 @@ public class TestCommand extends Command {
 				player.sendMessage("Скоро");
 			}
 			break;
+			
 		}
 		return false;
 	}

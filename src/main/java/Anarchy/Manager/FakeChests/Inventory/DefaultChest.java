@@ -27,36 +27,36 @@ public class DefaultChest extends FakeChest {
 		super(InventoryType.CHEST, null, title);
 	}
 	
-	public DefaultChest(InventoryType type, String title) {
-		super(type, null, title);
+	public DefaultChest(InventoryType inventoryType, String title) {
+		super(inventoryType, null, title);
 	}
 	
 	@Override()
-	protected List<BlockVector3> onOpenBlock(Player who) {
-		BlockVector3 blockPosition = new BlockVector3((int)who.x, ((int)who.y) + 2, (int)who.z);
-		placeChest(who, blockPosition);
+	protected List<BlockVector3> onOpenBlock(Player player) {
+		BlockVector3 blockPosition = new BlockVector3((int)player.x, ((int)player.y) + 2, (int)player.z);
+		placeChest(player, blockPosition);
 		return Collections.singletonList(blockPosition);
 	}
 	
 	@Override()
-	public void onClose(Player who) {
-		super.onClose(who);
+	public void onClose(Player player) {
+		super.onClose(player);
 	}
 	
-	protected void placeChest(Player who, BlockVector3 pos) {
+	protected void placeChest(Player player, BlockVector3 pos) {
 		UpdateBlockPacket updateBlock = new UpdateBlockPacket();
 		updateBlock.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(BlockID.CHEST, 0);
 		updateBlock.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
 		updateBlock.x = pos.x;
 		updateBlock.y = pos.y;
 		updateBlock.z = pos.z;
-		who.dataPacket(updateBlock);
+		player.dataPacket(updateBlock);
 		BlockEntityDataPacket blockEntityData = new BlockEntityDataPacket();
 		blockEntityData.x = pos.x;
 		blockEntityData.y = pos.y;
 		blockEntityData.z = pos.z;
 		blockEntityData.namedTag = getNbt(pos, getTitle());
-		who.dataPacket(blockEntityData);
+		player.dataPacket(blockEntityData);
 	}
 	
 	private static byte[] getNbt(BlockVector3 pos, String name) {

@@ -15,7 +15,7 @@ public class GroupCommand extends Command {
 	public GroupCommand() {
 		super("group", "Выдача группы");
 		this.setPermission("Command.Group");
-		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false), new CommandParameter("number", CommandParamType.INT, false)});
+		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("number", CommandParamType.INT, false), new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	
 	@Override()
@@ -23,29 +23,29 @@ public class GroupCommand extends Command {
 		if (!sender.hasPermission("Command.Group")) {
 			return false;
 		}
-		if (args.length < 2 || !PermissionsAPI.isGroup(Integer.parseInt(args[1]))) {
+		if (args.length < 2 || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
 			sender.sendMessage("§l§6| §r§fИспользование §7- /§6group (§3игрок§7) (§3ID§7)");
 			return true;
 		}
-		String nickname = StringUtils.implode(args, 0);
+		String nickname = StringUtils.implode(args, 1);
 		if (!AuthAPI.isRegistered(nickname)) {
 			sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §7- §fне зарегистрирован§7!");
 			return true;
 		}
-		if (!StringUtils.isInteger(args[0]) || !PermissionsAPI.isGroup(Integer.parseInt(args[1]))) {
-			sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §3" + args[1] + " §7- §fне существует§7!");
+		if (!StringUtils.isInteger(args[0]) || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
+			sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §3" + args[0] + " §7- §fне существует§7!");
 			return true;
 		}
 		sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fполучил группу  " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
 		Player target = Server.getInstance().getPlayerExact(nickname);
 		if (target != null) {
 			target.sendMessage(PermissionsAPI.PREFIX + "§fВы получили привилегию " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
-			PermissionsAPI.setGroup(target, Integer.parseInt(args[1]));
+			PermissionsAPI.setGroup(target, Integer.parseInt(args[0]));
 			PermissionsAPI.updatePermissions(target);
 			PermissionsAPI.updateTag(target);
 			return true;
 		}
-		PermissionsAPI.setGroup(nickname, Integer.parseInt(args[1]));
+		PermissionsAPI.setGroup(nickname, Integer.parseInt(args[0]));
 		return true;
 	}
 }

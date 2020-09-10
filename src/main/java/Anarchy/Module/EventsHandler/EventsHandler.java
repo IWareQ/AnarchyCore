@@ -9,7 +9,6 @@ import Anarchy.AnarchyMain;
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
-import Anarchy.Module.CombatLogger.CombatLoggerAPI;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import Anarchy.Utils.RandomUtils;
@@ -85,7 +84,6 @@ public class EventsHandler implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		EntityDamageEvent cause = player.getLastDamageCause();
-		CombatLoggerAPI.removeCombat(player);
 		if (cause instanceof EntityDamageByEntityEvent) {
 			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
 			if (damager instanceof Player) {
@@ -114,16 +112,16 @@ public class EventsHandler implements Listener {
 		if (cause instanceof EntityDamageByEntityEvent) {
 			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
 			Player player = (Player)damager;
-			double money = RandomUtils.rand(0.1, 5.0);
-				if (entity instanceof Animal) {
-					player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
-					EconomyAPI.addMoney(player, money);
-				} else if (entity instanceof Monster) {
-					player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
-					EconomyAPI.addMoney(player, money);
-				}
+			double money = RandomUtils.rand(0.1, 2.0);
+			if (entity instanceof Animal) {
+				player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
+				EconomyAPI.addMoney(player, money);
+			} else if (entity instanceof Monster) {
+				player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
+				EconomyAPI.addMoney(player, money);
 			}
 		}
+	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event) {
@@ -148,7 +146,6 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {

@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Anarchy.AnarchyMain;
-import cn.nukkit.Server;
 import DbLib.DbLib;
+import cn.nukkit.Server;
 
 public class SQLiteUtils {
 	
