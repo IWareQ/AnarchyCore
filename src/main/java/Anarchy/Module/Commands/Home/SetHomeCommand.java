@@ -10,7 +10,7 @@ public class SetHomeCommand extends Command {
 	
 	public SetHomeCommand() {
 		super("sethome", "Установить новую точку дома");
-		commandParameters.clear();
+		this.commandParameters.clear();
 	}
 	
 	@Override()

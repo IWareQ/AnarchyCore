@@ -8,7 +8,7 @@ public class TpdCommand extends Command {
 	
 	public TpdCommand() {
 		super("tpd", "Отклонить запрос на телепортацию");
-		commandParameters.clear();
+		this.commandParameters.clear();
 	}
 	
 	@Override()

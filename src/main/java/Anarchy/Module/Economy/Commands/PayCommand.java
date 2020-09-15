@@ -13,7 +13,7 @@ public class PayCommand extends Command {
 	
 	public PayCommand() {
 		super("pay", "§l§fПеревести Монет");
-		commandParameters.clear();
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false), new CommandParameter("money", CommandParamType.INT, false)});
 	}
 	

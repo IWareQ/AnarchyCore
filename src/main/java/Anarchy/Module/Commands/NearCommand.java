@@ -10,8 +10,8 @@ public class NearCommand extends Command {
 	
 	public NearCommand() {
 		super("near", "Посмотреть кто рядом с тобой");
-		setPermission("Command.Near");
-		commandParameters.clear();
+		this.setPermission("Command.Near");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

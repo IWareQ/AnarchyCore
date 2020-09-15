@@ -9,8 +9,8 @@ public class GamemodeCommand extends Command {
 	
 	public GamemodeCommand() {
 		super("gm", "§l§fСменить режим игры");
-		setPermission("Command.Gamemode");
-		commandParameters.clear();
+		this.setPermission("Command.Gamemode");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

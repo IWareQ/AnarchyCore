@@ -10,8 +10,8 @@ public class DayCommand extends Command {
 	
 	public DayCommand() {
 		super("day", "§l§fСменить §9Ночь §fна §eДень");
-		setPermission("Command.Day");
-		commandParameters.clear();
+		this.setPermission("Command.Day");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

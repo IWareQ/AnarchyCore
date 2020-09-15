@@ -13,8 +13,8 @@ public class ACommand extends Command {
 	
 	public ACommand() {
 		super("a", "§l§fАдмин-Чат");
-		setPermission("Command.A");
-		commandParameters.clear();
+		this.setPermission("Command.A");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

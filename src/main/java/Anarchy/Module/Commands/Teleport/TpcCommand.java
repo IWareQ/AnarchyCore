@@ -9,7 +9,7 @@ public class TpcCommand extends Command {
 	
 	public TpcCommand() {
 		super("tpc", "Принять запрос на телепортацию");
-		commandParameters.clear();
+		this.commandParameters.clear();
 	}
 	
 	@Override()

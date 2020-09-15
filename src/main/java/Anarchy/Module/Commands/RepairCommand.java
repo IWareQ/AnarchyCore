@@ -18,7 +18,8 @@ public class RepairCommand extends Command {
 	
 	public RepairCommand() {
 		super("repair", "§l§fПочинить предмет в руке§7/§fинвентаре");
-		setPermission("Command.Repair");
+		this.setPermission("Command.Repair");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

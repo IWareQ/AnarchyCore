@@ -10,7 +10,7 @@ public class BarCommand extends Command {
 	
 	public BarCommand() {
 		super("bar", "§l§fВключить§7/§fВыключить ХотБар");
-		commandParameters.clear();
+		this.commandParameters.clear();
 	}
 	
 	@Override()

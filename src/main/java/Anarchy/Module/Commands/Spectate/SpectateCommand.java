@@ -13,8 +13,8 @@ public class SpectateCommand extends Command implements Listener {
 	
 	public SpectateCommand() {
 		super("sp", "Наблюдение за Игроком", "", new String[]{"spec"});
-		setPermission("Command.Spectate");
-		commandParameters.clear();
+		this.setPermission("Command.Spectate");
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	

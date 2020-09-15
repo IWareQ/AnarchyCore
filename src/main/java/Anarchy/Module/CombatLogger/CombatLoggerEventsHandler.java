@@ -23,7 +23,7 @@ public class CombatLoggerEventsHandler implements Listener {
 				Player player = (Player)entity;
 				Player damager = (Player)ev.getDamager();
 				double health = player.getHealth();
-				damager.sendTip("§l§f" + String.format("%.1f", health) + " §c❤");
+				damager.sendTip("§l§f" + String.format("%.0f", health) + " §c❤");
 				if (damager != player) {
 					for (Player players : new Player[]{player, damager}) {
 						CombatLoggerAPI.addCombat(players);

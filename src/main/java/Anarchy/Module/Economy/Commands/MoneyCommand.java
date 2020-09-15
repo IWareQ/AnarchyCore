@@ -9,7 +9,7 @@ public class MoneyCommand extends Command {
 	
 	public MoneyCommand() {
 		super("money", "§l§fИгровой баланс", "", new String[]{"mymoney"});
-		commandParameters.clear();
+		this.commandParameters.clear();
 	}
 	
 	@Override()

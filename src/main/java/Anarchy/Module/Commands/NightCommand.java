@@ -10,8 +10,8 @@ public class NightCommand extends Command {
 	
 	public NightCommand() {
 		super("night", "§fСменить День на Ночь");
-		setPermission("Command.Night");
-		commandParameters.clear();
+		this.setPermission("Command.Night");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

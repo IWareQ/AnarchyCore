@@ -12,8 +12,8 @@ public class KickCommand extends Command {
 	
 	public KickCommand() {
 		super("kick", "Выгнать Игрока с Сервера");
-		setPermission("Command.Check");
-		commandParameters.clear();
+		this.setPermission("Command.Check");
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	

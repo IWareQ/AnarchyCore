@@ -25,7 +25,6 @@ import Anarchy.Module.Commands.NearCommand;
 import Anarchy.Module.Commands.NightCommand;
 import Anarchy.Module.Commands.RepairCommand;
 import Anarchy.Module.Commands.TestCommand;
-import Anarchy.Module.Commands.Check.CheckCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
 import Anarchy.Module.Commands.Defaults.StopCommand;
 import Anarchy.Module.Commands.Defaults.TellCommand;
@@ -33,6 +32,7 @@ import Anarchy.Module.Commands.EnderChest.EnderChestCommand;
 import Anarchy.Module.Commands.Home.DelHomeCommand;
 import Anarchy.Module.Commands.Home.HomeCommand;
 import Anarchy.Module.Commands.Home.SetHomeCommand;
+import Anarchy.Module.Commands.Inventory.InventoryCommand;
 import Anarchy.Module.Commands.Spectate.SpectateCommand;
 import Anarchy.Module.Commands.Spectate.SpectateEventsHandler;
 import Anarchy.Module.Commands.Storage.StorageHandler;
@@ -135,7 +135,7 @@ public class AnarchyMain extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new StopCommand(), new AuctionCommand(), new CheckCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		Command[] commands = new Command[]{new StopCommand(), new AuctionCommand(), new InventoryCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	

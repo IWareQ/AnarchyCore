@@ -10,7 +10,7 @@ public class ListCommand extends Command {
 	
 	public ListCommand() {
 		super("list", "§l§fСписок игроков онлайн");
-		commandParameters.clear();
+		this.commandParameters.clear();
 	}
 	
 	@Override()

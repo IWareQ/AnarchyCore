@@ -9,8 +9,8 @@ public class FoodCommand extends Command {
 	
 	public FoodCommand() {
 		super("food", "§l§fВосстановить Голод");
-		setPermission("Command.Food");
-		commandParameters.clear();
+		this.setPermission("Command.Food");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

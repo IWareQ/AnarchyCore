@@ -9,7 +9,7 @@ public class DelHomeCommand extends Command {
 	
 	public DelHomeCommand() {
 		super("delhome", "Удалить точку дома");
-		commandParameters.clear();
+		this.commandParameters.clear();
 	}
 	
 	@Override()

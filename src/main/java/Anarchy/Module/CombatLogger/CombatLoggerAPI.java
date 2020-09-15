@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import cn.nukkit.Player;
 import cn.nukkit.utils.DummyBossBar;
 
@@ -18,13 +17,29 @@ public class CombatLoggerAPI {
 		getMap().put(player.getName(), dummyBossBar.getBossBarId());
 	}
 	
+	public static void updateBossBar(Player player, String text, int length) {
+		DummyBossBar dummyBossBar = getDummyBossBar(player);
+		if (dummyBossBar != null) {
+			dummyBossBar.setText(text);
+			dummyBossBar.setLength(length);
+		}
+	}
+	
+	public static DummyBossBar getDummyBossBar(Player player) {
+		Long barId = getBarId(player);
+		if (barId != null) {
+			return player.getDummyBossBar(barId);
+		}
+		return null;
+	}
+	
 	public static void addCombat(Player player) {
 		if (inCombat(player)) {
 			if (System.currentTimeMillis() * 1000 - inCombat.get(player) < 60) {
-				createBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n  §l§fНе выходите с сервера §630 §fсек§7.!");
+				createBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n§l§fНе выходите из игры еще §630 §fсек§7.!");
 			}
 		} else {
-			createBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n  §l§fНе выходите с сервера §630 §fсек§7.!");
+			createBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n§l§fНе выходите из игры еще §630 §fсек§7.!");
 		}
 		inCombat.put(player, System.currentTimeMillis());
 	}

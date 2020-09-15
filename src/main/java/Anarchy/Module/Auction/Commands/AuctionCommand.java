@@ -21,7 +21,7 @@ public class AuctionCommand extends Command {
 	
 	public AuctionCommand() {
 		super("auc", "Открыть Аукцион", "", new String[]{"ah"});
-		commandParameters.clear();
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("money", CommandParamType.INT, false)});
 	}
 	

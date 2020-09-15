@@ -14,7 +14,7 @@ public class TprCommand extends Command {
 	
 	public TprCommand() {
 		super("tpr", "Телепортироваться в случайное место", "", new String[]{"rtp"});
-		commandParameters.clear();
+		this.commandParameters.clear();
 	}
 	
 	@Override()

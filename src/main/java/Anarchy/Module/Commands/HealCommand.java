@@ -8,8 +8,8 @@ public class HealCommand extends Command {
 	
 	public HealCommand() {
 		super("heal", "Восстановить Здоровье");
-		setPermission("Command.Heal");
-		commandParameters.clear();
+		this.setPermission("Command.Heal");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

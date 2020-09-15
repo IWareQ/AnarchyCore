@@ -9,8 +9,8 @@ public class ClearChatCommand extends Command {
 	
 	public ClearChatCommand() {
 		super("clearchat", "§l§fОчистить чат для всех", "", new String[]{"cc"});
-		setPermission("Command.ClearChat");
-		commandParameters.clear();
+		this.setPermission("Command.ClearChat");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

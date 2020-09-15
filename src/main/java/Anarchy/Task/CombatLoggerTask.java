@@ -17,5 +17,13 @@ public class CombatLoggerTask extends Task {
 				CombatLoggerAPI.removeCombat(player);
 			}
 		});
+		CombatLoggerAPI.getPlayers().forEach((player,time)->{
+			long nowTime = System.currentTimeMillis() / 1000L;
+			long combatTime = time / 1000L + 30 - nowTime;
+			if (time / 1000L + 30 - nowTime <= 30) {
+				CombatLoggerAPI.updateBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n§l§fНе выходите из игры еще §6" + combatTime + " §fсек§7.!", 100);
+			}
+			--combatTime;
+		});
 	}
 }

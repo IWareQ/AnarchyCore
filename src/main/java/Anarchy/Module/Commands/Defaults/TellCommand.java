@@ -14,7 +14,7 @@ public class TellCommand extends Command {
 	
 	public TellCommand() {
 		super("tell", "§l§fОтправить Личное Сообщение");
-		commandParameters.clear();
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	

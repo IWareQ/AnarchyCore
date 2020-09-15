@@ -15,7 +15,7 @@ public class HomeCommand extends Command {
 	
 	public HomeCommand() {
 		super("home", "Телепортироватся домой");
-		commandParameters.clear();
+		this.commandParameters.clear();
 	}
 	
 	@Override()

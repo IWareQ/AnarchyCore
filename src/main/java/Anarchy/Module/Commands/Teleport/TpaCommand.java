@@ -16,7 +16,7 @@ public class TpaCommand extends Command {
 	
 	public TpaCommand() {
 		super("tpa", "Отправить запрос на телепортацию");
-		commandParameters.clear();
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	

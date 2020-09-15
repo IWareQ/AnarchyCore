@@ -9,8 +9,8 @@ public class EnderChestCommand extends Command {
 	
 	public EnderChestCommand() {
 		super("ec", "§l§fОткрыть Эндер Сундук");
-		setPermission("Command.EnderChest");
-		commandParameters.clear();
+		this.setPermission("Command.EnderChest");
+		this.commandParameters.clear();
 	}
 	
 	@Override()
