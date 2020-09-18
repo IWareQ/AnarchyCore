@@ -13,6 +13,7 @@ public class CoordinateCommand extends Command {
 	public CoordinateCommand() {
 		super("coordinate", "§l§fВключить§7/§fВыключить координаты");
 		this.setPermission("Command.Coordinate");
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("string", new String[]{"on", "off"})});
 	}
 	

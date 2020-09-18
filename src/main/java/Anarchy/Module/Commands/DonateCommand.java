@@ -9,6 +9,7 @@ public class DonateCommand extends Command {
 	
 	public DonateCommand() {
 		super("donate", "§l§fОписание Донат Услуг");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

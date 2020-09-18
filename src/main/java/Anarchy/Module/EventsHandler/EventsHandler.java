@@ -53,16 +53,14 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 		if (player.getFloorY() <= 0) {
-			Level level = Server.getInstance().getLevelByName("world2");
-			player.teleport(level.getSafeSpawn());
+			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn());
 			player.sendMessage("§l§c| §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн");
 		}
-		if (player.getLevel().equals(FunctionsAPI.WORLD2)) {
+		if (player.getLevel().equals(FunctionsAPI.SPAWN)) {
 			if (block.getId() == 416) {
-				Level level = Server.getInstance().getLevelByName("world");
 				Vector3 teleportPosition = new Vector3(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 68, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
-				player.teleport(level.getSafeSpawn(teleportPosition));
-				level.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
+				player.teleport(FunctionsAPI.MAP.getSafeSpawn(teleportPosition));
+				FunctionsAPI.MAP.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
 				player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.");
 				event.setCancelled(true);
 				return;
@@ -126,7 +124,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
+		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			event.setCancelled(true);
 		}
 	}
@@ -134,7 +132,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
+		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			event.setCancelled(true);
 		}
 	}
@@ -142,7 +140,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayetBucketEmpty(PlayerBucketEmptyEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
+		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			event.setCancelled(true);
 		}
 	}
@@ -150,7 +148,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.WORLD2) && !(player.hasPermission("Access.Admin"))) {
+		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			player.sendMessage("§l§6| §r§fКоманды §3заблокированны§7, §fпереместитесь в игровую зону§7!");
 			event.setCancelled(true);
 		}

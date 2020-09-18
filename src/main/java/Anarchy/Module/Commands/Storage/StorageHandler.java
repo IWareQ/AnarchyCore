@@ -28,6 +28,7 @@ public class StorageHandler extends Command implements Listener {
 	
 	public StorageHandler() {
 		super("storage", "Хранилище купленных Предметов");
+		this.commandParameters.clear();
 		new File(AnarchyMain.datapath + "/StorageItems/").mkdirs();
 	}
 	

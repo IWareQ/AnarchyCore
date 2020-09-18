@@ -10,8 +10,8 @@ public class TestCommand extends Command {
 	
 	public TestCommand() {
 		super("test", "§l§fТестовая команда");
-		setPermission("Command.Test");
-		commandParameters.clear();
+		this.setPermission("Command.Test");
+		this.commandParameters.clear();
 	}
 	
 	@Override()

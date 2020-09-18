@@ -32,7 +32,7 @@ public class RegionsAPI {
 	}
 	
 	public static void placeRegion(Player player, Block block, BlockPlaceEvent event) {
-		if (player.getLevel() != FunctionsAPI.WORLD) {
+		if (player.getLevel() != FunctionsAPI.MAP) {
 			player.sendMessage(PREFIX + "§fРазместите блок в обычном мире§7!");
 			event.setCancelled();
 			return;

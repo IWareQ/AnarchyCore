@@ -66,7 +66,7 @@ public class RegionsEventsHandler implements Listener {
 		Block block = event.getBlock();
 		Item item = event.getItem();
 		if (item != null && item.getId() == Item.STICK) {
-			if (player.level != FunctionsAPI.WORLD) {
+			if (player.level != FunctionsAPI.MAP) {
 				player.sendTip(RegionsAPI.BIOME);
 				return;
 			}

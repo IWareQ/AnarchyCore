@@ -26,7 +26,7 @@ public class SetHomeCommand extends Command {
 			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
 			return true;
 		}
-		if (player.getLevel() != FunctionsAPI.WORLD) {
+		if (player.getLevel() != FunctionsAPI.MAP) {
 			player.sendMessage(HomeCommand.PREFIX + "§fВ этом мире §3запрещено §fставить точку Дома§7!");
 		} else if (homeId == -1) {
 			player.sendMessage(HomeCommand.PREFIX + "§fНовая точка дома §3упешно §fустановлена");

@@ -18,6 +18,7 @@ public class RegionCommand extends Command {
 	
 	public RegionCommand() {
 		super("rg", "Система регионов");
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("string", new String[]{"add", "del", "my", "me", "list", "how", "help"}), new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	

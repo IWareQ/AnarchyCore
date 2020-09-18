@@ -2,12 +2,11 @@ package Anarchy.Module.Commands.Home;
 
 import java.util.Map;
 
+import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Utils.SQLiteUtils;
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 
 public class HomeCommand extends Command {
@@ -31,12 +30,11 @@ public class HomeCommand extends Command {
 		if (homeData == null || homeData.isEmpty()) {
 			player.sendMessage(PREFIX + "§fТочек дома не обнаружено§7, §fдля создания используйте §7/§3sethome");
 		} else {
-			Level level = Server.getInstance().getLevelByName("world");
 			int x = Integer.parseInt(homeData.get("X"));
 			int y = Integer.parseInt(homeData.get("Y"));
 			int z = Integer.parseInt(homeData.get("Z"));
 			player.sendMessage(PREFIX + "§fВы §3успешно §fтелепортированы домой§7!");
-			player.teleport(new Position(x, y, z, level));
+			player.teleport(new Position(x, y, z, FunctionsAPI.MAP));
 		}
 		return false;
 	}

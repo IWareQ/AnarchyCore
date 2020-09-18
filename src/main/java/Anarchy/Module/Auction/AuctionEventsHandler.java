@@ -55,7 +55,7 @@ public class AuctionEventsHandler implements Listener {
 								player.getLevel().addSound(player, Sound.ITEM_BOOK_PAGE_TURN, 1, 1, player);
 							} else {
 								player.sendMessage(AuctionAPI.PREFIX + "§fВы уже находитесь на самой последней странице§7!");
-								player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
+								player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 								stop = tradeSize;
 							}
 						}
@@ -80,7 +80,7 @@ public class AuctionEventsHandler implements Listener {
 							int playerPage = AuctionAPI.AUCTION_PAGE.get(player);
 							if (playerPage == 0) {
 								player.sendMessage(AuctionAPI.PREFIX + "§fВы уже находитесь на первой странице§7!");
-								player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
+								player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 							} else {
 								AuctionAPI.AUCTION_PAGE.put(player, AuctionAPI.AUCTION_PAGE.get(player) - 1);
 								AuctionAPI.showAuction(player, false);
@@ -145,12 +145,12 @@ public class AuctionEventsHandler implements Listener {
 							if (tradeItem != null) {
 								if (tradeItem.sellerName.equals(player.getName())) {
 									player.sendMessage(AuctionAPI.PREFIX + "§fВы пытаетесь купить свой товар§7!\n§l§6| §r§fДля снятия используйте вкладку §7(§3Ваши Предметы на Продаже§7)");
-									player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
+									player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 									return;
 								}
 								if (EconomyAPI.myMoney(player) < tradeItem.itemPrice) {
 									player.sendMessage(AuctionAPI.PREFIX + "§fНедостаточно монет§7, §fдля совершения покупки§7!");
-									player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
+									player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 									return;
 								}
 								PlayerInventory playerInventory = player.getInventory();

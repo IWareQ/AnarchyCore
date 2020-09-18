@@ -14,6 +14,7 @@ public class SeeMoneyCommand extends Command {
 	public SeeMoneyCommand() {
 		super("seemoney", "§l§fПосмотреть баланс Игрока");
 		this.setPermission("Command.SeeMoney");
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	

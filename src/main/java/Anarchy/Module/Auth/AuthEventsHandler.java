@@ -27,8 +27,8 @@ public class AuthEventsHandler implements Listener {
 		DataPacket dataPacket = event.getPacket();
 		if (!(dataPacket instanceof SetLocalPlayerAsInitializedPacket)) return;
 		if (!(player.hasPlayedBefore())) {
-			player.teleport(new Location(-7, 148, 93, FunctionsAPI.WORLD2));
-			player.setSpawn(new Position(-7, 148, 93, FunctionsAPI.WORLD2));
+			player.teleport(new Location(-7, 148, 93, FunctionsAPI.SPAWN));
+			player.setSpawn(new Position(-7, 148, 93, FunctionsAPI.SPAWN));
 		}
 	}
 	

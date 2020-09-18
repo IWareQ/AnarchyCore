@@ -14,6 +14,7 @@ import Anarchy.Module.Boss.SilverfishBoss;
 import Anarchy.Module.CombatLogger.CombatLoggerEventsHandler;
 import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
+import Anarchy.Module.Commands.ClearChatCommand;
 import Anarchy.Module.Commands.CoordinateCommand;
 import Anarchy.Module.Commands.DayCommand;
 import Anarchy.Module.Commands.DonateCommand;
@@ -24,6 +25,7 @@ import Anarchy.Module.Commands.KickCommand;
 import Anarchy.Module.Commands.NearCommand;
 import Anarchy.Module.Commands.NightCommand;
 import Anarchy.Module.Commands.RepairCommand;
+import Anarchy.Module.Commands.ResyncCommand;
 import Anarchy.Module.Commands.TestCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
 import Anarchy.Module.Commands.Defaults.StopCommand;
@@ -73,7 +75,7 @@ public class AnarchyMain extends PluginBase {
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		for (String pluginName : new String[]{"DbLib", "ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
-				getLogger().alert("§l§fНе найден §3плагин §7- §6" + pluginName);
+				this.getLogger().alert("§l§fНе найден §3плагин §7- §6" + pluginName);
 				pluginManager.disablePlugin(this);
 				return;
 			}
@@ -82,20 +84,20 @@ public class AnarchyMain extends PluginBase {
 		folder = "";
 		port = Server.getInstance().getPort();
 		datapath = folder + port;
-		new File(datapath).mkdirs();
-		registerAll();
-		registerEvents();
-		registerEntity();
-		unregisterCommands();
-		registerCommands();
-		registerTask();
-		getLogger().info("§l§fПлагин §aАктивирован§7! (§fАвтор §7- @§3extranons§7)");
+		(new File(datapath)).mkdirs();
+		this.registerAll();
+		this.registerEvents();
+		this.registerEntity();
+		this.unregisterCommands();
+		this.registerCommands();
+		this.registerTask();
+		this.getLogger().info("§l§fПлагин §aАктивирован§7! (§fАвтор §7- @§3extranons§7)");
 	}
 	
 	@Override()
 	public void onDisable() {
-		unregisterAll();
-		getLogger().info("§l§fПлагин §cДеактивирован§7! (§fАвтор §7- @§3extranons§7)");
+		this.unregisterAll();
+		this.getLogger().info("§l§fПлагин §cДеактивирован§7! (§fАвтор §7- @§3extranons§7)");
 	}
 	
 	private void registerAll() {
@@ -130,13 +132,13 @@ public class AnarchyMain extends PluginBase {
 		}
 	}
 	
-	public static void registerEntity() {
+	private void registerEntity() {
 		Entity.registerEntity(SilverfishBoss.class.getSimpleName(), SilverfishBoss.class);
 	}
 	
 	private void registerCommands() {
-		Command[] commands = new Command[]{new StopCommand(), new AuctionCommand(), new InventoryCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
-		getServer().getCommandMap().registerAll("", Arrays.asList(commands));
+		Command[] commands = new Command[]{new ResyncCommand(),new ClearChatCommand(),new StopCommand(), new AuctionCommand(), new InventoryCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 	
 	private void registerTask() {

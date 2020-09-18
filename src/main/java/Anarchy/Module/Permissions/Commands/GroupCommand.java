@@ -15,6 +15,7 @@ public class GroupCommand extends Command {
 	public GroupCommand() {
 		super("group", "Выдача группы");
 		this.setPermission("Command.Group");
+		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("number", CommandParamType.INT, false), new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	

@@ -18,7 +18,7 @@ public class CombatLoggerEventsHandler implements Listener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		EntityDamageByEntityEvent ev;
 		Entity entity = event.getEntity();
-		if (!entity.getLevel().equals(FunctionsAPI.WORLD2)) {
+		if (!entity.getLevel().equals(FunctionsAPI.SPAWN)) {
 			if (event instanceof EntityDamageByEntityEvent && (ev = (EntityDamageByEntityEvent)event).getDamager() instanceof Player && entity instanceof Player) {
 				Player player = (Player)entity;
 				Player damager = (Player)ev.getDamager();
@@ -31,7 +31,7 @@ public class CombatLoggerEventsHandler implements Listener {
 				}
 			}
 		}
-		if (entity.getLevel().equals(FunctionsAPI.WORLD2)) {
+		if (entity.getLevel().equals(FunctionsAPI.SPAWN)) {
 			event.setCancelled(true);
 		}
 	}
@@ -49,16 +49,17 @@ public class CombatLoggerEventsHandler implements Listener {
 		Player player = event.getEntity();
 		if (CombatLoggerAPI.inCombat(player)) {
 			CombatLoggerAPI.removeCombat(player);
+			CombatLoggerAPI.removeBossBar(player);
 		}
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
-		Long cooldownTime = CombatLoggerAPI.inCombat.get(player) / 1000L + 30;
+		Long cooldownTime = CombatLoggerAPI.inCombat.get(player);
 		Long nowTime = System.currentTimeMillis() / 1000L;
 		if (CombatLoggerAPI.inCombat(player)) {
-			player.sendMessage("§l§7(§3PvP§7) §r§fВы не можете использовать команды в режиме §6PvP§7! §fПодождите еще §6" + (cooldownTime - nowTime) + " §fсек§7.");
+			player.sendMessage("§l§7(§3PvP§7) §r§fВы не можете использовать команды в режиме §6PvP§7! §fПодождите еще §6" + (cooldownTime / 1000L + 30 - nowTime) + " §fсек§7.");
 			event.setCancelled(true);
 		}
 	}
