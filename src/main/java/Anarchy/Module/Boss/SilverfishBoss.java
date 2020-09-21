@@ -73,7 +73,7 @@ public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
 	@Override()
 	public  Item[] getDrops() {
 		List<Item> drops = new ArrayList<>();
-		Item item =  Item.get(390, 1, 1).setCustomName("§l§fСокровище").setLore("§l§6• §r§fНажмите ПКМ или ЛКМ по любому блоку");
+		Item item =  Item.get(Item.DOUBLE_PLANT, 0, 1).setCustomName("§l§fСокровище").setLore("§l§6• §r§fНажмите ПКМ или ЛКМ по любому блоку");
 		item.addEnchantment(Enchantment.get(1));
 		drops.add(Item.get(Item.IRON_INGOT, 0, 9));
 		drops.add(Item.get(Item.IRON_NUGGET, 0, Utils.rand(10, 30)));

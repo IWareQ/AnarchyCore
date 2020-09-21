@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Anarchy.AnarchyMain;
+import Anarchy.Manager.Functions.FunctionsAPI;
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.GameRule;
-import cn.nukkit.level.Level;
 import cn.nukkit.network.protocol.GameRulesChangedPacket;
 import cn.nukkit.potion.Effect;
 
@@ -22,9 +21,8 @@ public class SpectateAPI {
 			player.sendMessage(AnarchyMain.PREFIX + "§fВы уже наблюдаете за Игроком §6" + spectatePlayer.spectateName + "\n§l§6| §r§fДля окончания наблюдения используйте §6Редстоун§7!");
 		} else {
 			if (target != null) {
-				Level level = Server.getInstance().getLevelByName("world3");
 				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-				gameRulesChanged.gameRules = level.getGameRules();
+				gameRulesChanged.gameRules = FunctionsAPI.WORLD3.getGameRules();
 				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
 				player.dataPacket(gameRulesChanged);
 				SPECTATE_PLAYERS.put(player.getName(), new SpectatePlayer(player, target));
@@ -51,9 +49,8 @@ public class SpectateAPI {
 			INVENTORY_PLAYER.remove(player.getName());
 			spectatePlayer.playerPosition.level.loadChunk(spectatePlayer.playerPosition.getFloorX() >> 4, spectatePlayer.playerPosition.getFloorZ() >> 4);
 			player.teleport(spectatePlayer.playerPosition);
-			Level level = Server.getInstance().getLevelByName("world3");
 			GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-			gameRulesChanged.gameRules = level.getGameRules();
+			gameRulesChanged.gameRules = FunctionsAPI.WORLD3.getGameRules();
 			gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
 			player.dataPacket(gameRulesChanged);
 			player.sendMessage("§l§a| §r§fВы закончили наблюдение за Игроком §6" + spectatePlayer.spectateName);

@@ -2,7 +2,6 @@ package Anarchy.Module.Economy.Commands;
 
 import Anarchy.Module.Auth.AuthAPI;
 import Anarchy.Module.Economy.EconomyAPI;
-import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -28,13 +27,12 @@ public class SetMoneyCommand extends Command {
 			sender.sendMessage("§l§6| §r§fИспользование §7- /§6setmoney §7(§игрок§7) (§3сумма§7)");
 			return true;
 		}
-		String nickname = StringUtils.implode(args, 0);
-		if (!AuthAPI.isRegistered(nickname)) {
-			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + nickname + " §7- §fне зарегистрирован§7!");
+		if (!AuthAPI.isRegistered(args[0])) {
+			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + args[0] + " §fне зарегистрирован§7!");
 			return true;
 		}
-		Player target = Server.getInstance().getPlayerExact(nickname);
-		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + target + " §fтеперь имеет §6" + String.format("%.1f", args[1]) + "");
+		Player target = Server.getInstance().getPlayerExact(args[0]);
+		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fтеперь имеет §6" + String.format("%.1f", args[1]) + "");
 		EconomyAPI.setMoney(target, Double.parseDouble(args[1]));
 		return true;
 	}

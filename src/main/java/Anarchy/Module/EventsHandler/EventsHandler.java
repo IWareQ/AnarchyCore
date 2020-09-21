@@ -3,7 +3,6 @@ package Anarchy.Module.EventsHandler;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 import Anarchy.AnarchyMain;
 import Anarchy.Manager.Functions.FunctionsAPI;
@@ -32,7 +31,6 @@ import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
-import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.Config;
@@ -58,9 +56,9 @@ public class EventsHandler implements Listener {
 		}
 		if (player.getLevel().equals(FunctionsAPI.SPAWN)) {
 			if (block.getId() == 416) {
-				Vector3 teleportPosition = new Vector3(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 68, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
+				Vector3 teleportPosition = new Vector3(RandomUtils.rand(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 68, RandomUtils.rand(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
 				player.teleport(FunctionsAPI.MAP.getSafeSpawn(teleportPosition));
-				FunctionsAPI.MAP.loadChunk(ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, ThreadLocalRandom.current().nextInt(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
+				FunctionsAPI.MAP.loadChunk(RandomUtils.rand(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, RandomUtils.rand(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
 				player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.");
 				event.setCancelled(true);
 				return;
@@ -99,7 +97,7 @@ public class EventsHandler implements Listener {
 				return;
 			}
 		}
-		event.setDeathMessage("§6§l| §r§fИгрок §3" + player.getName() + " §fпогиб");
+		event.setDeathMessage("§6§l| §r§fИгрок §6" + player.getName() + " §fпогиб");
 		addDeaths(player);
 	}
 	
@@ -125,6 +123,7 @@ public class EventsHandler implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
+			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
 			event.setCancelled(true);
 		}
 	}
@@ -133,6 +132,7 @@ public class EventsHandler implements Listener {
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
+			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
 			event.setCancelled(true);
 		}
 	}
@@ -141,6 +141,7 @@ public class EventsHandler implements Listener {
 	public void onPlayetBucketEmpty(PlayerBucketEmptyEvent event) {
 		Player player = event.getPlayer();
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
+			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
 			event.setCancelled(true);
 		}
 	}

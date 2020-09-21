@@ -10,6 +10,7 @@ public class FunctionsAPI {
 	public static Level MAP;
 	public static Level NETHER;
 	public static Level SPAWN;
+	public static Level WORLD3;
 	
 	public static void register() {
 		Server.getInstance().loadLevel("nether");
@@ -19,6 +20,7 @@ public class FunctionsAPI {
 		NETHER = Server.getInstance().getLevelByName("nether");
 		MAP = Server.getInstance().getLevelByName("map");
 		SPAWN = Server.getInstance().getLevelByName("spawn");
+		WORLD3 = Server.getInstance().getLevelByName("world3");
 		MAP.getGameRules().setGameRule(GameRule.SHOW_COORDINATES, true);
 		NETHER.getGameRules().setGameRule(GameRule.SHOW_COORDINATES, true);
 		SPAWN.getGameRules().setGameRule(GameRule.SHOW_COORDINATES, false);

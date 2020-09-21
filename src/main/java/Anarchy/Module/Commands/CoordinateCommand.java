@@ -1,11 +1,11 @@
 package Anarchy.Module.Commands;
 
+import Anarchy.Manager.Functions.FunctionsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.level.GameRule;
-import cn.nukkit.level.Level;
 import cn.nukkit.network.protocol.GameRulesChangedPacket;
 
 public class CoordinateCommand extends Command {
@@ -34,20 +34,20 @@ public class CoordinateCommand extends Command {
 		switch (args[0]) {
 			case "on": 
 			{
-				Level level = player.getLevel();
 				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-				gameRulesChanged.gameRules = level.getGameRules();
+				gameRulesChanged.gameRules = FunctionsAPI.WORLD3.getGameRules();
 				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
+				player.dataPacket(gameRulesChanged);
 				player.sendMessage("§l§a| §r§fКоординаты успешно включены§7!");
 			}
 			break;
 			
 			case "off": 
 			{
-				Level level = player.getLevel();
 				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-				gameRulesChanged.gameRules = level.getGameRules();
+				gameRulesChanged.gameRules = FunctionsAPI.WORLD3.getGameRules();
 				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
+				player.dataPacket(gameRulesChanged);
 				player.sendMessage("§l§a| §r§fКоординаты успешно отключены§7!");
 			}
 			

@@ -10,7 +10,9 @@ public class MinuteTask extends Task {
 	private static int TIMER_BROADCAST = 0;
 	private static int TIMER_SAVEDATA = 0;
 	public static int TIMER_RESTART = 60;
-	public static int SECONDS = 60;
+	public static int TIMER_CLEAR = 10;
+	public static int SECONDS_RESTART = 60;
+	public static int SECONDS_CLEAR = 60;
 	
 	@Override()
 	public void onRun(int i) {
@@ -29,8 +31,12 @@ public class MinuteTask extends Task {
 			TIMER_SAVEDATA = 5;
 			AllSessionsManager.saveAllSessions();
 		}
+		if (TIMER_CLEAR == 1) {
+			Server.getInstance().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
+		}
 		--TIMER_BROADCAST;
 		--TIMER_SAVEDATA;
 		--TIMER_RESTART;
+		--TIMER_CLEAR;
 	}
 }
