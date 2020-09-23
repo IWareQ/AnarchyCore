@@ -22,7 +22,7 @@ public class SpectateAPI {
 		} else {
 			if (target != null) {
 				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-				gameRulesChanged.gameRules = FunctionsAPI.WORLD3.getGameRules();
+				gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
 				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
 				player.dataPacket(gameRulesChanged);
 				SPECTATE_PLAYERS.put(player.getName(), new SpectatePlayer(player, target));
@@ -50,7 +50,7 @@ public class SpectateAPI {
 			spectatePlayer.playerPosition.level.loadChunk(spectatePlayer.playerPosition.getFloorX() >> 4, spectatePlayer.playerPosition.getFloorZ() >> 4);
 			player.teleport(spectatePlayer.playerPosition);
 			GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-			gameRulesChanged.gameRules = FunctionsAPI.WORLD3.getGameRules();
+			gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
 			gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
 			player.dataPacket(gameRulesChanged);
 			player.sendMessage("§l§a| §r§fВы закончили наблюдение за Игроком §6" + spectatePlayer.spectateName);

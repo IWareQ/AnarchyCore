@@ -32,6 +32,7 @@ import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.level.Location;
+import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.animal.Animal;
@@ -50,19 +51,13 @@ public class EventsHandler implements Listener {
 			player.sendTip("§c§l| §fВы пытаетесь §6выйти §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
 		}
-		if (player.getFloorY() <= 0) {
-			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn());
+		if (player.getFloorY() <= 0 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
+			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn(new Position(-7, 148, 93)));
 			player.sendMessage("§l§c| §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн");
 		}
-		if (player.getLevel().equals(FunctionsAPI.SPAWN)) {
-			if (block.getId() == 416) {
-				Vector3 teleportPosition = new Vector3(RandomUtils.rand(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]), 68, RandomUtils.rand(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]));
-				player.teleport(FunctionsAPI.MAP.getSafeSpawn(teleportPosition));
-				FunctionsAPI.MAP.loadChunk(RandomUtils.rand(FunctionsAPI.RANDOM_TP[0], FunctionsAPI.RANDOM_TP[1]) >> 4, RandomUtils.rand(FunctionsAPI.RANDOM_TP[2], FunctionsAPI.RANDOM_TP[3]) >> 4);
-				player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.");
-				event.setCancelled(true);
-				return;
-			}
+		if (player.getLevel().equals(FunctionsAPI.SPAWN) && block.getId() == 416) {
+			player.sendMessage("§l§6• §r§fПортал временно не доступен§7, §fдля выхода со спавна используйте §7/§6rtp");
+			event.setCancelled(true);
 		}
 	}
 	
@@ -91,14 +86,14 @@ public class EventsHandler implements Listener {
 					((Player)damager).sendMessage("§a§l| §r§fВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §3" + player.getName());
 					EconomyAPI.reduceMoney(player, money);
 					EconomyAPI.addMoney((Player)damager, money);
-					addKill((Player)damager);
-					addDeaths(player);
+					this.addKill((Player)damager);
+					this.addDeaths(player);
 				}
 				return;
 			}
 		}
 		event.setDeathMessage("§6§l| §r§fИгрок §6" + player.getName() + " §fпогиб");
-		addDeaths(player);
+		this.addDeaths(player);
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
@@ -146,14 +141,14 @@ public class EventsHandler implements Listener {
 		}
 	}
 	
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	/*@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			player.sendMessage("§l§6| §r§fКоманды §3заблокированны§7, §fпереместитесь в игровую зону§7!");
 			event.setCancelled(true);
 		}
-	}
+	}*/
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerChat(PlayerChatEvent event) {
@@ -177,20 +172,20 @@ public class EventsHandler implements Listener {
 	}
 	
 	public void addKill(Player player) {
-		config.set("Kills." + player.getName(), getKills(player) + 1);
-		config.save();
+		this.config.set("Kills." + player.getName(), this.getKills(player) + 1);
+		this.config.save();
 	}
 	
 	public int getKills(Player player) {
-		return config.getInt("Kills." + player.getName(), 0);
+		return this.config.getInt("Kills." + player.getName(), 0);
 	}
 	
 	public int getDeaths(Player player) {
-		return config.getInt("Deaths." + player.getName(), 0);
+		return this.config.getInt("Deaths." + player.getName(), 0);
 	}
 	
 	public void addDeaths(Player player) {
-		config.set("Deaths." + player.getName(), getDeaths(player) + 1);
-		config.save();
+		this.config.set("Deaths." + player.getName(), this.getDeaths(player) + 1);
+		this.config.save();
 	}
 }

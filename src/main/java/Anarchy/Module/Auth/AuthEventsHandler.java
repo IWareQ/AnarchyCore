@@ -16,6 +16,7 @@ import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
+import cn.nukkit.level.particle.FloatingTextParticle;
 import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.SetLocalPlayerAsInitializedPacket;
 
@@ -46,6 +47,8 @@ public class AuthEventsHandler implements Listener {
 			SQLiteUtils.query("Auth.db", "INSERT INTO `AUTH` (`Username`, `IP_Reg`, `Date_Reg`) VALUES (\'" + playerName + "\', \'" + ip + "\', \'" + date + "\');");
 			Server.getInstance().getLogger().info("§l§7(§3Система§7) §fИгрок §6" + playerName + " §fне зарегистрирован§7! §fРегистрируем§7!");
 		}
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0, 150, 0), "ТЕСТ1", "Тест1"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0, 150, 0, FunctionsAPI.SPAWN), "ТЕСТ2", "Тест2"), player);
 		player.sendMessage("§l§6| §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§6| §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§3death§fanarchy §l§6| §r§fНаш сайт §7- §3death§7-§3mc§7.§3online");
 		PlayerSessionManager.startPlayerSession(player);
 		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {

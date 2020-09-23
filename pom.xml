@@ -78,9 +78,9 @@
 		<dependency>
 			<groupId>nukkitcoders.mobplugin.MobPlugin</groupId>
 			<artifactId>MobPlugin</artifactId>
-			<version>1.15.0</version>
+			<version>1.16.2</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/MobPlugin-1.15.0.jar</systemPath>
+			<systemPath>${basedir}/libs/MobPlugin-1.16.2.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>ScoreboardPlugin</groupId>

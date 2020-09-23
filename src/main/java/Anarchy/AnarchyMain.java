@@ -53,6 +53,7 @@ import Anarchy.Module.Permissions.Commands.GroupCommand;
 import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Module.Regions.RegionsEventsHandler;
 import Anarchy.Module.Regions.Commands.RegionCommand;
+import Anarchy.Task.ClearTask;
 import Anarchy.Task.CombatLoggerTask;
 import Anarchy.Task.HotbarTask;
 import Anarchy.Task.MinuteTask;
@@ -60,6 +61,8 @@ import Anarchy.Task.Utils.Broadcast;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.level.Position;
+import cn.nukkit.level.particle.FloatingTextParticle;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 
@@ -87,6 +90,7 @@ public class AnarchyMain extends PluginBase {
 		(new File(datapath)).mkdirs();
 		this.registerAll();
 		this.registerEvents();
+		this.registerFloatingText();
 		this.registerEntity();
 		this.unregisterCommands();
 		this.registerCommands();
@@ -112,6 +116,10 @@ public class AnarchyMain extends PluginBase {
 	private void unregisterAll() {
 		AllSessionsManager.saveAllSessions();
 		AuctionAPI.unregister();
+	}
+	
+	private void registerFloatingText() {
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0, 149, 0), "ТЕСТ", "ТЕСТ ТЕС"));
 	}
 	
 	private void registerEvents() {
@@ -145,5 +153,6 @@ public class AnarchyMain extends PluginBase {
 		this.getServer().getScheduler().scheduleRepeatingTask(new MinuteTask(), 60 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new HotbarTask(), 30 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new CombatLoggerTask(), 20);
+		this.getServer().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
 	}
 }

@@ -35,7 +35,7 @@ public class CoordinateCommand extends Command {
 			case "on": 
 			{
 				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-				gameRulesChanged.gameRules = FunctionsAPI.WORLD3.getGameRules();
+				gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
 				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
 				player.dataPacket(gameRulesChanged);
 				player.sendMessage("§l§a| §r§fКоординаты успешно включены§7!");
@@ -45,7 +45,7 @@ public class CoordinateCommand extends Command {
 			case "off": 
 			{
 				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-				gameRulesChanged.gameRules = FunctionsAPI.WORLD3.getGameRules();
+				gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
 				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
 				player.dataPacket(gameRulesChanged);
 				player.sendMessage("§l§a| §r§fКоординаты успешно отключены§7!");

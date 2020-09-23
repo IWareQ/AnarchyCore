@@ -31,12 +31,12 @@ public class MinuteTask extends Task {
 			TIMER_SAVEDATA = 5;
 			AllSessionsManager.saveAllSessions();
 		}
-		if (TIMER_CLEAR == 1) {
+		/*if (TIMER_CLEAR == 5) {
 			Server.getInstance().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
-		}
+		}*/
 		--TIMER_BROADCAST;
 		--TIMER_SAVEDATA;
 		--TIMER_RESTART;
-		--TIMER_CLEAR;
+		//--TIMER_CLEAR;
 	}
 }
