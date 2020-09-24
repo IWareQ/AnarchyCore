@@ -10,14 +10,14 @@ public class MinuteTask extends Task {
 	private static int TIMER_BROADCAST = 0;
 	private static int TIMER_SAVEDATA = 0;
 	public static int TIMER_RESTART = 60;
-	public static int TIMER_CLEAR = 10;
 	public static int SECONDS_RESTART = 60;
-	public static int SECONDS_CLEAR = 60;
 	
 	@Override()
 	public void onRun(int i) {
 		AuctionAPI.updateAuction();
-		if (TIMER_RESTART == 1) {
+		if (TIMER_RESTART == 10) {
+			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §310 §fминут!");
+		} else if (TIMER_RESTART == 1) {
 			Server.getInstance().getScheduler().scheduleRepeatingTask(new RestartTask(), 20);
 			AllSessionsManager.saveAllSessions();
 			this.cancel();
@@ -31,12 +31,8 @@ public class MinuteTask extends Task {
 			TIMER_SAVEDATA = 5;
 			AllSessionsManager.saveAllSessions();
 		}
-		/*if (TIMER_CLEAR == 5) {
-			Server.getInstance().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
-		}*/
 		--TIMER_BROADCAST;
 		--TIMER_SAVEDATA;
 		--TIMER_RESTART;
-		//--TIMER_CLEAR;
 	}
 }

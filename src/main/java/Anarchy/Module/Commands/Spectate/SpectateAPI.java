@@ -18,7 +18,7 @@ public class SpectateAPI {
 	public static void addSpectate(Player player, Player target) {
 		SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 		if (SPECTATE_PLAYERS.containsKey(player.getName())) {
-			player.sendMessage(AnarchyMain.PREFIX + "§fВы уже наблюдаете за Игроком §6" + spectatePlayer.spectateName + "\n§l§6| §r§fДля окончания наблюдения используйте §6Редстоун§7!");
+			player.sendMessage(AnarchyMain.PREFIX + "§fВы уже наблюдаете за Игроком §6" + spectatePlayer.spectateName + "\n§l§6• §r§fДля окончания наблюдения используйте §6Редстоун§7!");
 		} else {
 			if (target != null) {
 				GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
@@ -31,10 +31,10 @@ public class SpectateAPI {
 				player.setGamemode(3);
 				player.getInventory().clearAll();
 				player.getInventory().setHeldItemIndex(0);
-				player.getInventory().setItem(5, Item.get(Item.STICK).setCustomName("§l§fПроверка регионов").setLore("§l§6• §fНажмите7, §fчтобы проверить\n §l§fнет ли в блези регионов"));
-				player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§l§fЗавершить Наблюдение"));
+				player.getInventory().setItem(5, Item.get(Item.STICK).setCustomName("§r§l§fПроверка регионов").setLore("§l§6• §fНажмите7, §fчтобы проверить\n §l§fнет ли в блези регионов"));
+				player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§r§l§6Завершить Наблюдение"));
 				player.teleport(target);
-				player.sendMessage(AnarchyMain.PREFIX + "§fВы начали наблюдать за Игроком §6" + target.getName() + "\n§l§6| §r§fДля окончания наблюдения используйте §6Редстоун§7!");
+				player.sendMessage(AnarchyMain.PREFIX + "§fВы начали наблюдать за Игроком §6" + target.getName() + "\n§l§6• §r§fДля окончания наблюдения используйте §6Редстоун§7!");
 			}
 		}
 	}

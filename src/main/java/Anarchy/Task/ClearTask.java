@@ -16,7 +16,7 @@ public class ClearTask extends Task {
 	public void onRun(int i) {
 		if (TIMER_CLEAR == 300) {
 			Server.getInstance().broadcastMessage("§l§7(§3Очистка§7) §r§fОчистка произойдет через §65 §fминут§7!");
-		} else if (MinuteTask.TIMER_CLEAR == 60) {
+		} else if (TIMER_CLEAR == 60) {
 			Server.getInstance().broadcastMessage("§l§7(§3Очистка§7) §r§fОчистка произойдет через §61 §fминуту§7!");
 		}
 		if (TIMER_CLEAR <= 10) {
@@ -30,7 +30,6 @@ public class ClearTask extends Task {
 				}
 				Server.getInstance().broadcastMessage("§l§7(§3Очистка§7) §r§fОчистка успешно завершена§7!");
 				TIMER_CLEAR = 600;
-				//MinuteTask.SECONDS_CLEAR = 60;
 			}
 			for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 				player.sendTip("§f§lОчистка через §6" + TIMER_CLEAR + " §fсек§7!");

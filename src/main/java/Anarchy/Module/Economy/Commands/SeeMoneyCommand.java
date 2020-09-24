@@ -20,11 +20,11 @@ public class SeeMoneyCommand extends Command {
 	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		Player player = (Player)sender;
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
 			return true;
 		}
+		Player player = (Player)sender;
 		if (!player.hasPermission("Command.SeeMoney")) {
 			return true;
 		}
@@ -34,10 +34,10 @@ public class SeeMoneyCommand extends Command {
 		}
 		String nickname = StringUtils.implode(args, 0);
 		if (!AuthAPI.isRegistered(nickname)) {
-			player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §3" + nickname + " §7- §fне зарегистрирован§7!");
+			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + nickname + " §fне зарегистрирован§7!");
 			return true;
 		}
-		player.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §3" + nickname + " §7- §6" + String.format("%.1f", EconomyAPI.myMoney(nickname)) + "");
+		player.sendMessage(EconomyAPI.PREFIX + "§fБаланс Игрока §6" + nickname + " §7- §6" + String.format("%.1f", EconomyAPI.myMoney(nickname)) + "");
 		return true;
 	}
 }

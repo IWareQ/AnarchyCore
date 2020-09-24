@@ -61,8 +61,6 @@ import Anarchy.Task.Utils.Broadcast;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.level.Position;
-import cn.nukkit.level.particle.FloatingTextParticle;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 
@@ -90,7 +88,6 @@ public class AnarchyMain extends PluginBase {
 		(new File(datapath)).mkdirs();
 		this.registerAll();
 		this.registerEvents();
-		this.registerFloatingText();
 		this.registerEntity();
 		this.unregisterCommands();
 		this.registerCommands();
@@ -116,10 +113,6 @@ public class AnarchyMain extends PluginBase {
 	private void unregisterAll() {
 		AllSessionsManager.saveAllSessions();
 		AuctionAPI.unregister();
-	}
-	
-	private void registerFloatingText() {
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0, 149, 0), "ТЕСТ", "ТЕСТ ТЕС"));
 	}
 	
 	private void registerEvents() {

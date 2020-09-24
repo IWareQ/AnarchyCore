@@ -12,7 +12,7 @@ public class SpectateEventsHandler implements Listener {
 	public void onPlayerItemHeld(PlayerItemHeldEvent event) {
 		Player player = event.getPlayer();
 		if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName())) {
-			if (event.getItem().getCustomName().equals("§l§fЗавершить Наблюдение") && player.getGamemode() == 3) {
+			if (event.getItem().getCustomName().equals("§r§l§fЗавершить Наблюдение") && player.getGamemode() == 3) {
 				SpectateAPI.removeSpectate(player);
 			}
 		}

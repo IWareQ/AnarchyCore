@@ -27,13 +27,11 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
-import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
-import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.monster.Monster;
@@ -46,7 +44,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		Block block = player.getLevel().getBlock(new Vector3((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0), (double)(int)Math.round(event.getPlayer().z - 0.5)));
+		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0), (double)(int)Math.round(event.getPlayer().z - 0.5)));
 		if (player.x < FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z < FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
 			player.sendTip("§c§l| §fВы пытаетесь §6выйти §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
@@ -141,14 +139,13 @@ public class EventsHandler implements Listener {
 		}
 	}
 	
-	/*@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-		Player player = event.getPlayer();
-		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
-			player.sendMessage("§l§6| §r§fКоманды §3заблокированны§7, §fпереместитесь в игровую зону§7!");
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onEntityDamage(EntityDamageByEntityEvent event) {
+		Entity entity = event.getEntity();
+		if (entity.getLevel().equals(FunctionsAPI.SPAWN)) {
 			event.setCancelled(true);
 		}
-	}*/
+	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerChat(PlayerChatEvent event) {

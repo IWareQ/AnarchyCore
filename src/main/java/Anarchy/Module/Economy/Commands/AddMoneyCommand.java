@@ -2,6 +2,7 @@ package Anarchy.Module.Economy.Commands;
 
 import Anarchy.Module.Auth.AuthAPI;
 import Anarchy.Module.Economy.EconomyAPI;
+import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -15,7 +16,7 @@ public class AddMoneyCommand extends Command {
 		super("addmoney", "§l§fВыдать Монет Игроку");
 		this.setPermission("Command.AddMoney");
 		this.commandParameters.clear();
-		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false), new CommandParameter("money", CommandParamType.INT, false)});
+		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("money", CommandParamType.INT, false), new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 	
 	@Override()
@@ -27,12 +28,13 @@ public class AddMoneyCommand extends Command {
 			sender.sendMessage("§l§6| §r§fИспользование §7- /§6addmoney §7(§3игрок§7) (§3сумма§7)");
 			return true;
 		}
-		if (!AuthAPI.isRegistered(args[0])) {
-			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + args[0] + " §fне зарегистрирован§7!");
+		String nickname = StringUtils.implode(args, 1);
+		if (!AuthAPI.isRegistered(nickname)) {
+			sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + nickname + " §fне зарегистрирован§7!");
 			return true;
 		}
-		Player target = Server.getInstance().getPlayerExact(args[0]);
-		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fполучил §6" + String.format("%.1f", args[1]) + "");
+		Player target = Server.getInstance().getPlayerExact(nickname);
+		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fполучил §6" + args[1] + "");
 		EconomyAPI.addMoney(target, Double.parseDouble(args[1]));
 		return true;
 	}

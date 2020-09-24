@@ -1,0 +1,6 @@
+name: Anarchy
+main: Anarchy.AnarchyMain
+version: "4.8"
+api: ["1.0.11"]
+author: Jl1mbo
+LOAD: POSTWORLD

@@ -14,12 +14,12 @@ public class MoneyCommand extends Command {
 	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		Player player = (Player)sender;
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
 			return true;
 		}
-		player.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс §7- §6" + String.format("%.1f", EconomyAPI.myMoney(player)) + "");
+		Player player = (Player)sender;
+		player.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(player)) + "");
 		return true;
 	}
 }
