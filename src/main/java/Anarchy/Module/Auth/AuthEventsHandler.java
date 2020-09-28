@@ -20,7 +20,7 @@ import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.SetLocalPlayerAsInitializedPacket;
 
 public class AuthEventsHandler implements Listener {
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onDataPacketReceive(DataPacketReceiveEvent event) {
 		Player player = event.getPlayer();
@@ -34,7 +34,7 @@ public class AuthEventsHandler implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
@@ -71,7 +71,7 @@ public class AuthEventsHandler implements Listener {
 		SQLiteUtils.query("Auth.db", "UPDATE `AUTH` SET `IP_Last` = \'" + ip + "\', `Date_Last` = \'" + date + "\' WHERE UPPER(`Username`) = \'" + upperCase + "\';");
 		event.setJoinMessage("");
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();

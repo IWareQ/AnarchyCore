@@ -15,7 +15,7 @@ import cn.nukkit.Server;
 import cn.nukkit.scheduler.Task;
 
 public class HotbarTask extends Task {
-	
+
 	@Override()
 	public void onRun(int i) {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
@@ -25,7 +25,7 @@ public class HotbarTask extends Task {
 			}
 		}
 	}
-	
+
 	public static void showScoreboard(Player player) {
 		String playerName = player.getName();
 		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player);

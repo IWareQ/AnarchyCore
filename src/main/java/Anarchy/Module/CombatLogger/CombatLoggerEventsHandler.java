@@ -2,28 +2,32 @@ package Anarchy.Module.CombatLogger;
 
 import Anarchy.Manager.Functions.FunctionsAPI;
 import cn.nukkit.Player;
+import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 
 public class CombatLoggerEventsHandler implements Listener {
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onEntityDamage(EntityDamageByEntityEvent event) {
-		Player victim = (Player)event.getEntity();
-		Player damager = (Player)event.getDamager();
-		if (victim instanceof Player && damager instanceof Player && victim.getLevel() != FunctionsAPI.SPAWN && damager.getLevel() != FunctionsAPI.SPAWN && damager != victim) {
-			damager.sendTip("§l§f" + String.format("%.0f", victim.getHealth()) + " §c❤");
-			for (Player players : new Player[]{victim, damager}) {
-				CombatLoggerAPI.addCombat(players);
+	public void onEntityDamage(EntityDamageEvent event) {
+		if (event instanceof EntityDamageByEntityEvent) {
+			Entity victim = event.getEntity();
+			Entity damager = ((EntityDamageByEntityEvent)event).getDamager();
+			if (victim instanceof Player && damager instanceof Player && victim.getLevel() != FunctionsAPI.SPAWN && damager.getLevel() != FunctionsAPI.SPAWN && damager != victim) {
+				((Player)damager).sendTip("§l§f" + String.format("%.0f", victim.getHealth()) + " §c❤");
+				for (Player players : new Player[] {(Player)victim, (Player)damager}) {
+					CombatLoggerAPI.addCombat(players);
+				}
 			}
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
@@ -31,7 +35,7 @@ public class CombatLoggerEventsHandler implements Listener {
 			player.kill();
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
@@ -40,7 +44,7 @@ public class CombatLoggerEventsHandler implements Listener {
 			CombatLoggerAPI.removeBossBar(player);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();

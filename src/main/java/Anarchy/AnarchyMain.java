@@ -124,6 +124,7 @@ public class AnarchyMain extends PluginBase {
 		pluginManager.registerEvents(new StorageHandler(), this);
 		pluginManager.registerEvents(new EventsHandler(), this);
 		pluginManager.registerEvents(new RegionsEventsHandler(), this);
+		pluginManager.registerEvents(new InventoryCommand(), this);
 	}
 	
 	private void unregisterCommands() {

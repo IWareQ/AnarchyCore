@@ -15,16 +15,17 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Sound;
 import cn.nukkit.utils.Config;
 
 public class AuctionCommand extends Command {
-	
+
 	public AuctionCommand() {
-		super("auc", "Открыть Аукцион", "", new String[]{"ah"});
+		super("auc", "Открыть Аукцион", "", new String[] {"ah"});
 		this.commandParameters.clear();
-		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("money", CommandParamType.INT, false)});
+		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("money", CommandParamType.INT, false)});
 	}
-	
+
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		Player player = (Player)sender;
@@ -52,8 +53,10 @@ public class AuctionCommand extends Command {
 			if (!StringUtils.isDouble(args[0])) {
 				if (args.length == 1) {
 					player.sendMessage("§l§6| §r§fИспользование §7- /§6auc §7(§3цена§7)");
+					player.getLevel().addSound(player, Sound.MOB_VILLAGER_HAGGLE, 1, 1, player);
 				} else {
 					player.sendMessage("§l§6| §r§fИспользование §7- /§6auc §7(§3цена§7) (§3описание§7)");
+					player.getLevel().addSound(player, Sound.MOB_VILLAGER_HAGGLE, 1, 1, player);
 				}
 				return false;
 			}

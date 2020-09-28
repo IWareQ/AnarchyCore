@@ -19,39 +19,39 @@ import nukkitcoders.mobplugin.utils.Utils;
 
 public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
 	public static final int NETWORK_ID = 39;
-	
+
 	public SilverfishBoss(FullChunk chunk, CompoundTag nbt) {
 		super(chunk, nbt);
 		this.route = new WalkerRouteFinder(this);
 	}
-	
+
 	@Override()
 	public int getNetworkId() {
 		return NETWORK_ID;
 	}
-	
+
 	@Override()
 	public float getWidth() {
 		return 0.4F;
 	}
-	
+
 	@Override()
 	public float getHeight() {
 		return 0.3F;
 	}
-	
+
 	@Override()
 	public double getSpeed() {
 		return 1.4;
 	}
-	
+
 	@Override()
 	public void initEntity() {
 		super.initEntity();
 		this.setMaxHealth(50);
-		this.setDamage(new float[]{5, 5, 5, 5});
+		this.setDamage(new float[] {5, 5, 5, 5});
 	}
-	
+
 	@Override()
 	public void attackEntity(Entity player) {
 		if (this.attackDelay > 23 && this.distanceSquared(player) < 1) {
@@ -69,7 +69,7 @@ public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
 			player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
 		}
 	}
-	
+
 	@Override()
 	public  Item[] getDrops() {
 		List<Item> drops = new ArrayList<>();
@@ -80,12 +80,12 @@ public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
 		drops.add(item);
 		return drops.toArray(new Item[0]);
 	}
-	
+
 	@Override()
 	public int getKillExperience() {
 		return 1500;
 	}
-	
+
 	@Override()
 	public boolean entityBaseTick(int tickDiff) {
 		if (getServer().getDifficulty() == 0) {

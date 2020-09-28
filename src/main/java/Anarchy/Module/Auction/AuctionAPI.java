@@ -32,7 +32,7 @@ public class AuctionAPI extends PluginBase {
 	public static int AUCTION_MAX_SELLS = 10; // 10
 	public static int AUCTION_ADD_COOLDOWN = 60; // 60
 	public static String PREFIX = "§l§7(§3Аукцион§7) §r";
-	
+
 	public static void register() {
 		new File(AnarchyMain.datapath + "/Auction/PlayerItems/").mkdirs();
 		File auctionData = new File(AnarchyMain.datapath + "/Auction/Auction.yml");
@@ -58,7 +58,7 @@ public class AuctionAPI extends PluginBase {
 			}
 		}
 	}
-	
+
 	public static void unregister() {
 		File auctionData = new File(AnarchyMain.datapath + "/Auction/Auction.yml");
 		if (auctionData.exists()) {
@@ -69,22 +69,22 @@ public class AuctionAPI extends PluginBase {
 			try {
 				TradeItem tradeItem = entry.getValue();
 				Item item = tradeItem.sellItem;
-				config.set(entry.getKey(), item.hasCompoundTag() ? new Object[]{tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[]{tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount()});
+				config.set(entry.getKey(), item.hasCompoundTag() ? new Object[] {tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[] {tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount()});
 			} catch (IOException e) {
 				Server.getInstance().getLogger().alert("§l§fОшибка в §funregister §7- §6" + e);
 			}
 		}
 		config.save();
 	}
-	
+
 	public static Long getTradeTime() {
 		return System.currentTimeMillis() / 1000L + 259200; // 259200
 	}
-	
+
 	public static int getPagesCount() {
 		return AUCTION.size() == 0 ? 1 : (int)Math.ceil((float)AUCTION.size() / AUCTION_CHEST_SIZE);
 	}
-	
+
 	public static void updateAuction() {
 		Iterator iterator = AUCTION.entrySet().iterator();
 		while (iterator.hasNext()) {
@@ -97,7 +97,7 @@ public class AuctionAPI extends PluginBase {
 				try {
 					File dataFile = new File(AnarchyMain.datapath + "/Auction/PlayerItems/" + tradeItem.sellerName + ".yml");
 					Config config = new Config(dataFile, Config.YAML);
-					config.set(tradeItem.UUID, tradeItem.sellItem.hasCompoundTag() ? new Object[]{tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount(), NBTIO.write(tradeItem.sellItem.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[]{tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount()});
+					config.set(tradeItem.UUID, tradeItem.sellItem.hasCompoundTag() ? new Object[] {tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount(), NBTIO.write(tradeItem.sellItem.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[] {tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount()});
 					config.save();
 				} catch (IOException e) {
 					Server.getInstance().getLogger().alert("§l§fОшибка в §fupdateAuction §7- §6 " + e);
@@ -106,7 +106,7 @@ public class AuctionAPI extends PluginBase {
 			}
 		}
 	}
-	
+
 	public static void showAuction(Player player, boolean firstTime) {
 		int playerPage = AUCTION_PAGE.get(player);
 		AuctionChest auctionChest;

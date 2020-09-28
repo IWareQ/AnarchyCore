@@ -16,7 +16,7 @@ public class MinuteTask extends Task {
 	public void onRun(int i) {
 		AuctionAPI.updateAuction();
 		if (TIMER_RESTART == 10) {
-			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §310 §fминут!");
+			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §610 §fминут!");
 		} else if (TIMER_RESTART == 1) {
 			Server.getInstance().getScheduler().scheduleRepeatingTask(new RestartTask(), 20);
 			AllSessionsManager.saveAllSessions();

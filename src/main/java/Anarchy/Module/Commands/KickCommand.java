@@ -9,14 +9,14 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 
 public class KickCommand extends Command {
-	
+
 	public KickCommand() {
 		super("kick", "Выгнать Игрока с Сервера");
 		this.setPermission("Command.Check");
 		this.commandParameters.clear();
-		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
+		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
-	
+
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		Player player = (Player)sender;
@@ -37,7 +37,7 @@ public class KickCommand extends Command {
 			player.sendMessage("§l§6| §r§fИгрок §6" + args[0] + " §7- §3Оффлайн");
 			return true;
 		}
-		new CustomForm("§l§fВыгнать Игрока §3" + kickPlayer.getName()).addLabel("Текст").addInput("Причина").addToggle("Отправить сообщение о кике в общий чат сервера §7•").send(player, (target,form,data)->{
+		new CustomForm("§l§fВыгнать Игрока §3" + kickPlayer.getName()).addLabel("Текст").addInput("Причина").addToggle("Отправить сообщение о кике в общий чат сервера §7•").send(player, (target, form, data)-> {
 			if (data == null) return;
 			kickPlayer.close("", "§l§6| §r§fВас кикнули с сервера§7! §l§6| §r§fПричина §7- §3" + data.get(1).toString());
 			if ((boolean)data.get(2)) {

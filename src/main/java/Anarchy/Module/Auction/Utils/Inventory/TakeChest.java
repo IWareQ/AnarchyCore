@@ -14,12 +14,12 @@ import cn.nukkit.utils.Config;
 
 public class TakeChest extends DoubleDefaultChest {
 	private static File dataFile;
-	
+
 	public TakeChest(String title, File file) {
 		super(title);
 		dataFile = file;
 	}
-	
+
 	@Override()
 	public void onClose(Player player) {
 		dataFile.delete();
@@ -30,7 +30,7 @@ public class TakeChest extends DoubleDefaultChest {
 		for (Map.Entry<Integer, Item> entry : this.getContents().entrySet()) {
 			try {
 				Item item = entry.getValue();
-				config.set(item.getNamedTag().getString("UUID"), item.hasCompoundTag() ? new Object[]{item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[]{item.getId(), item.getDamage(), item.getCount()});
+				config.set(item.getNamedTag().getString("UUID"), item.hasCompoundTag() ? new Object[] {item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[] {item.getId(), item.getDamage(), item.getCount()});
 			} catch (IOException e) {
 				Server.getInstance().getLogger().alert("Error onClose - " + e);
 			}

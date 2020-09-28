@@ -40,7 +40,7 @@ public class EventsHandler implements Listener {
 	File dataFile = new File(AnarchyMain.datapath + "/KDR.yml");
 	Config config = new Config(dataFile, Config.YAML);
 	public static int CHAT_RADIUS = 70;
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
@@ -58,7 +58,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		Player player = event.getPlayer();
@@ -68,14 +68,14 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		EntityDamageEvent cause = player.getLastDamageCause();
 		if (cause instanceof EntityDamageByEntityEvent) {
 			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
-			if (damager instanceof Player) {
+			if (damager instanceof Player && player != damager) {
 				player.sendMessage("§c§l| §r§fВы были убиты Игроком §3" + damager.getName());
 				event.setDeathMessage("§6§l| §r§fИгрок §3" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
 				Double money = EconomyAPI.myMoney(player) * 20 / 100;
@@ -93,7 +93,7 @@ public class EventsHandler implements Listener {
 		event.setDeathMessage("§6§l| §r§fИгрок §6" + player.getName() + " §fпогиб");
 		this.addDeaths(player);
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event) {
 		Entity entity = event.getEntity();
@@ -111,7 +111,7 @@ public class EventsHandler implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
@@ -120,7 +120,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
@@ -129,7 +129,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayetBucketEmpty(PlayerBucketEmptyEvent event) {
 		Player player = event.getPlayer();
@@ -138,7 +138,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageByEntityEvent event) {
 		Entity entity = event.getEntity();
@@ -146,7 +146,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
@@ -167,20 +167,20 @@ public class EventsHandler implements Listener {
 			event.setRecipients(players);
 		}
 	}
-	
+
 	public void addKill(Player player) {
 		this.config.set("Kills." + player.getName(), this.getKills(player) + 1);
 		this.config.save();
 	}
-	
+
 	public int getKills(Player player) {
 		return this.config.getInt("Kills." + player.getName(), 0);
 	}
-	
+
 	public int getDeaths(Player player) {
 		return this.config.getInt("Deaths." + player.getName(), 0);
 	}
-	
+
 	public void addDeaths(Player player) {
 		this.config.set("Deaths." + player.getName(), this.getDeaths(player) + 1);
 		this.config.save();

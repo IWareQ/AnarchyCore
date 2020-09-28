@@ -12,24 +12,24 @@ public class RestartTask extends Task {
 	@Override()
 	public void onRun(int i) {
 		if (MinuteTask.SECONDS_RESTART == 60) {
-			Server.getInstance().broadcastMessage("\u00a7l\u00a77(\u00a73\u041f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430\u00a77) \u00a7r\u00a7f\u0421\u0435\u0440\u0432\u0435\u0440 \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u0441\u044f \u0447\u0435\u0440\u0435\u0437 \u00a731 \u00a7f\u043c\u0438\u043d\u0443\u0442\u0443!");
+			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §61 §fминуту!");
 		} else if (MinuteTask.SECONDS_RESTART == 30) {
-			Server.getInstance().broadcastMessage("\u00a7l\u00a77(\u00a73\u041f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430\u00a77) \u00a7r\u00a7f\u0421\u0435\u0440\u0432\u0435\u0440 \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u0441\u044f \u0447\u0435\u0440\u0435\u0437 \u00a7330 \u00a7f\u0441\u0435\u043a\u0443\u043d\u0434!");
+			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §630 §fсекунд!");
 		} else if (MinuteTask.SECONDS_RESTART == 10) {
-			Server.getInstance().broadcastMessage("\u00a7l\u00a77(\u00a73\u041f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430\u00a77) \u00a7r\u00a7f\u0421\u0435\u0440\u0432\u0435\u0440 \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u0441\u044f \u0447\u0435\u0440\u0435\u0437 \u00a7310 \u00a7f\u0441\u0435\u043a\u0443\u043d\u0434!");
+			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §610 §fсекунд!");
 		}
 		if (MinuteTask.SECONDS_RESTART <= 10) {
 			if (MinuteTask.SECONDS_RESTART == 0) {
 				for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 					CombatLoggerAPI.removeCombat(player);
 					SpectateAPI.removeSpectate(player);
-					player.close("", "\u00a7l\u00a76\u041f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430");
+					player.close("", "§l§6Перезагрузка");
 				}
 				Server.getInstance().shutdown();
 				return;
 			}
 			for (Player player : Server.getInstance().getOnlinePlayers().values()) {
-				player.sendTitle("\u00a7l\u00a7c\u0412\u041d\u0418\u041c\u0410\u041d\u0418\u0415", "\u00a7f\u00a7l\u0421\u0435\u0440\u0432\u0435\u0440 \u043f\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u0441\u044f \u0447\u0435\u0440\u0435\u0437 \u00a76" + MinuteTask.SECONDS_RESTART + " \u00a7f" + getSecond(MinuteTask.SECONDS_RESTART), 0, 20, 0);
+				player.sendTitle("§l§cВНИМАНИЕ", "§f§lСервер перезагрузится через §6" + MinuteTask.SECONDS_RESTART + " §f" + getSecond(MinuteTask.SECONDS_RESTART), 0, 20, 0);
 				player.level.addSound(player, Sound.RANDOM_CLICK, 1, 1, player);
 			}
 		}
@@ -39,21 +39,21 @@ public class RestartTask extends Task {
 	private String getSecond(int second) {
 		int preLastDigit = second % 100 / 10;
 		if (preLastDigit == 1) {
-			return "\u0441\u0435\u043a\u0443\u043d\u0434";
+			return "секунд";
 		}
 		switch (second % 10) {
 			case 1: 
-			return "\u0441\u0435\u043a\u0443\u043d\u0434\u0443";
+			return "секунду";
 			
 			case 2: 
 			
 			case 3: 
 			
 			case 4: 
-			return "\u0441\u0435\u043a\u0443\u043d\u0434\u044b";
+			return "секунды";
 			
 			default: 
-			return "\u0441\u0435\u043a\u0443\u043d\u0434";
+			return "секунд";
 			
 		}
 	}

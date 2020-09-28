@@ -14,7 +14,7 @@ import cn.nukkit.potion.Effect;
 public class SpectateAPI {
 	public static Map<String, SpectatePlayer> SPECTATE_PLAYERS = new HashMap<>();
 	public static HashMap<String, Map<Integer, Item>> INVENTORY_PLAYER = new HashMap<>();
-	
+
 	public static void addSpectate(Player player, Player target) {
 		SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 		if (SPECTATE_PLAYERS.containsKey(player.getName())) {
@@ -38,7 +38,7 @@ public class SpectateAPI {
 			}
 		}
 	}
-	
+
 	public static void removeSpectate(Player player) {
 		SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 		if (SPECTATE_PLAYERS.containsKey(player.getName())) {

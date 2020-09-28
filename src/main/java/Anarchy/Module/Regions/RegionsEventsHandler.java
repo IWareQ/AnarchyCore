@@ -19,7 +19,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 
 public class RegionsEventsHandler implements Listener {
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
@@ -33,7 +33,7 @@ public class RegionsEventsHandler implements Listener {
 			RegionsAPI.placeRegion(player, block, event);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
@@ -59,7 +59,7 @@ public class RegionsEventsHandler implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
@@ -86,7 +86,7 @@ public class RegionsEventsHandler implements Listener {
 			event.setCancelled();
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onEntityExplode(EntityExplodeEvent event) {
 		List<Block> blocks = event.getBlockList();

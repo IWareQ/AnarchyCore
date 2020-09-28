@@ -7,12 +7,12 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class ListCommand extends Command {
-	
+
 	public ListCommand() {
 		super("list", "§l§fСписок игроков онлайн");
 		this.commandParameters.clear();
 	}
-	
+
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		int onlineCount = 0;

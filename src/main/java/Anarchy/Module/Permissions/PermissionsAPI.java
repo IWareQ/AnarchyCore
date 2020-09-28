@@ -17,12 +17,12 @@ public class PermissionsAPI {
 	public static ArrayList<String> GROUPS = new ArrayList<>();
 	public static Map<Integer, GroupAllow> GROUP_ALLOWS = new HashMap<>();
 	public static String PREFIX = "§7(§3Привилегии§7) §r";
-	
+
 	public static void register() {
 		registerGroups();
 		registerGroupsAllows();
 	}
-	
+
 	private static void registerGroups() {
 		GROUPS.add("§7Игрок§r"); // 0
 		GROUPS.add("§eГерой§r"); // 1
@@ -39,7 +39,7 @@ public class PermissionsAPI {
 		GROUPS.add("§4Администратор§r"); // 12
 		GROUPS.add("§6Основатель§r"); // 13
 	}
-	
+
 	private static void registerGroupsAllows() {
 		GROUP_ALLOWS.put(0, new GroupAllow(2)); // 0
 		GROUP_ALLOWS.put(1, new GroupAllow(2)); // 1
@@ -56,19 +56,19 @@ public class PermissionsAPI {
 		GROUP_ALLOWS.put(13, new GroupAllow(5)); // 12
 		GROUP_ALLOWS.put(13, new GroupAllow(5)); // 13
 	}
-	
+
 	public static boolean isGroup(int groupID) {
 		return groupID >= 0 && groupID < PermissionsAPI.GROUPS.size();
 	}
-	
+
 	public static int getGroup(Player player) {
 		return PlayerSessionManager.getPlayerSession(player).getInteger("Permission");
 	}
-	
+
 	public static GroupAllow getGroupAllows(int permissionGroup) {
 		return GROUP_ALLOWS.get(permissionGroup);
 	}
-	
+
 	public static int getGroup(String playerName) {
 		Player player = Server.getInstance().getPlayerExact(playerName);
 		if (player != null) {
@@ -77,7 +77,7 @@ public class PermissionsAPI {
 			return SQLiteUtils.selectInteger("Users.db", "SELECT `Permission` FROM `USERS` WHERE UPPER (`Username`) = \'" + playerName.toUpperCase() + "\';");
 		}
 	}
-	
+
 	public static void setGroup(String playerName, int groupID) {
 		Player player = Server.getInstance().getPlayerExact(playerName);
 		if (player != null) {
@@ -87,12 +87,12 @@ public class PermissionsAPI {
 			SQLiteUtils.query("Users.db", "UPDATE `USERS` SET `Permission` = " + groupID + " WHERE UPPER(`Username`) = \'" + playerName.toUpperCase() + "\';");
 		}
 	}
-	
+
 	public static void setGroup(Player player, int groupID) {
 		PlayerSessionManager.getPlayerSession(player.getName()).setInteger("Permission", groupID);
 		updatePermissions(player);
 	}
-	
+
 	public static void updateTag(Player player) {
 		String playerName = player.getName();
 		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player.getName());
@@ -100,41 +100,41 @@ public class PermissionsAPI {
 		String nameTag = GROUPS.get(playerSession.getInteger("Permission")) + " §f" + playerName + "\n§7" + device;
 		player.setNameTag(nameTag);
 	}
-	
+
 	public static void updatePermissions(Player player) {
 		PermissionAttachment permissionAttachment = player.addAttachment(AnarchyMain.plugin, player.getName());
 		permissionAttachment.clearPermissions();
 		Map<String, Boolean> permissionAllows = new HashMap<>();
 		int permissionGroup = getGroup(player);
 		switch (permissionGroup) {
-			case 0: // Игрок
+		case 0: // Игрок
 			break;
-			
-			case 1: // Герой
+
+		case 1: // Герой
 			permissionAllows.put("Command.Food", true);
 			break;
-			
-			case 2: // Страж
+
+		case 2: // Страж
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			break;
-			
-			case 3: // Лорд
+
+		case 3: // Лорд
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			break;
-			
-			case 4: // Принц
+
+		case 4: // Принц
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			break;
-			
-			case 5: // Король
+
+		case 5: // Король
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -142,8 +142,8 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
 			break;
-			
-			case 6: // YouTube
+
+		case 6: // YouTube
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -152,8 +152,8 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.Coordinate", true);
 			break;
-			
-			case 7: // Титан
+
+		case 7: // Титан
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -161,8 +161,8 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
 			break;
-			
-			case 8: // Бог
+
+		case 8: // Бог
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -170,8 +170,8 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
 			break;
-			
-			case 9: // ТарТар
+
+		case 9: // ТарТар
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -179,8 +179,8 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
 			break;
-			
-			case 10: // Помощник
+
+		case 10: // Помощник
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -193,8 +193,8 @@ public class PermissionsAPI {
 			permissionAllows.put("bansystem.command.mute", true);
 			permissionAllows.put("bansystem.command.mutelog", true);
 			break;
-			
-			case 11: // Модератор
+
+		case 11: // Модератор
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -211,8 +211,8 @@ public class PermissionsAPI {
 			permissionAllows.put("bansystem.command.banlog", true);
 			permissionAllows.put("Command.Spectate", true);
 			break;
-			
-			case 12: // Администратор
+
+		case 12: // Администратор
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -222,8 +222,8 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.Near", true);
 			break;
-			
-			case 13: // Основатель
+
+		case 13: // Основатель
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -232,7 +232,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.Near", true);
-			
+
 		}
 		for (Map.Entry<String, Boolean> entry : permissionAllows.entrySet()) {
 			permissionAttachment.setPermission(entry.getKey(), entry.getValue());
