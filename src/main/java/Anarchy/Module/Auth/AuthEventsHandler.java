@@ -1,5 +1,13 @@
 package Anarchy.Module.Auth;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import Anarchy.AnarchyMain;
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Module.Permissions.PermissionsAPI;
@@ -18,8 +26,13 @@ import cn.nukkit.level.Position;
 import cn.nukkit.level.particle.FloatingTextParticle;
 import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.SetLocalPlayerAsInitializedPacket;
+import cn.nukkit.utils.Config;
 
 public class AuthEventsHandler implements Listener {
+	File dataFileDeaths = new File(AnarchyMain.datapath + "/Deaths.yml");
+	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
+	File dataFileKills = new File(AnarchyMain.datapath + "/Kills.yml");
+	Config configKills = new Config(dataFileKills, Config.YAML);
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onDataPacketReceive(DataPacketReceiveEvent event) {
@@ -53,8 +66,26 @@ public class AuthEventsHandler implements Listener {
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(5.50, 150, 93.50), "§l§6Средний приват", "\n§l§f6 §7× §f6"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(11.50, 150, 91.50), "§l§6Большой приват", "\n§l§f10 §7× §f10"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 150, 88.50), "§l§6Как приватить§7?", "\n§l§fЧтобы запривать регион§7,\n§l§fпросто установи один из блоков\n§l§fкоторые стоят рядом§7. §fКаждый блок имеет\n§l§fограниченный радиус привата§7,\n§l§fкоьорый создается вокруг блока§7!"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0.50, 149, 81.50), "§l§6Самые опасные Игроки сервера", "\n§l§fСкоро§7..."), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-14.50, 149, 81.50), "§l§6Press F to pay respects", "\n§l§fСкоро§7..."), player);
+		Map<String, Integer> counterKills = calculateScore(configKills);
+		Map<String, Integer> counterDeaths = calculateScore(configDeaths);
+		int placeKills = 1;
+		for (Map.Entry<String, Integer> entry : counterKills.entrySet()) {
+			if (placeKills <= 10) {
+				String title = "§l§6" + placeKills + "§7. §f" + entry.getKey() + " §7- §6" + entry.getValue() + " §fkill§7(§fs§7)";
+				FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0.50, 151 - placeKills * 0.3, 81.50), title), player);
+				placeKills++;
+			}
+		}
+		int placeDeaths = 1;
+		for (Map.Entry<String, Integer> entry : counterDeaths.entrySet()) {
+			if (placeDeaths <= 10) {
+				String title = "§l§6" + placeDeaths + "§7. §f" + entry.getKey() + " §7- §6" + entry.getValue() + " §fdeath§7(§fs§7)";
+				FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-13.50, 151 - placeDeaths * 0.3, 81.50), title), player);
+				placeDeaths++;
+			}
+		}
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0.50, 151, 81.50), "§l§6Самые опасные Игроки сервера"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-13.50, 151, 81.50), "§l§6Press F to pay respects"), player);
 		player.sendMessage("§l§6| §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§6| §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§3death§fanarchy §l§6| §r§fНаш сайт §7- §3death§7-§3mc§7.§3online");
 		PlayerSessionManager.startPlayerSession(player);
 		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
@@ -84,5 +115,15 @@ public class AuthEventsHandler implements Listener {
 			}
 		}
 		event.setQuitMessage("");
+	}
+
+	private Map<String, Integer> calculateScore(Config config) {
+		Map<String, Integer> map = new HashMap<>();
+		for (Map.Entry<String, Object> entry : config.getAll().entrySet()) {
+			map.put(entry.getKey(), (Integer)entry.getValue());
+		}
+		Map<String, Integer> sorted = map;
+		sorted = map.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2)->e2, LinkedHashMap::new));
+		return sorted;
 	}
 }

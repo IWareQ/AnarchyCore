@@ -1,8 +1,13 @@
 package Anarchy;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Random;
 
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.AllSessionsManager;
@@ -10,6 +15,7 @@ import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Module.Auction.AuctionEventsHandler;
 import Anarchy.Module.Auction.Commands.AuctionCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
+import Anarchy.Module.Boss.RavagerBoss;
 import Anarchy.Module.Boss.SilverfishBoss;
 import Anarchy.Module.CombatLogger.CombatLoggerEventsHandler;
 import Anarchy.Module.Commands.ACommand;
@@ -25,6 +31,7 @@ import Anarchy.Module.Commands.KickCommand;
 import Anarchy.Module.Commands.NearCommand;
 import Anarchy.Module.Commands.NightCommand;
 import Anarchy.Module.Commands.RepairCommand;
+import Anarchy.Module.Commands.ReportCommand;
 import Anarchy.Module.Commands.ResyncCommand;
 import Anarchy.Module.Commands.TestCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
@@ -66,15 +73,16 @@ import cn.nukkit.plugin.PluginManager;
 
 public class AnarchyMain extends PluginBase {
 	public static String PREFIX = "§l§7(§3Система§7) §r";
+	public static String accessToken = "ac9b77006227ff5fd44036db53fa328fb99809eb5d4fb42a458bfd3bcc278065ba5ad0abcc1a3fac1a2ae";
 	public static AnarchyMain plugin;
 	public static String folder;
 	public static String datapath;
 	public static int port;
-	
+
 	@Override()
 	public void onEnable() {
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
-		for (String pluginName : new String[]{"DbLib", "ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
+		for (String pluginName : new String[] {"DbLib", "ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
 				this.getLogger().alert("§l§fНе найден §3плагин §7- §6" + pluginName);
 				pluginManager.disablePlugin(this);
@@ -94,13 +102,13 @@ public class AnarchyMain extends PluginBase {
 		this.registerTask();
 		this.getLogger().info("§l§fПлагин §aАктивирован§7! (§fАвтор §7- @§3extranons§7)");
 	}
-	
+
 	@Override()
 	public void onDisable() {
 		this.unregisterAll();
 		this.getLogger().info("§l§fПлагин §cДеактивирован§7! (§fАвтор §7- @§3extranons§7)");
 	}
-	
+
 	private void registerAll() {
 		FunctionsAPI.register();
 		AuctionAPI.register();
@@ -109,12 +117,12 @@ public class AnarchyMain extends PluginBase {
 		SQLProvider.register();
 		Broadcast.register();
 	}
-	
+
 	private void unregisterAll() {
 		AllSessionsManager.saveAllSessions();
 		AuctionAPI.unregister();
 	}
-	
+
 	private void registerEvents() {
 		PluginManager pluginManager = getServer().getPluginManager();
 		pluginManager.registerEvents(new AuctionEventsHandler(), this);
@@ -126,27 +134,59 @@ public class AnarchyMain extends PluginBase {
 		pluginManager.registerEvents(new RegionsEventsHandler(), this);
 		pluginManager.registerEvents(new InventoryCommand(), this);
 	}
-	
+
 	private void unregisterCommands() {
 		Map<String, Command> commandMap = getServer().getCommandMap().getCommands();
-		for (String command : new String[]{"me", "ver", "say", "pl", "plugins", "mixer", "difficulty", "defaultgamemode", "help", "?", "pardon",  "particle", "tell", "gm", "gamemode", "list", "about", "title"}) {
+		for (String command : new String[] {"me", "ver", "say", "pl", "plugins", "mixer", "difficulty", "defaultgamemode", "help", "?", "pardon", "particle", "tell", "gm", "gamemode", "list", "about", "title"}) {
 			commandMap.remove(command);
 		}
 	}
-	
+
 	private void registerEntity() {
 		Entity.registerEntity(SilverfishBoss.class.getSimpleName(), SilverfishBoss.class);
+		Entity.registerEntity(RavagerBoss.class.getSimpleName(), RavagerBoss.class );
 	}
-	
+
 	private void registerCommands() {
-		Command[] commands = new Command[]{new ResyncCommand(),new ClearChatCommand(),new StopCommand(), new AuctionCommand(), new InventoryCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		Command[] commands = new Command[] {new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
-	
+
 	private void registerTask() {
 		this.getServer().getScheduler().scheduleRepeatingTask(new MinuteTask(), 60 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new HotbarTask(), 30 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new CombatLoggerTask(), 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
+	}
+
+	public static void sendMessageToChat(String message, int chatId) {
+		try {
+			String url = "https://api.vk.com/method/messages.send?chat_id=" + chatId + "&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(message, "UTF-8") + "&v=5.124";
+			URL(url);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public static void sendMessage(String message, int userId) {
+		try {
+			String url = "https://api.vk.com/method/messages.send?user_id=" + userId + "&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(message, "UTF-8") + "&v=5.124";
+			URL(url);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public static void URL(String url) {
+		try {
+			URL request = new URL(url);
+			BufferedReader in = new BufferedReader(new InputStreamReader(request.openStream()));
+			StringBuilder sb = new StringBuilder();
+			String inputLine;
+			while ((inputLine = in.readLine()) != null) sb.append(inputLine);
+			in.close();
+		} catch (Exception ex) {
+			Server.getInstance().getLogger().alert(ex.getMessage());
+		}
 	}
 }

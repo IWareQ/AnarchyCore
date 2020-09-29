@@ -67,7 +67,7 @@ public class InventoryCommand extends Command implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryTransaction(InventoryTransactionEvent event) {
 		for (InventoryAction action : event.getTransaction().getActions()) {
-			if (action instanceof SlotChangeAction && ((SlotChangeAction)action).getInventory() instanceof CheckInventoryChest && ((SlotChangeAction)action).getInventory() instanceof CheckEnderChest) {
+			if (action instanceof SlotChangeAction && ((SlotChangeAction)action).getInventory() instanceof CheckInventoryChest || ((SlotChangeAction)action).getInventory() instanceof CheckEnderChest) {
 				Item sourceItem = action.getSourceItem();
 				Player player = event.getTransaction().getSource();
 				if (!sourceItem.hasCompoundTag()) {

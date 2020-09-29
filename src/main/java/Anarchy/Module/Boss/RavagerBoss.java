@@ -6,7 +6,6 @@ import java.util.List;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.EntityArthropod;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -14,15 +13,12 @@ import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-import nukkitcoders.mobplugin.route.WalkerRouteFinder;
-import nukkitcoders.mobplugin.utils.Utils;
 
-public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
-	public static final int NETWORK_ID = 39;
+public class RavagerBoss extends WalkingMonster {
+	public static final int NETWORK_ID = 59;
 
-	public SilverfishBoss(FullChunk chunk, CompoundTag nbt) {
+	public RavagerBoss(FullChunk chunk, CompoundTag nbt) {
 		super(chunk, nbt);
-		this.route = new WalkerRouteFinder(this);
 	}
 
 	@Override()
@@ -31,35 +27,59 @@ public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
 	}
 
 	@Override()
-	public float getWidth() {
-		return 0.4F;
+	protected void initEntity() {
+		super.initEntity();
+		this.setMaxHealth(100);
+		this.setDamage(new float[] {9, 9, 9, 9});
 	}
 
 	@Override()
 	public float getHeight() {
-		return 0.3F;
+		return 1.9F;
 	}
 
 	@Override()
-	public double getSpeed() {
-		return 1.4;
+	public float getWidth() {
+		return 1.2F;
 	}
 
 	@Override()
-	public void initEntity() {
-		super.initEntity();
-		this.setMaxHealth(50);
-		this.setDamage(new float[] {5, 5, 5, 5});
+	public int getKillExperience() {
+		return 0;
 	}
 
 	@Override()
 	public void attackEntity(Entity player) {
-		if (this.attackDelay > 23 && this.distanceSquared(player) < 1) {
+		if (this.attackDelay > 40 && player.distanceSquared(this) <= 3) {
 			this.attackDelay = 0;
 			HashMap<EntityDamageEvent.DamageModifier, Float> damage = new HashMap<>();
 			damage.put(EntityDamageEvent.DamageModifier.BASE, this.getDamage());
 			if (player instanceof Player) {
-				HashMap<Integer, Float> armorValues = new ArmorPoints();
+				@SuppressWarnings("serial")
+				HashMap<Integer, Float> armorValues = new HashMap<Integer, Float>() {
+					{
+						put(Item.LEATHER_CAP, 1.0F);
+						put(Item.LEATHER_TUNIC, 3.0F);
+						put(Item.LEATHER_PANTS, 2.0F);
+						put(Item.LEATHER_BOOTS, 1.0F);
+						put(Item.CHAIN_HELMET, 1.0F);
+						put(Item.CHAIN_CHESTPLATE, 5.0F);
+						put(Item.CHAIN_LEGGINGS, 4.0F);
+						put(Item.CHAIN_BOOTS, 1.0F);
+						put(Item.GOLD_HELMET, 1.0F);
+						put(Item.GOLD_CHESTPLATE, 5.0F);
+						put(Item.GOLD_LEGGINGS, 3.0F);
+						put(Item.GOLD_BOOTS, 1.0F);
+						put(Item.IRON_HELMET, 2.0F);
+						put(Item.IRON_CHESTPLATE, 6.0F);
+						put(Item.IRON_LEGGINGS, 5.0F);
+						put(Item.IRON_BOOTS, 2.0F);
+						put(Item.DIAMOND_HELMET, 3.0F);
+						put(Item.DIAMOND_CHESTPLATE, 8.0F);
+						put(Item.DIAMOND_LEGGINGS, 6.0F);
+						put(Item.DIAMOND_BOOTS, 3.0F);
+					}
+				};
 				float points = 0;
 				for (Item i : ((Player)player).getInventory().getArmorContents()) {
 					points += armorValues.getOrDefault(i.getId(), 0.0F);
@@ -73,17 +93,12 @@ public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
 	@Override()
 	public Item[] getDrops() {
 		List<Item> drops = new ArrayList<>();
-		Item item = Item.get(Item.DOUBLE_PLANT, 0, 1).setCustomName("§l§fСокровище").setLore("§l§6• §r§fНажмите ПКМ или ЛКМ по любому блоку");
-		item.addEnchantment(Enchantment.get(1));
-		drops.add(Item.get(Item.IRON_INGOT, 0, 9));
-		drops.add(Item.get(Item.IRON_NUGGET, 0, Utils.rand(10, 30)));
-		drops.add(item);
+		Item treasure = Item.get(Item.DOUBLE_PLANT, 0, 1).setCustomName("§r§l§f๑ Сокровище ๑").setLore("§l§6• §r§fНажмите ПКМ или ЛКМ по любому блоку§7, \n§fчтобы активировать §6Сокровище");
+		treasure.addEnchantment(Enchantment.get(30));
+		drops.add(Item.get(Item.EXPERIENCE_BOTTLE, 0, 32));
+		drops.add(Item.get(Item.PHANTOM_MEMBRANE, 0, 1));
+		drops.add(treasure);
 		return drops.toArray(new Item[0]);
-	}
-
-	@Override()
-	public int getKillExperience() {
-		return 1500;
 	}
 
 	@Override()

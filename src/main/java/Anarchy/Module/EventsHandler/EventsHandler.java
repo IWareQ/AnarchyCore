@@ -28,8 +28,10 @@ import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
+import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
@@ -37,8 +39,10 @@ import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 
 public class EventsHandler implements Listener {
-	File dataFile = new File(AnarchyMain.datapath + "/KDR.yml");
-	Config config = new Config(dataFile, Config.YAML);
+	File dataFileDeaths = new File(AnarchyMain.datapath + "/Deaths.yml");
+	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
+	File dataFileKills = new File(AnarchyMain.datapath + "/Kills.yml");
+	Config configKills = new Config(dataFileKills, Config.YAML);
 	public static int CHAT_RADIUS = 70;
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
@@ -76,22 +80,22 @@ public class EventsHandler implements Listener {
 		if (cause instanceof EntityDamageByEntityEvent) {
 			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
 			if (damager instanceof Player && player != damager) {
-				player.sendMessage("§c§l| §r§fВы были убиты Игроком §3" + damager.getName());
-				event.setDeathMessage("§6§l| §r§fИгрок §3" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
+				player.sendMessage("§c§l| §r§fВы были убиты Игроком §6" + damager.getName());
+				event.setDeathMessage("§6§l| §r§fИгрок §6" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
 				Double money = EconomyAPI.myMoney(player) * 20 / 100;
-				if (money != 0) {
-					player.sendMessage("§c§l| §r§fПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20%§7)");
-					((Player)damager).sendMessage("§a§l| §r§fВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §3" + player.getName());
+				if (money > 30) {
+					player.sendMessage("§c§l| §r§fПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20§7%)");
+					((Player)damager).sendMessage("§l§a| §r§fВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §6" + player.getName());
 					EconomyAPI.reduceMoney(player, money);
 					EconomyAPI.addMoney((Player)damager, money);
-					this.addKill((Player)damager);
-					this.addDeaths(player);
+					this.addKill((Player)damager, 1);
+					this.addDeaths(player, 1);
 				}
 				return;
 			}
 		}
 		event.setDeathMessage("§6§l| §r§fИгрок §6" + player.getName() + " §fпогиб");
-		this.addDeaths(player);
+		this.addDeaths(player, 1);
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
@@ -110,6 +114,17 @@ public class EventsHandler implements Listener {
 				EconomyAPI.addMoney(player, money);
 			}
 		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		Item item = event.getItem();
+		if (item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
+			player.sendMessage("§l§6| §r§fСокровище успешно Активированно§7!");
+			player.getInventory().removeItem(item);
+		}
+		
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
@@ -168,21 +183,21 @@ public class EventsHandler implements Listener {
 		}
 	}
 
-	public void addKill(Player player) {
-		this.config.set("Kills." + player.getName(), this.getKills(player) + 1);
-		this.config.save();
+	public void addKill(Player player, int number) {
+		this.configKills.set(player.getName(), this.getKills(player) + number);
+		this.configKills.save();
 	}
 
 	public int getKills(Player player) {
-		return this.config.getInt("Kills." + player.getName(), 0);
+		return this.configKills.getInt(player.getName(), 0);
 	}
 
 	public int getDeaths(Player player) {
-		return this.config.getInt("Deaths." + player.getName(), 0);
+		return this.configDeaths.getInt(player.getName(), 0);
 	}
 
-	public void addDeaths(Player player) {
-		this.config.set("Deaths." + player.getName(), this.getDeaths(player) + 1);
-		this.config.save();
+	public void addDeaths(Player player, int number) {
+		this.configDeaths.set(player.getName(), this.getDeaths(player) + number);
+		this.configDeaths.save();
 	}
 }

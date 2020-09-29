@@ -4,9 +4,8 @@ import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.event.Listener;
 
-public class EnderChestCommand extends Command implements Listener {
+public class EnderChestCommand extends Command {
 	
 	public EnderChestCommand() {
 		super("ec", "§r§l§fОткрыть Сундук края");
