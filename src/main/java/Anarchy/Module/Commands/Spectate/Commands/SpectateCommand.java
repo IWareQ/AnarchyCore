@@ -1,6 +1,7 @@
-package Anarchy.Module.Commands.Spectate;
+package Anarchy.Module.Commands.Spectate.Commands;
 
 import Anarchy.AnarchyMain;
+import Anarchy.Module.Commands.Spectate.SpectateAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -32,7 +33,7 @@ public class SpectateCommand extends Command {
 			return true;
 		}
 		Player target = Server.getInstance().getPlayer(args[0]);
-		if (target == null) {
+		if (!target.isOnline()) {
 			player.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + target + " §fне в сети§7!");
 			return true;
 		}

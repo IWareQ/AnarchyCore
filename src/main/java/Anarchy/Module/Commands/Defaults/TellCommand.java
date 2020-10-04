@@ -10,7 +10,6 @@ import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.level.Sound;
 
 public class TellCommand extends Command {
-	private static String PREFIX = "§l§7(§3Сообщения§7) §r";
 
 	public TellCommand() {
 		super("tell", "§l§fОтправить Личное Сообщение");
@@ -25,21 +24,20 @@ public class TellCommand extends Command {
 			return true;
 		}
 		Player player = (Player)sender;
-		String playerName = player.getName();
 		if (args.length < 2) {
 			player.sendMessage("§l§6| §r§fИспользование §7- /§6tell §7(§3игрок§7) (§3текст§7)");
 			return true;
 		}
-		Player tellPlayer = Server.getInstance().getPlayer(args[0]);
-		if (tellPlayer == null) {
-			player.sendMessage("§l§6| §r§fИгрок §6" + args[0] + " §fне в сети§7!");
+		Player target = Server.getInstance().getPlayer(args[0]);
+		if (!target.isOnline()) {
+			player.sendMessage("§l§6• §r§fИгрок §6" + args[0] + " §fне в сети§7!");
 			return true;
 		}
 		String message = StringUtils.implode(args, 1);
-		player.sendMessage(PREFIX + "§fЛичное сообщение для §3" + tellPlayer.getName() + "\n§fТекст §7- §f" + message);
-		tellPlayer.sendMessage(PREFIX + "§fЛичное сообщение от §3" + playerName + "\n§fТекст §7- §f" + message);
-		tellPlayer.sendTip("§l§fНовое Личное Сообщение§7!");
-		tellPlayer.getLevel().addSound(tellPlayer, Sound.RANDOM_CLICK, 1, 1, tellPlayer);
+		player.sendMessage("§7(§6Вы §7-> §6" + target.getName() + "§7) §f" + message);
+		target.sendMessage("§7(§6" + player.getName() + " §7-> §6Вы§7) §f" + message);
+		target.sendTip("§r§l§fНовое Личное Сообщение§7!");
+		target.getLevel().addSound(target, Sound.RANDOM_CLICK, 1, 1, target);
 		return true;
 	}
 }

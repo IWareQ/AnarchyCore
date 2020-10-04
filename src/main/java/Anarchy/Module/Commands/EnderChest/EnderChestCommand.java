@@ -4,6 +4,7 @@ import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.level.Sound;
 
 public class EnderChestCommand extends Command {
 	
@@ -25,6 +26,7 @@ public class EnderChestCommand extends Command {
 		}
 		EnderChest enderChest = new EnderChest("Сундук края");
 		enderChest.setContents(player.getEnderChestInventory().getContents());
+		player.getLevel().addSound(player, Sound.RANDOM_ENDERCHESTOPEN, 1, 1, player);
 		FakeChestsAPI.openInventory(player, enderChest);
 		return false;
 	}

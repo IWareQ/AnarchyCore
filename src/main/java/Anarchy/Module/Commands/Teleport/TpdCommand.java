@@ -15,13 +15,12 @@ public class TpdCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		Player player = (Player)sender;
 		Player target = TpaCommand.TPA_REQUEST.get(player);
-		if (target == null) {
+		if (!target.isOnline()) {
 			player.sendMessage(TpaCommand.PREFIX + "§fВы не имеете запросов на телепортацию, или Игрок покинул сервер");
-			return true;
 		}
-		target.sendMessage(TpaCommand.PREFIX + "§fИгрок §3" + player.getName() + " §fотклонил Ваш запрос§7!");
-		player.sendMessage(TpaCommand.PREFIX + "§fЗапрос Игрока §3" + target.getName() + " §fотклонен§7!");
+		target.sendMessage(TpaCommand.PREFIX + "§fИгрок §6" + player.getName() + " §fотклонил Ваш запрос§7!");
+		player.sendMessage(TpaCommand.PREFIX + "§fЗапрос Игрока §6" + target.getName() + " §fотклонен§7!");
 		TpaCommand.TPA_REQUEST.remove(player);
-		return true;
+		return false;
 	}
 }

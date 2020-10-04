@@ -93,7 +93,7 @@ public class RavagerBoss extends WalkingMonster {
 	@Override()
 	public Item[] getDrops() {
 		List<Item> drops = new ArrayList<>();
-		Item treasure = Item.get(Item.DOUBLE_PLANT, 0, 1).setCustomName("§r§l§f๑ Сокровище ๑").setLore("§l§6• §r§fНажмите ПКМ или ЛКМ по любому блоку§7, \n§fчтобы активировать §6Сокровище");
+		Item treasure = Item.get(Item.DOUBLE_PLANT, 0, 1).setCustomName("§r§l§f๑ Сокровище ๑").setLore("§l§6• §r§fНажмите ПКМ или ЛКМ по любому блоку§7,\n§fчтобы активировать §6Сокровище");
 		treasure.addEnchantment(Enchantment.get(30));
 		drops.add(Item.get(Item.EXPERIENCE_BOTTLE, 0, 32));
 		drops.add(Item.get(Item.PHANTOM_MEMBRANE, 0, 1));

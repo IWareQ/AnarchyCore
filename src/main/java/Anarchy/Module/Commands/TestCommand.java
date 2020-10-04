@@ -29,8 +29,10 @@ public class TestCommand extends Command {
 			Position position = player.getPosition();
 			Entity entity = Entity.createEntity("SilverfishBoss", position);
 			entity.setScale((float)5.0);
+			entity.setNameTag("Босс 1");
+			entity.setNameTagAlwaysVisible();
 			entity.spawnToAll();
-			player.sendMessage("§l§7(§3Боссы§7) §r§fНа карте появился Босс§7!\n§l§6• §r§fКоординаты§7: " + entity.getPosition());
+			player.sendMessage("§l§7(§3Боссы§7) §r§fНа карте появился Босс§7!\n§l§6• §r§fКоординаты§7: §6" + entity.getFloorX() + "§7, §6 " + entity.getFloorY() + "§7, §6" + entity.getFloorZ());
 		}
 		break;
 
@@ -38,13 +40,21 @@ public class TestCommand extends Command {
 			Position position = player.getPosition();
 			Entity entity = Entity.createEntity("RavagerBoss", position);
 			entity.setScale((float)1.0);
+			entity.setNameTag("Босс 2");
+			entity.setNameTagAlwaysVisible();
 			entity.spawnToAll();
-			player.sendMessage("§l§7(§3Боссы§7) §r§fНа карте появился Босс§7!\n§l§6• §r§fКоординаты§7: " + entity.getPosition());
+			player.sendMessage("§l§7(§3Боссы§7) §r§fНа карте появился Босс§7!\n§l§6• §r§fКоординаты§7: §6" + entity.getFloorX() + "§7, §6 " + entity.getFloorY() + "§7, §6" + entity.getFloorZ());
 		}
 		break;
 
 		case "3": {
-			player.sendMessage("Скоро");
+			Position position = player.getPosition();
+			Entity entity = Entity.createEntity("WitchBoss", position);
+			entity.setScale((float)1.0);
+			entity.setNameTag("Босс 3");
+			entity.setNameTagAlwaysVisible();
+			entity.spawnToAll();
+			player.sendMessage("§l§7(§3Боссы§7) §r§fНа карте появился Босс§7!\n§l§6• §r§fКоординаты§7: §6" + entity.getFloorX() + "§7, §6 " + entity.getFloorY() + "§7, §6" + entity.getFloorZ());
 		}
 		break;
 

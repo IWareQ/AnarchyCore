@@ -33,8 +33,8 @@ public class EconomyAPI {
 	}
 	
 	public static void addMoney(Player player, Double value) {
-		String name = player.getName();
-		setMoney(name, myMoney(name) + value);
+		String playerName = player.getName();
+		setMoney(playerName, myMoney(playerName) + value);
 	}
 	
 	public static void addMoney(String playerName, Double value) {
@@ -42,8 +42,8 @@ public class EconomyAPI {
 	}
 	
 	public static void reduceMoney(Player player, Double value) {
-		String name = player.getName();
-		setMoney(name, myMoney(name) - value);
+		String playerName = player.getName();
+		setMoney(playerName, myMoney(playerName) - value);
 	}
 	
 	public static void reduceMoney(String playerName, Double value) {

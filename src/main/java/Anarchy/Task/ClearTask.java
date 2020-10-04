@@ -1,6 +1,5 @@
 package Anarchy.Task;
 
-import Anarchy.Manager.Functions.FunctionsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -8,6 +7,7 @@ import cn.nukkit.entity.item.EntityMinecartChest;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Sound;
 import cn.nukkit.scheduler.Task;
+import nukkitcoders.mobplugin.entities.monster.flying.Wither;
 
 public class ClearTask extends Task {
 	public static int TIMER_CLEAR = 600;
@@ -23,7 +23,7 @@ public class ClearTask extends Task {
 			if (TIMER_CLEAR == 0) {
 				for (Level level : Server.getInstance().getLevels().values()) {
 					for (Entity entity : level.getEntities()) {
-						if (!(entity instanceof Player) && !(entity.getLevel().equals(FunctionsAPI.SPAWN)) && !(entity instanceof EntityMinecartChest)) {
+						if (!(entity instanceof Player) &&  !(entity instanceof EntityMinecartChest) && !(entity instanceof Wither)) {
 							entity.close();
 						}
 					}

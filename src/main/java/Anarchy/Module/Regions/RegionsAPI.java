@@ -41,7 +41,7 @@ public class RegionsAPI {
 		if (groupAllow != null) {
 			int regionCount = RegionsAPI.getRegionsCount(player.getName());
 			if (regionCount >= groupAllow.MAX_REGIONS) {
-				player.sendMessage(RegionsAPI.PREFIX + "§fМаксимальное количество регионов §7- §3" + regionCount + "\n§l§6| §r§fЧтобы содать новый регион потребуется удалить §31 §fиз старых§7!");
+				player.sendMessage(RegionsAPI.PREFIX + "§fМаксимальное количество регионов §7- §6" + regionCount + "n§l§6• §r§fЧтобы содать новый регион§7, §fпотребуется удалить §61 §fиз старых§7!");
 				event.setCancelled();
 				return;
 			}
@@ -57,8 +57,8 @@ public class RegionsAPI {
 			event.setCancelled();
 			return;
 		}
-		player.sendMessage(PREFIX + "§fПриват §3успешно §fсоздан§7! (§fРадиус §3" + radius + " §fбл§7.)\n§l§6| §r§fДля проверки владений используйте палку§7!");
-		SQLiteUtils.query("Regions.db", "INSERT INTO `AREAS` (`DATE_REG`, `Username`, `Main_X`, `Main_Y`, `Main_Z`, `Pos1_X`, `Pos1_Y`, `Pos1_Z`, `Pos2_X`, `Pos2_Y`, `Pos2_Z`) VALUES (\'" + StringUtils.getDate() + "\', \'" + player.getName() + "\', \'" + x + "\', \'" + y + "\', \'" + z + "\', \'" + pos1[0] + "\', \'" + pos1[1] + "\', \'" + pos1[2] + "\', \'" + pos2[0] + "\', \'" + pos2[1] + "\', \'" + pos2[2] + "\');");
+		player.sendMessage(PREFIX + "§fПриват §3успешно §fсоздан§7! (§fРадиус §3" + radius + " §fбл§7.)n§l§6| §r§fДля проверки владений используйте палку§7!");
+		SQLiteUtils.query("Regions.db", "INSERT INTO `AREAS` (`DATE_REG`, `Username`, `Main_X`, `Main_Y`, `Main_Z`, `Pos1_X`, `Pos1_Y`, `Pos1_Z`, `Pos2_X`, `Pos2_Y`, `Pos2_Z`) VALUES ('" + StringUtils.getDate() + "', '" + player.getName() + "', '" + x + "', '" + y + "', '" + z + "', '" + pos1[0] + "', '" + pos1[1] + "', '" + pos1[2] + "', '" + pos2[0] + "', '" + pos2[1] + "', '" + pos2[2] + "');");
 	}
 
 	public static boolean canInteractHere(Player player, Location location) {
@@ -74,15 +74,15 @@ public class RegionsAPI {
 	}
 
 	public static boolean isRegionMember(String playerName, int regionID) {
-		return SQLiteUtils.selectInteger("Regions.db", "SELECT `Member_ID` FROM `MEMBERS` WHERE UPPER(`Username`) = \'" + playerName.toUpperCase() + "\' AND `Region_ID` = \'" + regionID + "\';") != -1;
+		return SQLiteUtils.selectInteger("Regions.db", "SELECT `Member_ID` FROM `MEMBERS` WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "' AND `Region_ID` = '" + regionID + "';") != -1;
 	}
 
 	public static String getRegionOwner(int regionID) {
-		return SQLiteUtils.selectString("Regions.db", "SELECT `Username` FROM `AREAS` WHERE (`Region_ID` = \'" + regionID + "\');");
+		return SQLiteUtils.selectString("Regions.db", "SELECT `Username` FROM `AREAS` WHERE (`Region_ID` = '" + regionID + "');");
 	}
 
 	public static Map<String, String> getRegionInfo(int regionID) {
-		return SQLiteUtils.selectStringMap("Regions.db", "SELECT * FROM `AREAS` WHERE (`Region_ID` = \'" + regionID + "\');");
+		return SQLiteUtils.selectStringMap("Regions.db", "SELECT * FROM `AREAS` WHERE (`Region_ID` = '" + regionID + "');");
 	}
 
 	public static Integer getRegionIDByPosition(Position position) {
@@ -98,6 +98,6 @@ public class RegionsAPI {
 	}
 
 	public static int getRegionsCount(String playerName) {
-		return SQLiteUtils.selectInteger("Regions.db", "SELECT COUNT(*) as COUNT FROM `AREAS` WHERE UPPER(`Username`) = \'" + playerName.toUpperCase() + "\';");
+		return SQLiteUtils.selectInteger("Regions.db", "SELECT COUNT(*) as COUNT FROM `AREAS` WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "';");
 	}
 }

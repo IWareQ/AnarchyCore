@@ -2,6 +2,7 @@ package Anarchy.Module.Commands.EnderChest;
 
 import Anarchy.Manager.FakeChests.Inventory.DefaultChest;
 import cn.nukkit.Player;
+import cn.nukkit.level.Sound;
 
 public class EnderChest extends DefaultChest {
 	
@@ -12,6 +13,7 @@ public class EnderChest extends DefaultChest {
 	@Override()
 	public void onClose(Player player) {
 		player.getEnderChestInventory().setContents(getContents());
+		player.getLevel().addSound(player, Sound.RANDOM_ENDERCHESTCLOSED, 1, 1, player);
 		super.onClose(player);
 	}
 }

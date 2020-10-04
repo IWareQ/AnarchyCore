@@ -19,9 +19,9 @@ import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 
-public class InventoryCommand extends Command implements Listener {
+public class InventoryHandler extends Command implements Listener {
 
-	public InventoryCommand() {
+	public InventoryHandler() {
 		super("inventory", "§l§fПосмотреть инвентарь Игрока", "", new String[] {"inv"});
 		this.setPermission("Command.Inventory");
 		this.commandParameters.clear();
@@ -67,14 +67,17 @@ public class InventoryCommand extends Command implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryTransaction(InventoryTransactionEvent event) {
 		for (InventoryAction action : event.getTransaction().getActions()) {
-			if (action instanceof SlotChangeAction && ((SlotChangeAction)action).getInventory() instanceof CheckInventoryChest || ((SlotChangeAction)action).getInventory() instanceof CheckEnderChest) {
-				Item sourceItem = action.getSourceItem();
-				Player player = event.getTransaction().getSource();
-				if (!sourceItem.hasCompoundTag()) {
-					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
-					event.setCancelled(true);
+			if (action instanceof SlotChangeAction) {
+				SlotChangeAction slotChange = (SlotChangeAction)action;
+				if (slotChange.getInventory() instanceof CheckInventoryChest || slotChange.getInventory() instanceof CheckEnderChest) {
+					Item sourceItem = action.getSourceItem();
+					Player player = event.getTransaction().getSource();
+					if (!sourceItem.hasCompoundTag()) {
+						player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
+						event.setCancelled(true);
+					}
+					return;
 				}
-				return;
 			}
 		}
 	}

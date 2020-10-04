@@ -96,7 +96,7 @@ public class AuctionEventsHandler implements Listener {
 								CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 								compoundTag.putString("UUID", tradeItem.UUID);
 								item.setNamedTag(compoundTag);
-								sellChest.addItem(item.setCustomName("§r§fСтоимость §7- §6" + String.format("%.1f", tradeItem.itemPrice) + "\n§r§fДо окончания §7- §3" + (tradeItem.getTime() / 3600) + " §fч§7. §3" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §6" + tradeItem.aboutMessage)));
+								sellChest.addItem(item.setCustomName("§r§fСтоимость§7: §6" + String.format("%.1f", tradeItem.itemPrice) + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 3600) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание§7: §6" + tradeItem.aboutMessage)));
 							}
 						}
 						FakeChestsAPI.openDoubleChestInventory(player, sellChest);
@@ -118,7 +118,8 @@ public class AuctionEventsHandler implements Listener {
 								try {
 									compoundTag = NBTIO.read((byte[])itemData.get(3), ByteOrder.LITTLE_ENDIAN);
 								} catch (IOException e) {
-
+									Server.getInstance().getLogger().alert("AuctionEventsHandler: " + e);
+									AnarchyMain.sendMessageToChat("AuctionEventsHandler.java\nСмотрите Server.log", 2000000004);
 								}
 							}
 							if (compoundTag == null) {
@@ -207,7 +208,7 @@ public class AuctionEventsHandler implements Listener {
 							compoundTag.remove("UUID");
 							playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(compoundTag));
 							player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
-							player.sendMessage(AuctionAPI.PREFIX + "§fВы забрали предмет с Хранилища");
+							player.sendMessage(AuctionAPI.PREFIX + "§r§fПредмет с Хранилища успешно взят§7!");
 						}
 					} else {
 						FakeChestsAPI.closeInventory(player, takeChest);

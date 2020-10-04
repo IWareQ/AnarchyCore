@@ -65,8 +65,8 @@ public class AuthEventsHandler implements Listener {
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(13.50, 150, 85.50), "§l§6Маленький приват", "\n§l§f3 §7× §f3"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(5.50, 150, 93.50), "§l§6Средний приват", "\n§l§f6 §7× §f6"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(11.50, 150, 91.50), "§l§6Большой приват", "\n§l§f10 §7× §f10"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 150, 88.50), "§l§6Как приватить§7?", "\n§l§fЧтобы запривать регион§7,\n§l§fпросто установи один из блоков\n§l§fкоторые стоят рядом§7. §fКаждый блок имеет\n§l§fограниченный радиус привата§7,\n§l§fкоьорый создается вокруг блока§7!"), player);
-		Map<String, Integer> counterKills = calculateScore(configKills);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 150, 88.50), "§l§6Как приватить§7?", "\n§l§fЧтобы запривать регион§7,\n§l§fпросто установи один из блоков\n§l§fкоторые стоят рядом§7. §fКаждый блок имеет\n§l§fограниченный радиус привата§7,\n§l§fкоторый создается вокруг блока§7!"), player);
+		/*Map<String, Integer> counterKills = calculateScore(configKills);
 		Map<String, Integer> counterDeaths = calculateScore(configDeaths);
 		int placeKills = 1;
 		for (Map.Entry<String, Integer> entry : counterKills.entrySet()) {
@@ -83,7 +83,7 @@ public class AuthEventsHandler implements Listener {
 				FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-13.50, 151 - placeDeaths * 0.3, 81.50), title), player);
 				placeDeaths++;
 			}
-		}
+		}*/
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0.50, 151, 81.50), "§l§6Самые опасные Игроки сервера"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-13.50, 151, 81.50), "§l§6Press F to pay respects"), player);
 		player.sendMessage("§l§6| §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§6| §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§3death§fanarchy §l§6| §r§fНаш сайт §7- §3death§7-§3mc§7.§3online");

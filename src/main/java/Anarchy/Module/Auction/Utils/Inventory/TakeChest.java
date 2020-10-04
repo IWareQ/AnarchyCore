@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.Map;
 
+import Anarchy.AnarchyMain;
 import Anarchy.Manager.FakeChests.Inventory.DoubleDefaultChest;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -32,7 +33,8 @@ public class TakeChest extends DoubleDefaultChest {
 				Item item = entry.getValue();
 				config.set(item.getNamedTag().getString("UUID"), item.hasCompoundTag() ? new Object[] {item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[] {item.getId(), item.getDamage(), item.getCount()});
 			} catch (IOException e) {
-				Server.getInstance().getLogger().alert("Error onClose - " + e);
+				Server.getInstance().getLogger().alert("TakeChest: " + e);
+				AnarchyMain.sendMessageToChat("TakeChest.java\nСмотрите Server.log", 2000000004);
 			}
 		}
 		config.save();

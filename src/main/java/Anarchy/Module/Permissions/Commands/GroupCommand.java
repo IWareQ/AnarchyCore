@@ -30,16 +30,16 @@ public class GroupCommand extends Command {
 		}
 		String nickname = StringUtils.implode(args, 1);
 		if (!AuthAPI.isRegistered(nickname)) {
-			sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §7- §fне зарегистрирован§7!");
+			sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fне зарегистрирован§7!");
 			return true;
 		}
 		if (!StringUtils.isInteger(args[0]) || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
-			sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §3" + args[0] + " §7- §fне существует§7!");
+			sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §6" + args[0] + " §fне существует§7!");
 			return true;
 		}
-		sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fполучил группу  " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
+		sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fполучил группу " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
 		Player target = Server.getInstance().getPlayerExact(nickname);
-		if (target != null) {
+		if (target.isOnline()) {
 			target.sendMessage(PermissionsAPI.PREFIX + "§fВы получили привилегию " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
 			PermissionsAPI.setGroup(target, Integer.parseInt(args[0]));
 			PermissionsAPI.updatePermissions(target);

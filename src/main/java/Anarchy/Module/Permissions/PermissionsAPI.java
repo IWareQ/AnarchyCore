@@ -24,37 +24,37 @@ public class PermissionsAPI {
 	}
 
 	private static void registerGroups() {
-		GROUPS.add("§7Игрок§r"); // 0
-		GROUPS.add("§eГерой§r"); // 1
-		GROUPS.add("§3Страж§r"); // 2
-		GROUPS.add("§7Лорд§r"); // 3
-		GROUPS.add("§6Принц§r"); // 4
-		GROUPS.add("§eКороль§r"); // 5
-		GROUPS.add("§cYou§fTube§r"); // 6
-		GROUPS.add("§bТитан§r"); // 7
-		GROUPS.add("§bБог§r"); // 8
-		GROUPS.add("§bТарТар§r"); // 9
-		GROUPS.add("§bПомощник§r"); // 10
-		GROUPS.add("§1Модератор§r"); // 11
-		GROUPS.add("§4Администратор§r"); // 12
-		GROUPS.add("§6Основатель§r"); // 13
+		GROUPS.add("§7Игрок§r");
+		GROUPS.add("§eГерой§r");
+		GROUPS.add("§3Страж§r");
+		GROUPS.add("§7Лорд§r");
+		GROUPS.add("§6Принц§r");
+		GROUPS.add("§eКороль§r");
+		GROUPS.add("§cYou§fTube§r");
+		GROUPS.add("§bТитан§r");
+		GROUPS.add("§bБог§r");
+		GROUPS.add("§bТарТар§r");
+		GROUPS.add("§bПомощник§r");
+		GROUPS.add("§1Модератор§r");
+		GROUPS.add("§4Администратор§r");
+		GROUPS.add("§6Основатель§r");
 	}
 
 	private static void registerGroupsAllows() {
-		GROUP_ALLOWS.put(0, new GroupAllow(2)); // 0
-		GROUP_ALLOWS.put(1, new GroupAllow(2)); // 1
-		GROUP_ALLOWS.put(2, new GroupAllow(3)); // 2
-		GROUP_ALLOWS.put(3, new GroupAllow(3)); // 3
-		GROUP_ALLOWS.put(4, new GroupAllow(4)); // 4
-		GROUP_ALLOWS.put(5, new GroupAllow(4)); // 5
-		GROUP_ALLOWS.put(6, new GroupAllow(4)); // 6
-		GROUP_ALLOWS.put(7, new GroupAllow(4)); // 7
-		GROUP_ALLOWS.put(8, new GroupAllow(5)); // 8
-		GROUP_ALLOWS.put(9, new GroupAllow(6)); // 9
-		GROUP_ALLOWS.put(10, new GroupAllow(5)); // 10
-		GROUP_ALLOWS.put(11, new GroupAllow(5)); // 11
-		GROUP_ALLOWS.put(13, new GroupAllow(5)); // 12
-		GROUP_ALLOWS.put(13, new GroupAllow(5)); // 13
+		GROUP_ALLOWS.put(0, new GroupAllow(2));
+		GROUP_ALLOWS.put(1, new GroupAllow(2));
+		GROUP_ALLOWS.put(2, new GroupAllow(3));
+		GROUP_ALLOWS.put(3, new GroupAllow(3));
+		GROUP_ALLOWS.put(4, new GroupAllow(4));
+		GROUP_ALLOWS.put(5, new GroupAllow(4));
+		GROUP_ALLOWS.put(6, new GroupAllow(4));
+		GROUP_ALLOWS.put(7, new GroupAllow(4));
+		GROUP_ALLOWS.put(8, new GroupAllow(5));
+		GROUP_ALLOWS.put(9, new GroupAllow(6));
+		GROUP_ALLOWS.put(10, new GroupAllow(5));
+		GROUP_ALLOWS.put(11, new GroupAllow(5));
+		GROUP_ALLOWS.put(13, new GroupAllow(5));
+		GROUP_ALLOWS.put(13, new GroupAllow(5));
 	}
 
 	public static boolean isGroup(int groupID) {
@@ -70,21 +70,19 @@ public class PermissionsAPI {
 	}
 
 	public static int getGroup(String playerName) {
-		Player player = Server.getInstance().getPlayerExact(playerName);
-		if (player != null) {
-			return PlayerSessionManager.getPlayerSession(player).getInteger("Permission");
+		if (Server.getInstance().getPlayerExact(playerName) != null) {
+			return PlayerSessionManager.getPlayerSession(playerName).getInteger("Permission");
 		} else {
-			return SQLiteUtils.selectInteger("Users.db", "SELECT `Permission` FROM `USERS` WHERE UPPER (`Username`) = \'" + playerName.toUpperCase() + "\';");
+			return SQLiteUtils.selectInteger("Users.db", "SELECT Permission FROM USERS WHERE UPPER (`Username`) = '" + playerName.toUpperCase() + "';");
 		}
 	}
 
 	public static void setGroup(String playerName, int groupID) {
-		Player player = Server.getInstance().getPlayerExact(playerName);
-		if (player != null) {
+		if (Server.getInstance().getPlayerExact(playerName) != null) {
 			PlayerSessionManager.getPlayerSession(playerName).setInteger("Permission", groupID);
-			updatePermissions(player);
+			updatePermissions(Server.getInstance().getPlayerExact(playerName));
 		} else {
-			SQLiteUtils.query("Users.db", "UPDATE `USERS` SET `Permission` = " + groupID + " WHERE UPPER(`Username`) = \'" + playerName.toUpperCase() + "\';");
+			SQLiteUtils.query("Users.db", "UPDATE USERS SET Permission = '" + groupID + "' WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "';");
 		}
 	}
 
@@ -160,6 +158,8 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.NightVision", true);
+			permissionAllows.put("Command.ClearChat", true);
 			break;
 
 		case 8: // Бог
@@ -169,6 +169,11 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.NightVision", true);
+			permissionAllows.put("Command.ClearChat", true);
+			permissionAllows.put("Command.Near", true);
+			permissionAllows.put("Command.Near.65", true);
+			permissionAllows.put("Command.CraftingTable", true);
 			break;
 
 		case 9: // ТарТар
@@ -178,6 +183,11 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.NightVision", true);
+			permissionAllows.put("Command.ClearChat", true);
+			permissionAllows.put("Command.Near", true);
+			permissionAllows.put("Command.Near.100", true);
+			permissionAllows.put("Command.CraftingTable", true);
 			break;
 
 		case 10: // Помощник
@@ -188,7 +198,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
-			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("bansystem.command.checkmute", true);
 			permissionAllows.put("bansystem.command.mute", true);
 			permissionAllows.put("bansystem.command.mutelog", true);
@@ -202,7 +211,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
-			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("bansystem.command.checkmute", true);
 			permissionAllows.put("bansystem.command.mute", true);
 			permissionAllows.put("bansystem.command.mutelog", true);

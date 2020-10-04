@@ -28,9 +28,9 @@ public class AuctionAPI extends PluginBase {
 	public static Map<Player, AuctionChest> AUCTION_CHEST = new HashMap<>();
 	public static Map<Player, Integer> AUCTION_PAGE = new HashMap<>();
 	public static double AUCTION_MAX_PRICE = 10000.0;
-	public static int AUCTION_CHEST_SIZE = 45; // 45
-	public static int AUCTION_MAX_SELLS = 10; // 10
-	public static int AUCTION_ADD_COOLDOWN = 60; // 60
+	public static int AUCTION_CHEST_SIZE = 36;
+	public static int AUCTION_MAX_SELLS = 10;
+	public static int AUCTION_ADD_COOLDOWN = 60;
 	public static String PREFIX = "§l§7(§3Аукцион§7) §r";
 
 	public static void register() {
@@ -45,7 +45,8 @@ public class AuctionAPI extends PluginBase {
 					try {
 						compoundTag = NBTIO.read((byte[])itemData.get(7), ByteOrder.LITTLE_ENDIAN);
 					} catch (IOException e) {
-						Server.getInstance().getLogger().alert("§l§fОшибка в §fregister §7- §6" + e);
+						Server.getInstance().getLogger().alert("AuctionAPI: " + e);
+						AnarchyMain.sendMessageToChat("AuctionAPI.java\nСмотрите Server.log", 2000000004);
 					}
 				}
 				if (compoundTag == null) {
@@ -71,14 +72,15 @@ public class AuctionAPI extends PluginBase {
 				Item item = tradeItem.sellItem;
 				config.set(entry.getKey(), item.hasCompoundTag() ? new Object[] {tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[] {tradeItem.sellerName, tradeItem.aboutMessage, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount()});
 			} catch (IOException e) {
-				Server.getInstance().getLogger().alert("§l§fОшибка в §funregister §7- §6" + e);
+				Server.getInstance().getLogger().alert("AuctionAPI: " + e);
+				AnarchyMain.sendMessageToChat("AuctionAPI.java\nСмотрите Server.log", 2000000004);
 			}
 		}
 		config.save();
 	}
 
 	public static Long getTradeTime() {
-		return System.currentTimeMillis() / 1000L + 259200; // 259200
+		return System.currentTimeMillis() / 1000L + 259200;
 	}
 
 	public static int getPagesCount() {
@@ -100,7 +102,8 @@ public class AuctionAPI extends PluginBase {
 					config.set(tradeItem.UUID, tradeItem.sellItem.hasCompoundTag() ? new Object[] {tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount(), NBTIO.write(tradeItem.sellItem.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[] {tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount()});
 					config.save();
 				} catch (IOException e) {
-					Server.getInstance().getLogger().alert("§l§fОшибка в §fupdateAuction §7- §6 " + e);
+					Server.getInstance().getLogger().alert("AuctionAPI: " + e);
+					AnarchyMain.sendMessageToChat("AuctionAPI.java\nСмотрите Server.log", 2000000004);
 				}
 				iterator.remove();
 			}
@@ -146,6 +149,7 @@ public class AuctionAPI extends PluginBase {
 			auctionChest.setItem(50, Item.get(Item.SIGN).setCustomName("§r§6Справка").setLore("§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §6Монет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§6/auc §7(§3цена§7)\n§r§fили\n§r§6/auc §7(§3цена§7) (§3описание§7)"));
 			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§6Ваши Предметы на Продаже").setLore("§r§6• §fНажмите§7, §fчтобы открыть§7!"));
 			auctionChest.setItem(47, Item.get(Item.MINECART_WITH_CHEST).setCustomName("§r§6Хранилище").setLore("§r§6• §fНажмите§7, §fчтобы открыть§7!"));
+			// 37 45
 		}
 		if (firstTime) {
 			FakeChestsAPI.openInventory(player, auctionChest);

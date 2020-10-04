@@ -1,7 +1,6 @@
 package Anarchy.Task;
 
 import Anarchy.Module.CombatLogger.CombatLoggerAPI;
-import Anarchy.Module.Commands.Spectate.SpectateAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Sound;
@@ -22,14 +21,13 @@ public class RestartTask extends Task {
 			if (MinuteTask.SECONDS_RESTART == 0) {
 				for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 					CombatLoggerAPI.removeCombat(player);
-					SpectateAPI.removeSpectate(player);
 					player.close("", "§l§6Перезагрузка");
 				}
 				Server.getInstance().shutdown();
 				return;
 			}
 			for (Player player : Server.getInstance().getOnlinePlayers().values()) {
-				player.sendTitle("§l§cВНИМАНИЕ", "§f§lСервер перезагрузится через §6" + MinuteTask.SECONDS_RESTART + " §f" + getSecond(MinuteTask.SECONDS_RESTART), 0, 20, 0);
+				player.sendTitle("§l fПерезагрузка", "§f§lСервер перезагрузится через §6" + MinuteTask.SECONDS_RESTART + " §f" + getSecond(MinuteTask.SECONDS_RESTART), 0, 20, 0);
 				player.level.addSound(player, Sound.RANDOM_CLICK, 1, 1, player);
 			}
 		}

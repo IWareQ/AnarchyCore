@@ -49,7 +49,7 @@ public class RegionCommand extends Command {
 				return true;
 			}
 			Player addPlayer = Server.getInstance().getPlayer(args[1]);
-			if (addPlayer == null) {
+			if (!addPlayer.isOnline()) {
 				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + args[1] + " §fне в сети§7!");
 				player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 				return true;
@@ -149,7 +149,9 @@ public class RegionCommand extends Command {
 		}
 
 		case "how": {
-			new SimpleForm("Информация о Регионах", "Хочешь создать свой регион? Не проблема! Можешь следовать пунктам:\n\n§l§6| §r§fДобудь блок привта\n§6§l| §r§fПроверь, нет ли вблизи другого региона\n§l§6| §r§fПоставь блок для привата и будь уверене §7- §fтвою постройку не тронут!\n\nБлоки, которыми можно приватить:\n\n§l§6| §r§fЖелезный блок §7(§fприватит 3 × 3§7)\n§l§6| §r§fАлмазный блок §7(§fприватит 6 × 6§7)\n§l§6| §r§fИзумрудный блок §7(§fприватит 10 × 10§7)").send(player);
+			new SimpleForm("Информация о Регионах",
+						   "Хочешь создать свой регион? Не ��роблема! Можешь следовать пунктам:\n\n§l§6| §r§fДобудь блок привта\n§6§l| §r§fПроверь, нет ли вблизи другого региона\n§l§6| §r§fПоставь блок для привата и будь уверене §7- §fтвою постройку не тронут!\n\nБлоки, которыми можно приватить:\n\n§l§6| §r§fЖелезный блок §7(§fприватит 3 × 3§7)\n§l§6| §r§fАлмазный блок §7(§fприватит 6 × 6§7)\n§l§6| §r§fИзумрудный блок §7(§fприватит 10 × 10§7)").send(
+							   player);
 		}
 		break;
 

@@ -13,6 +13,7 @@ import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
+import cn.nukkit.event.block.ItemFrameDropItemEvent;
 import cn.nukkit.event.entity.EntityExplodeEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.item.Item;
@@ -84,6 +85,17 @@ public class RegionsEventsHandler implements Listener {
 		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
 			player.sendTip(RegionsAPI.BUSY);
 			event.setCancelled();
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onItemFrameDropItem(ItemFrameDropItemEvent event) {
+		Player player = event.getPlayer();
+		Block block = event.getBlock();
+		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
+			player.sendTip(RegionsAPI.BUSY);
+			event.setCancelled();
+			return;
 		}
 	}
 

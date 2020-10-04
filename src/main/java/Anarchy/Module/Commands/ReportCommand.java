@@ -15,7 +15,7 @@ public class ReportCommand extends Command {
 	public ReportCommand() {
 		super("report", "§r§l§fПожаловаться на Игрока");
 		this.commandParameters.clear();
-		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false), new CommandParameter("reason", CommandParamType.INT, false)});
+		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("cheater", CommandParamType.TARGET, false), new CommandParameter("reason", CommandParamType.INT, false)});
 	}
 
 	@Override()
@@ -37,7 +37,7 @@ public class ReportCommand extends Command {
 		}
 		String message = StringUtils.implode(args, 1);
 		player.sendMessage("§l§7(§3Репорты§7) §r§fРепорт был отправлен§7!");
-		AnarchyMain.sendMessageToChat("Новая жалоба! (" + player.getName() + ")\nНарушитель: " + target.getName() + "\nПричина: " + message, 176);
+		AnarchyMain.sendMessageToChat("Новая жалоба! (" + player.getName() + ")\nНарушитель: " + target.getName() + "\nПричина: " + message, 2000000004);
 		return false;
 	}
 }

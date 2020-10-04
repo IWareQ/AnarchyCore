@@ -14,11 +14,11 @@ import DbLib.DbLib;
 import cn.nukkit.Server;
 
 public class SQLiteUtils {
-	
+
 	public static Connection connectToSQLite(String filename) {
 		return DbLib.getSQLiteConnection(new File(AnarchyMain.folder + AnarchyMain.port + File.separator + filename));
 	}
-	
+
 	public static boolean query(String filename, String query) {
 		Connection connection;
 		connection = connectToSQLite(filename);
@@ -27,11 +27,12 @@ public class SQLiteUtils {
 			connection.createStatement().executeUpdate(query);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §fquery §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : query\nСмотрите Server.log", 2000000004);
 		}
 		return true;
 	}
-	
+
 	public static String buildQueryFromMap(Map<String, String> map) {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -39,7 +40,7 @@ public class SQLiteUtils {
 		}
 		return stringBuilder.substring(0, stringBuilder.length() - 2);
 	}
-	
+
 	public static Map<String, String> selectMap(String filename, String query) {
 		Map<String, String> map = new HashMap<>();
 		Connection connection = connectToSQLite(filename);
@@ -56,11 +57,12 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectMap §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectMap\nСмотрите Server.log", 2000000004);
 		}
 		return map;
 	}
-	
+
 	public static Map<String, String> selectStringMap(String filename, String query) {
 		Map<String, String> map = new HashMap<>();
 		Connection connection = connectToSQLite(filename);
@@ -78,11 +80,12 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectStringMap §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectStringMap\nСмотрите Server.log", 2000000004);
 		}
 		return map;
 	}
-	
+
 	public static Map<String, Integer> selectIntegerMap(String filename, String query) {
 		Map<String, Integer> map = new HashMap<>();
 		Connection connection = connectToSQLite(filename);
@@ -99,32 +102,34 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectIntegerMap §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectIntegerMap\nСмотрите Server.log", 2000000004);
 		}
 		return map;
 	}
-	
+
 	public static ArrayList<String> selectList(String filename, String query) {
 		ArrayList<String> list = new ArrayList<>();
 		Connection connection = connectToSQLite(filename);
 		if (connection == null) return null;
 		try {
-			ResultSet result = connection.createStatement().executeQuery(query);
-			if (result == null) return null;
-			ResultSetMetaData rsmd = result.getMetaData();
+			ResultSet resultSet = connection.createStatement().executeQuery(query);
+			if (resultSet == null) return null;
+			ResultSetMetaData rsmd = resultSet.getMetaData();
 			int count = rsmd.getColumnCount();
-			while (result.next()) {
+			while (resultSet.next()) {
 				for (int i = 1; i <= count; i++) {
-					list.add(result.getString(1));
+					list.add(resultSet.getString(1));
 				}
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectList §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectList\nСмотрите Server.log", 2000000004);
 		}
 		return list;
 	}
-	
+
 	public static ArrayList<Integer> selectIntegerList(String filename, String query) {
 		ArrayList<Integer> list = new ArrayList<>();
 		Connection connection = connectToSQLite(filename);
@@ -141,11 +146,12 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectIntegerList §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectIntegerList\nСмотрите Server.log", 2000000004);
 		}
 		return list;
 	}
-	
+
 	public static ArrayList<String> selectStringList(String filename, String query) {
 		ArrayList<String> list = new ArrayList<>();
 		Connection connection = connectToSQLite(filename);
@@ -162,11 +168,12 @@ public class SQLiteUtils {
 			}
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectStringList §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectStringList\nСмотрите Server.log", 2000000004);
 		}
 		return list;
 	}
-	
+
 	public static String selectString(String filename, String query) {
 		String res;
 		Connection connection = connectToSQLite(filename);
@@ -178,11 +185,12 @@ public class SQLiteUtils {
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
 			res = null;
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectString §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectString\nСмотрите Server.log", 2000000004);
 		}
 		return res;
 	}
-	
+
 	public static Integer selectInteger(String filename, String query) {
 		int res = -1;
 		Connection connection = connectToSQLite(filename);
@@ -193,11 +201,12 @@ public class SQLiteUtils {
 			res = result.getInt(1);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			//Server.getInstance().getLogger().alert("§l§fОшибка в §3selectInteger §7- §6" + e);
+			/*Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectInteger\nСмотрите Server.log", 2000000004);*/
 		}
 		return res;
 	}
-	
+
 	public static Double selectDouble(String filename, String query) {
 		Double res = -1.0;
 		Connection connection = connectToSQLite(filename);
@@ -208,11 +217,12 @@ public class SQLiteUtils {
 			res = result.getDouble(1);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectDouble §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectDouble\nСмотрите Server.log", 2000000004);
 		}
 		return res;
 	}
-	
+
 	public static Long selectLong(String filename, String query) {
 		Long res = -1L;
 		Connection connection = connectToSQLite(filename);
@@ -223,7 +233,8 @@ public class SQLiteUtils {
 			res = result.getLong(1);
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("§l§fОшибка в §3selectLong §7- §6" + e);
+			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
+			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectLong\nСмотрите Server.log", 2000000004);
 		}
 		return res;
 	}

@@ -14,6 +14,7 @@ import Anarchy.Utils.RandomUtils;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
+import cn.nukkit.blockentity.BlockEntityItemFrame;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.entity.Entity;
@@ -21,17 +22,25 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
+import cn.nukkit.event.block.BlockBurnEvent;
+import cn.nukkit.event.block.BlockIgniteEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
+import cn.nukkit.event.block.ItemFrameDropItemEvent;
+import cn.nukkit.event.block.LeavesDecayEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
+import cn.nukkit.event.entity.ProjectileLaunchEvent;
+import cn.nukkit.event.level.WeatherChangeEvent;
 import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
+import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
@@ -40,8 +49,8 @@ import nukkitcoders.mobplugin.entities.monster.Monster;
 
 public class EventsHandler implements Listener {
 	File dataFileDeaths = new File(AnarchyMain.datapath + "/Deaths.yml");
-	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
 	File dataFileKills = new File(AnarchyMain.datapath + "/Kills.yml");
+	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
 	Config configKills = new Config(dataFileKills, Config.YAML);
 	public static int CHAT_RADIUS = 70;
 
@@ -55,7 +64,7 @@ public class EventsHandler implements Listener {
 		}
 		if (player.getFloorY() <= 0 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
 			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn(new Position(-7, 148, 93)));
-			player.sendMessage("§l§c| §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн");
+			player.sendMessage("§l§c| §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!");
 		}
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && block.getId() == 416) {
 			player.sendMessage("§l§6• §r§fПортал временно не доступен§7, §fдля выхода со спавна используйте §7/§6rtp");
@@ -68,7 +77,7 @@ public class EventsHandler implements Listener {
 		Player player = event.getPlayer();
 		Location location = event.getTo();
 		if (location.x < FunctionsAPI.BORDER[0] || location.x > FunctionsAPI.BORDER[1] || location.z < FunctionsAPI.BORDER[2] || location.z > FunctionsAPI.BORDER[3]) {
-			player.sendTip("§l§c| §fВы пытаетесь §3телепортироваться §fза границу мира§7! §c|§r");
+			player.sendTip("§l§c| §fВы пытаетесь §6телепортироваться §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
 		}
 	}
@@ -124,7 +133,10 @@ public class EventsHandler implements Listener {
 			player.sendMessage("§l§6| §r§fСокровище успешно Активированно§7!");
 			player.getInventory().removeItem(item);
 		}
-		
+		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
+			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
+			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
@@ -155,9 +167,65 @@ public class EventsHandler implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onEntityDamage(EntityDamageByEntityEvent event) {
+	public void onEntityDamage(EntityDamageEvent event) {
 		Entity entity = event.getEntity();
 		if (entity.getLevel().equals(FunctionsAPI.SPAWN)) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onWeatherChange(WeatherChangeEvent event) {
+		Level level = event.getLevel();
+		if (level.equals(FunctionsAPI.SPAWN)) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onBlockIgnite(BlockIgniteEvent event) {
+		Block block = event.getBlock();
+		if (block.getLevel().equals(FunctionsAPI.SPAWN)) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onBlockBurn(BlockBurnEvent event) {
+		Block block = event.getBlock();
+		if (block.getLevel().equals(FunctionsAPI.SPAWN)) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onLeavesDecay(LeavesDecayEvent event) {
+		Block block = event.getBlock();
+		if (block.getLevel().equals(FunctionsAPI.SPAWN)) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onProjectileLaunch(ProjectileLaunchEvent event) {
+		Entity entity = event.getEntity();
+		if (entity.getLevel().equals(FunctionsAPI.SPAWN)) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onPlayerDropItem(PlayerDropItemEvent event) {
+		Player player = event.getPlayer();
+		if (player.getLevel().equals(FunctionsAPI.SPAWN)) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onItemFrameDropItem(ItemFrameDropItemEvent event) {
+		BlockEntityItemFrame item = event.getItemFrame();
+		if (item.getLevel().equals(FunctionsAPI.SPAWN)) {
 			event.setCancelled(true);
 		}
 	}
@@ -178,7 +246,7 @@ public class EventsHandler implements Listener {
 				}
 			}
 			players.add(new ConsoleCommandSender());
-			event.setFormat("§6Ⓛ " + displayName + " §8» §7" + playerMessage.replaceAll("§", ""));
+			event.setFormat("§6Ⓛ " + displayName + " §8» §f" + playerMessage.replaceAll("§", ""));
 			event.setRecipients(players);
 		}
 	}

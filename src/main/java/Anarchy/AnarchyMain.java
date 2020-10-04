@@ -17,6 +17,7 @@ import Anarchy.Module.Auction.Commands.AuctionCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
 import Anarchy.Module.Boss.RavagerBoss;
 import Anarchy.Module.Boss.SilverfishBoss;
+import Anarchy.Module.Boss.WitchBoss;
 import Anarchy.Module.CombatLogger.CombatLoggerEventsHandler;
 import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
@@ -30,10 +31,12 @@ import Anarchy.Module.Commands.HealCommand;
 import Anarchy.Module.Commands.KickCommand;
 import Anarchy.Module.Commands.NearCommand;
 import Anarchy.Module.Commands.NightCommand;
+import Anarchy.Module.Commands.NightVisionCommand;
 import Anarchy.Module.Commands.RepairCommand;
 import Anarchy.Module.Commands.ReportCommand;
 import Anarchy.Module.Commands.ResyncCommand;
 import Anarchy.Module.Commands.TestCommand;
+import Anarchy.Module.Commands.CraftingTable.CraftingTableCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
 import Anarchy.Module.Commands.Defaults.StopCommand;
 import Anarchy.Module.Commands.Defaults.TellCommand;
@@ -41,9 +44,9 @@ import Anarchy.Module.Commands.EnderChest.EnderChestCommand;
 import Anarchy.Module.Commands.Home.DelHomeCommand;
 import Anarchy.Module.Commands.Home.HomeCommand;
 import Anarchy.Module.Commands.Home.SetHomeCommand;
-import Anarchy.Module.Commands.Inventory.InventoryCommand;
-import Anarchy.Module.Commands.Spectate.SpectateCommand;
+import Anarchy.Module.Commands.Inventory.InventoryHandler;
 import Anarchy.Module.Commands.Spectate.SpectateEventsHandler;
+import Anarchy.Module.Commands.Spectate.Commands.SpectateCommand;
 import Anarchy.Module.Commands.Storage.StorageHandler;
 import Anarchy.Module.Commands.Teleport.TpaCommand;
 import Anarchy.Module.Commands.Teleport.TpcCommand;
@@ -132,7 +135,7 @@ public class AnarchyMain extends PluginBase {
 		pluginManager.registerEvents(new StorageHandler(), this);
 		pluginManager.registerEvents(new EventsHandler(), this);
 		pluginManager.registerEvents(new RegionsEventsHandler(), this);
-		pluginManager.registerEvents(new InventoryCommand(), this);
+		pluginManager.registerEvents(new InventoryHandler(), this);
 	}
 
 	private void unregisterCommands() {
@@ -144,11 +147,12 @@ public class AnarchyMain extends PluginBase {
 
 	private void registerEntity() {
 		Entity.registerEntity(SilverfishBoss.class.getSimpleName(), SilverfishBoss.class);
-		Entity.registerEntity(RavagerBoss.class.getSimpleName(), RavagerBoss.class );
+		Entity.registerEntity(RavagerBoss.class.getSimpleName(), RavagerBoss.class);
+		Entity.registerEntity(WitchBoss.class .getSimpleName(), WitchBoss.class);
 	}
 
 	private void registerCommands() {
-		Command[] commands = new Command[] {new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		Command[] commands = new Command[] {new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 
@@ -159,34 +163,34 @@ public class AnarchyMain extends PluginBase {
 		this.getServer().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
 	}
 
-	public static void sendMessageToChat(String message, int chatId) {
+	public static void sendMessageToChat(String message, int peerId) {
 		try {
-			String url = "https://api.vk.com/method/messages.send?chat_id=" + chatId + "&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(message, "UTF-8") + "&v=5.124";
+			String url = "https://api.vk.com/method/messages.send?peer_id=" + peerId + "&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(message, "UTF-8") + "&v=5.124";
 			URL(url);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6sendMessageToChat§7: §6" + e);
 		}
 	}
 	
-	public static void sendMessage(String message, int userId) {
+	public static void sendMessage(String message, int peerId) {
 		try {
-			String url = "https://api.vk.com/method/messages.send?user_id=" + userId + "&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(message, "UTF-8") + "&v=5.124";
+			String url = "https://api.vk.com/method/messages.send?user_id=" + peerId + "&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(message, "UTF-8") + "&v=5.124";
 			URL(url);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6sendMessage§7: §6" + e);
 		}
 	}
 
-	public static void URL(String url) {
+	private static void URL(String url) {
 		try {
 			URL request = new URL(url);
-			BufferedReader in = new BufferedReader(new InputStreamReader(request.openStream()));
-			StringBuilder sb = new StringBuilder();
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(request.openStream()));
+			StringBuilder stringBuilder = new StringBuilder();
 			String inputLine;
-			while ((inputLine = in.readLine()) != null) sb.append(inputLine);
-			in.close();
-		} catch (Exception ex) {
-			Server.getInstance().getLogger().alert(ex.getMessage());
+			while ((inputLine = bufferedReader.readLine()) != null) stringBuilder.append(inputLine);
+			bufferedReader.close();
+		} catch (Exception e) {
+			Server.getInstance().getLogger().alert("§l§fОшибка в §6URL§7: §6" + e);
 		}
 	}
 }

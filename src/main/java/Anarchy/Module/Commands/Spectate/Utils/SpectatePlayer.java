@@ -1,4 +1,4 @@
-package Anarchy.Module.Commands.Spectate;
+package Anarchy.Module.Commands.Spectate.Utils;
 
 import cn.nukkit.Player;
 import cn.nukkit.level.Position;
