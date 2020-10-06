@@ -21,11 +21,15 @@ public class GroupCommand extends Command {
 	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
+		if (sender instanceof Player) {
+			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §6Консоли§7!");
+			return true;
+		}
 		if (!sender.hasPermission("Command.Group")) {
 			return false;
 		}
 		if (args.length < 2 || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
-			sender.sendMessage("§l§6| §r§fИспользование §7- /§6group (§3игрок§7) (§3ID§7)");
+			sender.sendMessage("§l§6| §r§fИспользование §7- /§6group (§3ID§7) (§3Игрок§7)");
 			return true;
 		}
 		String nickname = StringUtils.implode(args, 1);
@@ -39,7 +43,7 @@ public class GroupCommand extends Command {
 		}
 		sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fполучил группу " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
 		Player target = Server.getInstance().getPlayerExact(nickname);
-		if (target.isOnline()) {
+		if (target != null) {
 			target.sendMessage(PermissionsAPI.PREFIX + "§fВы получили привилегию " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
 			PermissionsAPI.setGroup(target, Integer.parseInt(args[0]));
 			PermissionsAPI.updatePermissions(target);

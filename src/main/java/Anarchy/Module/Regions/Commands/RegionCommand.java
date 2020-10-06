@@ -49,7 +49,7 @@ public class RegionCommand extends Command {
 				return true;
 			}
 			Player addPlayer = Server.getInstance().getPlayer(args[1]);
-			if (!addPlayer.isOnline()) {
+			if (addPlayer == null) {
 				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + args[1] + " §fне в сети§7!");
 				player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 				return true;

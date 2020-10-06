@@ -33,7 +33,7 @@ public class SpectateCommand extends Command {
 			return true;
 		}
 		Player target = Server.getInstance().getPlayer(args[0]);
-		if (!target.isOnline()) {
+		if (target == null) {
 			player.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + target + " §fне в сети§7!");
 			return true;
 		}

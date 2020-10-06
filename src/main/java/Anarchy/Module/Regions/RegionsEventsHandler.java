@@ -106,7 +106,7 @@ public class RegionsEventsHandler implements Listener {
 		while (iterator.hasNext()) {
 			Block block = (Block)iterator.next();
 			int id = block.getId();
-			if (RegionsAPI.REGIONS.get(id) != null) {
+			if (RegionsAPI.REGIONS.get(id) != null || id == 52) {
 				iterator.remove();
 			}
 		}

@@ -46,10 +46,10 @@ public class PayCommand extends Command {
 			player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 			return true;
 		}
-		player.sendMessage(EconomyAPI.PREFIX + "§fВы успешно перевели §6" + args[1] + " §fИгроку §6" + player.getName());
-		target.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fперевел Вам §6" + args[1] + "");
-		EconomyAPI.reduceMoney(player, Double.parseDouble(args[1]));
-		EconomyAPI.addMoney(target, Double.parseDouble(args[1]));
+		player.sendMessage(EconomyAPI.PREFIX + "§fВы успешно перевели §6" + String.format("%.1f", args[1]) + " §fИгроку §6" + player.getName());
+		target.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fперевел Вам §6" + String.format("%.1f", args[1]) + "");
+		EconomyAPI.reduceMoney(player, Double.parseDouble(String.format("%.1f", args[1])));
+		EconomyAPI.addMoney(target, Double.parseDouble(String.format("%.1f", args[1])));
 		return true;
 	}
 }

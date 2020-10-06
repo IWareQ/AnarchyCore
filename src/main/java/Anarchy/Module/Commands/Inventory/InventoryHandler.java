@@ -16,7 +16,6 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.inventory.InventoryTransactionEvent;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 
 public class InventoryHandler extends Command implements Listener {
@@ -43,6 +42,10 @@ public class InventoryHandler extends Command implements Listener {
 			return true;
 		}
 		Player target = Server.getInstance().getPlayer(args[0]);
+		if (target == null) {
+			player.sendMessage("§l§6• §r§fИгрок §6" + target.getName() + " §fне в сети§7!");
+			return true;
+		}
 		new SimpleForm("§l§6" + target.getName() + " §7> §fВыберите Инвентарь", "§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "").addButton("§l§fИнвентарь", ImageType.PATH, "textures/ui/inventory_icon").addButton("§l§fЭндер Сундук", ImageType.PATH, "textures/ui/icon_blackfriday").addButton("§l§fХранилище Предметов", ImageType.PATH, "textures/ui/invite_hover").send(player, (targetPlayer, form, data)-> {
 			if (data == -1) return;
 			if (data == 0) {
@@ -64,18 +67,15 @@ public class InventoryHandler extends Command implements Listener {
 		return false;
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onInventoryTransaction(InventoryTransactionEvent event) {
 		for (InventoryAction action : event.getTransaction().getActions()) {
 			if (action instanceof SlotChangeAction) {
 				SlotChangeAction slotChange = (SlotChangeAction)action;
 				if (slotChange.getInventory() instanceof CheckInventoryChest || slotChange.getInventory() instanceof CheckEnderChest) {
-					Item sourceItem = action.getSourceItem();
 					Player player = event.getTransaction().getSource();
-					if (!sourceItem.hasCompoundTag()) {
-						player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
-						event.setCancelled(true);
-					}
+					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
+					event.setCancelled(true);
 					return;
 				}
 			}

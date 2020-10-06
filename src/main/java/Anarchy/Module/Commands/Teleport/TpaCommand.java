@@ -3,6 +3,7 @@ package Anarchy.Module.Commands.Teleport;
 import java.util.HashMap;
 import java.util.Map;
 
+import Anarchy.Module.Commands.Teleport.Utils.TpaPlayer;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -12,16 +13,15 @@ import cn.nukkit.command.data.CommandParameter;
 
 public class TpaCommand extends Command {
 	public static String PREFIX = "§l§7(§3Телепорт§7) §r";
-	public static Map<Player, Player> TPA_REQUEST = new HashMap<>();
+	public static HashMap<String, TpaPlayer> TPA_REQUEST = new HashMap<>();
 	public static Map<Player, Long> COOLDOWN = new HashMap<>();
-	public static int ADD_COOLDOWN = 10;
-	
+
 	public TpaCommand() {
 		super("tpa", "Отправить запрос на телепортацию");
 		this.commandParameters.clear();
-		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
+		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
-	
+
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		Player player = (Player)sender;
@@ -36,7 +36,7 @@ public class TpaCommand extends Command {
 			return false;
 		}
 		Player target = Server.getInstance().getPlayer(args[0]);
-		if (!target.isOnline()) {
+		if (target == null) {
 			player.sendMessage(PREFIX + "§fИгрок §6" + args[0] + " §fне в сети§7!");
 			return true;
 		}
@@ -44,8 +44,8 @@ public class TpaCommand extends Command {
 		target.sendMessage(PREFIX + "§fИгрок §6" + player.getName() + " §fхочет телепортироваться к Вам§7!");
 		target.sendMessage("§l§a| §r§7/§atpc §7- §fпринять запрос");
 		target.sendMessage("§l§c| §r§7/§ctpd §7- §fотклонить запрос");
-		TPA_REQUEST.put(target, player);
-		COOLDOWN.put(player, nowTime + ADD_COOLDOWN);
+		TPA_REQUEST.put(target.getName(), new TpaPlayer(player, target, nowTime + 5));
+		COOLDOWN.put(player, nowTime + 10);
 		return false;
 	}
 }

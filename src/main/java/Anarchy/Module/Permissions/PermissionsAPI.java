@@ -33,7 +33,7 @@ public class PermissionsAPI {
 		GROUPS.add("§cYou§fTube§r");
 		GROUPS.add("§bТитан§r");
 		GROUPS.add("§bБог§r");
-		GROUPS.add("§bТарТар§r");
+		GROUPS.add("§bТартар§r");
 		GROUPS.add("§bПомощник§r");
 		GROUPS.add("§1Модератор§r");
 		GROUPS.add("§4Администратор§r");
@@ -48,13 +48,13 @@ public class PermissionsAPI {
 		GROUP_ALLOWS.put(4, new GroupAllow(4));
 		GROUP_ALLOWS.put(5, new GroupAllow(4));
 		GROUP_ALLOWS.put(6, new GroupAllow(4));
-		GROUP_ALLOWS.put(7, new GroupAllow(4));
-		GROUP_ALLOWS.put(8, new GroupAllow(5));
-		GROUP_ALLOWS.put(9, new GroupAllow(6));
+		GROUP_ALLOWS.put(7, new GroupAllow(5));
+		GROUP_ALLOWS.put(8, new GroupAllow(6));
+		GROUP_ALLOWS.put(9, new GroupAllow(8));
 		GROUP_ALLOWS.put(10, new GroupAllow(5));
-		GROUP_ALLOWS.put(11, new GroupAllow(5));
-		GROUP_ALLOWS.put(13, new GroupAllow(5));
-		GROUP_ALLOWS.put(13, new GroupAllow(5));
+		GROUP_ALLOWS.put(11, new GroupAllow(6));
+		GROUP_ALLOWS.put(13, new GroupAllow(7));
+		GROUP_ALLOWS.put(13, new GroupAllow(10));
 	}
 
 	public static boolean isGroup(int groupID) {
@@ -171,12 +171,11 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.NightVision", true);
 			permissionAllows.put("Command.ClearChat", true);
-			permissionAllows.put("Command.Near", true);
-			permissionAllows.put("Command.Near.65", true);
+			permissionAllows.put("Command.Near", true); // 65 блоков
 			permissionAllows.put("Command.CraftingTable", true);
 			break;
 
-		case 9: // ТарТар
+		case 9: // Тартар
 			permissionAllows.put("Command.Food", true);
 			permissionAllows.put("Command.Heal", true);
 			permissionAllows.put("Command.Repair", true);
@@ -185,9 +184,9 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.NightVision", true);
 			permissionAllows.put("Command.ClearChat", true);
-			permissionAllows.put("Command.Near", true);
-			permissionAllows.put("Command.Near.100", true);
+			permissionAllows.put("Command.Near", true); // 100 блоков
 			permissionAllows.put("Command.CraftingTable", true);
+			permissionAllows.put("Command.Bonus", true);
 			break;
 
 		case 10: // Помощник
@@ -196,7 +195,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Repair", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true);
+			permissionAllows.put("Command.Near", true); 
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("bansystem.command.checkmute", true);
 			permissionAllows.put("bansystem.command.mute", true);
@@ -209,15 +208,19 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Repair", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.NightVision", true);
+			permissionAllows.put("Command.ClearChat", true);
+			permissionAllows.put("Command.Near", true); // 65 блоков
+			permissionAllows.put("Command.CraftingTable", true);
+			permissionAllows.put("Command.Spectate", true);
+			permissionAllows.put("Command.Inventory", true);
 			permissionAllows.put("bansystem.command.checkmute", true);
 			permissionAllows.put("bansystem.command.mute", true);
 			permissionAllows.put("bansystem.command.mutelog", true);
 			permissionAllows.put("bansystem.command.checkban", true);
 			permissionAllows.put("bansystem.command.ban", true);
 			permissionAllows.put("bansystem.command.banlog", true);
-			permissionAllows.put("Command.Spectate", true);
 			break;
 
 		case 12: // Администратор
@@ -228,7 +231,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
-			permissionAllows.put("Command.Near", true);
 			break;
 
 		case 13: // Основатель
@@ -239,7 +241,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
-			permissionAllows.put("Command.Near", true);
 
 		}
 		for (Map.Entry<String, Boolean> entry : permissionAllows.entrySet()) {

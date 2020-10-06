@@ -29,7 +29,7 @@ public class TellCommand extends Command {
 			return true;
 		}
 		Player target = Server.getInstance().getPlayer(args[0]);
-		if (!target.isOnline()) {
+		if (target == null) {
 			player.sendMessage("§l§6• §r§fИгрок §6" + args[0] + " §fне в сети§7!");
 			return true;
 		}

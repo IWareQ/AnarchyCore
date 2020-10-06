@@ -32,6 +32,7 @@ public class CombatLoggerEventsHandler implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if (CombatLoggerAPI.inCombat(player)) {
+			CombatLoggerAPI.removeCombat(player);
 			player.kill();
 		}
 	}
@@ -41,7 +42,6 @@ public class CombatLoggerEventsHandler implements Listener {
 		Player player = event.getEntity();
 		if (CombatLoggerAPI.inCombat(player)) {
 			CombatLoggerAPI.removeCombat(player);
-			CombatLoggerAPI.removeBossBar(player);
 		}
 	}
 

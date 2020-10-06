@@ -39,7 +39,6 @@ import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
@@ -57,7 +56,8 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0), (double)(int)Math.round(event.getPlayer().z - 0.5)));
+		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0),
+					  (double)(int)Math.round(event.getPlayer().z - 0.5)));
 		if (player.x < FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z < FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
 			player.sendTip("§c§l| §fВы пытаетесь §6выйти §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
@@ -92,7 +92,7 @@ public class EventsHandler implements Listener {
 				player.sendMessage("§c§l| §r§fВы были убиты Игроком §6" + damager.getName());
 				event.setDeathMessage("§6§l| §r§fИгрок §6" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
 				Double money = EconomyAPI.myMoney(player) * 20 / 100;
-				if (money > 30) {
+				if (money != 0) {
 					player.sendMessage("§c§l| §r§fПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20§7%)");
 					((Player)damager).sendMessage("§l§a| §r§fВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §6" + player.getName());
 					EconomyAPI.reduceMoney(player, money);
@@ -110,29 +110,31 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event) {
 		Entity entity = event.getEntity();
-		EntityDamageEvent cause = entity.getLastDamageCause();
-		if (cause instanceof EntityDamageByEntityEvent) {
-			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
-			Player player = (Player)damager;
-			double money = RandomUtils.rand(0.1, 2.0);
-			if (entity instanceof Animal) {
-				player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
-				EconomyAPI.addMoney(player, money);
-			} else if (entity instanceof Monster) {
-				player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
-				EconomyAPI.addMoney(player, money);
+		if (entity.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent cause = (EntityDamageByEntityEvent)entity.getLastDamageCause();
+			if (cause.getDamager() instanceof Player) {
+				Player player = (Player)cause.getDamager();
+				double money = RandomUtils.rand(0.1, 2.0);
+				if (entity instanceof Animal) {
+					player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
+					EconomyAPI.addMoney(player, money);
+				} else if (entity instanceof Monster) {
+					player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
+					EconomyAPI.addMoney(player, money);
+				}
 			}
 		}
 	}
-	
+
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		Item item = event.getItem();
+		/*Item item = event.getItem();
 		if (item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
 			player.sendMessage("§l§6| §r§fСокровище успешно Активированно§7!");
 			player.getInventory().removeItem(item);
-		}
+		}*/
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
 			event.setCancelled(true);
@@ -173,7 +175,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onWeatherChange(WeatherChangeEvent event) {
 		Level level = event.getLevel();
@@ -181,7 +183,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockIgnite(BlockIgniteEvent event) {
 		Block block = event.getBlock();
@@ -189,7 +191,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onBlockBurn(BlockBurnEvent event) {
 		Block block = event.getBlock();
@@ -197,7 +199,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onLeavesDecay(LeavesDecayEvent event) {
 		Block block = event.getBlock();
@@ -205,7 +207,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onProjectileLaunch(ProjectileLaunchEvent event) {
 		Entity entity = event.getEntity();
@@ -213,7 +215,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
 		Player player = event.getPlayer();
@@ -221,7 +223,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onItemFrameDropItem(ItemFrameDropItemEvent event) {
 		BlockEntityItemFrame item = event.getItemFrame();

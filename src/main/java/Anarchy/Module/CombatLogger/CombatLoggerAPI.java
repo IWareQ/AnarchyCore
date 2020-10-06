@@ -4,14 +4,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import cn.nukkit.Player;
 import cn.nukkit.utils.DummyBossBar;
 
 public class CombatLoggerAPI {
 	public static ConcurrentHashMap<Player, Long> inCombat = new ConcurrentHashMap<>();
-	public static Map<String, Long> bossBarList = new HashMap<>();
+	private static Map<String, Long> bossBarList = new HashMap<>();
 	
-	public static void createBossBar(Player player, String text) {
+	private static void createBossBar(Player player, String text) {
 		DummyBossBar dummyBossBar = new DummyBossBar.Builder(player).text(text).length(100).build();
 		player.createBossBar(dummyBossBar);
 		getMap().put(player.getName(), dummyBossBar.getBossBarId());
@@ -25,7 +26,7 @@ public class CombatLoggerAPI {
 		}
 	}
 	
-	public static DummyBossBar getDummyBossBar(Player player) {
+	private static DummyBossBar getDummyBossBar(Player player) {
 		Long barId = getBarId(player);
 		if (barId != null) {
 			return player.getDummyBossBar(barId);
@@ -56,13 +57,14 @@ public class CombatLoggerAPI {
 				iterator.remove();
 			}
 		}
+		removeBossBar(player);
 	}
 	
 	public static Map<Player, Long> getPlayers() {
 		return inCombat;
 	}
 	
-	public static Long getBarId(Player player) {
+	private static Long getBarId(Player player) {
 		Long barId = getMap().get(player.getName());
 		if (barId != null) {
 			return barId;
@@ -70,11 +72,11 @@ public class CombatLoggerAPI {
 		return null;
 	}
 	
-	public static Map<String, Long> getMap() {
+	private static Map<String, Long> getMap() {
 		return bossBarList;
 	}
 	
-	public static void removeBossBar(Player player) {
+	private static void removeBossBar(Player player) {
 		Long barId = getBarId(player);
 		if (barId != null) {
 			player.removeBossBar(barId);

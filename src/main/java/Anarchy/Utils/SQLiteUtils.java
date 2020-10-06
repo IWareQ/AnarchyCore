@@ -26,10 +26,7 @@ public class SQLiteUtils {
 		try {
 			connection.createStatement().executeUpdate(query);
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : query\nСмотрите Server.log", 2000000004);
-		}
+		} catch (SQLException e) {/**/}
 		return true;
 	}
 
@@ -56,10 +53,7 @@ public class SQLiteUtils {
 				}
 			}
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectMap\nСмотрите Server.log", 2000000004);
-		}
+		} catch (SQLException e) {/**/}
 		return map;
 	}
 
@@ -79,10 +73,7 @@ public class SQLiteUtils {
 				}
 			}
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectStringMap\nСмотрите Server.log", 2000000004);
-		}
+		} catch (SQLException e) {/**/}
 		return map;
 	}
 
@@ -101,10 +92,7 @@ public class SQLiteUtils {
 				}
 			}
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectIntegerMap\nСмотрите Server.log", 2000000004);
-		}
+		} catch (SQLException e) {/**/}
 		return map;
 	}
 
@@ -123,10 +111,7 @@ public class SQLiteUtils {
 				}
 			}
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectList\nСмотрите Server.log", 2000000004);
-		}
+		} catch (SQLException e) {/**/}
 		return list;
 	}
 
@@ -145,10 +130,7 @@ public class SQLiteUtils {
 				}
 			}
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectIntegerList\nСмотрите Server.log", 2000000004);
-		}
+		} catch (SQLException e) {/**/}
 		return list;
 	}
 
@@ -167,10 +149,7 @@ public class SQLiteUtils {
 				}
 			}
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectStringList\nСмотрите Server.log", 2000000004);
-		}
+		} catch (SQLException e) {/**/}
 		return list;
 	}
 
@@ -185,8 +164,6 @@ public class SQLiteUtils {
 			if (connection != null) connection.close();
 		} catch (SQLException e) {
 			res = null;
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectString\nСмотрите Server.log", 2000000004);
 		}
 		return res;
 	}
@@ -200,10 +177,7 @@ public class SQLiteUtils {
 			if (result == null) return -1;
 			res = result.getInt(1);
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			/*Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectInteger\nСмотрите Server.log", 2000000004);*/
-		}
+		} catch (SQLException e) {/**/}
 		return res;
 	}
 
@@ -216,10 +190,7 @@ public class SQLiteUtils {
 			if (result == null) return -1.0;
 			res = result.getDouble(1);
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectDouble\nСмотрите Server.log", 2000000004);
-		}
+		} catch (SQLException e) {/**/}
 		return res;
 	}
 
@@ -232,10 +203,7 @@ public class SQLiteUtils {
 			if (result == null) return -1L;
 			res = result.getLong(1);
 			if (connection != null) connection.close();
-		} catch (SQLException e) {
-			Server.getInstance().getLogger().alert("SQLiteUtils: " + e);
-			AnarchyMain.sendMessageToChat("SQLiteUtils.java : selectLong\nСмотрите Server.log", 2000000004);
-		}
+		} catch (SQLException e) {/**/}
 		return res;
 	}
 }

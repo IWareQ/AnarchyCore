@@ -16,10 +16,10 @@ public class SpectateEventsHandler implements Listener {
 	public void onPlayerItemHeld(PlayerItemHeldEvent event) {
 		Player player = event.getPlayer();
 		Item item = event.getItem();
-		if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && item.getCustomName().equals("§r§l§fЗавершить Наблюдение") && player.getGamemode() == 3) {
+		if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && item.getCustomName().equalsIgnoreCase("§r§l§fЗавершить Наблюдение") && player.getGamemode() == 3) {
 			SpectateAPI.removeSpectate(player);
 		}
-		if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && item.getCustomName().equals("§r§l§fПроверка регионов") && player.getGamemode() == 3) {
+		if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && item.getCustomName().equalsIgnoreCase("§r§l§fПроверка регионов") && player.getGamemode() == 3) {
 			int regionID = RegionsAPI.getRegionIDByLocation(player.getLocation());
 			if (regionID != -1) {
 				player.sendTip(RegionsAPI.BUSY_BY.replace("{PLAYER}", RegionsAPI.getRegionOwner(regionID)));
