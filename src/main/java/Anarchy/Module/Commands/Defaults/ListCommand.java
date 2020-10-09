@@ -2,7 +2,6 @@ package Anarchy.Module.Commands.Defaults;
 
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
@@ -23,7 +22,7 @@ public class ListCommand extends Command {
 			}
 			++onlineCount;
 		}
-		sender.sendMessage("§l§6| §r§fНа сервере §3" + onlineCount + " §fиз §3" + Server.getInstance().getMaxPlayers() + " §fИгроков\n§fИгроки §7- §6" + (stringBuilder.length() > 0 ? stringBuilder.substring(4) : "§7..."));
+		sender.sendMessage("§l§6• §r§fНа сервере §6" + onlineCount + " §fонлайна§7!\n§fИгроки§7: §6" + (stringBuilder.length() > 0 ? stringBuilder.substring(4) : "§7..."));
 		return true;
 	}
 }

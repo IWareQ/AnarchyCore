@@ -6,30 +6,28 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.level.Sound;
 
 public class FoodCommand extends Command {
-	
+
 	public FoodCommand() {
-		super("food", "§l§fВосстановить Голод");
+		super("food", "§r§l§fВосстановить Голод");
 		this.setPermission("Command.Food");
 		this.commandParameters.clear();
 	}
-	
+
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		Player player = (Player)sender;
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
-			return true;
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			if (!player.hasPermission("Command.Food")) {
+				return false;
+			}
+			if (player.getGamemode() != 0) {
+				player.sendMessage("§l§6• §r§fДля использования перейдите в §6Выживание");
+				return false;
+			}
+			player.getFoodData().setLevel(player.getFoodData().getMaxLevel(), 12.0F);
+			player.sendMessage("§l§6• §fУровень Вашего §6Голода §fуспешно пополнен§7!");
+			player.getLevel().addSound(player, Sound.RANDOM_EAT, 1, 1, player);
 		}
-		if (!player.hasPermission("Command.Food")) {
-			return false;
-		}
-		if (player.getGamemode() != 0) {
-			player.sendMessage("§l§6| §r§fДля использования перейдите в §3Выживание");
-			return false;
-		}
-		player.getFoodData().setLevel(player.getFoodData().getMaxLevel(), 12.0F);
-		player.sendMessage("§l§a| §r§fВы §3успешно §fпополнили уровень Вашего §6Голода");
-		player.getLevel().addSound(player, Sound.RANDOM_EAT, 1, 1, player);
 		return false;
 	}
 }

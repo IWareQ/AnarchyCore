@@ -15,16 +15,14 @@ public class NightVisionCommand extends Command {
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
-			return true;
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			if (!player.hasPermission("Command.NightVision")) {
+				return false;
+			}
+			player.addEffect(Effect.getEffect(Effect.NIGHT_VISION).setAmplifier(0).setDuration(9999999 * 20).setVisible(false));
+			player.sendMessage("§l§6• §r§fНочное зрение включено§7!");
 		}
-		Player player = (Player)sender;
-		if (!player.hasPermission("Command.NightVision")) {
-			return false;
-		}
-		player.addEffect(Effect.getEffect(Effect.NIGHT_VISION).setAmplifier(0).setDuration(9999999 * 20).setVisible(false));
-		player.sendMessage("§l§6• §r§fНочное зрение включено§7!");
 		return false;
 	}
 }

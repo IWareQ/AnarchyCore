@@ -7,27 +7,24 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class DayCommand extends Command {
-	
+
 	public DayCommand() {
-		super("day", "§l§fСменить §9Ночь §fна §eДень");
+		super("day", "§r§l§fСменить §9Ночь §fна §eДень");
 		this.setPermission("Command.Day");
 		this.commandParameters.clear();
 	}
-	
+
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		Player player = (Player)sender;
-		String playerName = player.getName();
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
-			return true;
-		}
-		if (!player.hasPermission("Command.Day")) {
-			return false;
-		}
-		FunctionsAPI.MAP.setTime(1000);
-		for (Player players : Server.getInstance().getOnlinePlayers().values()) {
-			players.sendMessage("§l§6| §r§fИгрок §3" + playerName + " §fустановил§7(§fа§7) §eДень");
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			if (!player.hasPermission("Command.Day")) {
+				return false;
+			}
+			FunctionsAPI.MAP.setTime(1000);
+			for (Player players : Server.getInstance().getOnlinePlayers().values()) {
+				players.sendMessage("§l§6• §r§fИгрок §6" + player.getName() + " §fустановил§7(§fа§7) §eДень");
+			}
 		}
 		return false;
 	}

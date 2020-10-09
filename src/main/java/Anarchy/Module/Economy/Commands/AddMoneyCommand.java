@@ -34,8 +34,8 @@ public class AddMoneyCommand extends Command {
 			return true;
 		}
 		Player target = Server.getInstance().getPlayerExact(nickname);
-		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fполучил §6" + String.format("%.1f", args[1]) + "");
-		EconomyAPI.addMoney(target, Double.parseDouble(String.format("%.1f", args[1])));
+		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fполучил §6" + String.format("%.1f", Double.parseDouble(args[0])) + "");
+		EconomyAPI.addMoney(target, Double.parseDouble(args[0]));
 		return true;
 	}
 }

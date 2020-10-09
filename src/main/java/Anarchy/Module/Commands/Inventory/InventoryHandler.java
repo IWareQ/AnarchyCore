@@ -29,41 +29,37 @@ public class InventoryHandler extends Command implements Listener {
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
-			return true;
-		}
-		Player player = (Player)sender;
-		if (!player.hasPermission("Command.Inventory")) {
-			return false;
-		}
-		if (args.length != 1) {
-			player.sendMessage("§l§6| §r§fИспользование §7- /§6inv §7(§3игрок§7)");
-			return true;
-		}
-		Player target = Server.getInstance().getPlayer(args[0]);
-		if (target == null) {
-			player.sendMessage("§l§6• §r§fИгрок §6" + target.getName() + " §fне в сети§7!");
-			return true;
-		}
-		new SimpleForm("§l§6" + target.getName() + " §7> §fВыберите Инвентарь", "§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "").addButton("§l§fИнвентарь", ImageType.PATH, "textures/ui/inventory_icon").addButton("§l§fЭндер Сундук", ImageType.PATH, "textures/ui/icon_blackfriday").addButton("§l§fХранилище Предметов", ImageType.PATH, "textures/ui/invite_hover").send(player, (targetPlayer, form, data)-> {
-			if (data == -1) return;
-			if (data == 0) {
-				CheckInventoryChest checkInventoryChest = new CheckInventoryChest("§l§6" + target.getName() + " §7- §fИнвентарь");
-				checkInventoryChest.setContents(target.getInventory().getContents());
-				FakeChestsAPI.openInventory(player, checkInventoryChest);
-				return;
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			if (!player.hasPermission("Command.Inventory")) {
+				return false;
 			}
-			if (data == 1) {
-				CheckEnderChest checkEnderChest = new CheckEnderChest("§l§6" + target.getName() + " §7- §fЭндер Сундук");
-				checkEnderChest.setContents(target.getEnderChestInventory().getContents());
-				FakeChestsAPI.openInventory(player, checkEnderChest);
-				return;
+			if (args.length != 1) {
+				player.sendMessage("§l§6| §r§fИспользование §7- /§6inv §7(§3игрок§7)");
+				return true;
 			}
-			if (data == 2) {
-				player.sendMessage("Скоро");
+			Player target = Server.getInstance().getPlayer(args[0]);
+			if (target == null) {
+				player.sendMessage("§l§6• §r§fИгрок §6" + args[0] + " §fне в сети§7!");
+				return true;
 			}
-		});
+			new SimpleForm("§l§6" + target.getName() + " §7> §fВыберите Инвентарь", "§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "").addButton("§l§fИнвентарь", ImageType.PATH, "textures/ui/inventory_icon").addButton("§l§fЭндер Сундук", ImageType.PATH, "textures/ui/icon_blackfriday").addButton("§l§fХранилище Предметов", ImageType.PATH, "textures/ui/invite_hover").send(player, (targetPlayer, form, data)-> {
+				if (data == -1) return;
+				if (data == 0) {
+					CheckInventoryChest checkInventoryChest = new CheckInventoryChest("§l§6" + target.getName() + " §7- §fИнвентарь");
+					checkInventoryChest.setContents(target.getInventory().getContents());
+					FakeChestsAPI.openInventory(player, checkInventoryChest);
+				}
+				if (data == 1) {
+					CheckEnderChest checkEnderChest = new CheckEnderChest("§l§6" + target.getName() + " §7- §fЭндер Сундук");
+					checkEnderChest.setContents(target.getEnderChestInventory().getContents());
+					FakeChestsAPI.openInventory(player, checkEnderChest);
+				}
+				if (data == 2) {
+					player.sendMessage("Скоро");
+				}
+			});
+		}
 		return false;
 	}
 
@@ -76,7 +72,6 @@ public class InventoryHandler extends Command implements Listener {
 					Player player = event.getTransaction().getSource();
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					event.setCancelled(true);
-					return;
 				}
 			}
 		}

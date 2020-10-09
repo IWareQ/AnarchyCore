@@ -8,23 +8,21 @@ import cn.nukkit.command.CommandSender;
 public class CraftingTableCommand extends Command {
 
 	public CraftingTableCommand() {
-		super("CraftingTable", "§r§l§fОткрыть верстак");
+		super("CraftingTable", "§r§l§fОткрыть верстак", "", new String[] {"craft"});
 		this.setPermission("Command.CraftingTable");
 		this.commandParameters.clear();
 	}
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
-			return true;
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			if (!player.hasPermission("Command.CraftingTable")) {
+				return false;
+			}
+			CraftingTable craftingTable = new CraftingTable("Верстак");
+			FakeChestsAPI.openInventory(player, craftingTable);
 		}
-		Player player = (Player)sender;
-		if (!player.hasPermission("Command.CraftingTable")) {
-			return false;
-		}
-		CraftingTable craftingTable = new CraftingTable("ВеРсТаК");
-		FakeChestsAPI.openInventory(player, craftingTable);
 		return false;
 	}
 }

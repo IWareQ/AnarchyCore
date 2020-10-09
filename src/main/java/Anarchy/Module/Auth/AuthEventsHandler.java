@@ -1,6 +1,7 @@
 package Anarchy.Module.Auth;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -20,6 +21,7 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerPreLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.level.Position;
@@ -33,6 +35,8 @@ public class AuthEventsHandler implements Listener {
 	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
 	File dataFileKills = new File(AnarchyMain.datapath + "/Kills.yml");
 	Config configKills = new Config(dataFileKills, Config.YAML);
+	File dataFile = new File(AnarchyMain.datapath + "/BanList.yml");
+	Config BanList = new Config(dataFile, Config.YAML);
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onDataPacketReceive(DataPacketReceiveEvent event) {
@@ -49,23 +53,43 @@ public class AuthEventsHandler implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onPlayerPreLogin(PlayerPreLoginEvent event) {
+		Player player = event.getPlayer();
+		String device = player.getLoginChainData().getDeviceModel();
+		String brand = device.split("\\s+")[0];
+		if (!brand.equals(brand.toUpperCase())) {
+			player.close("", "§l§fНа нашем сервере запрещены §6Читы§7!\n§fВаша попытка входа с читами была отправленна Администраторам§7!");
+			AnarchyMain.sendMessageToChat("Игрок " + player.getName() + " пытался зайти с ToolBox!", 2000000004);
+		}
+		if (BanList.exists(player.getName())) {
+			for (Map.Entry<String, Object> entry : BanList.getAll().entrySet()) {
+				ArrayList<Object> banData = (ArrayList<Object>)entry.getValue();
+				player.close("", "§l§fУвы§7, §fно Вас §6временно §fзаблокировали§7!\n§fВас заблокировал§7: §6" + banData.get(0) + "\n§fПричина блокировки§7: §6" + banData.get(1) + "\n§fРазбан через§7: §6" + ((int)banData.get(3) / 86400) + " §fд§7. §6" + ((int)banData.get(3) / 3600 % 24) + " §fч§7. §6" + ((int)banData.get(3) / 60 % 60) + " §fмин§7.");
+			}
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		String playerName = player.getName();
 		String upperCase = playerName.toUpperCase();
 		String ip = player.getAddress();
 		String date = StringUtils.getDate();
-		Integer accountID = SQLiteUtils.selectInteger("Users.db", "SELECT `Account_ID` FROM `USERS` WHERE UPPER(`Username`) = \'" + upperCase + "\';");
+		Integer accountID = SQLiteUtils.selectInteger("Users.db", "SELECT `Account_ID` FROM `USERS` WHERE UPPER(`Username`) = '" + upperCase + "';");
 		if (accountID == -1) {
-			SQLiteUtils.query("Users.db", "INSERT INTO `USERS` (`Username`) VALUES (\'" + playerName + "\');");
-			SQLiteUtils.query("Auth.db", "INSERT INTO `AUTH` (`Username`, `IP_Reg`, `Date_Reg`) VALUES (\'" + playerName + "\', \'" + ip + "\', \'" + date + "\');");
+			SQLiteUtils.query("Users.db", "INSERT INTO `USERS` (`Username`) VALUES ('" + playerName + "');");
+			SQLiteUtils.query("Auth.db", "INSERT INTO `AUTH` (`Username`, `IP_Reg`, `Date_Reg`) VALUES ('" + playerName + "', '" + ip + "', '" + date + "');");
 			Server.getInstance().getLogger().info("§l§7(§3Система§7) §fИгрок §6" + playerName + " §fне зарегистрирован§7! §fРегистрируем§7!");
 		}
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-6.50, 153, 62.50), "§l§6Прыгай в портал§7!", "§l§fПросто прыгай и начинай выживать"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(13.50, 150, 85.50), "§l§6Маленький приват", "\n§l§f3 §7× §f3"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(5.50, 150, 93.50), "§l§6Средний приват", "\n§l§f6 §7× §f6"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(11.50, 150, 91.50), "§l§6Большой приват", "\n§l§f10 §7× §f10"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 150, 88.50), "§l§6Как приватить§7?", "\n§l§fЧтобы запривать регион§7,\n§l§fпросто установи один из блоков\n§l§fкоторые стоят рядом§7. §fКаждый блок имеет\n§l§fограниченный радиус привата§7,\n§l§fкоторый создается вокруг блока§7!"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-6.50, 153, 62.50), "§l§6Прыгай в портал§7!",
+									   "§l§fПросто прыгай и начинай выживать"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(13.50, 150, 85.50), "§l§6Маленький приват", "§l§f3 §7× §f3"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(5.50, 150, 93.50), "§l§6Средний приват", "§l§f6 §7× §f6"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(11.50, 150, 91.50), "§l§6Большой приват", "§l§f10 §7× §f10"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 150, 88.50), "§l§6Как приватить§7?",
+									   "§l§fЧтобы запривать регион§7,\n§l§fпросто установи один из блоков\n§l§fкоторые стоят рядом§7. §fКаждый блок имеет\n§l§fограниченный радиус привата§7,\n§l§fкоторый создается вокруг блока§7!"),
+									   player);
 		/*Map<String, Integer> counterKills = calculateScore(configKills);
 		Map<String, Integer> counterDeaths = calculateScore(configDeaths);
 		int placeKills = 1;
@@ -99,7 +123,7 @@ public class AuthEventsHandler implements Listener {
 		PermissionsAPI.updateTag(player);
 		PermissionsAPI.updatePermissions(player);
 		player.setCheckMovement(false);
-		SQLiteUtils.query("Auth.db", "UPDATE `AUTH` SET `IP_Last` = \'" + ip + "\', `Date_Last` = \'" + date + "\' WHERE UPPER(`Username`) = \'" + upperCase + "\';");
+		SQLiteUtils.query("Auth.db", "UPDATE `AUTH` SET `IP_Last` = '" + ip + "', `Date_Last` = '" + date + "' WHERE UPPER(`Username`) = '" + upperCase + "';");
 		event.setJoinMessage("");
 	}
 

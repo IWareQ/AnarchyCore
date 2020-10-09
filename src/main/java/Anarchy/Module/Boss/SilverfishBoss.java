@@ -48,7 +48,7 @@ public class SilverfishBoss extends WalkingMonster implements EntityArthropod {
 	@Override()
 	public void initEntity() {
 		super.initEntity();
-		this.setMaxHealth(50);
+		this.setMaxHealth(500);
 		this.setDamage(new float[] {5, 5, 5, 5});
 	}
 

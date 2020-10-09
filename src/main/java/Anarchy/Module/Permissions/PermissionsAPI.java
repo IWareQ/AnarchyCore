@@ -195,7 +195,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Repair", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true); 
+			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("bansystem.command.checkmute", true);
 			permissionAllows.put("bansystem.command.mute", true);
@@ -215,6 +215,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.CraftingTable", true);
 			permissionAllows.put("Command.Spectate", true);
 			permissionAllows.put("Command.Inventory", true);
+			permissionAllows.put("AdminChat", true);
 			permissionAllows.put("bansystem.command.checkmute", true);
 			permissionAllows.put("bansystem.command.mute", true);
 			permissionAllows.put("bansystem.command.mutelog", true);

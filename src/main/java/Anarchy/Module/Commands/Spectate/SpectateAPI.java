@@ -32,6 +32,7 @@ public class SpectateAPI {
 			player.getInventory().clearAll();
 			player.getInventory().setHeldItemIndex(0);
 			player.getInventory().setItem(5, Item.get(Item.STICK).setCustomName("§r§l§fПроверка регионов").setLore("§r§l§6• §fВозьмите в руку§7, §fчтобы проверить\n§fнет ли в блези регионов§7"));
+			player.getInventory().setItem(6, Item.get(Item.CLOCK).setCustomName("§r§l§fАдмин§7-§fпанель").setLore("§r§l§6• §fПока что это не работающая хуйня §7:§fD"));
 			player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§r§l§fЗавершить Наблюдение"));
 			player.teleport(target);
 			player.sendMessage(AnarchyMain.PREFIX + "§fВы начали наблюдать за Игроком §6" + target.getName() + "\n§l§6• §r§fДля окончания наблюдения используйте §6Редстоун§7!");
@@ -52,7 +53,7 @@ public class SpectateAPI {
 			gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
 			gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
 			player.dataPacket(gameRulesChanged);
-			player.sendMessage("§l§a| §r§fВы закончили наблюдение за Игроком §6" + spectatePlayer.getSpectateName());
+			player.sendMessage(AnarchyMain.PREFIX + "§fВы закончили наблюдение за Игроком §6" + spectatePlayer.getSpectateName());
 			SPECTATE_PLAYERS.remove(player.getName());
 		}
 	}

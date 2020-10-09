@@ -38,35 +38,37 @@ public class StorageHandler extends Command implements Listener {
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (args.length == 0) {
-			Player player = (Player)sender;
-			File dataFile = new File(AnarchyMain.datapath + "/StorageItems/" + player.getName().toLowerCase() + ".yml");
-			if (!dataFile.exists()) {
-				player.sendMessage("§l§c| §r§fВ хранилище §6пусто §7:§fc§7!");
-				return false;
-			}
-			StorageChest storageChest = new StorageChest("§l§fХранилище Предметов", dataFile);
-			Config config = new Config(dataFile, Config.YAML);
-			for (Map.Entry<String, Object> entry : config.getAll().entrySet()) {
-				ArrayList<Object> itemData = (ArrayList<Object>)entry.getValue();
-				Item item = Item.get((int)itemData.get(0), (int)itemData.get(1), (int)itemData.get(2));
-				CompoundTag compoundTag = null;
-				if (itemData.size() > 3) {
-					try {
-						compoundTag = NBTIO.read((byte[])itemData.get(3), ByteOrder.LITTLE_ENDIAN);
-					} catch (IOException e) {
-						Server.getInstance().getLogger().alert("StorageHandler: " + e);
-						AnarchyMain.sendMessageToChat("StorageHandler.java\nСмотрите Server.log", 2000000004);
+		if (sender instanceof Player) {
+			if (args.length == 0) {
+				Player player = (Player)sender;
+				File dataFile = new File(AnarchyMain.datapath + "/StorageItems/" + player.getName().toLowerCase() + ".yml");
+				if (!dataFile.exists()) {
+					player.sendMessage("§l§c| §r§fВ хранилище §6пусто §7:§fc§7!");
+					return false;
+				}
+				StorageChest storageChest = new StorageChest("§l§fХранилище Предметов", dataFile);
+				Config config = new Config(dataFile, Config.YAML);
+				for (Map.Entry<String, Object> entry : config.getAll().entrySet()) {
+					ArrayList<Object> itemData = (ArrayList<Object>)entry.getValue();
+					Item item = Item.get((int)itemData.get(0), (int)itemData.get(1), (int)itemData.get(2));
+					CompoundTag compoundTag = null;
+					if (itemData.size() > 3) {
+						try {
+							compoundTag = NBTIO.read((byte[])itemData.get(3), ByteOrder.LITTLE_ENDIAN);
+						} catch (IOException e) {
+							Server.getInstance().getLogger().alert("StorageHandler: " + e);
+							AnarchyMain.sendMessageToChat("StorageHandler.java\nСмотрите Server.log", 2000000004);
+						}
 					}
+					if (compoundTag == null) {
+						compoundTag = new CompoundTag();
+					}
+					compoundTag.putString("UUID", entry.getKey());
+					item.setNamedTag(compoundTag);
+					storageChest.addItem(item);
 				}
-				if (compoundTag == null) {
-					compoundTag = new CompoundTag();
-				}
-				compoundTag.putString("UUID", entry.getKey());
-				item.setNamedTag(compoundTag);
-				storageChest.addItem(item);
+				FakeChestsAPI.openInventory(player, storageChest);
 			}
-			FakeChestsAPI.openInventory(player, storageChest);
 		} else if (args.length >= 2 && !(sender instanceof Player)) {
 			String[] split = args[0].split(":");
 			String playerName = StringUtils.implode(args, 1).toLowerCase();
@@ -74,8 +76,7 @@ public class StorageHandler extends Command implements Listener {
 			try {
 				sender.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + playerName + " §fполучил §6" + item.getName() + " §fв колличестве §6" + split[2] + " §fшт§7!");
 				Config config = new Config(AnarchyMain.datapath + "/StorageItems/" + playerName + ".yml", Config.YAML);
-				config.set(UUID.randomUUID().toString(), item.hasCompoundTag() ? new Object[] {Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} :
-						   new Object[] {Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2])});
+				config.set(UUID.randomUUID().toString(), item.hasCompoundTag() ? new Object[] {Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[] {Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2])});
 				config.save();
 			} catch (IOException e) {
 				Server.getInstance().getLogger().alert("StorageHandler: " + e);

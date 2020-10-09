@@ -35,7 +35,7 @@ public class FunctionsAPI {
 		int x = RandomUtils.rand(RANDOM_TP[0], RANDOM_TP[1]);
 		int z = RandomUtils.rand(RANDOM_TP[2], RANDOM_TP[3]);
 		pos.setComponents(x, 67, z);
-		for (int i = 50; i < 120; i++) {
+		for (int i = 67; i < 120; i++) {
 			pos.setComponents(x, i, z);
 			Block ground = pos.getLevel().getBlock(pos);
 			Block body = pos.getLevel().getBlock(pos.setComponents(x, i + 1, z));

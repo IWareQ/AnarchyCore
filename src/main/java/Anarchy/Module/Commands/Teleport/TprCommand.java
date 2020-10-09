@@ -15,12 +15,14 @@ public class TprCommand extends Command {
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		Player player = (Player)sender;
-		if (player.getLevel().equals(FunctionsAPI.MAP) || player.getLevel().equals(FunctionsAPI.SPAWN)) {
-			player.teleport(FunctionsAPI.randomPos(new Position(0, 0, 0, FunctionsAPI.MAP)));
-			player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.");
-		} else {
-			player.sendMessage(TpaCommand.PREFIX + "§fС этого измерения запрещено телепортироваться§7!");
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			if (player.getLevel().equals(FunctionsAPI.MAP) || player.getLevel().equals(FunctionsAPI.SPAWN)) {
+				player.teleport(FunctionsAPI.randomPos(new Position(0, 0, 0, FunctionsAPI.MAP)));
+				player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.");
+			} else {
+				player.sendMessage(TpaCommand.PREFIX + "§fС этого измерения запрещено телепортироваться§7!");
+			}
 		}
 		return false;
 	}

@@ -11,14 +11,14 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 
 public class SetMoneyCommand extends Command {
-	
+
 	public SetMoneyCommand() {
 		super("setmoney", "§l§fУстановить монет");
 		this.setPermission("Command.SetMoney");
 		this.commandParameters.clear();
-		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("money", CommandParamType.INT, false), new CommandParameter("player", CommandParamType.TARGET, false)});
+		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("money", CommandParamType.INT, false), new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
-	
+
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (!sender.hasPermission("Command.SetMoney")) {
@@ -34,8 +34,8 @@ public class SetMoneyCommand extends Command {
 			return true;
 		}
 		Player target = Server.getInstance().getPlayerExact(nickname);
-		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + nickname + " §fтеперь имеет §6" + String.format("%.1f", args[1]) + "");
-		EconomyAPI.setMoney(target, Double.parseDouble(String.format("%.1f", args[1])));
-		return true;
+		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + nickname + " §fтеперь имеет §6" + String.format("%.1f", Double.parseDouble(args[0])) + "");
+		EconomyAPI.setMoney(target, Double.parseDouble(args[0]));
+		return false;
 	}
 }

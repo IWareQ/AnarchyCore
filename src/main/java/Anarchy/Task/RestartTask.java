@@ -27,7 +27,7 @@ public class RestartTask extends Task {
 				return;
 			}
 			for (Player player : Server.getInstance().getOnlinePlayers().values()) {
-				player.sendTitle("§l fПерезагрузка", "§f§lСервер перезагрузится через §6" + MinuteTask.SECONDS_RESTART + " §f" + getSecond(MinuteTask.SECONDS_RESTART), 0, 20, 0);
+				player.sendTitle("§l§fПерезагрузка", "§f§lСервер перезагрузится через §6" + MinuteTask.SECONDS_RESTART + " §f" + getSecond(MinuteTask.SECONDS_RESTART), 0, 20, 0);
 				player.level.addSound(player, Sound.RANDOM_CLICK, 1, 1, player);
 			}
 		}

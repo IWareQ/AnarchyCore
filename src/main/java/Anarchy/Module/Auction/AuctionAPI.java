@@ -119,7 +119,7 @@ public class AuctionAPI extends PluginBase {
 			auctionChest = AUCTION_CHEST.get(player);
 			auctionChest.clearAll();
 		}
-		auctionChest.setTitle("§l§fТорговая Площадка §7(§3" + AUCTION.size() + "§7)");
+		auctionChest.setTitle("§l§fТорговая Площадка §7(§6" + AUCTION.size() + "§7)");
 		int tradeSize = AUCTION.size();
 		if (tradeSize == 0) {
 			player.sendMessage(AuctionAPI.PREFIX + "§fАукцион пуст§7!");
@@ -139,17 +139,25 @@ public class AuctionAPI extends PluginBase {
 			CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 			compoundTag.putString("UUID", tradeItem.UUID);
 			item.setNamedTag(compoundTag);
-			item.setCustomName("§r§fПродавец §7- §6" + tradeItem.sellerName + "\n§r§fСтоимость §7- §6" + tradeItem.itemPrice + "\n§r§fДо окончания §7- §6" + (tradeItem.getTime() / 3600) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание §7- §6" + tradeItem.aboutMessage) + "\n\n§r§6• §fНажмите§7, §fчтобы купить");
+			item.setCustomName("§r§fПродавец§7: §6" + tradeItem.sellerName + "\n§r§fСтоимость§7: §6" + tradeItem.itemPrice + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 3600) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание§7: §6" + tradeItem.aboutMessage) + "\n\n§r§l§6• §fНажмите§7, §fчтобы купить");
 			auctionChest.addItem(item);
 		}
 		if (playerPage >= 0) {
 			auctionChest.setItem(49, Item.get(Item.EMERALD).setCustomName("§r§6Обновление страницы").setLore("§r§6• §fНажмите§7, §fчтобы обновить страницу"));
 			auctionChest.setItem(52, Item.get(Item.PAPER).setCustomName("§r§6Листнуть назад").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
 			auctionChest.setItem(53, Item.get(Item.PAPER).setCustomName("§r§6Листнуть вперед").setLore("§r§6• §fНажмите§7, §fчтобы перейти"));
-			auctionChest.setItem(50, Item.get(Item.SIGN).setCustomName("§r§6Справка").setLore("§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §6Монет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§6/auc §7(§3цена§7)\n§r§fили\n§r§6/auc §7(§3цена§7) (§3описание§7)"));
+			auctionChest.setItem(50, Item.get(Item.SIGN).setCustomName("§r§6Справка").setLore("§r§fЭто торговая площадка§7, §fкоторая создана\n§r§fдля покупки и продажи предметов§7.\n\n§r§fТорговая площадка также является\n§r§fотличным способом заработать §6Монет§7, §fпродавая\n§r§fфермерские товары§7, §fкоторые могут\n§r§fзаинтересовать других Игроков§7.\n\n§r§fЧтобы выставить предмет на продажу§7,\n§r§fвозьмите его в руку и введите\n§r§6/auc §7(§6цена§7)\n§r§fили\n§r§6/auc §7(§6цена§7) (§6описание§7)"));
 			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§6Ваши Предметы на Продаже").setLore("§r§6• §fНажмите§7, §fчтобы открыть§7!"));
 			auctionChest.setItem(47, Item.get(Item.MINECART_WITH_CHEST).setCustomName("§r§6Хранилище").setLore("§r§6• §fНажмите§7, §fчтобы открыть§7!"));
-			// 37 45
+			auctionChest.setItem(36, Item.get(Item.STAINED_GLASS_PANE, 8).setCustomName(""));
+			auctionChest.setItem(37, Item.get(Item.STAINED_GLASS_PANE, 8).setCustomName(""));
+			auctionChest.setItem(38, Item.get(Item.STAINED_GLASS_PANE, 8).setCustomName(""));
+			auctionChest.setItem(39, Item.get(Item.STAINED_GLASS_PANE, 8).setCustomName(""));
+			auctionChest.setItem(40, Item.get(Item.STAINED_GLASS_PANE, 8).setCustomName(""));
+			auctionChest.setItem(41, Item.get(Item.STAINED_GLASS_PANE, 8).setCustomName(""));
+			auctionChest.setItem(42, Item.get(Item.STAINED_GLASS_PANE, 8).setCustomName(""));
+			auctionChest.setItem(43, Item.get(Item.STAINED_GLASS_PANE, 8).setCustomName(""));
+			auctionChest.setItem(44, Item.get(Item.STAINED_GLASS_PANE, 8).setCustomName(""));
 		}
 		if (firstTime) {
 			FakeChestsAPI.openInventory(player, auctionChest);

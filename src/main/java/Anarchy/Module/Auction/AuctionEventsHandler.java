@@ -41,6 +41,11 @@ public class AuctionEventsHandler implements Listener {
 					AuctionChest auctionChest = (AuctionChest)slotChange.getInventory();
 					Item sourceItem = action.getSourceItem();
 					switch (sourceItem.getName()) {
+					case "": {
+						player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
+					}
+					break;
+
 					case "§r§6Листнуть вперед": {
 						int playerPage = AuctionAPI.AUCTION_PAGE.get(player);
 						int tradeSize = AuctionAPI.AUCTION.size();
@@ -139,7 +144,7 @@ public class AuctionEventsHandler implements Listener {
 							TradeItem tradeItem = AuctionAPI.AUCTION.get(compoundTag.getString("UUID"));
 							if (tradeItem != null) {
 								if (tradeItem.sellerName.equals(player.getName())) {
-									player.sendMessage(AuctionAPI.PREFIX + "§fВы пытаетесь купить свой товар§7!\n§l§6| §r§fДля снятия используйте вкладку §7(§3Ваши Предметы на Продаже§7)");
+									player.sendMessage(AuctionAPI.PREFIX + "§fВы пытаетесь купить свой товар§7!\n§l§6• §r§fДля снятия используйте вкладку §7(§6Ваши Предметы на Продаже§7)");
 									player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 									return;
 								}
@@ -208,7 +213,7 @@ public class AuctionEventsHandler implements Listener {
 							compoundTag.remove("UUID");
 							playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(compoundTag));
 							player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
-							player.sendMessage(AuctionAPI.PREFIX + "§r§fПредмет с Хранилища успешно взят§7!");
+							player.sendMessage(AuctionAPI.PREFIX + "§fПредмет с Хранилища успешно взят§7!");
 						}
 					} else {
 						FakeChestsAPI.closeInventory(player, takeChest);

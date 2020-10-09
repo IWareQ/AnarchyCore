@@ -15,8 +15,10 @@ import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Module.Auction.AuctionEventsHandler;
 import Anarchy.Module.Auction.Commands.AuctionCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
+import Anarchy.Module.Boss.EvokerBoss;
 import Anarchy.Module.Boss.RavagerBoss;
 import Anarchy.Module.Boss.SilverfishBoss;
+import Anarchy.Module.Boss.SlimeBoss;
 import Anarchy.Module.Boss.WitchBoss;
 import Anarchy.Module.CombatLogger.CombatLoggerEventsHandler;
 import Anarchy.Module.Commands.ACommand;
@@ -149,6 +151,8 @@ public class AnarchyMain extends PluginBase {
 		Entity.registerEntity(SilverfishBoss.class.getSimpleName(), SilverfishBoss.class);
 		Entity.registerEntity(RavagerBoss.class.getSimpleName(), RavagerBoss.class);
 		Entity.registerEntity(WitchBoss.class .getSimpleName(), WitchBoss.class);
+		Entity.registerEntity(SlimeBoss.class .getSimpleName(), SlimeBoss.class);
+		Entity.registerEntity(EvokerBoss.class .getSimpleName(), EvokerBoss.class);
 	}
 
 	private void registerCommands() {

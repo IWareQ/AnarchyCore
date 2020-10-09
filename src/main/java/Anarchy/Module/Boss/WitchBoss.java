@@ -47,7 +47,7 @@ public class WitchBoss extends WalkingMonster {
 	@Override
 	protected void initEntity() {
 		super.initEntity();
-		this.setMaxHealth(26);
+		this.setMaxHealth(1000);
 	}
 
 	@Override

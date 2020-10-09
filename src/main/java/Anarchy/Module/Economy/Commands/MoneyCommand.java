@@ -6,20 +6,18 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class MoneyCommand extends Command {
-	
+
 	public MoneyCommand() {
-		super("money", "§l§fИгровой баланс", "", new String[]{"mymoney"});
+		super("money", "§l§fИгровой баланс", "", new String[] {"mymoney"});
 		this.commandParameters.clear();
 	}
-	
+
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("§l§7(§3Система§7) §r§fЭту команду можно использовать только в §3Игре");
-			return true;
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			player.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(player)) + "");
 		}
-		Player player = (Player)sender;
-		player.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(player)) + "");
-		return true;
+		return false;
 	}
 }
