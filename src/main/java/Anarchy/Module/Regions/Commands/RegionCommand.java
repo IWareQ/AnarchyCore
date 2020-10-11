@@ -44,25 +44,25 @@ public class RegionCommand extends Command {
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
-				Player addPlayer = Server.getInstance().getPlayer(args[1]);
-				if (addPlayer == null) {
+				Player target = Server.getInstance().getPlayer(args[1]);
+				if (target == null) {
 					player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + args[1] + " §fне в сети§7!");
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
-				if (player == addPlayer) {
+				if (player == target) {
 					player.sendMessage(RegionsAPI.PREFIX + "§fНельзя добавить себя в свой регион§7!");
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
 				if (SQLiteUtils.selectString("Regions.db", "SELECT `Username` FROM `MEMBERS` WHERE UPPER(`Username`) = '" + player.getName().toUpperCase() + "' AND `Region_ID` = '" + regionID + "';") != null) {
-					player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + addPlayer.getName() + " §fуже состоит в Вашем регионе§7!");
+					player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fуже состоит в Вашем регионе§7!");
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
-				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §3" + addPlayer.getName() + " §fдобавлен в Ваш регион§7!");
-				addPlayer.sendMessage(RegionsAPI.PREFIX + "§fИгрок §3" + player.getName() + " §fдобавил Вас в свой регион§7!");
-				SQLiteUtils.query("Regions.db", "INSERT INTO `MEMBERS` (`Region_ID`, `Username`) VALUES ('" + regionID + "', '" + addPlayer.getName() + "');");
+				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fбыл успешно добавлен в Ваш регион§7!");
+				target.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fдобавил Вас в свой регион§7!");
+				SQLiteUtils.query("Regions.db", "INSERT INTO `MEMBERS` (`Region_ID`, `Username`) VALUES ('" + regionID + "', '" + target.getName() + "');");
 			}
 			break;
 
@@ -78,18 +78,18 @@ public class RegionCommand extends Command {
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
-				String delName = StringUtils.implode(args, 1);
-				if (!RegionsAPI.isRegionMember(delName, regionID)) {
-					player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + delName + " §fне состоит в Вашем регионе§7!");
+				String targetName = StringUtils.implode(args, 1);
+				if (!RegionsAPI.isRegionMember(targetName, regionID)) {
+					player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + targetName + " §fне состоит в Вашем регионе§7!");
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
-				Player delPlayer = Server.getInstance().getPlayerExact(delName);
-				if (delPlayer != null) {
-					delPlayer.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fудалил Вас из своего региона§7!");
+				Player target = Server.getInstance().getPlayerExact(targetName);
+				if (target != null) {
+					target.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fудалил Вас из своего региона§7!");
 				}
-				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + delName + " §fудален из региона§7! (" + StringUtils.getOnlineString(delName) + "§7)");
-				SQLiteUtils.query("Regions.db", "DELETE FROM `MEMBERS` WHERE UPPER(`Username`) = '" + delName.toUpperCase() + "' AND `Region_ID` = '" + regionID + "';");
+				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + targetName + " §fудален из региона§7! (" + StringUtils.getOnlineString(targetName) + "§7)");
+				SQLiteUtils.query("Regions.db", "DELETE FROM `MEMBERS` WHERE UPPER(`Username`) = '" + targetName.toUpperCase() + "' AND `Region_ID` = '" + regionID + "';");
 			}
 			break;
 

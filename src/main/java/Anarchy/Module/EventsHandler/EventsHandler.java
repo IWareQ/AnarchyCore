@@ -239,16 +239,6 @@ public class EventsHandler implements Listener {
 		String displayName = PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + " §f" + player.getName();
 		if (String.valueOf(playerMessage.charAt(0)).equals("!")) {
 			event.setFormat("§aⒼ " + displayName + " §8» §7" + playerMessage.substring(1).replaceAll("§", ""));
-		} else if (String.valueOf(playerMessage.charAt(0)).equals("*")) {
-			Set<CommandSender> players = new HashSet<>();
-			for (Player playerChat : Server.getInstance().getOnlinePlayers().values()) {
-				if (playerChat.hasPermission("AdminChat")) {
-					players.add(playerChat);
-				}
-			}
-			players.add(new ConsoleCommandSender());
-			event.setFormat("§cA " + displayName + " §8» §f" + playerMessage.replaceAll("§", ""));
-			event.setRecipients(players);
 		} else {
 			Set<CommandSender> players = new HashSet<>();
 			for (Player playerChat : Server.getInstance().getOnlinePlayers().values()) {

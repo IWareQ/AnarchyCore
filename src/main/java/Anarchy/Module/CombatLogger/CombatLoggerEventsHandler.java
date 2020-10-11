@@ -2,6 +2,7 @@ package Anarchy.Module.CombatLogger;
 
 import Anarchy.Manager.Functions.FunctionsAPI;
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
@@ -23,6 +24,15 @@ public class CombatLoggerEventsHandler implements Listener {
 				((Player)damager).sendTip("§l§f" + String.format("%.0f", victim.getHealth()) + " §c❤");
 				for (Player players : new Player[] {(Player)victim, (Player)damager}) {
 					CombatLoggerAPI.addCombat(players);
+				}
+			}
+			if (damager instanceof Player && (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+				if (damager.distance(victim) > 4) {
+					for (Player player : Server.getInstance().getOnlinePlayers().values()) {
+						if (player.hasPermission("Command.A")) {
+							player.sendMessage("§fНовая жалоба§7! (§6AntiCheat§7)\n§fНарушитель§7: §6" + damager.getName() + "\n§fПричина§7: §6Хитбоксы");
+						}
+					}
 				}
 			}
 		}

@@ -51,8 +51,8 @@ public class RegionsEventsHandler implements Listener {
 				if (RegionsAPI.isRegionOwner(player.getName(), regionID)) {
 					player.sendMessage(RegionsAPI.PREFIX + "§fПриват §3успешно §fудален§7!");
 					player.getLevel().addSound(player, Sound.MOB_ENDERDRAGON_DEATH, 1, 1, player);
-					SQLiteUtils.query("Regions.db", "DELETE FROM `AREAS` WHERE `Region_ID` = '" + regionID + "';");
-					SQLiteUtils.query("Regions.db", "DELETE FROM `MEMBERS` WHERE `Region_ID` = '" + regionID + "';");
+					SQLiteUtils.query("Regions.db", "DELETE FROM AREAS WHERE Region_ID = '" + regionID + "';");
+					SQLiteUtils.query("Regions.db", "DELETE FROM MEMBERS WHERE Region_ID = '" + regionID + "';");
 				} else {
 					player.sendMessage(RegionsAPI.PREFIX + "§fВы не можете удалить чужой регион§7!");
 					event.setCancelled();

@@ -73,7 +73,7 @@ public class PermissionsAPI {
 		if (Server.getInstance().getPlayerExact(playerName) != null) {
 			return PlayerSessionManager.getPlayerSession(playerName).getInteger("Permission");
 		} else {
-			return SQLiteUtils.selectInteger("Users.db", "SELECT Permission FROM USERS WHERE UPPER (`Username`) = '" + playerName.toUpperCase() + "';");
+			return SQLiteUtils.selectInteger("Users.db", "SELECT Permission FROM USERS WHERE UPPER (Username) = '" + playerName.toUpperCase() + "';");
 		}
 	}
 
@@ -82,7 +82,7 @@ public class PermissionsAPI {
 			PlayerSessionManager.getPlayerSession(playerName).setInteger("Permission", groupID);
 			updatePermissions(Server.getInstance().getPlayerExact(playerName));
 		} else {
-			SQLiteUtils.query("Users.db", "UPDATE USERS SET Permission = '" + groupID + "' WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "';");
+			SQLiteUtils.query("Users.db", "UPDATE USERS SET Permission = '" + groupID + "' WHERE UPPER(Username) = '" + playerName.toUpperCase() + "';");
 		}
 	}
 

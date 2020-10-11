@@ -31,9 +31,9 @@ public class TpaCommand extends Command {
 				return true;
 			}
 			Long cooldownTime = COOLDOWN.get(player);
-			Long nowTime = System.currentTimeMillis() / 1000L;
-			if (cooldownTime != null && cooldownTime > nowTime) {
-				player.sendMessage("§l§7(§3Задержка§7) §r§fСледующее использование будет доступно через §6" + (cooldownTime - nowTime) + " §fсек§7.");
+			long time = System.currentTimeMillis() / 1000;
+			if (cooldownTime != null && cooldownTime > time) {
+				player.sendMessage("§l§7(§3Задержка§7) §r§fСледующее использование будет доступно через §6" + (cooldownTime - time) + " §fсек§7.");
 				return false;
 			}
 			Player target = Server.getInstance().getPlayer(args[0]);
@@ -45,8 +45,8 @@ public class TpaCommand extends Command {
 			target.sendMessage(PREFIX + "§fИгрок §6" + player.getName() + " §fхочет телепортироваться к Вам§7!");
 			target.sendMessage("§l§a| §r§7/§atpc §7- §fпринять запрос");
 			target.sendMessage("§l§c| §r§7/§ctpd §7- §fотклонить запрос");
-			TPA_REQUEST.put(target.getName(), new TpaPlayer(player, target, nowTime + 30));
-			COOLDOWN.put(player, nowTime + 10);
+			TPA_REQUEST.put(target.getName(), new TpaPlayer(player, target, time + 30));
+			COOLDOWN.put(player, time + 10);
 		}
 		return false;
 	}

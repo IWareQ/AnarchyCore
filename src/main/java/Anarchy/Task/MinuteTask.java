@@ -21,7 +21,7 @@ public class MinuteTask extends Task {
 	public static int SECONDS_RESTART = 60;
 
 	@Override()
-	public void onRun(int i) {
+	public void onRun(int currentTick) {
 		AuctionAPI.updateAuction();
 		if (TIMER_RESTART == 10) {
 			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §610 §fминут!");
@@ -39,7 +39,7 @@ public class MinuteTask extends Task {
 			TIMER_BOSS = 30;
 			Random rand = new Random();
 			List<String> givenList = Arrays.asList("SilverfishBoss", "WitchBoss", "SlimeBoss", "EvokerBoss", "RavagerBoss");
-			for (int q = 0; q < 1; q++) {
+			for (int i = 0; i < 1; i++) {
 				int randomIndex = rand.nextInt(givenList.size());
 				String randomElement = givenList.get(randomIndex);
 				if (randomElement.equals("SilverfishBoss")) {

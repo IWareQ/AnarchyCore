@@ -21,7 +21,7 @@ public class GroupCommand extends Command {
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (sender instanceof Player) {
+		if (!(sender instanceof Player)) {
 			if (!sender.hasPermission("Command.Group")) {
 				return false;
 			}

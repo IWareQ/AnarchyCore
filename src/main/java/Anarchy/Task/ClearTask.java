@@ -13,7 +13,7 @@ public class ClearTask extends Task {
 	public static int TIMER_CLEAR = 600;
 	
 	@Override()
-	public void onRun(int i) {
+	public void onRun(int currentTick) {
 		if (TIMER_CLEAR == 300) {
 			Server.getInstance().broadcastMessage("§l§7(§3Очистка§7) §r§fОчистка произойдет через §65 §fминут§7!");
 		} else if (TIMER_CLEAR == 60) {
