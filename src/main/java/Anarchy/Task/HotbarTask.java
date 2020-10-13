@@ -29,15 +29,15 @@ public class HotbarTask extends Task {
 		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player);
 		Scoreboard scoreboard = ScoreboardAPI.createScoreboard();
 		ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "§3DEATH §fMC");
-		scoreboardDisplay.addLine("§fНик§7: §6" + player.getName(), 0);
-		scoreboardDisplay.addLine("§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")), 1);
-		scoreboardDisplay.addLine("      ", 2);
-		scoreboardDisplay.addLine("§fБаланс§7: §6" + String.format("%.1f", playerSession.getDouble("Money")), 3);
-		scoreboardDisplay.addLine("§fПинг§7: §6" + player.getPing(), 4);
-		scoreboardDisplay.addLine("      ", 5);
-		scoreboardDisplay.addLine("§fОнлайн§7: §6" + Server.getInstance().getOnlinePlayers().size(), 6);
-		scoreboardDisplay.addLine("§fНаигранно§7: §6" + new DecimalFormat("#.#").format((float)(playerSession.getInteger("Gametime") + playerSession.getSessionTime()) / 3600).replace("§7,", "§7.") + " §fч§7.", 7);
-		scoreboardDisplay.addLine("§fСайт§7: §6death§7-§6mc§7.§6online", 8);
+		scoreboardDisplay.addLine("§r§fНик§7: §6" + player.getName(), 0);
+		scoreboardDisplay.addLine("§r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")), 1);
+		scoreboardDisplay.addLine("", 2);
+		scoreboardDisplay.addLine("§r§fБаланс§7: §6" + String.format("%.1f", playerSession.getDouble("Money")), 3);
+		scoreboardDisplay.addLine("§r§fПинг§7: §6" + player.getPing(), 4);
+		scoreboardDisplay.addLine("§r", 5);
+		scoreboardDisplay.addLine("§r§fОнлайн§7: §6" + Server.getInstance().getOnlinePlayers().size(), 6);
+		scoreboardDisplay.addLine("§r§fНаигранно§7: §6" + new DecimalFormat("#.#").format((float)(playerSession.getInteger("Gametime") + playerSession.getSessionTime()) / 3600).replace("§7,", "§7.") + " §fч§7.", 7);
+		scoreboardDisplay.addLine("§r§fСайт§7: §6death§7-§6mc§7.§6online", 8);
 		scoreboard.showFor(player);
 		PlayerSessionManager.SCOREBOARDS.put(player.getName(), scoreboard);
 	}

@@ -31,6 +31,7 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
+import cn.nukkit.event.level.ChunkPopulateEvent;
 import cn.nukkit.event.level.WeatherChangeEvent;
 import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
@@ -39,6 +40,7 @@ import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
@@ -61,7 +63,7 @@ public class EventsHandler implements Listener {
 			player.sendTip("§c§l| §fВы пытаетесь §6выйти §fза границу мира§7! §c|§r");
 			event.setCancelled(true);
 		}
-		if (player.getFloorY() <= 0 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
+		if (player.getFloorY() <= -20 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
 			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn(new Position(-7, 148, 93)));
 			player.sendMessage("§l§c| §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!");
 		}
@@ -124,16 +126,15 @@ public class EventsHandler implements Listener {
 			}
 		}
 	}
-
-
+	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		/*Item item = event.getItem();
+		Item item = event.getItem();
 		if (item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
 			player.sendMessage("§l§6| §r§fСокровище успешно Активированно§7!");
 			player.getInventory().removeItem(item);
-		}*/
+		}
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
 			event.setCancelled(true);

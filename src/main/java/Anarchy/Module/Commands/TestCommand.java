@@ -1,6 +1,7 @@
 package Anarchy.Module.Commands;
 
 import cn.nukkit.Player;
+import cn.nukkit.block.Block;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.entity.Entity;
@@ -82,6 +83,19 @@ public class TestCommand extends Command {
 				entity.spawnToAll();
 				player.sendMessage("§l§7(§3Боссы§7) §r§fНа карте появился Босс§7!\n§l§6• §r§fКоординаты§7: §6" + entity.getFloorX() + "§7, §6 " + entity.getFloorY()
 								   + "§7, §6" + entity.getFloorZ());
+			}
+			break;
+			
+			case "6": {
+				for (int x = -1000; x <= 1000; x++) {
+					for (int z = -1000; z <= 1000; z++) {
+						player.getLevel().setBlock(new Position(x, 0, 1000), Block.get(212), false);
+						player.getLevel().setBlock(new Position(x, 0, -1000), Block.get(212), false);
+						player.getLevel().setBlock(new Position(-1000, 0, z), Block.get(212), false);
+						player.getLevel().setBlock(new Position(1000, 0, z), Block.get(212), false);
+					}
+				}
+				player.sendMessage("Великая стена успешно построенна :)");
 			}
 			break;
 			}
