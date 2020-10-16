@@ -53,7 +53,7 @@ public class StringUtils {
 	}
 
 	public static String getOnlineString(String playerName) {
-		return Server.getInstance().getPlayerExact(playerName) == null ? "§6Оффлайн" : "§6Онлайн";
+		return Server.getInstance().getPlayerExact(playerName) == null ? "§cОффлайн" : "§aОнлайн";
 	}
 
 	public static boolean isInteger(String string) {

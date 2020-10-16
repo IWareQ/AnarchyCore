@@ -60,7 +60,7 @@ public class DoubleDefaultChest extends DefaultChest {
 		try {
 			return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN, true);
 		} catch (IOException e) {
-			throw new RuntimeException("Unable to create NBT for Double Chest");
+			throw new RuntimeException("Unable to create NBT for DoubleChest");
 		}
 	}
 }

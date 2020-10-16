@@ -1,5 +1,6 @@
 package Anarchy.Module.Commands;
 
+import Anarchy.Manager.Functions.FunctionsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.command.Command;
@@ -75,14 +76,7 @@ public class TestCommand extends Command {
 			break;
 
 			case "5": {
-				Position position = player.getPosition();
-				Entity entity = Entity.createEntity("EvokerBoss", position);
-				entity.setScale((float)2.0);
-				entity.setNameTag("Колдун");
-				entity.setNameTagAlwaysVisible();
-				entity.spawnToAll();
-				player.sendMessage("§l§7(§3Боссы§7) §r§fНа карте появился Босс§7!\n§l§6• §r§fКоординаты§7: §6" + entity.getFloorX() + "§7, §6 " + entity.getFloorY()
-								   + "§7, §6" + entity.getFloorZ());
+				player.teleport(new Position(0, 100, 0, FunctionsAPI.COORDINATE));
 			}
 			break;
 			

@@ -34,11 +34,11 @@ public class DefaultCraftingTable extends FakeChest {
 	@Override()
 	protected List<BlockVector3> onOpenBlock(Player player) {
 		BlockVector3 blockPosition = new BlockVector3((int)player.x, ((int)player.y) + 2, (int)player.z);
-		placeChest(player, blockPosition);
+		placeCraftingTable(player, blockPosition);
 		return Collections.singletonList(blockPosition);
 	}
 
-	protected void placeChest(Player player, BlockVector3 pos) {
+	protected void placeCraftingTable(Player player, BlockVector3 pos) {
 		UpdateBlockPacket updateBlock = new UpdateBlockPacket();
 		updateBlock.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(BlockID.CRAFTING_TABLE, 0);
 		updateBlock.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
@@ -59,7 +59,7 @@ public class DefaultCraftingTable extends FakeChest {
 		try {
 			return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN, true);
 		} catch (IOException e) {
-			throw new RuntimeException("Unable to create NBT for chest");
+			throw new RuntimeException("Unable to create NBT for CraftingTable");
 		}
 	}
 }

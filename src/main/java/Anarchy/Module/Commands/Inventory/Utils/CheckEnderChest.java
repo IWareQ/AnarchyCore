@@ -1,10 +1,10 @@
-package Anarchy.Module.Commands.Inventory;
+package Anarchy.Module.Commands.Inventory.Utils;
 
 import Anarchy.Manager.FakeChests.Inventory.DefaultChest;
 
 public class CheckEnderChest extends DefaultChest {
 	
-	CheckEnderChest(String title) {
+	public CheckEnderChest(String title) {
 		super(title);
 	}
 }

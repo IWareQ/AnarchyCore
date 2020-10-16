@@ -38,7 +38,7 @@ public class GroupCommand extends Command {
 				sender.sendMessage(PermissionsAPI.PREFIX + "§fГруппа §6" + args[0] + " §fне существует§7!");
 				return true;
 			}
-			sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fполучил группу " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));
+			sender.sendMessage(PermissionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fполучил группу " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])) + " §7(" + StringUtils.getOnlineString(nickname) + "§7)");
 			Player target = Server.getInstance().getPlayerExact(nickname);
 			if (target != null) {
 				target.sendMessage(PermissionsAPI.PREFIX + "§fВы получили привилегию " + PermissionsAPI.GROUPS.get(Integer.parseInt(args[0])));

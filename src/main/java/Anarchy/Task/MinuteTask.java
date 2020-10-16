@@ -17,7 +17,7 @@ public class MinuteTask extends Task {
 	private static int TIMER_BROADCAST = 0;
 	private static int TIMER_SAVEDATA = 0;
 	public static int TIMER_RESTART = 60;
-	//private static int TIMER_BOSS = 1;
+	//private static int TIMER_BOSS = 30;
 	public static int SECONDS_RESTART = 60;
 
 	@Override()

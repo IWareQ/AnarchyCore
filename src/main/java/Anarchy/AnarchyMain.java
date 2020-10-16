@@ -48,6 +48,9 @@ import Anarchy.Module.Commands.Home.DelHomeCommand;
 import Anarchy.Module.Commands.Home.HomeCommand;
 import Anarchy.Module.Commands.Home.SetHomeCommand;
 import Anarchy.Module.Commands.Inventory.InventoryHandler;
+import Anarchy.Module.Commands.NPC.NPCCommand;
+import Anarchy.Module.Commands.NPC.Utils.PiglinBruteNPC;
+import Anarchy.Module.Commands.NPC.Utils.VillagerNPC;
 import Anarchy.Module.Commands.Spectate.SpectateEventsHandler;
 import Anarchy.Module.Commands.Spectate.Commands.SpectateCommand;
 import Anarchy.Module.Commands.Storage.StorageHandler;
@@ -154,10 +157,12 @@ public class AnarchyMain extends PluginBase {
 		Entity.registerEntity(WitchBoss.class .getSimpleName(), WitchBoss.class);
 		Entity.registerEntity(SlimeBoss.class .getSimpleName(), SlimeBoss.class);
 		Entity.registerEntity(EvokerBoss.class .getSimpleName(), EvokerBoss.class);
+		Entity.registerEntity(PiglinBruteNPC.class .getSimpleName(), PiglinBruteNPC.class);
+		Entity.registerEntity(VillagerNPC.class.getSimpleName(), VillagerNPC.class);
 	}
 
 	private void registerCommands() {
-		Command[] commands = new Command[] {new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		Command[] commands = new Command[] {new NPCCommand(),new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 

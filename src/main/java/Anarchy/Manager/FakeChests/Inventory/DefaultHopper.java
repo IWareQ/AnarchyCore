@@ -34,13 +34,13 @@ public class DefaultHopper extends FakeChest {
 	@Override()
 	protected List<BlockVector3> onOpenBlock(Player player) {
 		BlockVector3 blockPosition = new BlockVector3((int)player.x, ((int)player.y) + 2, (int)player.z);
-		placeChest(player, blockPosition);
+		placeHopper(player, blockPosition);
 		return Collections.singletonList(blockPosition);
 	}
 
-	protected void placeChest(Player player, BlockVector3 pos) {
+	protected void placeHopper(Player player, BlockVector3 pos) {
 		UpdateBlockPacket updateBlock = new UpdateBlockPacket();
-		updateBlock.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(BlockID.CRAFTING_TABLE, 0);
+		updateBlock.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(BlockID.HOPPER_BLOCK, 0);
 		updateBlock.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
 		updateBlock.x = pos.x;
 		updateBlock.y = pos.y;
@@ -55,11 +55,11 @@ public class DefaultHopper extends FakeChest {
 	}
 
 	private static byte[] getNbt(BlockVector3 pos, String name) {
-		CompoundTag tag = new CompoundTag().putString("id", BlockEntity.CHEST).putInt("x", pos.x).putInt("y", pos.y).putInt("z", pos.z);
+		CompoundTag tag = new CompoundTag().putString("id", BlockEntity.HOPPER).putInt("x", pos.x).putInt("y", pos.y).putInt("z", pos.z);
 		try {
 			return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN, true);
 		} catch (IOException e) {
-			throw new RuntimeException("Unable to create NBT for chest");
+			throw new RuntimeException("Unable to create NBT for Hopper");
 		}
 	}
 }

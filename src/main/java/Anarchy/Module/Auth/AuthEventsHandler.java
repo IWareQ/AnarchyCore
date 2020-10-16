@@ -35,8 +35,6 @@ public class AuthEventsHandler implements Listener {
 	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
 	File dataFileKills = new File(AnarchyMain.datapath + "/Kills.yml");
 	Config configKills = new Config(dataFileKills, Config.YAML);
-	File dataFile = new File(AnarchyMain.datapath + "/BanList.yml");
-	Config BanList = new Config(dataFile, Config.YAML);
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onDataPacketReceive(DataPacketReceiveEvent event) {
@@ -44,10 +42,10 @@ public class AuthEventsHandler implements Listener {
 		DataPacket dataPacket = event.getPacket();
 		if (dataPacket instanceof SetLocalPlayerAsInitializedPacket) {
 			if (!player.hasPlayedBefore()) {
-				player.teleport(new Position(-7, 148, 93, FunctionsAPI.SPAWN));
-				player.setSpawn(new Position(-7, 148, 93, FunctionsAPI.SPAWN));
+				player.teleport(new Position(-8.50, 51, -3.50, FunctionsAPI.SPAWN));
+				player.setSpawn(new Position(-8.50, 51, -3.50, FunctionsAPI.SPAWN));
 			} else {
-				player.setSpawn(new Position(-7, 148, 93, FunctionsAPI.SPAWN));
+				player.setSpawn(new Position(-8.50, 51, -3.50, FunctionsAPI.SPAWN));
 			}
 		}
 	}
@@ -57,41 +55,10 @@ public class AuthEventsHandler implements Listener {
 		Player player = event.getPlayer();
 		String device = player.getLoginChainData().getDeviceModel();
 		String brand = device.split("\\s+")[0];
-		if (!brand.equals(brand.toUpperCase()) && brand.equals("Iphone")) {
+		if (!brand.equals(brand.toUpperCase()) && !brand.equalsIgnoreCase("Iphone")) {
 			player.close("", "§l§fНа нашем сервере запрещены §6Читы§7!\n§fВаша попытка входа с читами была отправленна Администраторам§7!");
-			AnarchyMain.sendMessageToChat("Игрок " + player.getName() + " пытался зайти с ToolBox!", 2000000004);
+			AnarchyMain.sendMessageToChat("Игрок " + player.getName() + " пытался зайти с ToolBox!\n\nУстройство: " + brand, 2000000004);
 		}
-		Map<String, String> banData = SQLiteUtils.selectStringMap("BanList.db", "SELECT * FROM BANPLAYERS WHERE UPPER(Username) = '" + player.getName() + "';");
-		if (!banData.isEmpty()) {
-			long banTime = Long.parseLong(banData.get("banTime"));
-			String banned = banData.get("Banned");
-			Long nowTime = System.currentTimeMillis() / 1000L;
-			String reason = banData.get("Reason");
-			if (banTime > nowTime) {
-				long remainingTime = banTime - nowTime;
-				long day = (remainingTime / 86400);
-				long hourSeconds = (remainingTime % 86400);
-				long hour = (hourSeconds / 3600);
-				long minuteSec = (hourSeconds % 3600);
-				long minute = (minuteSec / 60);
-				player.close("", "§l§fУвы§7, §fно Вас §6временно §fзаблокировали§7!\n§fВас заблокировал§7: §6" + banned + "\n§fПричина блокировки§7: §6" + reason + "\n§fРазбан через§7: §6" + day + " §fд§7. §6" + hour + " §fч§7. §6" + minute + " §fмин§7.");
-			} else {
-				SQLiteUtils.query("BanList.db", "DELETE FROM BANPLAYERS WHERE UPPER(Username) = '" + player.getName() + "';");
-			}
-		}
-		/*if (BanList.exists(player.getName())) {
-			for (Map.Entry<String, Object> entry : BanList.getAll().entrySet()) {
-				Long nowTime = System.currentTimeMillis() / 1000L;
-				ArrayList<Object> banData = (ArrayList<Object>)entry.getValue();
-				if ((long)banData.get(2) > nowTime) {
-					player.close("", "§l§fУвы§7, §fно Вас §6временно §fзаблокировали§7!\n§fВас заблокировал§7: §6" + banData.get(0) + "\n§fПричина блокировки§7: §6" + banData.get(1) + "\n§fРазбан через§7: §6" + ((int)banData.get(2) / 86400) + " §fд§7. §6" + ((int)banData.get(2) / 3600 % 24) + " §fч§7. §6" + ((int)banData.get(2) / 60 % 60) + " §fмин§7.");
-				} else {
-					BanList.remove(player.getName());
-					AnarchyMain.sendMessageToChat("Игрок " + player.getName() + " разблокирован по времени!", 2000000004);
-					Server.getInstance().getLogger().alert("Разблокиован по времени");
-				}
-			}
-		}*/
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
@@ -105,20 +72,20 @@ public class AuthEventsHandler implements Listener {
 		if (accountID == -1) {
 			SQLiteUtils.query("Users.db", "INSERT INTO USERS (Username) VALUES ('" + playerName + "');");
 			SQLiteUtils.query("Auth.db", "INSERT INTO AUTH (Username, IP_Reg, Date_Reg) VALUES ('" + playerName + "', '" + ip + "', '" + date + "');");
-			Server.getInstance().getLogger().info("§l§7(§3Система§7) §fИгрок §6" + playerName + " §fне зарегистрирован§7! §fРегистрируем§7!");
+			Server.getInstance().getLogger().info("§l§7(§6Система§7) §fИгрок §6" + playerName + " §fне зарегистрирован§7! §fРегистрируем§7!");
 		}
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-6.50, 153, 62.50), "§l§6Прыгай в портал§7!", "§l§fПросто прыгай и начинай выживать"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 50, 0.50), "§l§6Заходи в портал§7!", "§l§fПросто заходи и начинай выживать"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(13.50, 150, 85.50), "§l§6Маленький приват", "§l§f3 §7× §f3"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(5.50, 150, 93.50), "§l§6Средний приват", "§l§f6 §7× §f6"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(11.50, 150, 91.50), "§l§6Большой приват", "§l§f10 §7× §f10"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 150, 88.50), "§l§6Как приватить§7?", "§l§fЧтобы запривать регион§7,\n§l§fпросто установи один из блоков\n§l§fкоторые стоят рядом§7. §fКаждый блок имеет\n§l§fограниченный радиус привата§7,\n§l§fкоторый создается вокруг блока§7!"), player);
-		/*Map<String, Integer> counterKills = calculateScore(configKills);
+		Map<String, Integer> counterKills = calculateScore(configKills);
 		Map<String, Integer> counterDeaths = calculateScore(configDeaths);
 		int placeKills = 1;
 		for (Map.Entry<String, Integer> entry : counterKills.entrySet()) {
 			if (placeKills <= 10) {
 				String title = "§l§6" + placeKills + "§7. §f" + entry.getKey() + " §7- §6" + entry.getValue() + " §fkill§7(§fs§7)";
-				FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0.50, 151 - placeKills * 0.3, 81.50), title), player);
+				FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 52.50 - placeKills * 0.3, 6.50), title), player);
 				placeKills++;
 			}
 		}
@@ -126,21 +93,16 @@ public class AuthEventsHandler implements Listener {
 		for (Map.Entry<String, Integer> entry : counterDeaths.entrySet()) {
 			if (placeDeaths <= 10) {
 				String title = "§l§6" + placeDeaths + "§7. §f" + entry.getKey() + " §7- §6" + entry.getValue() + " §fdeath§7(§fs§7)";
-				FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-13.50, 151 - placeDeaths * 0.3, 81.50), title), player);
+				FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 52.50 - placeDeaths * 0.3, -5.50), title), player);
 				placeDeaths++;
 			}
-		}*/
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(0.50, 151, 81.50), "§l§6Самые опасные Игроки сервера"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-13.50, 151, 81.50), "§l§6Press F to pay respects"), player);
-		player.sendMessage("§l§6| §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§6| §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§3death§fanarchy §l§6| §r§fНаш сайт §7- §3death§7-§3mc§7.§3online");
+		}
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 52.50, 6.50), "§l§6Самые опасные Игроки сервера"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 52.50, -5.50), "§l§6Press F to pay respects"), player);
+		player.sendMessage("§l§6• §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§6• §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§6death§fanarchy §l§6| §r§fНаш сайт §7- §6death§7-§6mc§7.§6online");
 		PlayerSessionManager.startPlayerSession(player);
 		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
 			HotbarTask.showScoreboard(player);
-		}
-		for (Player adminChat : Server.getInstance().getOnlinePlayers().values()) {
-			if (adminChat.hasPermission("Command.A")) {
-				adminChat.sendMessage("§l§7(§3Система§7) §r§fИгрок §6" + player.getName() + " §fзашел на сервер§7!");
-			}
 		}
 		PermissionsAPI.updateTag(player);
 		PermissionsAPI.updatePermissions(player);
@@ -154,11 +116,6 @@ public class AuthEventsHandler implements Listener {
 		Player player = event.getPlayer();
 		if (PlayerSessionManager.hasPlayerSession(player)) {
 			PlayerSessionManager.stopPlayerSession(player);
-		}
-		for (Player adminChat : Server.getInstance().getOnlinePlayers().values()) {
-			if (adminChat.hasPermission("Command.A")) {
-				adminChat.sendMessage("§l§7(§3Система§7) §r§fИгрок §6" + player.getName() + " §fпокинул сервер§7!");
-			}
 		}
 		event.setQuitMessage("");
 	}

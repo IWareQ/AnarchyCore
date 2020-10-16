@@ -1,6 +1,8 @@
 package Anarchy.Module.Commands.Inventory;
 
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
+import Anarchy.Module.Commands.Inventory.Utils.CheckEnderChest;
+import Anarchy.Module.Commands.Inventory.Utils.CheckInventoryChest;
 import Anarchy.Module.Economy.EconomyAPI;
 import FormAPI.Forms.Elements.ImageType;
 import FormAPI.Forms.Elements.SimpleForm;

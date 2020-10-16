@@ -5,10 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import Anarchy.AnarchyMain;
+import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
+import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Module.Economy.EconomyAPI;
+import Anarchy.Module.EventsHandler.Utils.HucksterChest;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import Anarchy.Utils.RandomUtils;
 import cn.nukkit.Player;
@@ -31,7 +34,7 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
-import cn.nukkit.event.level.ChunkPopulateEvent;
+import cn.nukkit.event.inventory.InventoryTransactionEvent;
 import cn.nukkit.event.level.WeatherChangeEvent;
 import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
@@ -40,10 +43,14 @@ import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
+import cn.nukkit.inventory.PlayerInventory;
+import cn.nukkit.inventory.transaction.action.InventoryAction;
+import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
+import cn.nukkit.level.Sound;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.monster.Monster;
@@ -60,15 +67,15 @@ public class EventsHandler implements Listener {
 		Player player = event.getPlayer();
 		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0), (double)(int)Math.round(event.getPlayer().z - 0.5)));
 		if (player.x < FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z < FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
-			player.sendTip("§c§l| §fВы пытаетесь §6выйти §fза границу мира§7! §c|§r");
+			player.sendTip("§l§c• §fВы пытаетесь §6выйти §fза границу мира§7! §c•§r");
 			event.setCancelled(true);
 		}
-		if (player.getFloorY() <= -20 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
+		if (player.getFloorY() <= -5 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
 			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn(new Position(-7, 148, 93)));
-			player.sendMessage("§l§c| §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!");
+			player.sendMessage("§l§a• §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!\n§l§6• §r§fЗапомните§7, §fесли вы упадете в бездну в мире §6TheEnd§7, §fто Вас не спасут§7!");
 		}
-		if (player.getLevel().equals(FunctionsAPI.SPAWN) && block.getId() == 416) {
-			player.sendMessage("§l§6• §r§fПортал временно не доступен§7, §fдля выхода со спавна используйте §7/§6rtp");
+		if (player.getLevel().equals(FunctionsAPI.SPAWN) && block.getId() == 544) {
+			Server.getInstance().dispatchCommand(player, "rtp");
 			event.setCancelled(true);
 		}
 	}
@@ -90,11 +97,11 @@ public class EventsHandler implements Listener {
 		if (cause instanceof EntityDamageByEntityEvent) {
 			Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
 			if (damager instanceof Player && player != damager) {
-				player.sendMessage("§c§l| §r§fВы были убиты Игроком §6" + damager.getName());
-				event.setDeathMessage("§6§l| §r§fИгрок §6" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
+				player.sendMessage("§l§c• §r§fВы были убиты Игроком §6" + damager.getName());
+				event.setDeathMessage("§l§6• §r§fИгрок §6" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
 				Double money = EconomyAPI.myMoney(player) * 20 / 100;
 				if (money != 0) {
-					player.sendMessage("§c§l| §r§fПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20§7%)");
+					player.sendMessage("§l§c• §r§fПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20§7%)");
 					((Player)damager).sendMessage("§l§a| §r§fВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §6" + player.getName());
 					EconomyAPI.reduceMoney(player, money);
 					EconomyAPI.addMoney((Player)damager, money);
@@ -104,7 +111,7 @@ public class EventsHandler implements Listener {
 				return;
 			}
 		}
-		event.setDeathMessage("§6§l| §r§fИгрок §6" + player.getName() + " §fпогиб");
+		event.setDeathMessage("§l§6• §r§fИгрок §6" + player.getName() + " §fпогиб");
 		this.addDeaths(player, 1);
 	}
 
@@ -126,18 +133,31 @@ public class EventsHandler implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		Item item = event.getItem();
+		PlayerInventory playerInventory = player.getInventory();
+		Block block = event.getBlock();
 		if (item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
-			player.sendMessage("§l§6| §r§fСокровище успешно Активированно§7!");
+			player.sendMessage("§l§6•| §r§fСокровище успешно Активированно§7!");
 			player.getInventory().removeItem(item);
 		}
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
 			event.setCancelled(true);
+		}
+		if (item.getCustomName().equals("§r§fЗлодейская кирка") && item.getId() == Item.NETHERITE_PICKAXE) {
+			if (block.getId() == Item.BEDROCK) {
+				player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
+				player.sendMessage("§l§6•• §r§fБедрок был успешно сломан");
+				playerInventory.setItemInHand(Item.get(Item.AIR));
+				player.getLevel().setBlock(new Position(block.getX(), block.getY(), block.getZ()), Block.get(0));
+			} else {
+				event.setCancelled(true);
+				player.sendTip("§l§fИспользуй только на §6Бедроке§7!");
+			}
 		}
 	}
 
@@ -160,7 +180,7 @@ public class EventsHandler implements Listener {
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
-	public void onPlayetBucketEmpty(PlayerBucketEmptyEvent event) {
+	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 		Player player = event.getPlayer();
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
@@ -171,8 +191,72 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event) {
 		Entity entity = event.getEntity();
+		if (event instanceof EntityDamageByEntityEvent) {
+			Entity damager = ((EntityDamageByEntityEvent)event).getDamager();
+			if (entity.getNameTag().equals("§l§fАукционер")) {
+				AuctionAPI.AUCTION_PAGE.put((Player)damager, 0);
+				AuctionAPI.showAuction((Player)damager, true);
+			}
+			if (entity.getNameTag().equals("§l§fБарыга")) {
+				HucksterChest hucksterChest = new HucksterChest("§l§fБарыга");
+				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0,
+												 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6•• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
+				Item goldPickaxe = Item.get(Item.GOLD_PICKAXE, 0,
+											1).setCustomName("§r§fКирка похитителя").setLore("§l§6•• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
+				hucksterChest.addItem(netheritePickaxe);
+				hucksterChest.addItem(goldPickaxe);
+				FakeChestsAPI.openInventory((Player)damager, hucksterChest);
+			}
+		}
 		if (entity.getLevel().equals(FunctionsAPI.SPAWN)) {
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onInventoryTransaction(InventoryTransactionEvent event) {
+		for (InventoryAction action : event.getTransaction().getActions()) {
+			if (action instanceof SlotChangeAction) {
+				SlotChangeAction slotChange = (SlotChangeAction)action;
+				if (slotChange.getInventory() instanceof HucksterChest) {
+					Player player = event.getTransaction().getSource();
+					Item sourceItem = action.getSourceItem();
+					event.setCancelled(true);
+					switch (sourceItem.getName()) {
+					case "§r§fЗлодейская кирка": {
+						if (EconomyAPI.myMoney(player) < 30000) {
+							player.sendMessage("§l§7(§3Барыга§7) §r§fНедостаточно монет§7, §fдля совершения покупки§7!");
+							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
+							return;
+						}
+						PlayerInventory playerInventory = player.getInventory();
+						if (playerInventory.canAddItem(sourceItem)) {
+							playerInventory.addItem(sourceItem.setLore(""));
+							player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+							player.sendMessage("§l§7(§3Барыга§7) §r§7«§6Злодейская кирка§7» §fуспешно куплена за §630000§7!");
+							EconomyAPI.reduceMoney(player, 30000.0);
+						}
+					}
+					break;
+
+					case "§r§fКирка похитителя": {
+						if (EconomyAPI.myMoney(player) < 20000) {
+							player.sendMessage("§l§7(§3Барыга§7) §r§fНедостаточно монет§7, §fдля совершения покупки§7!");
+							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
+							return;
+						}
+						PlayerInventory playerInventory = player.getInventory();
+						if (playerInventory.canAddItem(sourceItem)) {
+							playerInventory.addItem(sourceItem.setLore(""));
+							player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+							player.sendMessage("§l§7(§3Барыга§7) §r§7«§6Кирка похитителя§7» §fуспешно куплена за §620000§7!");
+							EconomyAPI.reduceMoney(player, 30000.0);
+						}
+					}
+					break;
+					}
+				}
+			}
 		}
 	}
 
@@ -250,23 +334,23 @@ public class EventsHandler implements Listener {
 			players.add(new ConsoleCommandSender());
 			event.setFormat("§6Ⓛ " + displayName + " §8» §f" + playerMessage.replaceAll("§", ""));
 			event.setRecipients(players);
-		} 
+		}
 	}
 
-	public void addKill(Player player, int number) {
+	private void addKill(Player player, int number) {
 		this.configKills.set(player.getName(), this.getKills(player) + number);
 		this.configKills.save();
 	}
 
-	public int getKills(Player player) {
+	private int getKills(Player player) {
 		return this.configKills.getInt(player.getName(), 0);
 	}
 
-	public int getDeaths(Player player) {
+	private int getDeaths(Player player) {
 		return this.configDeaths.getInt(player.getName(), 0);
 	}
 
-	public void addDeaths(Player player, int number) {
+	private void addDeaths(Player player, int number) {
 		this.configDeaths.set(player.getName(), this.getDeaths(player) + number);
 		this.configDeaths.save();
 	}
