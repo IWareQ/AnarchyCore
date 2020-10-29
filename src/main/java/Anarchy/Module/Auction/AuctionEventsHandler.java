@@ -149,7 +149,7 @@ public class AuctionEventsHandler implements Listener {
 									return;
 								}
 								if (EconomyAPI.myMoney(player) < tradeItem.itemPrice) {
-									player.sendMessage(AuctionAPI.PREFIX + "§fНедостаточно монет§7, §fдля совершения покупки§7!");
+									player.sendMessage(AuctionAPI.PREFIX + "§fНедостаточно монет для совершения покупки§7!");
 									player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 									return;
 								}
@@ -173,7 +173,7 @@ public class AuctionEventsHandler implements Listener {
 							} else {
 								auctionChest.removeItem(sourceItem);
 								FakeChestsAPI.closeInventory(player, auctionChest);
-								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже продан§7, §fили его сняли с продажи§7!");
+								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже продан или его сняли с продажи§7!");
 							}
 						}
 						break;

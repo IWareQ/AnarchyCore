@@ -1,7 +1,6 @@
 package Anarchy.Module.Auth;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -75,9 +74,10 @@ public class AuthEventsHandler implements Listener {
 			Server.getInstance().getLogger().info("§l§7(§6Система§7) §fИгрок §6" + playerName + " §fне зарегистрирован§7! §fРегистрируем§7!");
 		}
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 50, 0.50), "§l§6Заходи в портал§7!", "§l§fПросто заходи и начинай выживать"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(13.50, 150, 85.50), "§l§6Маленький приват", "§l§f3 §7× §f3"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(5.50, 150, 93.50), "§l§6Средний приват", "§l§f6 §7× §f6"), player);
-		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(11.50, 150, 91.50), "§l§6Большой приват", "§l§f10 §7× §f10"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-4.50, 51, 12.50), "§l§6Маленький приват", "§l§f2 §7× §f2"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-6.50, 51, 14.50), "§l§6Средний приват", "§l§f4 §7× §f4"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-9.50, 51, 13.50), "§l§6Большой приват", "§l§f8 §7× §f8"), player);
+		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-11.50, 51, 11.50), "§l§6Большой приват", "§l§f10 §7× §f10"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 150, 88.50), "§l§6Как приватить§7?", "§l§fЧтобы запривать регион§7,\n§l§fпросто установи один из блоков\n§l§fкоторые стоят рядом§7. §fКаждый блок имеет\n§l§fограниченный радиус привата§7,\n§l§fкоторый создается вокруг блока§7!"), player);
 		Map<String, Integer> counterKills = calculateScore(configKills);
 		Map<String, Integer> counterDeaths = calculateScore(configDeaths);

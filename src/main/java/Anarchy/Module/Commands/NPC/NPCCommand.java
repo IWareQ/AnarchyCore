@@ -15,8 +15,8 @@ public class NPCCommand extends Command {
 	public NPCCommand() {
 		super("npc", "§r§l§fПоставить NPC");
 		this.setPermission("Command.NPC");
-		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("npc", new String[]{"auction", "huckster"})});
 		this.commandParameters.clear();
+		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("npc", new String[]{"auctioner", "huckster"})});
 	}
 
 	@Override()
@@ -27,13 +27,13 @@ public class NPCCommand extends Command {
 				return false;
 			}
 			if (args.length == 0) {
-				player.sendMessage("§l§6• §r§fИспользование §7- /§6npc §3auction§7|§3huckster");
+				player.sendMessage("§l§6• §r§fИспользование §7- /§6npc §3auctioner§7|§3huckster");
 				return true;
 			}
 			switch (args[0]) {
-			case "auction": {
+			case "auctioner": {
 				Entity entity = Entity.createEntity("VillagerNPC", player.chunk, getNBT(player));
-				entity.setNameTag("§l§fАукционер");
+				entity.setNameTag("§l§6Аукционер");
 				entity.setNameTagAlwaysVisible(true);
 				entity.setScale((float)2.0);
 				entity.spawnToAll();
@@ -42,7 +42,7 @@ public class NPCCommand extends Command {
 			break;
 			case "huckster": {
 				Entity entity = Entity.createEntity("PiglinBruteNPC", player.chunk, getNBT(player));
-				entity.setNameTag("§l§fБарыга");
+				entity.setNameTag("§l§6Барыга");
 				entity.setNameTagAlwaysVisible(true);
 				entity.spawnToAll();
 				player.sendMessage("§l§6• §r§fNPC §7«§6Барыга§7» §fуспешно поставлен§7!");

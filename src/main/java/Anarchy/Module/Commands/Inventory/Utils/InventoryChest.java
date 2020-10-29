@@ -2,9 +2,9 @@ package Anarchy.Module.Commands.Inventory.Utils;
 
 import Anarchy.Manager.FakeChests.Inventory.DoubleDefaultChest;
 
-public class CheckInventoryChest extends DoubleDefaultChest {
+public class InventoryChest extends DoubleDefaultChest {
 	
-	public CheckInventoryChest(String title) {
+	public InventoryChest(String title) {
 		super(title);
 	}
 }

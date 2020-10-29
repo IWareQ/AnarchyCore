@@ -16,14 +16,15 @@ import Anarchy.Module.Auction.AuctionEventsHandler;
 import Anarchy.Module.Auction.Commands.AuctionCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
 import Anarchy.Module.BanSystem.Commands.BanCommand;
+import Anarchy.Module.BanSystem.Commands.MuteCommand;
 import Anarchy.Module.Boss.EvokerBoss;
 import Anarchy.Module.Boss.RavagerBoss;
 import Anarchy.Module.Boss.SilverfishBoss;
 import Anarchy.Module.Boss.SlimeBoss;
 import Anarchy.Module.Boss.WitchBoss;
 import Anarchy.Module.CombatLogger.CombatLoggerEventsHandler;
-import Anarchy.Module.Commands.ACommand;
 import Anarchy.Module.Commands.BarCommand;
+import Anarchy.Module.Commands.BonusCommand;
 import Anarchy.Module.Commands.ClearChatCommand;
 import Anarchy.Module.Commands.CoordinateCommand;
 import Anarchy.Module.Commands.DayCommand;
@@ -38,11 +39,13 @@ import Anarchy.Module.Commands.NightVisionCommand;
 import Anarchy.Module.Commands.RepairCommand;
 import Anarchy.Module.Commands.ReportCommand;
 import Anarchy.Module.Commands.ResyncCommand;
+import Anarchy.Module.Commands.SpawnCommand;
 import Anarchy.Module.Commands.TestCommand;
 import Anarchy.Module.Commands.CraftingTable.CraftingTableCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
 import Anarchy.Module.Commands.Defaults.StopCommand;
 import Anarchy.Module.Commands.Defaults.TellCommand;
+import Anarchy.Module.Commands.DonateShop.DonateShopHandler;
 import Anarchy.Module.Commands.EnderChest.EnderChestCommand;
 import Anarchy.Module.Commands.Home.DelHomeCommand;
 import Anarchy.Module.Commands.Home.HomeCommand;
@@ -84,13 +87,13 @@ public class AnarchyMain extends PluginBase {
 	public static String PREFIX = "§l§7(§3Система§7) §r";
 	public static String accessToken = "ac9b77006227ff5fd44036db53fa328fb99809eb5d4fb42a458bfd3bcc278065ba5ad0abcc1a3fac1a2ae";
 	public static AnarchyMain plugin;
-	public static String folder;
+	public static String folder = "";
 	public static String datapath;
 	public static int port;
 
 	@Override()
 	public void onEnable() {
-		PluginManager pluginManager = Server.getInstance().getPluginManager();
+		PluginManager pluginManager = this.getServer().getPluginManager();
 		for (String pluginName : new String[] {"DbLib", "ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
 				this.getLogger().alert("§l§fНе найден §3плагин §7- §6" + pluginName);
@@ -99,8 +102,7 @@ public class AnarchyMain extends PluginBase {
 			}
 		}
 		plugin = this;
-		folder = "";
-		port = Server.getInstance().getPort();
+		port = this.getServer().getPort();
 		datapath = folder + port;
 		(new File(datapath)).mkdirs();
 		this.registerAll();
@@ -129,11 +131,11 @@ public class AnarchyMain extends PluginBase {
 
 	private void unregisterAll() {
 		AllSessionsManager.saveAllSessions();
-		AuctionAPI.unregister();
+		AuctionAPI.unRegister();
 	}
 
 	private void registerEvents() {
-		PluginManager pluginManager = getServer().getPluginManager();
+		PluginManager pluginManager = this.getServer().getPluginManager();
 		pluginManager.registerEvents(new AuctionEventsHandler(), this);
 		pluginManager.registerEvents(new AuthEventsHandler(), this);
 		pluginManager.registerEvents(new CombatLoggerEventsHandler(), this);
@@ -142,10 +144,11 @@ public class AnarchyMain extends PluginBase {
 		pluginManager.registerEvents(new EventsHandler(), this);
 		pluginManager.registerEvents(new RegionsEventsHandler(), this);
 		pluginManager.registerEvents(new InventoryHandler(), this);
+		pluginManager.registerEvents(new DonateShopHandler(), this);
 	}
 
 	private void unregisterCommands() {
-		Map<String, Command> commandMap = getServer().getCommandMap().getCommands();
+		Map<String, Command> commandMap = this.getServer().getCommandMap().getCommands();
 		for (String command : new String[] {"me", "ver", "say", "pl", "plugins", "mixer", "difficulty", "defaultgamemode", "help", "?", "pardon", "particle", "tell", "gm", "gamemode", "list", "about", "title"}) {
 			commandMap.remove(command);
 		}
@@ -162,7 +165,7 @@ public class AnarchyMain extends PluginBase {
 	}
 
 	private void registerCommands() {
-		Command[] commands = new Command[] {new NPCCommand(),new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new ACommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		Command[] commands = new Command[] {new DonateShopHandler(), new SpawnCommand(), new BonusCommand(), new MuteCommand(), new NPCCommand(), new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 

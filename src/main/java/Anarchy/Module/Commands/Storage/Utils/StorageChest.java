@@ -34,7 +34,7 @@ public class StorageChest extends DoubleDefaultChest {
 			} catch (Exception e) {
 				Server.getInstance().getLogger().alert("StorageChest: " + e);
 				AnarchyMain.sendMessageToChat("StorageChest.java\nСмотрите Server.log", 2000000004);
-				}
+			}
 		}
 		config.save();
 		super.onClose(player);

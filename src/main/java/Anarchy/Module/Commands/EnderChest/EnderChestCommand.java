@@ -1,6 +1,7 @@
 package Anarchy.Module.Commands.EnderChest;
 
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
+import Anarchy.Module.Commands.EnderChest.Utils.EnderChest;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;

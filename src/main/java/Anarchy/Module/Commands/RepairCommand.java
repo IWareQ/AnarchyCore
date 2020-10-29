@@ -29,7 +29,7 @@ public class RepairCommand extends Command {
 				return false;
 			}
 			Long cooldownTime = COOLDOWN.get(player);
-			Long nowTime = System.currentTimeMillis() / 1000L;
+			Long nowTime = System.currentTimeMillis() / 1000;
 			if (cooldownTime != null && cooldownTime > nowTime) {
 				player.sendMessage("§l§7(§3Задержка§7) §r§fСледующее использование будет доступно через §6" + (cooldownTime - nowTime) + " §fсек§7.");
 				return false;
@@ -43,20 +43,29 @@ public class RepairCommand extends Command {
 				}
 				item.setDamage(0);
 				inventory.setItemInHand(item);
+				player.sendExperienceLevel(player.getExperienceLevel() - 2);
 				player.sendMessage("§l§a| §r§fПредмет в руке починен§7!");
 				player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
 			}
 			if (args.length == 1 && args[0].equals("all")) {
-				Map<Integer, Item> contents = player.getInventory().getContents();
-				for (Item items : contents.values()) {
-					if (items instanceof ItemTool || items instanceof ItemArmor) {
-						items.setDamage(0);
+				if (player.getExperienceLevel() >= 2) {
+					Map<Integer, Item> contents = player.getInventory().getContents();
+					for (Item items : contents.values()) {
+						if (items instanceof ItemTool || items instanceof ItemArmor) {
+							if (items.getName().equals("§r§fЗлодейская кирка")) {
+								player.sendMessage("§l§c• §r§fВ инвентаре найден предмет§7, §fкоторый невозможно починить§7!");
+							}
+							items.setDamage(0);
+						}
+						player.sendExperienceLevel(player.getExperienceLevel());
 					}
+					player.getInventory().setContents(contents);
+					player.sendMessage("§l§a| §r§fВсе предметы в Инвентаре успешно починены§7! (§6§7)");
+					player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
+					COOLDOWN.put(player, nowTime + 60);
+				} else {
+					player.sendMessage("§l§c• §r§fНе достаточно уровней§7, §fдля починки вещей§7!");
 				}
-				player.getInventory().setContents(contents);
-				player.sendMessage("§l§a| §r§fВсе предметы в Инвентаре успешно починены§7!");
-				player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
-				COOLDOWN.put(player, nowTime + 60);
 			}
 		}
 		return false;

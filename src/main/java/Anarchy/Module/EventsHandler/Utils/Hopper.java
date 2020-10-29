@@ -2,9 +2,9 @@ package Anarchy.Module.EventsHandler.Utils;
 
 import Anarchy.Manager.FakeChests.Inventory.DefaultHopper;
 
-public class HucksterChest extends DefaultHopper {
+public class Hopper extends DefaultHopper {
 
-	public HucksterChest(String title) {
+	public Hopper(String title) {
 		super(title);
 	}
 }

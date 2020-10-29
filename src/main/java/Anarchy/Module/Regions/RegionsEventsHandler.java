@@ -12,6 +12,7 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
+import cn.nukkit.event.block.BlockPistonEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.block.ItemFrameDropItemEvent;
 import cn.nukkit.event.entity.EntityExplodeEvent;
@@ -27,7 +28,7 @@ public class RegionsEventsHandler implements Listener {
 		Block block = event.getBlock();
 		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
 			player.sendTip(RegionsAPI.BUSY);
-			event.setCancelled();
+			event.setCancelled(true);
 			return;
 		}
 		if (RegionsAPI.REGIONS.containsKey(block.getId())) {
@@ -41,7 +42,7 @@ public class RegionsEventsHandler implements Listener {
 		Block block = event.getBlock();
 		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
 			player.sendTip(RegionsAPI.BUSY);
-			event.setCancelled();
+			event.setCancelled(true);
 			return;
 		}
 		int regionID = RegionsAPI.getRegionIDByLocation(block.getLocation());
@@ -55,7 +56,7 @@ public class RegionsEventsHandler implements Listener {
 					SQLiteUtils.query("Regions.db", "DELETE FROM MEMBERS WHERE Region_ID = '" + regionID + "';");
 				} else {
 					player.sendMessage(RegionsAPI.PREFIX + "§fВы не можете удалить чужой регион§7!");
-					event.setCancelled();
+					event.setCancelled(true);
 				}
 			}
 		}
@@ -79,12 +80,12 @@ public class RegionsEventsHandler implements Listener {
 				player.sendTip(RegionsAPI.FREE);
 				player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 			}
-			event.setCancelled();
+			event.setCancelled(true);
 			return;
 		}
 		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
 			player.sendTip(RegionsAPI.BUSY);
-			event.setCancelled();
+			event.setCancelled(true);
 		}
 	}
 
@@ -94,7 +95,7 @@ public class RegionsEventsHandler implements Listener {
 		Block block = event.getBlock();
 		if (!RegionsAPI.canInteractHere(player, block.getLocation())) {
 			player.sendTip(RegionsAPI.BUSY);
-			event.setCancelled();
+			event.setCancelled(true);
 			return;
 		}
 	}
@@ -105,11 +106,18 @@ public class RegionsEventsHandler implements Listener {
 		Iterator iterator = blocks.iterator();
 		while (iterator.hasNext()) {
 			Block block = (Block)iterator.next();
-			int id = block.getId();
-			if (RegionsAPI.REGIONS.get(id) != null || id == 52) {
+			if (RegionsAPI.REGIONS.get(block.getId()) != null || block.getId() == 52) {
 				iterator.remove();
 			}
 		}
 		event.setBlockList(blocks);
+	}
+
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
+	public void onBlockPiston(BlockPistonEvent event) {
+		Block block = event.getBlock();
+		if (RegionsAPI.REGIONS.get(block.getId()) != null || block.getId() == 52) {
+			event.setCancelled(true);
+		}
 	}
 }

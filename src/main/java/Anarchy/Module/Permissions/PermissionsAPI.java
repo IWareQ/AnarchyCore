@@ -53,7 +53,7 @@ public class PermissionsAPI {
 		GROUP_ALLOWS.put(9, new GroupAllow(8));
 		GROUP_ALLOWS.put(10, new GroupAllow(5));
 		GROUP_ALLOWS.put(11, new GroupAllow(6));
-		GROUP_ALLOWS.put(13, new GroupAllow(7));
+		GROUP_ALLOWS.put(12, new GroupAllow(7));
 		GROUP_ALLOWS.put(13, new GroupAllow(10));
 	}
 
@@ -197,6 +197,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("AdminChat", true);
 			permissionAllows.put("bansystem.command.checkmute", true);
 			permissionAllows.put("bansystem.command.mute", true);
 			permissionAllows.put("bansystem.command.mutelog", true);
@@ -211,7 +212,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.NightVision", true);
 			permissionAllows.put("Command.ClearChat", true);
-			permissionAllows.put("Command.Near", true); // 65 блоков
+			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.CraftingTable", true);
 			permissionAllows.put("Command.Spectate", true);
 			permissionAllows.put("Command.Inventory", true);
@@ -230,8 +231,20 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Repair", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.NightVision", true);
+			permissionAllows.put("Command.ClearChat", true);
+			permissionAllows.put("Command.Near", true);
+			permissionAllows.put("Command.CraftingTable", true);
+			permissionAllows.put("Command.Spectate", true);
+			permissionAllows.put("Command.Inventory", true);
+			permissionAllows.put("AdminChat", true);
+			permissionAllows.put("bansystem.command.checkmute", true);
+			permissionAllows.put("bansystem.command.mute", true);
+			permissionAllows.put("bansystem.command.mutelog", true);
+			permissionAllows.put("bansystem.command.checkban", true);
+			permissionAllows.put("bansystem.command.ban", true);
+			permissionAllows.put("bansystem.command.banlog", true);
 			break;
 
 		case 13: // Основатель
@@ -240,8 +253,20 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Repair", true);
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
-			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.NightVision", true);
+			permissionAllows.put("Command.ClearChat", true);
+			permissionAllows.put("Command.Near", true);
+			permissionAllows.put("Command.CraftingTable", true);
+			permissionAllows.put("Command.Spectate", true);
+			permissionAllows.put("Command.Inventory", true);
+			permissionAllows.put("AdminChat", true);
+			permissionAllows.put("bansystem.command.checkmute", true);
+			permissionAllows.put("bansystem.command.mute", true);
+			permissionAllows.put("bansystem.command.mutelog", true);
+			permissionAllows.put("bansystem.command.checkban", true);
+			permissionAllows.put("bansystem.command.ban", true);
+			permissionAllows.put("bansystem.command.banlog", true);
 
 		}
 		for (Map.Entry<String, Boolean> entry : permissionAllows.entrySet()) {

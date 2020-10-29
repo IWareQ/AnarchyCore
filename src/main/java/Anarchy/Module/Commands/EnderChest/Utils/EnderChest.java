@@ -1,4 +1,4 @@
-package Anarchy.Module.Commands.EnderChest;
+package Anarchy.Module.Commands.EnderChest.Utils;
 
 import Anarchy.Manager.FakeChests.Inventory.DefaultChest;
 import cn.nukkit.Player;
@@ -6,7 +6,7 @@ import cn.nukkit.level.Sound;
 
 public class EnderChest extends DefaultChest {
 	
-	EnderChest(String title) {
+	public EnderChest(String title) {
 		super(title);
 	}
 	

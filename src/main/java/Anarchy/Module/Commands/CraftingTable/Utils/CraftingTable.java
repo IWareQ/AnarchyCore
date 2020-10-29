@@ -1,10 +1,10 @@
-package Anarchy.Module.Commands.CraftingTable;
+package Anarchy.Module.Commands.CraftingTable.Utils;
 
 import Anarchy.Manager.FakeChests.Inventory.DefaultCraftingTable;
 
 public class CraftingTable extends DefaultCraftingTable {
 	
-	CraftingTable(String title) {
-		super(title);
+	public CraftingTable() {
+		super();
 	}
 }

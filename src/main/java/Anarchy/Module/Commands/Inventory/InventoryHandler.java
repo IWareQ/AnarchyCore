@@ -1,8 +1,8 @@
 package Anarchy.Module.Commands.Inventory;
 
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
-import Anarchy.Module.Commands.Inventory.Utils.CheckEnderChest;
-import Anarchy.Module.Commands.Inventory.Utils.CheckInventoryChest;
+import Anarchy.Module.Commands.Inventory.Utils.InventoryEnderChest;
+import Anarchy.Module.Commands.Inventory.Utils.InventoryChest;
 import Anarchy.Module.Economy.EconomyAPI;
 import FormAPI.Forms.Elements.ImageType;
 import FormAPI.Forms.Elements.SimpleForm;
@@ -48,14 +48,14 @@ public class InventoryHandler extends Command implements Listener {
 			new SimpleForm("§l§6" + target.getName() + " §7> §fВыберите Инвентарь", "§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "").addButton("§l§fИнвентарь", ImageType.PATH, "textures/ui/inventory_icon").addButton("§l§fЭндер Сундук", ImageType.PATH, "textures/ui/icon_blackfriday").addButton("§l§fХранилище Предметов", ImageType.PATH, "textures/ui/invite_hover").send(player, (targetPlayer, form, data)-> {
 				if (data == -1) return;
 				if (data == 0) {
-					CheckInventoryChest checkInventoryChest = new CheckInventoryChest("§l§6" + target.getName() + " §7- §fИнвентарь");
-					checkInventoryChest.setContents(target.getInventory().getContents());
-					FakeChestsAPI.openInventory(player, checkInventoryChest);
+					InventoryChest InventoryChest = new InventoryChest("§l§6" + target.getName() + " §7- §fИнвентарь");
+					InventoryChest.setContents(target.getInventory().getContents());
+					FakeChestsAPI.openInventory(player, InventoryChest);
 				}
 				if (data == 1) {
-					CheckEnderChest checkEnderChest = new CheckEnderChest("§l§6" + target.getName() + " §7- §fЭндер Сундук");
-					checkEnderChest.setContents(target.getEnderChestInventory().getContents());
-					FakeChestsAPI.openInventory(player, checkEnderChest);
+					InventoryEnderChest inventoryEnderChest = new InventoryEnderChest("§l§6" + target.getName() + " §7- §fЭндер Сундук");
+					inventoryEnderChest.setContents(target.getEnderChestInventory().getContents());
+					FakeChestsAPI.openInventory(player, inventoryEnderChest);
 				}
 				if (data == 2) {
 					player.sendMessage("Скоро");
@@ -70,7 +70,7 @@ public class InventoryHandler extends Command implements Listener {
 		for (InventoryAction action : event.getTransaction().getActions()) {
 			if (action instanceof SlotChangeAction) {
 				SlotChangeAction slotChange = (SlotChangeAction)action;
-				if (slotChange.getInventory() instanceof CheckInventoryChest || slotChange.getInventory() instanceof CheckEnderChest) {
+				if (slotChange.getInventory() instanceof InventoryChest || slotChange.getInventory() instanceof InventoryEnderChest) {
 					Player player = event.getTransaction().getSource();
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					event.setCancelled(true);

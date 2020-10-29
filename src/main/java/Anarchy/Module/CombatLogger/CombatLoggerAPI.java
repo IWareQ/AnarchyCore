@@ -11,13 +11,13 @@ import cn.nukkit.utils.DummyBossBar;
 public class CombatLoggerAPI {
 	public static ConcurrentHashMap<Player, Long> inCombat = new ConcurrentHashMap<>();
 	private static Map<String, Long> bossBarList = new HashMap<>();
-	
+
 	private static void createBossBar(Player player, String text) {
 		DummyBossBar dummyBossBar = new DummyBossBar.Builder(player).text(text).length(100).build();
 		player.createBossBar(dummyBossBar);
 		getMap().put(player.getName(), dummyBossBar.getBossBarId());
 	}
-	
+
 	public static void updateBossBar(Player player, String text, int length) {
 		DummyBossBar dummyBossBar = getDummyBossBar(player);
 		if (dummyBossBar != null) {
@@ -25,7 +25,7 @@ public class CombatLoggerAPI {
 			dummyBossBar.setLength(length);
 		}
 	}
-	
+
 	private static DummyBossBar getDummyBossBar(Player player) {
 		Long barId = getBarId(player);
 		if (barId != null) {
@@ -33,22 +33,18 @@ public class CombatLoggerAPI {
 		}
 		return null;
 	}
-	
+
 	public static void addCombat(Player player) {
-		if (inCombat(player)) {
-			if (System.currentTimeMillis() * 1000 - inCombat.get(player) < 60) {
-				createBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n§l§fНе выходите из игры еще §630 §fсек§7.!");
-			}
-		} else {
+		if (!inCombat(player)) {
 			createBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n§l§fНе выходите из игры еще §630 §fсек§7.!");
 		}
-		inCombat.put(player, System.currentTimeMillis());
+		inCombat.put(player, System.currentTimeMillis() / 1000 + 30);
 	}
-	
+
 	public static boolean inCombat(Player player) {
 		return inCombat.containsKey(player);
 	}
-	
+
 	public static void removeCombat(Player player) {
 		Iterator iterator = inCombat.keySet().iterator();
 		while (iterator.hasNext()) {
@@ -59,11 +55,11 @@ public class CombatLoggerAPI {
 		}
 		removeBossBar(player);
 	}
-	
+
 	public static Map<Player, Long> getPlayers() {
 		return inCombat;
 	}
-	
+
 	private static Long getBarId(Player player) {
 		Long barId = getMap().get(player.getName());
 		if (barId != null) {
@@ -71,11 +67,11 @@ public class CombatLoggerAPI {
 		}
 		return null;
 	}
-	
+
 	private static Map<String, Long> getMap() {
 		return bossBarList;
 	}
-	
+
 	private static void removeBossBar(Player player) {
 		Long barId = getBarId(player);
 		if (barId != null) {

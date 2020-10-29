@@ -1,5 +1,6 @@
 package Anarchy.Task;
 
+import Anarchy.Manager.Functions.FunctionsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -27,7 +28,7 @@ public class ClearTask extends Task {
 			if (TIMER_CLEAR == 0) {
 				for (Level level : Server.getInstance().getLevels().values()) {
 					for (Entity entity : level.getEntities()) {
-						if (!(entity instanceof Player) &&  !(entity instanceof EntityMinecartChest) && !(entity instanceof Wither) && !(entity.getNameTag().equals("§l§fАукционер")) && !(entity.getNameTag().equals("§l§fБарыга"))) {
+						if (!(entity instanceof Player) &&  !(entity instanceof EntityMinecartChest) && !(entity instanceof Wither) && !(entity.getLevel().equals(FunctionsAPI.SPAWN))) {
 							entity.close();
 						}
 					}

@@ -27,15 +27,16 @@ public class RegionsAPI {
 	public static Map<Integer, Integer> REGIONS = new HashMap<>();
 
 	public static void register() {
-		REGIONS.put(Item.IRON_BLOCK, 3);
-		REGIONS.put(Item.DIAMOND_BLOCK, 6);
+		REGIONS.put(Item.IRON_BLOCK, 2);
+		REGIONS.put(Item.DIAMOND_ORE, 4);
+		REGIONS.put(Item.EMERALD_ORE, 8);
 		REGIONS.put(Item.EMERALD_BLOCK, 10);
 	}
 
 	public static void placeRegion(Player player, Block block, BlockPlaceEvent event) {
 		if (player.getLevel() != FunctionsAPI.MAP) {
 			player.sendMessage(PREFIX + "§fРазместите блок в обычном мире§7!");
-			event.setCancelled();
+			event.setCancelled(true);
 			return;
 		}
 		GroupAllow groupAllow = PermissionsAPI.getGroupAllows(PermissionsAPI.getGroup(player));
@@ -43,7 +44,7 @@ public class RegionsAPI {
 			int regionCount = RegionsAPI.getRegionsCount(player.getName());
 			if (regionCount >= groupAllow.MAX_REGIONS) {
 				player.sendMessage(RegionsAPI.PREFIX + "§fВы уже разместили максимальное количество §6Регионов §7(§6" + regionCount + "§7)");
-				event.setCancelled();
+				event.setCancelled(true);
 				return;
 			}
 		}
