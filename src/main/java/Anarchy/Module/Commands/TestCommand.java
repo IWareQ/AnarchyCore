@@ -54,9 +54,9 @@ public class TestCommand extends Command {
 
 			case "3": {
 				Position position = player.getPosition();
-				Entity entity = Entity.createEntity("WitchBoss", position);
+				Entity entity = Entity.createEntity("SilverfishBoss", position);
 				entity.setScale((float)2.0);
-				entity.setNameTag("Алхимик");
+				entity.setNameTag("Червяк");
 				entity.setNameTagAlwaysVisible();
 				entity.spawnToAll();
 				player.sendMessage("§l§7(§3Боссы§7) §r§fНа карте появился Босс§7!\n§l§6• §r§fКоординаты§7: §6" + entity.getFloorX() + "§7, §6 " + entity.getFloorY()

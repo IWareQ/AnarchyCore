@@ -21,12 +21,13 @@ public class BonusCommand extends Command {
 			Player player = (Player)sender;
 			if (!player.hasPermission("Command.Bonus")) {
 				player.sendMessage("§l§6• §r§fБонус доступен от привилегии Тартар§7!");
+				return false;
 			}
 			PlayerInventory playerInventory = player.getInventory();
 			Integer bonusID = SQLiteUtils.selectInteger("Users.db", "SELECT Bonus FROM USERS WHERE UPPER(Username) = '" + player.getName().toUpperCase() + "';");
 			if (bonusID == 0) {
 				playerInventory.addItem(Item.get(Item.MONSTER_SPAWNER, 0, 1));
-				playerInventory.addItem(Item.get(Item.MONSTER_EGG, 33, 1));
+				playerInventory.addItem(Item.get(383, 11, 2));
 				playerInventory.addItem(Item.get(Item.GOLDEN_APPLE_ENCHANTED, 0, 1));
 				player.sendMessage("§l§a• §r§fБонус был успешно взят§7!");
 				SQLiteUtils.query("Users.db", "UPDATE USERS SET Bonus = '1' WHERE UPPER(Username) = '" + player.getName().toUpperCase() + "';");

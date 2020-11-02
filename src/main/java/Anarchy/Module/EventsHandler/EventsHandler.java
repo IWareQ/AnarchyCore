@@ -1,8 +1,11 @@
 package Anarchy.Module.EventsHandler;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
 import Anarchy.AnarchyMain;
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Manager.Functions.FunctionsAPI;
@@ -28,7 +31,6 @@ import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockBurnEvent;
 import cn.nukkit.event.block.BlockIgniteEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
-import Anarchy.Module.Commands.NPC.Utils.PiglinBruteNPC;
 import cn.nukkit.event.block.ItemFrameDropItemEvent;
 import cn.nukkit.event.block.LeavesDecayEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
@@ -62,12 +64,14 @@ public class EventsHandler implements Listener {
 	File dataFileKills = new File(AnarchyMain.datapath + "/Kills.yml");
 	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
 	Config configKills = new Config(dataFileKills, Config.YAML);
+	public static Map<Player, Long> COOLDOWN = new HashMap<>();
 	public static int CHAT_RADIUS = 70;
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0), (double)(int)Math.round(event.getPlayer().z - 0.5)));
+		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0),
+					  (double)(int)Math.round(event.getPlayer().z - 0.5)));
 		if (!player.hasPermission("Acces.Admin")) {
 			if (player.x < FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z < FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
 				player.sendTip("§l§c• §fВы пытаетесь §6выйти §fза границу мира§7! §c•§r");
@@ -75,12 +79,12 @@ public class EventsHandler implements Listener {
 			}
 		}
 		if (player.getFloorY() <= -5 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
-			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn(new Position(-8.50, 51, -3.50)));
+			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn(new Position(-8.5, 51, -3.5)));
 			player.sendMessage("§l§a• §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!\n§l§6• §r§fЗапомните§7, §fесли вы упадете в бездну в мире §6TheEnd§7, §fто Вас не спасут§7!");
 		}
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && block.getId() == 544) {
-			Server.getInstance().dispatchCommand(player, "rtp");
-			event.setCancelled(true);
+			player.teleport(FunctionsAPI.randomPos(new Position(0, 0, 0, FunctionsAPI.MAP)));
+			player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.");
 		}
 	}
 
@@ -146,12 +150,12 @@ public class EventsHandler implements Listener {
 		Item item = event.getItem();
 		PlayerInventory playerInventory = player.getInventory();
 		Block block = event.getBlock();
-		if (item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
+		/*if (item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
 			player.sendMessage("§l§6• §r§fСокровище успешно Активированно§7!");
 			player.getInventory().removeItem(item);
-		}
+		}*/
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
-			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
+			player.sendTip("§l§fТерритория не доступна для взаимодествия§7!");
 			event.setCancelled(true);
 		}
 		if (item.getCustomName().equals("§r§fЗлодейская кирка") && item.getId() == Item.NETHERITE_PICKAXE) {
@@ -161,8 +165,8 @@ public class EventsHandler implements Listener {
 				playerInventory.setItemInHand(Item.get(Item.AIR));
 				player.getLevel().setBlock(new Position(block.getX(), block.getY(), block.getZ()), Block.get(0));
 			} else {
-				event.setCancelled(true);
 				player.sendTip("§l§fИспользуй только на §6Бедроке§7!");
+				event.setCancelled(true);
 			}
 		}
 	}
@@ -176,25 +180,54 @@ public class EventsHandler implements Listener {
 			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
 			event.setCancelled(true);
 		}
-		if (block.getId() == 52) {
+
+		if (block.getId() == Block.MONSTER_SPAWNER) {
 			if (item != null && item.isPickaxe() && item.getName().equals("§r§fКирка похитителя")) {
-				BlockEntity blockEntity = player.getLevel().getBlockEntity(block);
-				if (blockEntity instanceof BlockEntitySpawner) {
-					int entityType = ((BlockEntitySpawner)blockEntity).getSpawnEntityType();
-					if (entityType > 0) {
-						item.setDamage(item.getDamage() + 5);
-						event.setDrops(new Item[] {Item.get(Item.MONSTER_SPAWNER, 0, 1), Item.get(Item.MONSTER_EGG, entityType, 1)});
+				BlockEntity be = block.getLevel().getBlockEntity(block);
+				if (be instanceof BlockEntitySpawner) {
+					int entity = ((BlockEntitySpawner)be).getSpawnEntityType();
+					if (entity > 0) {
+						item.setDamage(item.getDamage() + 20);
+						event.setDrops(new Item[] {Item.get(52, 0, 1), Item.get(383, entity, 1)});
+						return;
 					}
-					item.setDamage(item.getDamage() + 5);
-					event.setDrops(new Item[] {Item.get(Item.MONSTER_SPAWNER, 0, 1)});
-					event.setCancelled(true);
 				}
+				item.setDamage(item.getDamage() + 20);
+				event.setDrops(new Item[] {Item.get(52, 0, 1)});
 			}
 		}
-		if (item != null && item.isPickaxe() && item.getName().equals("§r§fЗлодейская кирка")) {
-			if (block.getId() != 7) {
-				event.setCancelled(true);
-			}
+		if (block.getId() == Block.DIAMOND_ORE) {
+			int dropExp = block.getDropExp();
+			player.addExperience(dropExp);
+			event.setDropExp(0);
+		} else if (block.getId() == Block.REDSTONE_ORE) {
+			int dropExp = block.getDropExp();
+			player.addExperience(dropExp);
+			event.setDropExp(0);
+		} else if (block.getId() == Block.COAL_ORE) {
+			int dropExp = block.getDropExp();
+			player.addExperience(dropExp);
+			event.setDropExp(0);
+		} else if (block.getId() == Block.EMERALD_ORE) {
+			int dropExp = block.getDropExp();
+			player.addExperience(dropExp);
+			event.setDropExp(0);
+		} else if (block.getId() == Block.LAPIS_ORE) {
+			int dropExp = block.getDropExp();
+			player.addExperience(dropExp);
+			event.setDropExp(0);
+		} else if (block.getId() == Block.QUARTZ_ORE) {
+			int dropExp = block.getDropExp();
+			player.addExperience(dropExp);
+			event.setDropExp(0);
+		} else if (block.getId() == Block.NETHER_GOLD_ORE) {
+			int dropExp = block.getDropExp();
+			player.addExperience(dropExp);
+			event.setDropExp(0);
+		} else if (block.getId() == Block.LIT_REDSTONE_ORE) {
+			int dropExp = block.getDropExp();
+			player.addExperience(dropExp);
+			event.setDropExp(0);
 		}
 	}
 
@@ -227,8 +260,10 @@ public class EventsHandler implements Listener {
 			}
 			if (entity.getNameTag().equalsIgnoreCase("§l§6Барыга")) {
 				Hopper hopper = new Hopper("§l§6Барыга");
-				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0, 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
-				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0, 1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
+				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0,
+												 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
+				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0,
+											1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
 				hopper.addItem(netheritePickaxe);
 				hopper.addItem(goldPickaxe);
 				FakeChestsAPI.openInventory((Player)damager, hopper);
@@ -276,7 +311,7 @@ public class EventsHandler implements Listener {
 							playerInventory.addItem(sourceItem.setLore(""));
 							player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 							player.sendMessage("§l§7(§3Барыга§7) §r§7«§6Кирка похитителя§7» §fуспешно куплена за §620000§7!");
-							EconomyAPI.reduceMoney(player, 30000.0);
+							EconomyAPI.reduceMoney(player, 20000.0);
 						}
 					}
 					break;
@@ -349,14 +384,28 @@ public class EventsHandler implements Listener {
 		String playerMessage = event.getMessage();
 		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player.getName());
 		String displayName = PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + " §f" + player.getName();
+		Long cooldownTime = COOLDOWN.get(player);
+		Long nowTime = System.currentTimeMillis() / 1000;
+		if (cooldownTime != null && cooldownTime > nowTime) {
+			player.sendMessage("§l§6• §r§fВы слишком часто пишите в чат§7, §fпожалуйста§7, §fподождите несколько секунд§7!");
+			event.setCancelled(true);
+			return;
+		}
+
 		if (String.valueOf(playerMessage.charAt(0)).equals("#")) {
-			for (Player playerAdmin : Server.getInstance().getOnlinePlayers().values()) {
-				if (playerAdmin.hasPermission("AdminChat")) {
-					playerAdmin.sendMessage("§7(§cA§7) §r" + displayName + " §7» §6" + playerMessage);
+			Set<CommandSender> adminPlayer = new HashSet<>();
+			for (Player players : Server.getInstance().getOnlinePlayers().values()) {
+				if (players.hasPermission("AdminChat")) {
+					adminPlayer.add(players);
 				}
 			}
+			adminPlayer.add(new ConsoleCommandSender());
+			event.setFormat("§7(§cA§7) " + displayName + " §8» §6" + playerMessage.substring(1).replaceAll("§", ""));
+			event.setRecipients(adminPlayer);
+			COOLDOWN.put(player, nowTime + 2);
 		} else if (String.valueOf(playerMessage.charAt(0)).equals("!")) {
-			event.setFormat("§aⒼ " + displayName + " §8» §7" + playerMessage.substring(1).replaceAll("§", ""));
+			event.setFormat("§7(§aG§7) " + displayName + " §8» §7" + playerMessage.substring(1).replaceAll("§", ""));
+			COOLDOWN.put(player, nowTime + 2);
 		} else {
 			Set<CommandSender> players = new HashSet<>();
 			for (Player playerChat : Server.getInstance().getOnlinePlayers().values()) {
@@ -365,8 +414,9 @@ public class EventsHandler implements Listener {
 				}
 			}
 			players.add(new ConsoleCommandSender());
-			event.setFormat("§6Ⓛ " + displayName + " §8» §f" + playerMessage.replaceAll("§", ""));
+			event.setFormat("§7(§6L§7) " + displayName + " §8» §f" + playerMessage.replaceAll("§", ""));
 			event.setRecipients(players);
+			COOLDOWN.put(player, nowTime + 2);
 		}
 	}
 

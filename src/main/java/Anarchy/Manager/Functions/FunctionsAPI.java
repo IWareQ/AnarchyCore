@@ -8,8 +8,8 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 
 public class FunctionsAPI {
-	public static Integer[] BORDER = new Integer[] {-1000, 1000, -1000, 1000};
-	public static Integer[] RANDOM_TP = new Integer[] {-700, 700, -700, 700};
+	public static Integer[] BORDER = new Integer[] {-1500, 1500, -1500, 1500};
+	public static Integer[] RANDOM_TP = new Integer[] {-1000, 1000, -1000, 1000};
 	public static Level MAP;
 	public static Level SPAWN;
 	public static Level COORDINATE;
@@ -34,8 +34,8 @@ public class FunctionsAPI {
 	public static Position randomPos(Position pos) {
 		int x = RandomUtils.rand(RANDOM_TP[0], RANDOM_TP[1]);
 		int z = RandomUtils.rand(RANDOM_TP[2], RANDOM_TP[3]);
-		pos.setComponents(x, 67, z);
-		for (int i = 67; i < 120; i++) {
+		pos.setComponents(x, 80, z);
+		for (int i = 80; i < 120; i++) {
 			pos.setComponents(x, i, z);
 			Block ground = pos.getLevel().getBlock(pos);
 			Block body = pos.getLevel().getBlock(pos.setComponents(x, i + 1, z));

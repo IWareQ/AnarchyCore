@@ -19,7 +19,7 @@ public class SpectateAPI {
 	public static void addSpectate(Player player, Player target) {
 		SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 		if (SPECTATE_PLAYERS.containsKey(player.getName())) {
-			player.sendMessage(AnarchyMain.PREFIX + "§fВы уже наблюдаете за Игроком §6" + spectatePlayer.getSpectateName() + "\n§l§6• §r§fДля окончания наблюдения используйте §6Редстоун§7!");
+			player.sendMessage(AnarchyMain.PREFIX + "§fВы уже наблюдаете за Игроком §6" + spectatePlayer.getSpectateName() + "\n§l§6• §r§fДля окончания наблюдения возьмите в руку §6Редстоун§7!");
 		} else if (target != null) {
 			GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
 			gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
@@ -31,11 +31,11 @@ public class SpectateAPI {
 			player.setGamemode(3);
 			player.getInventory().clearAll();
 			player.getInventory().setHeldItemIndex(0);
-			player.getInventory().setItem(5, Item.get(Item.STICK).setCustomName("§r§l§fПроверка регионов").setLore("§r§l§6• §fВозьмите в руку§7, §fчтобы проверить\n§fнет ли в блези регионов§7"));
-			player.getInventory().setItem(6, Item.get(Item.CLOCK).setCustomName("§r§l§fАдмин§7-§fпанель").setLore("§r§l§6• §fПока что это не работающая хуйня §7:§fD"));
-			player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§r§l§fЗавершить Наблюдение"));
+			player.getInventory().setItem(5, Item.get(Item.STICK).setCustomName("§r§fПроверка регионов").setLore("§r§l§6• §fВозьмите в руку§7, §fчтобы проверить\n§fнет ли в блези регионов§7"));
+			player.getInventory().setItem(6, Item.get(Item.CHEST).setCustomName("§r§fПросмотреть Инвентарь").setLore("§r§l§6• §fВозьмите в руку чтобы просмотреть §6Инвентарь §fнаблюдаемого§7!"));
+			player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§r§fЗавершить Наблюдение"));
 			player.teleport(target);
-			player.sendMessage(AnarchyMain.PREFIX + "§fВы начали наблюдать за Игроком §6" + target.getName() + "\n§l§6• §r§fДля окончания наблюдения используйте §6Редстоун§7!");
+			player.sendMessage(AnarchyMain.PREFIX + "§fВы начали наблюдать за Игроком §6" + target.getName() + "\n§l§6• §r§fДля окончания наблюдения возьмите в руку §6Редстоун§7!");
 		}
 	}
 

@@ -1,6 +1,11 @@
 package Anarchy.Task;
 
 import Anarchy.Manager.Functions.FunctionsAPI;
+import Anarchy.Module.Boss.EvokerBoss;
+import Anarchy.Module.Boss.RavagerBoss;
+import Anarchy.Module.Boss.SilverfishBoss;
+import Anarchy.Module.Boss.SlimeBoss;
+import Anarchy.Module.Boss.WitchBoss;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -28,7 +33,7 @@ public class ClearTask extends Task {
 			if (TIMER_CLEAR == 0) {
 				for (Level level : Server.getInstance().getLevels().values()) {
 					for (Entity entity : level.getEntities()) {
-						if (!(entity instanceof Player) &&  !(entity instanceof EntityMinecartChest) && !(entity instanceof Wither) && !(entity.getLevel().equals(FunctionsAPI.SPAWN))) {
+						if (!(entity instanceof Player) &&  !(entity instanceof EntityMinecartChest) && !(entity instanceof Wither) && !(entity.getLevel().equals(FunctionsAPI.SPAWN)) && !(entity instanceof SilverfishBoss) && !(entity instanceof SlimeBoss) && !(entity instanceof EvokerBoss) && !(entity instanceof RavagerBoss) && !(entity instanceof WitchBoss)) {
 							entity.close();
 						}
 					}

@@ -139,6 +139,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.DonateShop", true);
 			break;
 
 		case 6: // YouTube
@@ -148,6 +149,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.Coordinate", true);
 			break;
 
@@ -158,6 +160,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.NightVision", true);
 			permissionAllows.put("Command.ClearChat", true);
 			break;
@@ -169,6 +172,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.NightVision", true);
 			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("Command.Near", true); // 65 блоков
@@ -182,6 +186,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.NightVision", true);
 			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("Command.Near", true); // 100 блоков
@@ -197,6 +202,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("AdminChat", true);
 			permissionAllows.put("bansystem.command.checkmute", true);
 			permissionAllows.put("bansystem.command.mute", true);
@@ -210,6 +216,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.NightVision", true);
 			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("Command.Near", true);
@@ -232,6 +239,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.NightVision", true);
 			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("Command.Near", true);
@@ -254,6 +262,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Day", true);
 			permissionAllows.put("Command.Night", true);
 			permissionAllows.put("Command.EnderChest", true);
+			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.NightVision", true);
 			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("Command.Near", true);

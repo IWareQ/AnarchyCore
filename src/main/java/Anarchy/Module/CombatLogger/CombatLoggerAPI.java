@@ -12,13 +12,13 @@ public class CombatLoggerAPI {
 	public static ConcurrentHashMap<Player, Long> inCombat = new ConcurrentHashMap<>();
 	private static Map<String, Long> bossBarList = new HashMap<>();
 
-	private static void createBossBar(Player player, String text) {
-		DummyBossBar dummyBossBar = new DummyBossBar.Builder(player).text(text).length(100).build();
+	public static void createBossBar(Player player, String text, Integer length) {
+		DummyBossBar dummyBossBar = new DummyBossBar.Builder(player).text(text).length(length).build();
 		player.createBossBar(dummyBossBar);
 		getMap().put(player.getName(), dummyBossBar.getBossBarId());
 	}
 
-	public static void updateBossBar(Player player, String text, int length) {
+	public static void updateBossBar(Player player, String text, Integer length) {
 		DummyBossBar dummyBossBar = getDummyBossBar(player);
 		if (dummyBossBar != null) {
 			dummyBossBar.setText(text);
@@ -26,7 +26,7 @@ public class CombatLoggerAPI {
 		}
 	}
 
-	private static DummyBossBar getDummyBossBar(Player player) {
+	public static DummyBossBar getDummyBossBar(Player player) {
 		Long barId = getBarId(player);
 		if (barId != null) {
 			return player.getDummyBossBar(barId);
@@ -36,7 +36,7 @@ public class CombatLoggerAPI {
 
 	public static void addCombat(Player player) {
 		if (!inCombat(player)) {
-			createBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n§l§fНе выходите из игры еще §630 §fсек§7.!");
+			createBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n§l§fНе выходите из игры еще §630 §fсек§7.!", 100);
 		}
 		inCombat.put(player, System.currentTimeMillis() / 1000 + 30);
 	}

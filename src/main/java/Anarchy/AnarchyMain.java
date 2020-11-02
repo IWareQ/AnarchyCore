@@ -73,9 +73,9 @@ import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Module.Regions.RegionsEventsHandler;
 import Anarchy.Module.Regions.Commands.RegionCommand;
 import Anarchy.Task.ClearTask;
-import Anarchy.Task.CombatLoggerTask;
 import Anarchy.Task.HotbarTask;
 import Anarchy.Task.MinuteTask;
+import Anarchy.Task.SecondTask;
 import Anarchy.Task.Utils.Broadcast;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -172,7 +172,7 @@ public class AnarchyMain extends PluginBase {
 	private void registerTask() {
 		this.getServer().getScheduler().scheduleRepeatingTask(new MinuteTask(), 60 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new HotbarTask(), 20);
-		this.getServer().getScheduler().scheduleRepeatingTask(new CombatLoggerTask(), 20);
+		this.getServer().getScheduler().scheduleRepeatingTask(new SecondTask(), 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
 	}
 

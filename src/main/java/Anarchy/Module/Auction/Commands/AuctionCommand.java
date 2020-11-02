@@ -81,6 +81,7 @@ public class AuctionCommand extends Command {
 				AuctionAPI.AUCTION_PAGE.put(player, 0);
 				AuctionAPI.showAuction(player, true);
 			}
+			//player.sendMessage("§l§6• §r§fАукцион временно не доступен§7!");
 		}
 		return false;
 	}

@@ -19,7 +19,7 @@ public class KickCommand extends Command {
 	Config BanList = new Config(dataFile, Config.YAML);
 
 	public KickCommand() {
-		super("testban", "Тест бан");
+		super("tesan", "Тест бан");
 		this.setPermission("Command.Ban");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});

@@ -54,7 +54,7 @@ public class AuthEventsHandler implements Listener {
 		Player player = event.getPlayer();
 		String device = player.getLoginChainData().getDeviceModel();
 		String brand = device.split("\\s+")[0];
-		if (!brand.equals(brand.toUpperCase()) && !brand.equalsIgnoreCase("Iphone")) {
+		if (!brand.equals(brand.toUpperCase()) && !brand.equalsIgnoreCase("Iphone") && !brand.equalsIgnoreCase("playstation_4") && !brand.equalsIgnoreCase("iPhone8,4")) {
 			player.close("", "§l§fНа нашем сервере запрещены §6Читы§7!\n§fВаша попытка входа с читами была отправленна Администраторам§7!");
 			AnarchyMain.sendMessageToChat("Игрок " + player.getName() + " пытался зайти с ToolBox!\n\nУстройство: " + brand, 2000000004);
 		}
@@ -101,9 +101,6 @@ public class AuthEventsHandler implements Listener {
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 52.50, -5.50), "§l§6Press F to pay respects"), player);
 		player.sendMessage("§l§6• §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§6• §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§6death§fanarchy §l§6| §r§fНаш сайт §7- §6death§7-§6mc§7.§6online");
 		PlayerSessionManager.startPlayerSession(player);
-		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
-			HotbarTask.showScoreboard(player);
-		}
 		PermissionsAPI.updateTag(player);
 		PermissionsAPI.updatePermissions(player);
 		player.setCheckMovement(false);

@@ -1,12 +1,19 @@
 package Anarchy.Task;
 
+import Anarchy.AnarchyMain;
+import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Module.CombatLogger.CombatLoggerAPI;
+import Anarchy.Module.Commands.Spectate.SpectateAPI;
+import Anarchy.Module.Commands.Spectate.Utils.SpectatePlayer;
+import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.scheduler.Task;
 
-public class CombatLoggerTask extends Task {
+public class SecondTask extends Task {
 
 	@Override()
 	public void onRun(int currentTick) {
+		AuctionAPI.updateAuction();
 		CombatLoggerAPI.getPlayers().forEach((player, time)-> {
 			if (time < System.currentTimeMillis() / 1000) {
 				if (player != null) {
@@ -26,5 +33,15 @@ public class CombatLoggerTask extends Task {
 			}
 			--combatTime;
 		});
+		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
+			if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName())) {
+				SpectatePlayer spectatePlayer = SpectateAPI.SPECTATE_PLAYERS.get(player.getName());
+				Player target = Server.getInstance().getPlayer(spectatePlayer.getSpectateName());
+				if (player.distance(target) >= 20) {
+					player.sendMessage(AnarchyMain.PREFIX + "§fВы не можете отлететь дальше §620 §fблоков от Наблюдаемого§7!\n§l§6• §r§fДля окончания наблюдения возьмите в руку §6Редстоун§7!");
+					player.teleport(target.getPosition());
+				}
+			}
+		}
 	}
 }

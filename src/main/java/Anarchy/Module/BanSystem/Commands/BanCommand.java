@@ -1,11 +1,15 @@
 
 package Anarchy.Module.BanSystem.Commands;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import Anarchy.AnarchyMain;
+import Anarchy.Manager.Sessions.PlayerSessionManager;
+import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.BanSystem.BanAPI;
+import Anarchy.Module.Permissions.PermissionsAPI;
 import FormAPI.Forms.Elements.CustomForm;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -13,11 +17,14 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
+import cn.nukkit.utils.Config;
 
 public class BanCommand extends Command {
+	File dataFile = new File(AnarchyMain.datapath + "/bans.yml");
+	Config BanList = new Config(dataFile, Config.YAML);
 
 	public BanCommand() {
-		super("bantest", "Тест бан");
+		super("bantest", "§r§l§fТестовый бан");
 		this.setPermission("Command.Ban");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
@@ -39,24 +46,26 @@ public class BanCommand extends Command {
 				player.sendMessage("§l§6| §r§fИгрок §6" + args[0] + " §fне в сети§7, §fили уже забанен§7!");
 				return true;
 			}
-			List<String> days = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30");
-			List<String> hours = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24");
-			List<String> minutes = Arrays.asList("0", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55", "60");
-			new CustomForm("§l§fБлокировка Игрок §6" + target.getName()).addStepSlider("§l§fДней§6", days).addStepSlider("§l§fЧасов§6", hours).addStepSlider("§l§fМинут§6", minutes).addInput("§l§fПричина§7:", "Причину писать в числах, 1.1, 1.3 и т.д").send(player, (targetPlayer, form, data)-> {
+			PlayerSession playerSession = PlayerSessionManager.getPlayerSession(target);
+			List<String> timeBan = Arrays.asList("§62 §fДня", "§65 §fДней", "§610 §fДней", "§630 §fДней", "§6Навсегда");
+			new CustomForm("§l§fБлокировка Игрок").addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n").addInput("§l§6• §r§fПричина блокировки§7:").addDropDown("§l§6• §r§fВремя блокировки§7:", timeBan).send(player, (targetPlayer, form, data)-> {
 				if (data == null) return;
-				player.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + target.getName() + " §fбыл успешно заблокирован§7!");
-				String reason = (String)data.get(3);
-				Long nowTime = System.currentTimeMillis() / 1000L;
-				int day = (Integer.parseInt((String)data.get(0)) * 86400);
-				int hour = (Integer.parseInt((String)data.get(1)) * 3600);
-				int min;
-				if(Integer.parseInt((String)data.get(2)) > 1){
-					min = (Integer.parseInt((String)data.get(2)) * 60);
+				int secondsTime;
+				if (data.get(2).equals("§62 §fДня")) {
+					secondsTime = 172800;
+				} else if (data.get(2).equals("§65 §fДней")) {
+					secondsTime = 432000;
+				} else if (data.get(2).equals("§610 §fДней")) {
+					secondsTime = 864000;
+				} else if (data.get(2).equals("§630 §fДней")) {
+					secondsTime = 2592000;
+				} else if (data.get(2).equals("§6Навсегда")) {
+					secondsTime = -1;
 				} else {
-					min = 60;
+					secondsTime = 1;
 				}
-				long banTime = nowTime + day + hour + min; 
-				BanAPI.banPlayer(player, target, reason, banTime);
+				player.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + target.getName() + " §fбыл заблокирован§7!\n\n§l§6• §r§fПричина§7: §6" + (String)data.get(1) + "\n§l§6• §r§fЗабанен на§7: " + (String)data.get(2) + "\n§l§6• §r§fТех§7.§fинформация§7: §6" + secondsTime);
+				BanAPI.banPlayer(player, target, (String)data.get(1), System.currentTimeMillis() / 1000 + secondsTime);
 			});
 		}
 		return false;

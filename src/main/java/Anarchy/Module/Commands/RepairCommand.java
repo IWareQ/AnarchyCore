@@ -38,7 +38,7 @@ public class RepairCommand extends Command {
 			Item item = inventory.getItemInHand();
 			if (args.length == 0) {
 				if (!(item instanceof ItemTool) && !(item instanceof ItemArmor)) {
-					player.sendMessage("§l§6| §r§fЧинить можно только §6Инструменты §fи §6Броню");
+					player.sendMessage("§l§6| §r§fЧинить можно только §6Инструменты §fи §6Броню\n§l§6• §r§f");
 					return false;
 				}
 				item.setDamage(0);
@@ -54,15 +54,15 @@ public class RepairCommand extends Command {
 						if (items instanceof ItemTool || items instanceof ItemArmor) {
 							if (items.getName().equals("§r§fЗлодейская кирка")) {
 								player.sendMessage("§l§c• §r§fВ инвентаре найден предмет§7, §fкоторый невозможно починить§7!");
+								return false;
 							}
 							items.setDamage(0);
+							player.getInventory().setContents(contents);
 						}
-						player.sendExperienceLevel(player.getExperienceLevel());
+						player.sendMessage("§l§a| §r§fВсе предметы в Инвентаре успешно починены§7! (§6" + contents.size() + "§7)");
+						player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
+						COOLDOWN.put(player, nowTime + 10);
 					}
-					player.getInventory().setContents(contents);
-					player.sendMessage("§l§a| §r§fВсе предметы в Инвентаре успешно починены§7! (§6§7)");
-					player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
-					COOLDOWN.put(player, nowTime + 60);
 				} else {
 					player.sendMessage("§l§c• §r§fНе достаточно уровней§7, §fдля починки вещей§7!");
 				}

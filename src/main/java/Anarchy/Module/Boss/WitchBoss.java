@@ -67,7 +67,7 @@ public class WitchBoss extends WalkingMonster {
 
 	@Override
 	public void attackEntity(Entity player) {
-		if (this.attackDelay > 60 && Utils.rand(1, 3) == 2 && this.distanceSquared(player) <= 60) {
+		if (this.attackDelay > 10 && Utils.rand(1, 3) == 2 && this.distanceSquared(player) <= 60) {
 			this.attackDelay = 0;
 			if (player.isAlive() && !player.closed) {
 
@@ -82,13 +82,13 @@ public class WitchBoss extends WalkingMonster {
 				double distance = this.distanceSquared(player);
 
 				if (!player.hasEffect(Effect.SLOWNESS) && distance <= 64) {
-					thrownPotion.potionId = Potion.SLOWNESS;
+					thrownPotion.potionId = Potion.POISON_II;
 				} else if (player.getHealth() >= 8) {
-					thrownPotion.potionId = Potion.POISON;
+					thrownPotion.potionId = Potion.POISON_II;
 				} else if (!player.hasEffect(Effect.WEAKNESS) && Utils.rand(0, 4) == 0 && distance <= 9) {
-					thrownPotion.potionId = Potion.WEAKNESS;
+					thrownPotion.potionId = Potion.INSTANT_HEALTH_II;
 				} else {
-					thrownPotion.potionId = Potion.HARMING;
+					thrownPotion.potionId = Potion.INSTANT_HEALTH_II;
 				}
 
 				thrownPotion.setMotion(new Vector3(-Math.sin(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f, -Math.sin(Math.toDegrees(pitch)) * f * f, Math.cos(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f));
@@ -108,7 +108,7 @@ public class WitchBoss extends WalkingMonster {
 	public Item[] getDrops() {
 		List<Item> drops = new ArrayList<>();
 		drops.add(Item.get(Item.DIAMOND_BLOCK, 0, 1));
-		drops.add(Item.get(Item.EMERALD, 0, 2));
+		drops.add(Item.get(Item.EMERALD, 0, Utils.rand(1, 2)));
 		drops.add(Item.get(Item.POTION, 0, 1));
 		if (Utils.rand(1, 4) == 1) {
 			drops.add(Item.get(Item.STICK, 0, Utils.rand(0, 16)));
@@ -142,7 +142,7 @@ public class WitchBoss extends WalkingMonster {
 
 	@Override
 	public int getKillExperience() {
-		return 5;
+		return 1000;
 	}
 
 	@Override

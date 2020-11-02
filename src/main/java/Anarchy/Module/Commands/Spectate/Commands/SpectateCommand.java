@@ -12,7 +12,7 @@ import cn.nukkit.command.data.CommandParameter;
 public class SpectateCommand extends Command {
 
 	public SpectateCommand() {
-		super("sp", "Наблюдение за Игроком", "", new String[] {"spectate"});
+		super("spectate", "Наблюдение за Игроком", "", new String[] {"sp"});
 		this.setPermission("Command.Spectate");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
