@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import Anarchy.AnarchyMain;
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
+import Anarchy.Module.BanSystem.BanSystemAPI;
+import Anarchy.Module.BanSystem.Utils.BanUtils;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import Anarchy.Task.HotbarTask;
 import Anarchy.Utils.SQLiteUtils;
@@ -54,9 +56,20 @@ public class AuthEventsHandler implements Listener {
 		Player player = event.getPlayer();
 		String device = player.getLoginChainData().getDeviceModel();
 		String brand = device.split("\\s+")[0];
-		if (!brand.equals(brand.toUpperCase()) && !brand.equalsIgnoreCase("Iphone") && !brand.equalsIgnoreCase("playstation_4") && !brand.equalsIgnoreCase("iPhone8,4")) {
-			player.close("", "§l§fНа нашем сервере запрещены §6Читы§7!\n§fВаша попытка входа с читами была отправленна Администраторам§7!");
+		if (!brand.equals(brand.toUpperCase()) && !brand.equalsIgnoreCase("Iphone") && !brand.equalsIgnoreCase("playstation_4") && !brand.equalsIgnoreCase("iPhone8,4") && !brand.equalsIgnoreCase("iPad7,3") && !brand.equalsIgnoreCase("iPhone8,1") && !brand.equalsIgnoreCase("iPhone9,4") && !brand.equalsIgnoreCase("iPhone6,2") && !brand.equalsIgnoreCase("iPad7,4")) {
+			player.close("", "§l§fНа нашем сервере запрещены §6Читы§7!\n§fЕсли Вы заходите без читов§7, §fно видите это окно§7, §fсообщите это в ВК - §7@§6extranons§7!");
 			AnarchyMain.sendMessageToChat("Игрок " + player.getName() + " пытался зайти с ToolBox!\n\nУстройство: " + brand, 2000000004);
+		}
+		BanUtils banUtils = BanSystemAPI.getBan(player.getName());
+		if (BanSystemAPI.playerIsBanned(player.getName())) {
+			if (banUtils.getTime() != -1) {
+				if (banUtils.getTime() < System.currentTimeMillis() / 1000L) {
+					BanSystemAPI.unBanPlayer(player.getName());
+					return;
+				} else {
+					player.close("", "§l§fУвы§7, §fно Вас §6временно §fзаблокировали§7!\n§fВас заблокировал§7: §6" + banUtils.getBanner() + "\n§fПричина блокировки§7: §6" + banUtils.getReason() + "\n§fРазбан через§7: §6" + ((banUtils.getTime() - System.currentTimeMillis() / 1000L) / 86400) + " §fд§7. §6" + ((banUtils.getTime() - System.currentTimeMillis() / 1000L) / 3600 % 24) + " §fч§7. §6" + ((banUtils.getTime() - System.currentTimeMillis() / 1000L) / 60 % 60) + " §fмин§7.");
+				}
+			}
 		}
 	}
 
@@ -68,10 +81,13 @@ public class AuthEventsHandler implements Listener {
 		String ip = player.getAddress();
 		String date = StringUtils.getDate();
 		Integer accountID = SQLiteUtils.selectInteger("Users.db", "SELECT Account_ID FROM USERS WHERE UPPER(Username) = '" + upperCase + "';");
+		String userNameAuth = SQLiteUtils.selectString("Auth.db", "SELECT Username FROM AUTH WHERE UPPER(Username) = '" + upperCase + "';");
 		if (accountID == -1) {
 			SQLiteUtils.query("Users.db", "INSERT INTO USERS (Username) VALUES ('" + playerName + "');");
 			SQLiteUtils.query("Auth.db", "INSERT INTO AUTH (Username, IP_Reg, Date_Reg) VALUES ('" + playerName + "', '" + ip + "', '" + date + "');");
 			Server.getInstance().getLogger().info("§l§7(§6Система§7) §fИгрок §6" + playerName + " §fне зарегистрирован§7! §fРегистрируем§7!");
+		} else if (userNameAuth == null) {
+			SQLiteUtils.query("Auth.db", "INSERT INTO AUTH (Username, IP_Reg, Date_Reg) VALUES ('" + playerName + "', '" + ip + "', '" + date + "');");
 		}
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.50, 50, 0.50), "§l§6Заходи в портал§7!", "§l§fПросто заходи и начинай выживать"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-4.50, 51, 12.50), "§l§6Маленький приват", "§l§f2 §7× §f2"), player);
@@ -111,6 +127,10 @@ public class AuthEventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
+		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
+			PlayerSessionManager.SCOREBOARDS.get(player.getName()).hideFor(player);
+			PlayerSessionManager.SCOREBOARD.remove(player.getName());
+		}
 		if (PlayerSessionManager.hasPlayerSession(player)) {
 			PlayerSessionManager.stopPlayerSession(player);
 		}

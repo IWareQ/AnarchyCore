@@ -6,6 +6,7 @@ import java.util.Random;
 
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.AllSessionsManager;
+import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Task.Utils.Broadcast;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -21,6 +22,7 @@ public class MinuteTask extends Task {
 
 	@Override()
 	public void onRun(int currentTick) {
+		AuctionAPI.updateAuction();
 		if (TIMER_RESTART == 10) {
 			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §610 §fминут!");
 		} else if (TIMER_RESTART == 1) {

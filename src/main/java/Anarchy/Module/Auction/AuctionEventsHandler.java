@@ -41,7 +41,7 @@ public class AuctionEventsHandler implements Listener {
 					AuctionChest auctionChest = (AuctionChest)slotChange.getInventory();
 					Item sourceItem = action.getSourceItem();
 					switch (sourceItem.getName()) {
-					case "": {
+					case "§7:D": {
 						player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					}
 					break;
@@ -101,7 +101,7 @@ public class AuctionEventsHandler implements Listener {
 								CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 								compoundTag.putString("UUID", tradeItem.UUID);
 								item.setNamedTag(compoundTag);
-								sellChest.addItem(item.setCustomName("§r§fСтоимость§7: §6" + String.format("%.1f", tradeItem.itemPrice) + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 3600) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7." + (tradeItem.aboutMessage == null ? "" : "\n§r§fОписание§7: §6" + tradeItem.aboutMessage)));
+								sellChest.addItem(item.setLore("\n§r§fСтоимость§7: §6" + String.format("%.1f", tradeItem.itemPrice) + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6"  + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7."));
 							}
 						}
 						FakeChestsAPI.openDoubleChestInventory(player, sellChest);
@@ -132,7 +132,7 @@ public class AuctionEventsHandler implements Listener {
 							}
 							compoundTag.putString("UUID", entry.getKey());
 							item.setNamedTag(compoundTag);
-							takeChest.addItem(item);
+							takeChest.addItem(item.setLore("\n§r§l§6• §r§fНажмите§7, §fчтобы забрать§7!"));
 						}
 						FakeChestsAPI.openDoubleChestInventory(player, takeChest);
 					}
@@ -157,7 +157,7 @@ public class AuctionEventsHandler implements Listener {
 								if (playerInventory.canAddItem(sourceItem)) {
 									auctionChest.removeItem(sourceItem);
 									compoundTag.remove("UUID");
-									playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(compoundTag));
+									playerInventory.addItem(sourceItem.clearCustomBlockData());
 									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 									player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §6" + String.format("%.1f", tradeItem.itemPrice) + "§7, §fв колличестве §6" + sourceItem.getCount() + " §fшт§7.");
 									Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.sellerName);
@@ -177,7 +177,6 @@ public class AuctionEventsHandler implements Listener {
 							}
 						}
 						break;
-
 					}
 				} else if (slotChange.getInventory() instanceof SellChest) {
 					event.setCancelled();
@@ -191,7 +190,7 @@ public class AuctionEventsHandler implements Listener {
 							if (playerInventory.canAddItem(sourceItem)) {
 								compoundTag.remove("UUID");
 								sellChest.removeItem(sourceItem);
-								playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(compoundTag));
+								playerInventory.addItem(sourceItem.clearCustomBlockData());
 								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет был снят с продажи и отправлен Вам в Инвентарь");
 								AuctionAPI.AUCTION.remove(tradeItem.UUID);
@@ -211,7 +210,7 @@ public class AuctionEventsHandler implements Listener {
 						if (playerInventory.canAddItem(sourceItem)) {
 							takeChest.removeItem(sourceItem);
 							compoundTag.remove("UUID");
-							playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(compoundTag));
+							playerInventory.addItem(sourceItem.clearCustomBlockData());
 							player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
 							player.sendMessage(AuctionAPI.PREFIX + "§fПредмет с Хранилища успешно взят§7!");
 						}

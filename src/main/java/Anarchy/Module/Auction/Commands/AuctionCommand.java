@@ -51,11 +51,8 @@ public class AuctionCommand extends Command {
 					return false;
 				}
 				if (!StringUtils.isDouble(args[0])) {
-					if (args.length == 1) {
+					if (args.length != 1) {
 						player.sendMessage("§l§6| §r§fИспользование §7- /§6auc §7(§3цена§7)");
-						player.getLevel().addSound(player, Sound.MOB_VILLAGER_HAGGLE, 1, 1, player);
-					} else {
-						player.sendMessage("§l§6| §r§fИспользование §7- /§6auc §7(§3цена§7) (§3описание§7)");
 						player.getLevel().addSound(player, Sound.MOB_VILLAGER_HAGGLE, 1, 1, player);
 					}
 					return false;
@@ -74,14 +71,14 @@ public class AuctionCommand extends Command {
 				player.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §6успешно §fвыставлен за §6" + String.format("%.1f", itemPrice) + "§7, §fв колличестве §6" + sellItem.count + " §fшт§7.");
 				Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fвыставил предмет на продажу§7!");
 				String UUID = java.util.UUID.randomUUID().toString();
-				AuctionAPI.AUCTION.put(UUID, new TradeItem(sellItem, player.getName(), args.length > 1 && !StringUtils.implode(args, 1).trim().equals("") ? StringUtils.implode(args, 1) : null, itemPrice, AuctionAPI.getTradeTime(), UUID));
+				AuctionAPI.AUCTION.put(UUID, new TradeItem(sellItem, player.getName(), itemPrice, AuctionAPI.getTradeTime(), UUID));
 				playerInventory.setItemInHand(Item.get(Item.AIR));
 				AuctionAPI.AUCTION_COOLDOWN.put(player, nowTime + AuctionAPI.AUCTION_ADD_COOLDOWN);
+				AuctionAPI.saveAuction();
 			} else {
 				AuctionAPI.AUCTION_PAGE.put(player, 0);
 				AuctionAPI.showAuction(player, true);
 			}
-			//player.sendMessage("§l§6• §r§fАукцион временно не доступен§7!");
 		}
 		return false;
 	}

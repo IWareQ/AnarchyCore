@@ -22,9 +22,6 @@ public class GroupCommand extends Command {
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (!(sender instanceof Player)) {
-			if (!sender.hasPermission("Command.Group")) {
-				return false;
-			}
 			if (args.length < 2 || !PermissionsAPI.isGroup(Integer.parseInt(args[0]))) {
 				sender.sendMessage("§l§6| §r§fИспользование §7- /§6group (§3ID§7) (§3Игрок§7)");
 				return true;

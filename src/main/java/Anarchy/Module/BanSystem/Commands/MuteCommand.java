@@ -1,78 +1,89 @@
 package Anarchy.Module.BanSystem.Commands;
 
-import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Utils.StringUtils;
+import Anarchy.Manager.Sessions.PlayerSessionManager;
+import Anarchy.Manager.Sessions.Session.PlayerSession;
+import Anarchy.Module.BanSystem.BanSystemAPI;
+import Anarchy.Module.Permissions.PermissionsAPI;
+import FormAPI.Forms.Elements.CustomForm;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.math.NukkitMath;
-import cn.nukkit.utils.Config;
-import cn.nukkit.utils.TextFormat;
+import cn.nukkit.command.data.CommandParamType;
+import cn.nukkit.command.data.CommandParameter;
 
 public class MuteCommand extends Command {
-	File dataFile = new File(AnarchyMain.datapath + "/Mute.yml");
-	Config mute = new Config(dataFile, Config.YAML);
-
+	
 	public MuteCommand() {
-		super("mute", "§r§l§fВыдать мут игроку");
+		super("mute", "§r§l§fБлокировка чата");
 		this.setPermission("Command.Mute");
 		this.commandParameters.clear();
+		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
-			if (!player.hasPermission("Command.Repair")) {
+			if (!player.hasPermission("Command.Mute")) {
 				return false;
 			}
-			if (args.length < 1) {
-				player.sendMessage("§l§6| §r§fИспользование §7- /§6mute §7(§3игрок§7) (§3время§7) §3sec§7/§3min§7/§3hour§7/§3day");
+			if (args.length != 1) {
+				player.sendMessage("§l§6• §r§fИспользование §7- /§6mute §7(§3игрок§7)");
 				return true;
 			}
 			Player target = Server.getInstance().getPlayer(args[0]);
 			if (target == null) {
-				player.sendMessage("§l§6| §r§fИгрок §6" + args[0] + " §fне в сети§7, §fили уже забанен§7!");
+				player.sendMessage("§l§6• §r§fИгрок §6" + args[0] + " §fне в сети§7!");
 				return true;
 			}
-			if (!StringUtils.isInteger(args[1])) {
-				player.sendMessage("§l§6• §r§fВремя может быть только положительным числом§7!");
-			} else {
-				long times = System.currentTimeMillis() / 1000;
-				long timings;
-				if (args.length == 3) {
-					if (args[2].equalsIgnoreCase("sec")) {
-						timings = times + Integer.parseInt(args[1]);
-					} else if (args[2].equalsIgnoreCase("min")) {
-						timings = times + Integer.parseInt(args[1]) * 60;
-					} else if (args[2].equalsIgnoreCase("hour")) {
-						timings = times + Integer.parseInt(args[1]) * 3600;
-					} else if (args[2].equalsIgnoreCase("day")) {
-						timings = times + Integer.parseInt(args[1]) * 86400;
-					} else {
-						player.sendMessage("§l§6• §r§fУкажите правильное получение времени§7!");
-						return true;
-					}
+			PlayerSession playerSession = PlayerSessionManager.getPlayerSession(target);
+			List<String> timeMute = Arrays.asList("§61 §fМинута", "§65 §fМинут", "§610 §fМинут", "§615 §fМинут", "§620 §fМинут", "§625 §fМинут", "§630 §fМинут", "§635 §fМинут", "§640 §fМинут", "§645 §fМинут", "§650 §fМинут", "§655 §fМинут", "§61 §fЧас", "§6Тест время");
+			new CustomForm("§l§fБлокировка чата").addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n").addInput("§l§6• §r§fПричина блокировки чата§7:").addDropDown("§l§6• §r§fВремя блокировки чата§7:", timeMute).send(player, (targetPlayer, form, data)-> {
+				if (data == null) return;
+				int secondsTime;
+				if (data.get(2).equals("§61 §fМинута")) {
+					secondsTime = 60;
+				} else if (data.get(2).equals("§65 §fМинут")) {
+					secondsTime = 300;
+				} else if (data.get(2).equals("§610 §fМинут")) {
+					secondsTime = 600;
+				} else if (data.get(2).equals("§615 §fМинут")) {
+					secondsTime = 900;
+				} else if (data.get(2).equals("§620 §fМинут")) {
+					secondsTime = 1200;
+				} else if (data.get(2).equals("§625 §fМинут")) {
+					secondsTime = 1500;
+				} else if (data.get(2).equals("§630 §fМинут")) {
+					secondsTime = 1800;
+				} else if (data.get(2).equals("§635 §fМинут")) {
+					secondsTime = 2100;
+				} else if (data.get(2).equals("§640 §fМинут")) {
+					secondsTime = 2400;
+				} else if (data.get(2).equals("§645 §fМинут")) {
+					secondsTime = 2700;
+				} else if (data.get(2).equals("§650 §fМинут")) {
+					secondsTime = 3000;
+				} else if (data.get(2).equals("§655 §fМинут")) {
+					secondsTime = 3300;
+				} else if (data.get(2).equals("§61 §fЧас")) {
+					secondsTime = 3600;
 				} else {
-					timings = times + 1 * 60;
+					secondsTime = 100;
 				}
-				if (timings > (times + 30 * 86400)) {
-					sender.sendMessage(TextFormat.colorize("&7[&aMute&7] &cВы не можете замутить игрока больше чем на 30 дней!"));
-				} else {
-					mute.set(target.getName().toLowerCase(), timings);
-					mute.save();
-					long seconds = (timings % 60);
-					long minutes = (timings % 3600) / 60;
-					long hours = (timings % (3600 * 24) / 3600);
-					long days = (timings / (3600 * 24));
-					String timemute = days + " §fд§7. §6" + hours + " §fч§7. §6" + minutes + " §fмин§7. §6" + seconds + " §fсек§7.";
-					target.sendMessage("Ты получил мут на " + timemute);
-					player.sendMessage("Игрок " + target.getName() + " был замучен на " + timemute);
+				if (BanSystemAPI.playerIsMuted(target.getName())) {
+					player.sendMessage(AnarchyMain.PREFIX + "§fЧат Игрока §6" + target.getName() + " §fуже заблокирован§7!");
 				}
-			}
+				if ((String)data.get(1) == null) {
+					player.sendMessage(AnarchyMain.PREFIX + "§fПричина блокировки чата не может быть пустой§7!");
+				}
+				player.sendMessage(AnarchyMain.PREFIX + "§fЧат Игрока §6" + target.getName() + " §fбыл заблокирован§7!\n\n§l§6• §r§fПричина§7: §6" + (String)data.get(1) + "\n§l§6• §r§fПериод§7: " + (String)data.get(2));
+				BanSystemAPI.mutePlayer(target.getName(), (String)data.get(1), player.getName(), secondsTime);
+			});
 		}
 		return false;
 	}

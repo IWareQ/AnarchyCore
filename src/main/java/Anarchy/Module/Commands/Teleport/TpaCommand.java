@@ -31,7 +31,7 @@ public class TpaCommand extends Command {
 				return true;
 			}
 			Long cooldownTime = COOLDOWN.get(player);
-			long time = System.currentTimeMillis() / 1000;
+			long time = System.currentTimeMillis() / 1000L;
 			if (cooldownTime != null && cooldownTime > time) {
 				player.sendMessage("§l§7(§3Задержка§7) §r§fСледующее использование будет доступно через §6" + (cooldownTime - time) + " §fсек§7.");
 				return false;

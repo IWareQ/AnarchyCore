@@ -204,9 +204,8 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("AdminChat", true);
-			permissionAllows.put("bansystem.command.checkmute", true);
-			permissionAllows.put("bansystem.command.mute", true);
-			permissionAllows.put("bansystem.command.mutelog", true);
+			permissionAllows.put("Command.Mute", true);
+			permissionAllows.put("Command.UnMute", true);
 			break;
 
 		case 11: // Модератор
@@ -224,12 +223,11 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Spectate", true);
 			permissionAllows.put("Command.Inventory", true);
 			permissionAllows.put("AdminChat", true);
-			permissionAllows.put("bansystem.command.checkmute", true);
-			permissionAllows.put("bansystem.command.mute", true);
-			permissionAllows.put("bansystem.command.mutelog", true);
-			permissionAllows.put("bansystem.command.checkban", true);
-			permissionAllows.put("bansystem.command.ban", true);
-			permissionAllows.put("bansystem.command.banlog", true);
+			permissionAllows.put("Command.Mute", true);
+			permissionAllows.put("Command.UnMute", true);
+			permissionAllows.put("Command.Ban", true);
+			permissionAllows.put("Command.UnBan", true);
+			permissionAllows.put("Command.Kick", true);
 			break;
 
 		case 12: // Администратор
@@ -247,12 +245,11 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Spectate", true);
 			permissionAllows.put("Command.Inventory", true);
 			permissionAllows.put("AdminChat", true);
-			permissionAllows.put("bansystem.command.checkmute", true);
-			permissionAllows.put("bansystem.command.mute", true);
-			permissionAllows.put("bansystem.command.mutelog", true);
-			permissionAllows.put("bansystem.command.checkban", true);
-			permissionAllows.put("bansystem.command.ban", true);
-			permissionAllows.put("bansystem.command.banlog", true);
+			permissionAllows.put("Command.Mute", true);
+			permissionAllows.put("Command.UnMute", true);
+			permissionAllows.put("Command.Ban", true);
+			permissionAllows.put("Command.UnBan", true);
+			permissionAllows.put("Command.Kick", true);
 			break;
 
 		case 13: // Основатель
@@ -270,13 +267,10 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Spectate", true);
 			permissionAllows.put("Command.Inventory", true);
 			permissionAllows.put("AdminChat", true);
-			permissionAllows.put("bansystem.command.checkmute", true);
-			permissionAllows.put("bansystem.command.mute", true);
-			permissionAllows.put("bansystem.command.mutelog", true);
-			permissionAllows.put("bansystem.command.checkban", true);
-			permissionAllows.put("bansystem.command.ban", true);
-			permissionAllows.put("bansystem.command.banlog", true);
-
+			permissionAllows.put("Command.Mute", true);
+			permissionAllows.put("Command.UnMute", true);
+			permissionAllows.put("Command.Ban", true);
+			permissionAllows.put("Command.UnBan", true);
 		}
 		for (Map.Entry<String, Boolean> entry : permissionAllows.entrySet()) {
 			permissionAttachment.setPermission(entry.getKey(), entry.getValue());

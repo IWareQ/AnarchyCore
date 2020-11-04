@@ -12,6 +12,8 @@ import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.Auction.AuctionAPI;
+import Anarchy.Module.BanSystem.BanSystemAPI;
+import Anarchy.Module.BanSystem.Utils.MuteUtils;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Module.EventsHandler.Utils.Hopper;
 import Anarchy.Module.Permissions.PermissionsAPI;
@@ -70,15 +72,14 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0),
-					  (double)(int)Math.round(event.getPlayer().z - 0.5)));
+		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0), (double)(int)Math.round(event.getPlayer().z - 0.5)));
 		if (!player.hasPermission("Acces.Admin")) {
 			if (player.x < FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z < FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
 				player.sendTip("§l§c• §fВы пытаетесь §6выйти §fза границу мира§7! §c•§r");
 				event.setCancelled(true);
 			}
 		}
-		if (player.getFloorY() <= -5 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
+		if (player.getFloorY() <= -10 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
 			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn(new Position(-8.5, 51, -3.5)));
 			player.sendMessage("§l§a• §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!\n§l§6• §r§fЗапомните§7, §fесли вы упадете в бездну в мире §6TheEnd§7, §fто Вас не спасут§7!");
 		}
@@ -110,7 +111,7 @@ public class EventsHandler implements Listener {
 				player.sendMessage("§l§c• §r§fВы были убиты Игроком §6" + damager.getName());
 				event.setDeathMessage("§l§6• §r§fИгрок §6" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
 				Double money = EconomyAPI.myMoney(player) * 20 / 100;
-				if (money != 0) {
+				if (money > 5.0) {
 					player.sendMessage("§l§c• §r§fПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20§7%)");
 					((Player)damager).sendMessage("§l§6• §r§fВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §6" + player.getName());
 					EconomyAPI.reduceMoney(player, money);
@@ -150,15 +151,15 @@ public class EventsHandler implements Listener {
 		Item item = event.getItem();
 		PlayerInventory playerInventory = player.getInventory();
 		Block block = event.getBlock();
-		/*if (item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
+		if (item != null && item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
 			player.sendMessage("§l§6• §r§fСокровище успешно Активированно§7!");
 			player.getInventory().removeItem(item);
-		}*/
+		}
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && !(player.hasPermission("Access.Admin"))) {
 			player.sendTip("§l§fТерритория не доступна для взаимодествия§7!");
 			event.setCancelled(true);
 		}
-		if (item.getCustomName().equals("§r§fЗлодейская кирка") && item.getId() == Item.NETHERITE_PICKAXE) {
+		if (item != null && item.getCustomName().equals("§r§fЗлодейская кирка") && item.getId() == Item.NETHERITE_PICKAXE) {
 			if (block.getId() == Item.BEDROCK) {
 				player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
 				player.sendMessage("§l§6• §r§fБедрок был успешно сломан");
@@ -260,10 +261,8 @@ public class EventsHandler implements Listener {
 			}
 			if (entity.getNameTag().equalsIgnoreCase("§l§6Барыга")) {
 				Hopper hopper = new Hopper("§l§6Барыга");
-				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0,
-												 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
-				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0,
-											1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
+				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0, 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
+				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0, 1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
 				hopper.addItem(netheritePickaxe);
 				hopper.addItem(goldPickaxe);
 				FakeChestsAPI.openInventory((Player)damager, hopper);
@@ -391,7 +390,17 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 			return;
 		}
-
+		MuteUtils muteUtils = BanSystemAPI.getMute(player.getName());
+		if (BanSystemAPI.playerIsMuted(player.getName())) {
+			if (muteUtils.getTime() < System.currentTimeMillis() / 1000L) {
+				BanSystemAPI.unMutePlayer(player.getName());
+				event.setCancelled(true);
+				return;
+			} else {
+				player.sendMessage("§l§c• §r§fТебя замутили§7! §fАдминистратор §6" + muteUtils.getBanner() + " §fзакрыл тебе доступ к чату на §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) / 60 % 60) + " §fмин§7. §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) % 60) + " §fсек§7. §fпо причине §6" + muteUtils.getReason() + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
+				event.setCancelled(true);
+			}
+		}
 		if (String.valueOf(playerMessage.charAt(0)).equals("#")) {
 			Set<CommandSender> adminPlayer = new HashSet<>();
 			for (Player players : Server.getInstance().getOnlinePlayers().values()) {

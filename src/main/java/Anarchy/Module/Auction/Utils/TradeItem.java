@@ -7,14 +7,12 @@ public class TradeItem {
 	public Item sellItem;
 	public String UUID;
 	public String sellerName;
-	public String aboutMessage;
 	public Long sellTime;
 	
-	public TradeItem(Item sellItem, String sellerName, String aboutMessage, Double itemPrice, Long sellTime, String UUID) {
+	public TradeItem(Item sellItem, String sellerName, Double itemPrice, Long sellTime, String UUID) {
 		this.UUID = UUID;
 		this.sellItem = sellItem;
 		this.sellerName = sellerName;
-		this.aboutMessage = aboutMessage;
 		this.itemPrice = itemPrice;
 		this.sellTime = sellTime;
 	}

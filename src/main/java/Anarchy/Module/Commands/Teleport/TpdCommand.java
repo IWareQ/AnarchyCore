@@ -18,7 +18,7 @@ public class TpdCommand extends Command {
 			Player player = (Player)sender;
 			if (TpaCommand.TPA_REQUEST.containsKey(player.getName())) {
 				TpaPlayer target = TpaCommand.TPA_REQUEST.get(player.getName());
-				if (target.getTime() < System.currentTimeMillis() / 1000) {
+				if (target.getTime() < System.currentTimeMillis() / 1000L) {
 					player.sendMessage(TpaCommand.PREFIX + "§fЗапрос на телепортацию истек§7!");
 					TpaCommand.TPA_REQUEST.remove(player.getName());
 					return true;

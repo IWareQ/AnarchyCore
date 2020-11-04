@@ -17,6 +17,8 @@ import Anarchy.Module.Auction.Commands.AuctionCommand;
 import Anarchy.Module.Auth.AuthEventsHandler;
 import Anarchy.Module.BanSystem.Commands.BanCommand;
 import Anarchy.Module.BanSystem.Commands.MuteCommand;
+import Anarchy.Module.BanSystem.Commands.UnBanCommand;
+import Anarchy.Module.BanSystem.Commands.UnMuteCommand;
 import Anarchy.Module.Boss.EvokerBoss;
 import Anarchy.Module.Boss.RavagerBoss;
 import Anarchy.Module.Boss.SilverfishBoss;
@@ -32,7 +34,6 @@ import Anarchy.Module.Commands.DonateCommand;
 import Anarchy.Module.Commands.FoodCommand;
 import Anarchy.Module.Commands.GamemodeCommand;
 import Anarchy.Module.Commands.HealCommand;
-import Anarchy.Module.Commands.KickCommand;
 import Anarchy.Module.Commands.NearCommand;
 import Anarchy.Module.Commands.NightCommand;
 import Anarchy.Module.Commands.NightVisionCommand;
@@ -131,7 +132,7 @@ public class AnarchyMain extends PluginBase {
 
 	private void unregisterAll() {
 		AllSessionsManager.saveAllSessions();
-		AuctionAPI.unRegister();
+		AuctionAPI.saveAuction();
 	}
 
 	private void registerEvents() {
@@ -149,7 +150,7 @@ public class AnarchyMain extends PluginBase {
 
 	private void unregisterCommands() {
 		Map<String, Command> commandMap = this.getServer().getCommandMap().getCommands();
-		for (String command : new String[] {"me", "ver", "say", "pl", "plugins", "mixer", "difficulty", "defaultgamemode", "help", "?", "pardon", "particle", "tell", "gm", "gamemode", "list", "about", "title"}) {
+		for (String command : new String[] {"me", "ver", "say", "pl", "plugins", "mixer", "difficulty", "defaultgamemode", "help", "?", "pardon", "particle", "tell", "gm", "gamemode", "list", "about", "title", "unban", "ban"}) {
 			commandMap.remove(command);
 		}
 	}
@@ -165,7 +166,7 @@ public class AnarchyMain extends PluginBase {
 	}
 
 	private void registerCommands() {
-		Command[] commands = new Command[] {new DonateShopHandler(), new SpawnCommand(), new BonusCommand(), new MuteCommand(), new NPCCommand(), new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		Command[] commands = new Command[] {new UnMuteCommand(), new UnBanCommand(), new DonateShopHandler(), new SpawnCommand(), new BonusCommand(), new MuteCommand(), new NPCCommand(), new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new Anarchy.Module.BanSystem.Commands.KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 

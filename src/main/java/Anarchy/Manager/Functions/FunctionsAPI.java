@@ -34,8 +34,8 @@ public class FunctionsAPI {
 	public static Position randomPos(Position pos) {
 		int x = RandomUtils.rand(RANDOM_TP[0], RANDOM_TP[1]);
 		int z = RandomUtils.rand(RANDOM_TP[2], RANDOM_TP[3]);
-		pos.setComponents(x, 80, z);
-		for (int i = 80; i < 120; i++) {
+		pos.setComponents(x, 70, z);
+		for (int i = 70; i < 120; i++) {
 			pos.setComponents(x, i, z);
 			Block ground = pos.getLevel().getBlock(pos);
 			Block body = pos.getLevel().getBlock(pos.setComponents(x, i + 1, z));
