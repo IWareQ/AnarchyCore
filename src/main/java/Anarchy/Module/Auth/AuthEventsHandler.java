@@ -56,7 +56,7 @@ public class AuthEventsHandler implements Listener {
 		Player player = event.getPlayer();
 		String device = player.getLoginChainData().getDeviceModel();
 		String brand = device.split("\\s+")[0];
-		if (!brand.equals(brand.toUpperCase()) && !brand.equalsIgnoreCase("Iphone") && !brand.equalsIgnoreCase("playstation_4") && !brand.equalsIgnoreCase("iPhone8,4") && !brand.equalsIgnoreCase("iPad7,3") && !brand.equalsIgnoreCase("iPhone8,1") && !brand.equalsIgnoreCase("iPhone9,4") && !brand.equalsIgnoreCase("iPhone6,2") && !brand.equalsIgnoreCase("iPad7,4")) {
+		if (!brand.equals(brand.toUpperCase()) && !brand.equalsIgnoreCase("Iphone") && !brand.equalsIgnoreCase("playstation_4") && !brand.equalsIgnoreCase("iPhone8,4") && !brand.equalsIgnoreCase("iPad7,3") && !brand.equalsIgnoreCase("iPhone8,1") && !brand.equalsIgnoreCase("iPhone9,4") && !brand.equalsIgnoreCase("iPhone6,2") && !brand.equalsIgnoreCase("iPad7,4") && !brand.equalsIgnoreCase("iPhone7,2") && !brand.equalsIgnoreCase("iPad4,1")) {
 			player.close("", "§l§fНа нашем сервере запрещены §6Читы§7!\n§fЕсли Вы заходите без читов§7, §fно видите это окно§7, §fсообщите это в ВК - §7@§6extranons§7!");
 			AnarchyMain.sendMessageToChat("Игрок " + player.getName() + " пытался зайти с ToolBox!\n\nУстройство: " + brand, 2000000004);
 		}
@@ -119,6 +119,9 @@ public class AuthEventsHandler implements Listener {
 		PlayerSessionManager.startPlayerSession(player);
 		PermissionsAPI.updateTag(player);
 		PermissionsAPI.updatePermissions(player);
+		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
+			HotbarTask.showScoreboard(player);
+		}
 		player.setCheckMovement(false);
 		SQLiteUtils.query("Auth.db", "UPDATE AUTH SET IP_Last = '" + ip + "', Date_Last = '" + date + "' WHERE UPPER(Username) = '" + upperCase + "';");
 		event.setJoinMessage("");
@@ -127,10 +130,6 @@ public class AuthEventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
-			PlayerSessionManager.SCOREBOARDS.get(player.getName()).hideFor(player);
-			PlayerSessionManager.SCOREBOARD.remove(player.getName());
-		}
 		if (PlayerSessionManager.hasPlayerSession(player)) {
 			PlayerSessionManager.stopPlayerSession(player);
 		}

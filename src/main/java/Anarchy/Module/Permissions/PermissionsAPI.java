@@ -15,7 +15,7 @@ import cn.nukkit.permission.PermissionAttachment;
 
 public class PermissionsAPI {
 	public static ArrayList<String> GROUPS = new ArrayList<>();
-	public static Map<Integer, GroupAllow> GROUP_ALLOWS = new HashMap<>();
+	private static Map<Integer, GroupAllow> GROUP_ALLOWS = new HashMap<>();
 	public static String PREFIX = "§7(§3Привилегии§7) §r";
 
 	public static void register() {

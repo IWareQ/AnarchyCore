@@ -41,7 +41,7 @@ public class AuctionEventsHandler implements Listener {
 					AuctionChest auctionChest = (AuctionChest)slotChange.getInventory();
 					Item sourceItem = action.getSourceItem();
 					switch (sourceItem.getName()) {
-					case "§7:D": {
+					case "§r§7:D": {
 						player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					}
 					break;
@@ -157,7 +157,7 @@ public class AuctionEventsHandler implements Listener {
 								if (playerInventory.canAddItem(sourceItem)) {
 									auctionChest.removeItem(sourceItem);
 									compoundTag.remove("UUID");
-									playerInventory.addItem(sourceItem.clearCustomBlockData());
+									playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(compoundTag));
 									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 									player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §6" + String.format("%.1f", tradeItem.itemPrice) + "§7, §fв колличестве §6" + sourceItem.getCount() + " §fшт§7.");
 									Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.sellerName);
@@ -210,7 +210,7 @@ public class AuctionEventsHandler implements Listener {
 						if (playerInventory.canAddItem(sourceItem)) {
 							takeChest.removeItem(sourceItem);
 							compoundTag.remove("UUID");
-							playerInventory.addItem(sourceItem.clearCustomBlockData());
+							playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(compoundTag));
 							player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
 							player.sendMessage(AuctionAPI.PREFIX + "§fПредмет с Хранилища успешно взят§7!");
 						}

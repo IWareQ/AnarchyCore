@@ -4,14 +4,18 @@ import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.Inventory.Utils.InventoryChest;
 import Anarchy.Module.Commands.Inventory.Utils.InventoryEnderChest;
 import Anarchy.Module.Economy.EconomyAPI;
+import Anarchy.Utils.StringUtils;
 import FormAPI.Forms.Elements.ImageType;
 import FormAPI.Forms.Elements.SimpleForm;
+import cn.nukkit.IPlayer;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
+import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityHumanType;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
@@ -21,14 +25,14 @@ import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.level.Sound;
 
 public class InventoryHandler extends Command implements Listener {
-	
+
 	public InventoryHandler() {
-		super("inventory", "§l§fПросмотр инвентаря", "", new String[]{"inv"});
+		super("inv", "§l§fПросмотр инвентаря");
 		this.setPermission("Command.Inventory");
 		this.commandParameters.clear();
-		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("player", CommandParamType.TARGET, false)});
+		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
-	
+
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
@@ -40,19 +44,19 @@ public class InventoryHandler extends Command implements Listener {
 				player.sendMessage("§l§6• §r§fИспользование §7- /§6inv §7(§3игрок§7)");
 				return true;
 			}
-			Player target = Server.getInstance().getPlayer(args[0]);
-			if (target == null) {
-				player.sendMessage("§l§6• §r§fИгрок §6" + args[0] + " §fне в сети§7!");
-				return true;
-			}
-			checkInventory(target.getName(), player);
+			String nickname = StringUtils.implode(args, 0);
+			checkInventory(nickname, player);
 		}
 		return false;
 	}
-	
+
 	public static void checkInventory(String checked, Player player) {
 		Player target = Server.getInstance().getPlayer(checked);
-		new SimpleForm("§l§6" + target.getName() + " §7> §fВыберите Инвентарь", "§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "").addButton("§l§fИнвентарь", ImageType.PATH, "textures/ui/inventory_icon").addButton("§l§fЭндер Сундук", ImageType.PATH, "textures/ui/icon_blackfriday").send(player, (targetPlayer,form,data)->{
+		SimpleForm simpleForm = new SimpleForm("§l§6" + checked + " §7> §fВыберите Инвентарь");
+		simpleForm.setContent("§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "");
+		simpleForm.addButton("§l§fИнвентарь", ImageType.PATH, "textures/ui/inventory_icon");
+		simpleForm.addButton("§l§fЭндер Сундук", ImageType.PATH, "textures/ui/icon_blackfriday");
+		simpleForm.send(player, (targetPlayer, form, data)-> {
 			if (data == -1) return;
 			if (data == 0) {
 				InventoryChest InventoryChest = new InventoryChest("§l§6" + target.getName() + " §7- §fИнвентарь");
@@ -66,7 +70,7 @@ public class InventoryHandler extends Command implements Listener {
 			}
 		});
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onInventoryTransaction(InventoryTransactionEvent event) {
 		for (InventoryAction action : event.getTransaction().getActions()) {

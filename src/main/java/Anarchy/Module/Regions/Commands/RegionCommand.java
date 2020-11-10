@@ -3,9 +3,12 @@ package Anarchy.Module.Regions.Commands;
 import java.util.ArrayList;
 import java.util.Map;
 
+import Anarchy.Module.Auth.AuthAPI;
 import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Utils.SQLiteUtils;
 import Anarchy.Utils.StringUtils;
+import FormAPI.Forms.Elements.CustomForm;
+import FormAPI.Forms.Elements.ImageType;
 import FormAPI.Forms.Elements.SimpleForm;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -18,7 +21,7 @@ import cn.nukkit.level.Sound;
 public class RegionCommand extends Command {
 
 	public RegionCommand() {
-		super("rg", "Система регионов");
+		super("rg", "§r§l§fСистема регионов");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("string", new String[]{"add", "del", "my", "me", "list", "how", "help"}), new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
@@ -28,7 +31,6 @@ public class RegionCommand extends Command {
 			Player player = (Player)sender;
 			if (args.length == 0) {
 				player.sendMessage("§l§6| §r§fИспользование §7- §6/rg help");
-				player.getLevel().addSound(player, Sound.MOB_VILLAGER_HAGGLE, 1, 1, player);
 				return true;
 			}
 			switch (args[0]) {
@@ -55,14 +57,14 @@ public class RegionCommand extends Command {
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
-				if (SQLiteUtils.selectString("Regions.db", "SELECT `Username` FROM `MEMBERS` WHERE UPPER(`Username`) = '" + player.getName().toUpperCase() + "' AND `Region_ID` = '" + regionID + "';") != null) {
+				if (SQLiteUtils.selectString("Regions.db", "SELECT Username FROM MEMBERS WHERE UPPER(Username) = '" + player.getName().toUpperCase() + "' AND Region_ID = '" + regionID + "';") != null) {
 					player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fуже состоит в Вашем регионе§7!");
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
 				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fбыл успешно добавлен в Ваш регион§7!");
 				target.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fдобавил Вас в свой регион§7!");
-				SQLiteUtils.query("Regions.db", "INSERT INTO `MEMBERS` (`Region_ID`, `Username`) VALUES ('" + regionID + "', '" + target.getName() + "');");
+				SQLiteUtils.query("Regions.db", "INSERT INTO MEMBERS (Region_ID, Username) VALUES ('" + regionID + "', '" + target.getName() + "');");
 			}
 			break;
 
@@ -89,28 +91,32 @@ public class RegionCommand extends Command {
 					target.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fудалил Вас из своего региона§7!");
 				}
 				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + targetName + " §fудален из региона§7! (" + StringUtils.getOnlineString(targetName) + "§7)");
-				SQLiteUtils.query("Regions.db", "DELETE FROM `MEMBERS` WHERE UPPER(`Username`) = '" + targetName.toUpperCase() + "' AND `Region_ID` = '" + regionID + "';");
+				SQLiteUtils.query("Regions.db", "DELETE FROM MEMBERS WHERE UPPER(Username) = '" + targetName.toUpperCase() + "' AND Region_ID = '" + regionID + "';");
 			}
 			break;
 
 			case "my": {
-				ArrayList<Integer> regionsData = SQLiteUtils.selectIntegerList("Regions.db", "SELECT `Region_ID` FROM `AREAS` WHERE `Username` = '" + player.getName() + "';");
+				ArrayList<Integer> regionsData = SQLiteUtils.selectIntegerList("Regions.db", "SELECT Region_ID FROM AREAS WHERE Username = '" + player.getName() + "';");
 				if (regionsData == null || regionsData.isEmpty()) {
 					player.sendMessage(RegionsAPI.PREFIX + "§fВы не имеете регионов§7!");
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
-				StringBuilder stringBuilder = new StringBuilder();
+				SimpleForm simpleForm =  new SimpleForm("§fРегион §7› §fМеню Регионов");
+				simpleForm.addContent("§fВыберите ререгион который хотите измерить:");
 				for (int region_id : regionsData) {
 					Map<String, String> regionInfo = RegionsAPI.getRegionInfo(region_id);
-					stringBuilder.append("\n §7→ §fРегион §7(§f").append(regionInfo.get("Main_X")).append("§7, §f").append(regionInfo.get("Main_Y")).append("§7, §f").append(regionInfo.get("Main_Z")).append("§7)");
+					simpleForm.addButton(regionInfo.get("Main_X") + "§7, §f" + regionInfo.get("Main_Y") + "§7, §f" + regionInfo.get("Main_Z"));
 				}
-				player.sendMessage(RegionsAPI.PREFIX + "§fВаши регионы §7- " + stringBuilder.toString());
+				simpleForm.send(player, (targetPlayer, targetForm, data)-> {
+					if (data == -1) return;
+					regionEditPlayer(player);
+				});
 			}
 			break;
 
 			case "me": {
-				ArrayList<Integer> regionsData = SQLiteUtils.selectIntegerList("Regions.db", "SELECT `Region_ID` FROM `MEMBERS` WHERE `Username` = '" + player.getName() + "';");
+				ArrayList<Integer> regionsData = SQLiteUtils.selectIntegerList("Regions.db", "SELECT Region_ID FROM MEMBERS WHERE Username = '" + player.getName() + "';");
 				if (regionsData == null || regionsData.isEmpty()) {
 					player.sendMessage(RegionsAPI.PREFIX + "§fВас не добавили ни в §31 §fиз регионов§7!");
 					return true;
@@ -118,7 +124,8 @@ public class RegionCommand extends Command {
 				StringBuilder stringBuilder = new StringBuilder();
 				for (int region_id : regionsData) {
 					Map<String, String> regionInfo = RegionsAPI.getRegionInfo(region_id);
-					stringBuilder.append("\n §7→ §fРегион Игрока §3").append(regionInfo.get("Username")).append(" §7(§f").append(regionInfo.get("Main_X")).append("§7, §f").append(regionInfo.get("Main_Y")).append("§7, §f").append(regionInfo.get("Main_Z")).append("§7)");
+					stringBuilder.append("\n §7→ §fРегион Игрока §3").append(regionInfo.get("Username")).append(" §7(§f").append(regionInfo.get("Main_X")).append("§7, §f").append(
+						regionInfo.get("Main_Y")).append("§7, §f").append(regionInfo.get("Main_Z")).append("§7)");
 				}
 				player.sendMessage(RegionsAPI.PREFIX + "§fРегионы§7, §fв которых Вы состоите §7- " + stringBuilder.toString());
 			}
@@ -131,8 +138,8 @@ public class RegionCommand extends Command {
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
 				}
-				ArrayList<String> membersData = SQLiteUtils.selectList("Regions.db", "SELECT `Username` FROM `MEMBERS` WHERE `Region_ID` = '" + regionID + "';");
-				if (membersData == null || membersData.isEmpty()) {
+				ArrayList<String> membersData = SQLiteUtils.selectList("Regions.db", "SELECT Username FROM MEMBERS WHERE Region_ID = '" + regionID + "';");
+				if (RegionsAPI.getRegionMembers(regionID) == null || RegionsAPI.getRegionMembers(regionID).isEmpty()) {
 					player.sendMessage(RegionsAPI.PREFIX + "§fВ Вашем регионе нет участников§7!");
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					return true;
@@ -145,48 +152,145 @@ public class RegionCommand extends Command {
 			}
 
 			case "how": {
-				new SimpleForm("§l§fИнформация о Регионах", "§l§fХочешь создать свой регион§7? §fНе проблема§7! §fМожешь следовать пунктам§7:\n\n§6• §fДобудь блок привта\n§6• §fПроверь§7, §fнет ли вблизи другого региона\n§6• §fПоставь блок для привата и будь уверене §7- §fтвою постройку не тронут§7!\n\nБлоки§7, §fкоторыми можно приватить§7:\n\n§6• §fЖелезный блок §7(§fприватит §63 §7× §63§7)\n§6• §fАлмазный блок §7(§fприватит §66 §7× §66§7)n§6• §fИзумрудный блок §7(§fприватит §610 §7× §610§7)").send(player);
+				SimpleForm simpleForm = new SimpleForm("§l§fИнформация о Регионах");
+				simpleForm.addContent("§l§fХочешь создать свой регион§7? §fНе проблема§7! §fМожешь следовать пунктам§7:\n\n§6• §fДобудь блок привта\n§6• §fПроверь§7, §fнет ли вблизи другого региона\n§6• §fПоставь блок для привата и будь уверене §7- §fтвою постройку не тронут§7!\n\nБлоки§7, §fкоторыми можно приватить§7:\n\n§6• §fЖелезный блок §7(§fприватит §63 §7× §63§7)\n§6• §fАлмазный блок §7(§fприватит §66 §7× §66§7)n§6• §fИзумрудный блок §7(§fприватит §610 §7× §610§7)");
+				simpleForm.send(player);
 			}
 			break;
 
 			default:
-				new SimpleForm("§l§6Регионы", "").addButton("§l§fИнформация о Регионах").addButton("§l§fМои Регионы").addButton("§l§fСписок регионов§7, §fгде Вас добавили").send(player,
-				(target, form, data)-> {
-					if (data == -1) return;
-					if (data == 0) {
-						new SimpleForm("§l§fИнформация о Регионах", "§l§fХочешь создать свой регион§7? §fНе проблема§7! §fМожешь следовать пунктам§7:\n\n§6• §fДобудь блок привта\n§6• §fПроверь§7, §fнет ли вблизи другого региона\n§6• §fПоставь блок для привата и будь уверене §7- §fтвою постройку не тронут§7!\n\nБлоки§7, §fкоторыми можно приватить§7:\n\n§6• §fЖелезный блок §7(§fприватит §63 §7× §63§7)\n§6• §fАлмазный блок §7(§fприватит §66 §7× §66§7)n§6• §fИзумрудный блок §7(§fприватит §610 §7× §610§7)").send(player);
-					}
-					if (data == 1) {
-						ArrayList<Integer> regionsData = SQLiteUtils.selectIntegerList("Regions.db", "SELECT `Region_ID` FROM `AREAS` WHERE `Username` = '" + player.getName() + "';");
-						if (regionsData == null || regionsData.isEmpty()) {
-							player.sendMessage(RegionsAPI.PREFIX + "§fВы не имеете регионов§7!");
-							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
-							return;
-						}
-						StringBuilder stringBuilder = new StringBuilder();
-						for (int region_id : regionsData) {
-							Map<String, String> regionInfo = RegionsAPI.getRegionInfo(region_id);
-							stringBuilder.append("\n §7→ §fРегион §7(§f").append(regionInfo.get("Main_X")).append("§7, §f").append(regionInfo.get("Main_Y")).append("§7, §f").append(regionInfo.get("Main_Z")).append("§7)");
-						}
-						new SimpleForm("§l§fРегионы§7, §fв которых Вы состоите", "§fВаши регионы" + stringBuilder.toString()).send(player);
-					}
-					if (data == 2) {
-						ArrayList<Integer> regionsData = SQLiteUtils.selectIntegerList("Regions.db", "SELECT `Region_ID` FROM `MEMBERS` WHERE `Username` = '" + player.getName() + "';");
-						if (regionsData == null || regionsData.isEmpty()) {
-							player.sendMessage(RegionsAPI.PREFIX + "§fВас не добавили ни в §61 §fиз регионов§7!");
-							return;
-						}
-						StringBuilder stringBuilder = new StringBuilder();
-						for (int region_id : regionsData) {
-							Map<String, String> regionInfo = RegionsAPI.getRegionInfo(region_id);
-							stringBuilder.append("\n §7→ §fРегион Игрока §6").append(regionInfo.get("Username")).append(" §7(§f").append(regionInfo.get("Main_X")).append("§7, §f").append(regionInfo.get("Main_Y")).append("§7, §f").append(regionInfo.get("Main_Z")).append("§7)");
-						}
-						new SimpleForm("§fРегионы§7, §fв которых Вы состоите", "§fВы состоите в " + stringBuilder.toString()).send(player);
-					}
-				});
-
+				regionMenu(player);
 			}
 		}
 		return false;
+	}
+
+	private static void regionInfo(Player player) {
+		int regionID = RegionsAPI.getRegionIDByPosition(player);
+		if (regionID == -1 || !RegionsAPI.isRegionOwner(player.getName(), regionID)) {
+			player.sendMessage(RegionsAPI.PREFIX + "§fВы должны находиться внутри Своего региона§7!");
+		}
+		SimpleForm simpleForm = new SimpleForm("§fРегион §7› §fИнформация об Регионе");
+		simpleForm.addContent("§l§6• §r§fID Региона§7: §6" + regionID + "\n\n§l§6• §r§fВладелец§7: §6" + RegionsAPI.getRegionOwner(regionID) + " §7(" + StringUtils.getOnlineString(player.getName()) + "§7)\n§l§6• §r§fУчастники§7: §6" + RegionsAPI.getRegionMembers(regionID));
+		simpleForm.addButton("§fНазад");
+		simpleForm.send(player, (targetPlayer, targetForm, data)-> {
+			if (data == -1) return;
+			regionMenu(player);
+		});
+	}
+
+	private static void regionEditPlayer(Player player) {
+		int regionID = RegionsAPI.getRegionIDByPosition(player);
+		if (regionID == -1 || !RegionsAPI.isRegionOwner(player.getName(), regionID)) {
+			player.sendMessage(RegionsAPI.PREFIX + "§fВы должны находиться внутри Своего региона§7!");
+		}
+		SimpleForm simpleForm = new SimpleForm("§fРегион §7› §fУправление Участниками");
+		simpleForm.addContent("§l§6Управление Участниками\n\n§r§fОбратите внимание§7, §fдобавить Игрока в регион можно только при условии§7, §fчто Игрок заходил на сервер хотябы §61 §fраз§7!");
+		simpleForm.addButton("§fДобавить Игрока");
+		simpleForm.addButton("§fУдалить Игрока");
+		simpleForm.addButton("§fНазад");
+		simpleForm.send(player, (targetPlayer, targetForm, data)-> {
+			if (data == -1) return;
+			switch (data) {
+			case 0: {
+				addRegionPlayer(player, regionID);
+				break;
+			}
+
+			case 1: {
+				removeRegionPlayer(player, regionID);
+				break;
+			}
+
+			case 2: {
+				regionMenu(player);
+				break;
+			}
+			}
+		});
+	}
+
+	private static void addRegionPlayer(Player player, Integer regionID) {
+		CustomForm customForm = new CustomForm("§fУправление Участниками §7› §fДобавить Игрока");
+		customForm.addLabel("§l§6Добавить Игрока\n\n§r§fВведите §6Nickname §fИгрока§7, §fкоторого хотите добавить в свой регион§7!");
+		customForm.addInput("§fНапример§7: §6Steve");
+		customForm.send(player, (targetPlayer, form, data)-> {
+			if (data == null) return;
+			String nickname = (String)data.get(1);
+			if (!AuthAPI.isRegistered(nickname)) {
+				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fни разу не заходил на сервер§7!");
+				return;
+			}
+			Player target = Server.getInstance().getPlayerExact(nickname);
+			if (player.equals(target)) {
+				player.sendMessage(RegionsAPI.PREFIX + "§fНельзя добавить себя в свой регион§7!");
+				return;
+			}
+			if (SQLiteUtils.selectString("Regions.db", "SELECT Username FROM MEMBERS WHERE UPPER(Username) = '" + player.getName().toUpperCase() + "' AND Region_ID = '" + regionID + "';") != null) {
+				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fуже состоит в Вашем регионе§7!");
+				return;
+			}
+			player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + target.getName() + " §fбыл успешно добавлен в Ваш регион§7!");
+			if (target != null) {
+				target.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fдобавил Вас в свой регион§7!");
+			}
+			SQLiteUtils.query("Regions.db", "INSERT INTO MEMBERS (Region_ID, Username) VALUES ('" + regionID + "', '" + target.getName() + "');");
+		});
+	}
+
+	private static void removeRegionPlayer(Player player, Integer regionID) {
+		CustomForm customForm = new CustomForm("§fУправление Участниками §7› §fУдалить Игрока");
+		customForm.addLabel("§l§6Удалить Игрока\n\n§r§fВведите Nickname игрока§7, §fкоторого хотите удалить из региона§7!");
+		customForm.addInput("§fНапример§7: §6Steve");
+		customForm.send(player, (targetPlayer, form, data)-> {
+			if (data == null) return;
+			String nickname = (String)data.get(1);
+			if (!RegionsAPI.isRegionMember(nickname, regionID)) {
+				player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fне состоит в Вашем регионе§7!");
+				return;
+			}
+			Player target = Server.getInstance().getPlayerExact(nickname);
+			if (player.equals(target)) {
+				player.sendMessage(RegionsAPI.PREFIX + "§fНельзя удалить себя же со своего региона§7!");
+				return;
+			}
+			if (target != null) {
+				target.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fудалил Вас из своего региона§7!");
+			}
+			player.sendMessage(RegionsAPI.PREFIX + "§fИгрок §6" + nickname + " §fудален из региона§7! (" + StringUtils.getOnlineString(nickname) + "§7)");
+			SQLiteUtils.query("Regions.db", "DELETE FROM MEMBERS WHERE UPPER(Username) = '" + nickname.toUpperCase() + "' AND Region_ID = '" + regionID + "';");
+		});
+	}
+
+	private static void regionMenu(Player player) {
+		SimpleForm simpleForm =  new SimpleForm("§fРегион §7› §fМеню Регионов");
+		simpleForm.addContent("§fВы находитесь в главном меню взаимодействия с регионами на §6Сервере§7!\n\n§fВыберите нужный Вам пункт§7:");
+		simpleForm.addButton("§fИнформация об Регионе");
+		simpleForm.addButton("§fУправление Участниками", ImageType.PATH, "textures/ui/dressing_room_skins");
+		simpleForm.addButton("§fУдалить Регион");
+		simpleForm.send(player, (targetPlayer, targetForm, data)-> {
+			if (data == -1) return;
+			switch (data) {
+			case 0: {
+				regionInfo(player);
+				break;
+			}
+
+			case 1: {
+				regionEditPlayer(player);
+				break;
+			}
+
+			case 2: {
+				int regionID = RegionsAPI.getRegionIDByPosition(player);
+				if (regionID != -1 && RegionsAPI.isRegionOwner(player.getName(), regionID)) {
+					player.sendMessage(RegionsAPI.PREFIX + "§fРегион §7#§6" + regionID + " §fуспешно удален§7!");
+					SQLiteUtils.query("Regions.db", "DELETE FROM AREAS WHERE Region_ID = '" + regionID + "';");
+					SQLiteUtils.query("Regions.db", "DELETE FROM MEMBERS WHERE Region_ID = '" + regionID + "';");
+				}
+				break;
+			}
+			}
+		});
 	}
 }

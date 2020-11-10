@@ -50,8 +50,7 @@ public class RegionsEventsHandler implements Listener {
 			Map<String, String> info = RegionsAPI.getRegionInfo(regionID);
 			if (block.getFloorX() == Integer.parseInt(info.get("Main_X")) && block.getFloorY() == Integer.parseInt(info.get("Main_Y")) && block.getFloorZ() == Integer.parseInt(info.get("Main_Z"))) {
 				if (RegionsAPI.isRegionOwner(player.getName(), regionID)) {
-					player.sendMessage(RegionsAPI.PREFIX + "§fПриват §3успешно §fудален§7!");
-					player.getLevel().addSound(player, Sound.MOB_ENDERDRAGON_DEATH, 1, 1, player);
+					player.sendMessage(RegionsAPI.PREFIX + "§fРегион §7#§6" + regionID + " §fуспешно удален§7!");
 					SQLiteUtils.query("Regions.db", "DELETE FROM AREAS WHERE Region_ID = '" + regionID + "';");
 					SQLiteUtils.query("Regions.db", "DELETE FROM MEMBERS WHERE Region_ID = '" + regionID + "';");
 				} else {

@@ -1,5 +1,6 @@
 package Anarchy.Module.Regions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,5 +103,9 @@ public class RegionsAPI {
 
 	public static int getRegionsCount(String playerName) {
 		return SQLiteUtils.selectInteger("Regions.db", "SELECT COUNT(*) as COUNT FROM AREAS WHERE UPPER(Username) = '" + playerName.toUpperCase() + "';");
+	}
+	
+	public static ArrayList<String> getRegionMembers(int regionID) {
+		return SQLiteUtils.selectList("Regions.db", "SELECT Username FROM MEMBERS WHERE Region_ID = '" + regionID + "';");
 	}
 }
