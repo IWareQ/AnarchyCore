@@ -57,7 +57,7 @@ public class RegionsAPI {
 		int[] pos2 = {Math.max(x - radius, x + radius), y + radius, Math.max(z - radius, z + radius)};
 		if (!RegionsAPI.canCreateRegion(pos1[0], pos2[0], pos1[1], pos2[1], pos1[2], pos2[2])) {
 			player.sendMessage(PREFIX + "§fНе возможно установить блок в выбраном месте из§7-§fза пересечения регионов§7!");
-			event.setCancelled();
+			player.sendTitle("§l§cОшибка");
 			return;
 		}
 		player.sendMessage(PREFIX + "§fВы успешно создали новый защищеный регион§7!\n§l§6• §r§fДля проверки владений используйте палку§7!");

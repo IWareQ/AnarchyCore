@@ -66,6 +66,7 @@ public class BanCommand extends Command {
 					player.sendMessage(AnarchyMain.PREFIX + "§fПричина не может быть пустой§7!");
 				}
 				player.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + target.getName() + " §fбыл заблокирован§7!\n§l§6• §r§fПричина§7: §6" + (String)data.get(1) + "\n§l§6• §r§fПереод§7: " + (String)data.get(2));
+				AnarchyMain.sendMessageToChat("🔒Блокировка аккаунта\n\nИгрок: " + target.getName() + "\nАдминистратор: " + player.getName() + "\nПричина: " + (String)data.get(1) + "\nПериод: " + (String)data.get(2), 2000000001);
 				BanSystemAPI.banPlayer(target.getName(), (String)data.get(1), player.getName(), secondsTime);
 			});
 		}

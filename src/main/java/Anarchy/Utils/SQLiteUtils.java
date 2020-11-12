@@ -11,12 +11,11 @@ import java.util.Map;
 
 import Anarchy.AnarchyMain;
 import DbLib.DbLib;
-import cn.nukkit.Server;
 
 public class SQLiteUtils {
 
 	public static Connection connectToSQLite(String filename) {
-		return DbLib.getSQLiteConnection(new File(AnarchyMain.folder + AnarchyMain.port + File.separator + filename));
+		return DbLib.getSQLiteConnection(new File(AnarchyMain.port + File.separator + filename));
 	}
 
 	public static boolean query(String filename, String query) {

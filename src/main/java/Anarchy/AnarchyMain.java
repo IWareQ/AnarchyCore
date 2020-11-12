@@ -86,11 +86,9 @@ import cn.nukkit.plugin.PluginManager;
 
 public class AnarchyMain extends PluginBase {
 	public static String PREFIX = "§l§7(§3Система§7) §r";
-	public static String accessToken = "ac9b77006227ff5fd44036db53fa328fb99809eb5d4fb42a458bfd3bcc278065ba5ad0abcc1a3fac1a2ae";
+	public static String accessToken = "fa4b98ffb89a364cbffd6a855f47e42ae669ba5bb76a2a6b943a5340351d9fd28c4d572767f5ba16ae0a9";
 	public static AnarchyMain plugin;
-	public static String folder = "";
-	public static String datapath;
-	public static int port;
+	public static int port = Server.getInstance().getPort();
 
 	@Override()
 	public void onEnable() {
@@ -103,22 +101,21 @@ public class AnarchyMain extends PluginBase {
 			}
 		}
 		plugin = this;
-		port = this.getServer().getPort();
-		datapath = folder + port;
-		(new File(datapath)).mkdirs();
+		File dataFile = new File(String.valueOf(port));
+		dataFile.mkdirs();
 		this.registerAll();
 		this.registerEvents();
 		this.registerEntity();
 		this.unregisterCommands();
 		this.registerCommands();
 		this.registerTask();
-		this.getLogger().info("§l§fПлагин §aАктивирован§7! (§fАвтор §7- @§3extranons§7)");
+		this.getLogger().info("§l§fПлагин §aАктивирован§7! (§fАвтор §7- @§6extranons§7)");
 	}
 
 	@Override()
 	public void onDisable() {
 		this.unregisterAll();
-		this.getLogger().info("§l§fПлагин §cДеактивирован§7! (§fАвтор §7- @§3extranons§7)");
+		this.getLogger().info("§l§fПлагин §cДеактивирован§7! (§fАвтор §7- @§6extranons§7)");
 	}
 
 	private void registerAll() {

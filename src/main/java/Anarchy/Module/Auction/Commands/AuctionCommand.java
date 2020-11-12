@@ -38,7 +38,7 @@ public class AuctionCommand extends Command {
 					return false;
 				}
 				int count = 0;
-				File dataFile = new File(AnarchyMain.datapath + "/Auction/PlayerItems/" + player.getName() + ".yml");
+				File dataFile = new File(AnarchyMain.port + "/Auction/PlayerItems/" + player.getName() + ".yml");
 				Config config = new Config(dataFile, Config.YAML);
 				for (Map.Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 					TradeItem tradeItem = entry.getValue();

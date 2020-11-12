@@ -34,8 +34,8 @@ public class AuctionAPI extends PluginBase {
 	public static String PREFIX = "§l§7(§3Аукцион§7) §r";
 
 	public static void register() {
-		new File(AnarchyMain.datapath + "/Auction/PlayerItems/").mkdirs();
-		File auctionData = new File(AnarchyMain.datapath + "/Auction/Auction.yml");
+		new File(AnarchyMain.port + "/Auction/PlayerItems/").mkdirs();
+		File auctionData = new File(AnarchyMain.port + "/Auction/Auction.yml");
 		if (auctionData.exists()) {
 			Config config = new Config(auctionData, Config.YAML);
 			for (Map.Entry<String, Object> entry : config.getAll().entrySet()) {
@@ -61,7 +61,7 @@ public class AuctionAPI extends PluginBase {
 	}
 
 	public static void saveAuction() {
-		File auctionData = new File(AnarchyMain.datapath + "/Auction/Auction.yml");
+		File auctionData = new File(AnarchyMain.port + "/Auction/Auction.yml");
 		if (auctionData.exists()) {
 			auctionData.delete();
 		}
@@ -97,7 +97,7 @@ public class AuctionAPI extends PluginBase {
 					player.sendMessage(PREFIX + "§fВаш товар никто не купил§7, §fпоэтому мы вернули его обртано\n§l§6| §r§fСмотрите вкладку §7(§6Хранилище§7) §fв §7/§6ah");
 				}
 				try {
-					File dataFile = new File(AnarchyMain.datapath + "/Auction/PlayerItems/" + tradeItem.sellerName + ".yml");
+					File dataFile = new File(AnarchyMain.port + "/Auction/PlayerItems/" + tradeItem.sellerName + ".yml");
 					Config config = new Config(dataFile, Config.YAML);
 					config.set(tradeItem.UUID, tradeItem.sellItem.hasCompoundTag() ? new Object[] {tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount(), NBTIO.write(tradeItem.sellItem.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[] {tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount()});
 					config.save();

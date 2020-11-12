@@ -62,8 +62,8 @@ import nukkitcoders.mobplugin.entities.block.BlockEntitySpawner;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 
 public class EventsHandler implements Listener {
-	File dataFileDeaths = new File(AnarchyMain.datapath + "/Deaths.yml");
-	File dataFileKills = new File(AnarchyMain.datapath + "/Kills.yml");
+	File dataFileDeaths = new File(AnarchyMain.port + "/Deaths.yml");
+	File dataFileKills = new File(AnarchyMain.port + "/Kills.yml");
 	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
 	Config configKills = new Config(dataFileKills, Config.YAML);
 	public static Map<Player, Long> COOLDOWN = new HashMap<>();

@@ -22,17 +22,17 @@ public class UnBanCommand extends Command {
 		if (!sender.hasPermission("Command.UnBan")) {
 			return false;
 		}
-		if (args.length != 1) {
-			sender.sendMessage("§l§6| §r§fИспользование §7- /§6unban §7(§3игрок§7)");
+		if (args.length  < 2) {
+			sender.sendMessage("§l§6| §r§fИспользование §7- /§6unban §7(§3игрок§7) (§3причина§7)");
 			return true;
 		}
-		String nickname = StringUtils.implode(args, 0);
-		if (BanSystemAPI.playerIsBanned(nickname)) {
-			sender.sendMessage(AnarchyMain.PREFIX + "§fАккаунт игрока §6" + nickname + " §fбыл разблокирован§7!");
-			AnarchyMain.sendMessageToChat("🌲 Разблокировка аккаунта\n\nИгрок: " + nickname + "\nАдминистратор: " + sender.getName(), 2000000004);
-			BanSystemAPI.unBanPlayer(nickname);
+		String reason = StringUtils.implode(args, 1);
+		if (BanSystemAPI.playerIsBanned(args[0])) {
+			sender.sendMessage(AnarchyMain.PREFIX + "§fАккаунт игрока §6" + args[0] + " §fбыл разблокирован§7!");
+			AnarchyMain.sendMessageToChat("🔓Разблокировка аккаунта\n\nИгрок: " + args[0] + "\nАдминистратор: " + sender.getName() + "\nПричина: " + reason, 2000000001);
+			BanSystemAPI.unBanPlayer(args[0]);
 		} else {
-			sender.sendMessage(AnarchyMain.PREFIX + "§fАккаунт игрока §6" + nickname + " §fне заблокирован§7!");
+			sender.sendMessage(AnarchyMain.PREFIX + "§fАккаунт игрока §6" + args[0] + " §fне заблокирован§7!");
 		}
 		return false;
 	}

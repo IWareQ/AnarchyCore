@@ -109,7 +109,7 @@ public class AuctionEventsHandler implements Listener {
 					break;
 
 					case "§r§6Хранилище": {
-						File dataFile = new File(AnarchyMain.datapath + "/Auction/PlayerItems/" + player.getName() + ".yml");
+						File dataFile = new File(AnarchyMain.port + "/Auction/PlayerItems/" + player.getName() + ".yml");
 						Config config = new Config(dataFile, Config.YAML);
 						if (config.getAll().isEmpty()) {
 							dataFile.delete();
