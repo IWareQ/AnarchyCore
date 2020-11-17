@@ -162,7 +162,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.NightVision", true);
-			permissionAllows.put("Command.ClearChat", true);
 			break;
 
 		case 8:
@@ -174,7 +173,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.NightVision", true);
-			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.CraftingTable", true);
 			break;
@@ -188,7 +186,6 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.DonateShop", true);
 			permissionAllows.put("Command.NightVision", true);
-			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.CraftingTable", true);
 			permissionAllows.put("Command.Bonus", true);
@@ -203,6 +200,7 @@ public class PermissionsAPI {
 			permissionAllows.put("Command.Near", true);
 			permissionAllows.put("Command.EnderChest", true);
 			permissionAllows.put("Command.DonateShop", true);
+			permissionAllows.put("Command.ClearChat", true);
 			permissionAllows.put("AdminChat", true);
 			permissionAllows.put("Command.Mute", true);
 			permissionAllows.put("Command.UnMute", true);
