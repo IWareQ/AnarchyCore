@@ -7,13 +7,13 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class NightCommand extends Command {
-
+	
 	public NightCommand() {
-		super("night", "§r§l§fСменить §eДень §fна §9Ночь");
+		super("night", "§r§fСменить §eДень §fна §9Ночь");
 		this.setPermission("Command.Night");
 		this.commandParameters.clear();
 	}
-
+	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
@@ -23,7 +23,7 @@ public class NightCommand extends Command {
 			}
 			FunctionsAPI.MAP.setTime(14000);
 			for (Player players : Server.getInstance().getOnlinePlayers().values()) {
-				players.sendMessage("§l§6| §r§fИгрок §3" + player.getName() + " §fустановил§7(§fа§7) §9Ночь");
+				players.sendMessage("§l§6• §r§fИгрок §6" + player.getName() + " §fустановил§7(§fа§7) §9Ночь");
 			}
 		}
 		return false;

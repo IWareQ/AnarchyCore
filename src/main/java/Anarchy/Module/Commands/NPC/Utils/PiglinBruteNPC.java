@@ -5,15 +5,14 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
 public class PiglinBruteNPC extends EntityPiglinBrute {
+	public static final int NETWORK_ID = 127;
 
-    public static final int NETWORK_ID = 127;
+	public PiglinBruteNPC(FullChunk chunk, CompoundTag nbt) {
+		super(chunk, nbt);
+	}
 
-    public PiglinBruteNPC(FullChunk chunk, CompoundTag nbt) {
-        super(chunk, nbt);
-    }
-
-    @Override
-    public int getNetworkId() {
-        return NETWORK_ID;
-    }
+	@Override()
+	public int getNetworkId() {
+		return NETWORK_ID;
+	}
 }

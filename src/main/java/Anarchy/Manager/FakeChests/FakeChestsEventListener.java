@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor()
 public class FakeChestsEventListener implements Listener {
 	private final FakeChests fakeChests = new FakeChests();
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();

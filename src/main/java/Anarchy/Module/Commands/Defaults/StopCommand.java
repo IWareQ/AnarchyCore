@@ -9,7 +9,7 @@ import cn.nukkit.command.CommandSender;
 public class StopCommand extends Command {
 	
 	public StopCommand() {
-		super("stop", "§l§fРучная перезагрузка");
+		super("stop", "§r§fРучная перезагрузка");
 		this.setPermission("Command.Stop");
 		this.commandParameters.clear();
 	}

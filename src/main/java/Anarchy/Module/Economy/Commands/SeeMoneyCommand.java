@@ -12,7 +12,7 @@ import cn.nukkit.command.data.CommandParameter;
 public class SeeMoneyCommand extends Command {
 
 	public SeeMoneyCommand() {
-		super("seemoney", "§l§fПосмотреть баланс Игрока");
+		super("seemoney", "§r§fПросмотр баланса");
 		this.setPermission("Command.SeeMoney");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
@@ -26,7 +26,7 @@ public class SeeMoneyCommand extends Command {
 				return true;
 			}
 			if (args.length < 1) {
-				player.sendMessage("§l§6| §r§fИспользование §7- /§6seemoney §7(§3игрок§7)");
+				player.sendMessage("§l§6• §r§fИспользование §7- /§6seemoney §7(§3игрок§7)");
 				return true;
 			}
 			String nickname = StringUtils.implode(args, 0);

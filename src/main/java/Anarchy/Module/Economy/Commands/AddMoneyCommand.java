@@ -13,7 +13,7 @@ import cn.nukkit.command.data.CommandParameter;
 public class AddMoneyCommand extends Command {
 	
 	public AddMoneyCommand() {
-		super("addmoney", "§l§fВыдать Монет Игроку");
+		super("addmoney", "§r§fВыдача монет");
 		this.setPermission("Command.AddMoney");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("money", CommandParamType.INT, false), new CommandParameter("player", CommandParamType.TARGET, false)});
@@ -25,7 +25,7 @@ public class AddMoneyCommand extends Command {
 			return true;
 		}
 		if (args.length < 2) {
-			sender.sendMessage("§l§6| §r§fИспользование §7- /§6addmoney §7(§3сумма§7) (§3игрок§7)");
+			sender.sendMessage("§l§6• §r§fИспользование §7- /§6addmoney §7(§3сумма§7) (§3игрок§7)");
 			return true;
 		}
 		String nickname = StringUtils.implode(args, 1);

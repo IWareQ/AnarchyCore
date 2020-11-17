@@ -8,7 +8,7 @@ import cn.nukkit.potion.Effect;
 public class NightVisionCommand extends Command {
 
 	public NightVisionCommand() {
-		super("nightvision", "§r§l§fВключить ночное зрение", "", new String[] {"nv"});
+		super("nightvision", "§r§fВключить ночное зрение", "", new String[] {"nv"});
 		this.setPermission("Command.NightVision");
 		this.commandParameters.clear();
 	}

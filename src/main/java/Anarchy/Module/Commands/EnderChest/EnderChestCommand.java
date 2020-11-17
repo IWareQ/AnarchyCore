@@ -10,7 +10,7 @@ import cn.nukkit.level.Sound;
 public class EnderChestCommand extends Command {
 
 	public EnderChestCommand() {
-		super("enderchest", "§r§l§fОткрыть Сундук края", "", new String[]{"ec"});
+		super("enderchest", "§r§fОткрыть Сундук края", "", new String[] {"ec"});
 		this.setPermission("Command.EnderChest");
 		this.commandParameters.clear();
 	}
@@ -22,7 +22,7 @@ public class EnderChestCommand extends Command {
 			if (!player.hasPermission("Command.EnderChest")) {
 				return false;
 			}
-			EnderChest enderChest = new EnderChest("Сундук края");
+			EnderChest enderChest = new EnderChest("§r§fСундук края");
 			enderChest.setContents(player.getEnderChestInventory().getContents());
 			player.getLevel().addSound(player, Sound.RANDOM_ENDERCHESTOPEN, 1, 1, player);
 			FakeChestsAPI.openInventory(player, enderChest);

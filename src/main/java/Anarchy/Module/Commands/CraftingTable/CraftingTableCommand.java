@@ -9,7 +9,7 @@ import cn.nukkit.command.CommandSender;
 public class CraftingTableCommand extends Command {
 
 	public CraftingTableCommand() {
-		super("craftingtable", "§r§l§fОткрыть верстак", "", new String[] {"craft"});
+		super("craftingtable", "§r§fОткрыть верстак", "", new String[] {"craft"});
 		this.setPermission("Command.CraftingTable");
 		this.commandParameters.clear();
 	}

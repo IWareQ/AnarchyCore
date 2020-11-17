@@ -20,7 +20,7 @@ import cn.nukkit.utils.Config;
 public class AuctionCommand extends Command {
 
 	public AuctionCommand() {
-		super("auc", "Открыть Аукцион", "", new String[] {"ah"});
+		super("aucion", "§r§fОткрыть Аукцион", "", new String[] {"auc"});
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("money", CommandParamType.INT, false)});
 	}

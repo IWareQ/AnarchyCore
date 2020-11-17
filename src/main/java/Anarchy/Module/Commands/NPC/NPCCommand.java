@@ -13,7 +13,7 @@ import cn.nukkit.nbt.tag.ListTag;
 public class NPCCommand extends Command {
 
 	public NPCCommand() {
-		super("npc", "§r§l§fПоставить NPC");
+		super("npc", "§r§fПоставить NPC");
 		this.setPermission("Command.NPC");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("npc", new String[]{"auctioner", "huckster"})});
@@ -40,6 +40,7 @@ public class NPCCommand extends Command {
 				player.sendMessage("§l§6• §r§fNPC §7«§6Аукционер§7» §fуспешно поставлен§7!");
 			}
 			break;
+
 			case "huckster": {
 				Entity entity = Entity.createEntity("PiglinBruteNPC", player.chunk, getNBT(player));
 				entity.setNameTag("§l§6Барыга");
@@ -48,26 +49,14 @@ public class NPCCommand extends Command {
 				player.sendMessage("§l§6• §r§fNPC §7«§6Барыга§7» §fуспешно поставлен§7!");
 			}
 			break;
+
 			}
 		}
 		return false;
 	}
 
 	private CompoundTag getNBT(Player player) {
-		CompoundTag compoundTag = new CompoundTag()
-		.putList(new ListTag<>("Pos")
-				 .add(new DoubleTag("", player.x))
-				 .add(new DoubleTag("", player.y))
-				 .add(new DoubleTag("", player.z)))
-		.putList(new ListTag<DoubleTag>("Motion")
-				 .add(new DoubleTag("", 0))
-				 .add(new DoubleTag("", 0))
-				 .add(new DoubleTag("", 0)))
-		.putList(new ListTag<FloatTag>("Rotation")
-				 .add(new FloatTag("", (float) player.getYaw()))
-				 .add(new FloatTag("", (float) player.getPitch())))
-		.putBoolean("Invulnerable", true)
-		.putBoolean("npc", true);
+		CompoundTag compoundTag = new CompoundTag().putList(new ListTag<>("Pos").add(new DoubleTag("", player.x)).add(new DoubleTag("", player.y)).add(new DoubleTag("", player.z))).putList(new ListTag<DoubleTag>("Motion").add(new DoubleTag("", 0)).add(new DoubleTag("", 0)).add(new DoubleTag("", 0))).putList(new ListTag<FloatTag>("Rotation").add(new FloatTag("", (float)player.getYaw())).add(new FloatTag("", (float)player.getPitch()))).putBoolean("Invulnerable", true).putBoolean("npc", true);
 		return compoundTag;
 	}
 }

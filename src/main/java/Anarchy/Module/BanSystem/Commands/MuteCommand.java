@@ -17,9 +17,9 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 
 public class MuteCommand extends Command {
-	
+
 	public MuteCommand() {
-		super("mute", "§r§l§fБлокировка чата");
+		super("mute", "§r§fБлокировка чата");
 		this.setPermission("Command.Mute");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
@@ -43,7 +43,11 @@ public class MuteCommand extends Command {
 			}
 			PlayerSession playerSession = PlayerSessionManager.getPlayerSession(target);
 			List<String> timeMute = Arrays.asList("§61 §fМинута", "§65 §fМинут", "§610 §fМинут", "§615 §fМинут", "§620 §fМинут", "§625 §fМинут", "§630 §fМинут", "§635 §fМинут", "§640 §fМинут", "§645 §fМинут", "§650 §fМинут", "§655 §fМинут", "§61 §fЧас", "§6Тест время");
-			new CustomForm("§l§fБлокировка чата").addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n").addInput("§l§6• §r§fПричина блокировки чата§7:").addDropDown("§l§6• §r§fВремя блокировки чата§7:", timeMute).send(player, (targetPlayer, form, data)-> {
+			CustomForm customForm = new CustomForm("§l§fБлокировка чата");
+			customForm.addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n");
+			customForm.addInput("§l§6• §r§fПричина блокировки чата§7:");
+			customForm.addDropDown("§l§6• §r§fВремя блокировки чата§7:", timeMute);
+			customForm.send(player, (targetPlayer, targetForm, data)-> {
 				if (data == null) return;
 				int secondsTime;
 				if (data.get(2).equals("§61 §fМинута")) {

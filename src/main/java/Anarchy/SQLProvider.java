@@ -3,6 +3,7 @@ package Anarchy;
 import Anarchy.Utils.SQLiteUtils;
 
 class SQLProvider {
+
 	public static void register() {
 		SQLiteUtils.query("Auth.db", "CREATE TABLE IF NOT EXISTS AUTH (Username TEXT PRIMARY KEY, VK_ID INTEGER DEFAULT NULL, IP_Reg TEXT DEFAULT NULL, IP_Last TEXT DEFAULT NULL, DATE_REG TEXT DEFAULT NULL, DATE_LAST TEXT DEFAULT NULL);");
 		SQLiteUtils.query("Users.db", "CREATE TABLE  IF NOT EXISTS USERS (Account_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Username TEXT, Prefix TEXT DEFAULT NULL, Permission INTEGER DEFAULT 0, Money REAL DEFAULT 0.0, Bonus INTEGER DEFAULT 0, Gametime INTEGER DEFAULT 0);");

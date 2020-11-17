@@ -8,7 +8,7 @@ import cn.nukkit.level.Sound;
 import cn.nukkit.scheduler.Task;
 
 public class RestartTask extends Task {
-	
+
 	@Override()
 	public void onRun(int i) {
 		if (MinuteTask.SECONDS_RESTART == 60) {
@@ -22,7 +22,7 @@ public class RestartTask extends Task {
 			if (MinuteTask.SECONDS_RESTART == 0) {
 				for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 					CombatLoggerAPI.removeCombat(player);
-					AuctionAPI.updateAuction();
+					AuctionAPI.saveAuction();
 					player.close("", "§l§6Перезагрузка");
 				}
 				Server.getInstance().shutdown();
@@ -35,26 +35,26 @@ public class RestartTask extends Task {
 		}
 		MinuteTask.SECONDS_RESTART--;
 	}
-	
+
 	private String getSecond(int second) {
 		int preLastDigit = second % 100 / 10;
 		if (preLastDigit == 1) {
 			return "секунд";
 		}
 		switch (second % 10) {
-			case 1: 
+		case 1:
 			return "секунду";
-			
-			case 2: 
-			
-			case 3: 
-			
-			case 4: 
+
+		case 2:
+
+		case 3:
+
+		case 4:
 			return "секунды";
-			
-			default: 
+
+		default:
 			return "секунд";
-			
+
 		}
 	}
 }

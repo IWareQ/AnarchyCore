@@ -9,7 +9,7 @@ import cn.nukkit.command.CommandSender;
 public class DayCommand extends Command {
 
 	public DayCommand() {
-		super("day", "§r§l§fСменить §9Ночь §fна §eДень");
+		super("day", "§r§fСменить §9Ночь §fна §eДень");
 		this.setPermission("Command.Day");
 		this.commandParameters.clear();
 	}

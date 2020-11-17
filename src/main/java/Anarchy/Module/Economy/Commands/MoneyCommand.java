@@ -8,7 +8,7 @@ import cn.nukkit.command.CommandSender;
 public class MoneyCommand extends Command {
 
 	public MoneyCommand() {
-		super("money", "§l§fИгровой баланс", "", new String[] {"mymoney"});
+		super("money", "§r§fИгровой баланс", "", new String[] {"mymoney"});
 		this.commandParameters.clear();
 	}
 

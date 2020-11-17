@@ -13,7 +13,7 @@ import cn.nukkit.level.Sound;
 public class ReportCommand extends Command {
 
 	public ReportCommand() {
-		super("report", "§r§l§fПожаловаться на Игрока");
+		super("report", "§r§fПожаловаться на Игрока");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("cheater", CommandParamType.TARGET, false), new CommandParameter("reason", CommandParamType.INT, false)});
 	}
@@ -23,12 +23,12 @@ public class ReportCommand extends Command {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
 			if (args.length < 1) {
-				player.sendMessage("§l§6| §r§fИспользование §7- /§6report §7(§3игрок§7) (§3текст§7)");
+				player.sendMessage("§l§6•  §r§fИспользование §7- /§6report §7(§3игрок§7) (§3текст§7)");
 				return true;
 			}
 			Player target = Server.getInstance().getPlayer(args[0]);
 			if (target == null) {
-				player.sendMessage("§fИгрок §6" + args[0] + " §fне в сети§7!");
+				player.sendMessage("§l§6•  §r§fИгрок §6" + args[0] + " §fне в сети§7!");
 				player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 				return true;
 			}

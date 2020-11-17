@@ -5,11 +5,11 @@ import cn.nukkit.Player;
 import cn.nukkit.level.Sound;
 
 public class EnderChest extends DefaultChest {
-	
+
 	public EnderChest(String title) {
 		super(title);
 	}
-	
+
 	@Override()
 	public void onClose(Player player) {
 		player.getEnderChestInventory().setContents(getContents());

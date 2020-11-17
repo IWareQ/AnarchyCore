@@ -31,7 +31,7 @@ import cn.nukkit.utils.Config;
 public class StorageHandler extends Command implements Listener {
 
 	public StorageHandler() {
-		super("storage", "§r§l§fХранилище купленных Предметов");
+		super("storage", "§r§fХранилище купленных Предметов");
 		this.commandParameters.clear();
 		new File(AnarchyMain.folder + "/StorageItems/").mkdirs();
 	}

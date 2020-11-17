@@ -19,7 +19,7 @@ public class DonateShopHandler extends Command implements Listener {
 	private static String PREFIX = "§l§7(§3Магазин§7) §r";
 
 	public DonateShopHandler() {
-		super("dshop", "§l§fМагазин");
+		super("dshop", "§r§fМагазин");
 		this.setPermission("Command.DonateShop");
 		this.commandParameters.clear();
 	}
@@ -31,7 +31,7 @@ public class DonateShopHandler extends Command implements Listener {
 			if (!player.hasPermission("Command.DonateShop")) {
 				return false;
 			}
-			DonateShopChest donateShopChest = new DonateShopChest("§l§fМагазин");
+			DonateShopChest donateShopChest = new DonateShopChest("§r§fМагазин");
 			donateShopChest.addItem(Item.get(Item.TOTEM, 0, 1).setLore("\n§r§fЦена§7: §6500\n\n§r§fНажмите§7, §fчтобы купить§7!"));
 			donateShopChest.addItem(Item.get(Item.ENDER_PEARL, 0, 1).setLore("\n§r§fЦена§7: §650\n\n§r§fНажмите§7, §fчтобы купить§7!"));
 			donateShopChest.addItem(Item.get(Item.CHORUS_FRUIT, 0, 1).setLore("\n§r§fЦена§7: §625\n\n§r§fНажмите§7, §fчтобы купить§7!"));
@@ -145,7 +145,6 @@ public class DonateShopHandler extends Command implements Listener {
 						}
 					}
 					break;
-
 					}
 				}
 			}

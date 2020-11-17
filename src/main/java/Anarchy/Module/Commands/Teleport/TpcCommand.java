@@ -11,7 +11,7 @@ import cn.nukkit.command.CommandSender;
 public class TpcCommand extends Command {
 
 	public TpcCommand() {
-		super("tpc", "Принять запрос на телепортацию");
+		super("tpc", "§§fПринять запрос на телепортацию");
 		this.commandParameters.clear();
 	}
 

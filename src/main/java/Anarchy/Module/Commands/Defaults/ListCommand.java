@@ -8,7 +8,7 @@ import cn.nukkit.command.CommandSender;
 public class ListCommand extends Command {
 
 	public ListCommand() {
-		super("list", "§l§fСписок игроков онлайн");
+		super("list", "§r§fСписок иигроков которые онлайн");
 		this.commandParameters.clear();
 	}
 

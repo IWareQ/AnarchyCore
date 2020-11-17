@@ -7,12 +7,12 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class BarCommand extends Command {
-
+	
 	public BarCommand() {
-		super("bar", "§l§fВключить§7/§fВыключить ХотБар");
+		super("bar", "§r§fУправление ХотБаром");
 		this.commandParameters.clear();
 	}
-
+	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
@@ -20,11 +20,11 @@ public class BarCommand extends Command {
 			if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
 				PlayerSessionManager.SCOREBOARDS.get(player.getName()).hideFor(player);
 				PlayerSessionManager.SCOREBOARD.remove(player.getName());
-				player.sendMessage("§l§a• §r§fХотбар §6успешно §fотключен");
+				player.sendMessage("§l§a• §r§fХотбар §6успешно §fотключен§7!");
 			} else {
 				PlayerSessionManager.SCOREBOARD.add(player.getName());
 				HotbarTask.showScoreboard(player);
-				player.sendMessage("§l§a• §r§fХотбар §6успешно §fвключен");
+				player.sendMessage("§l§a• §r§fХотбар §6успешно §fвключен§7!");
 			}
 		}
 		return false;

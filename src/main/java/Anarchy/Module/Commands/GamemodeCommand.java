@@ -7,7 +7,7 @@ import cn.nukkit.command.CommandSender;
 public class GamemodeCommand extends Command {
 
 	public GamemodeCommand() {
-		super("gm", "§l§fСменить режим игры");
+		super("gm", "§r§fСменить режим игры");
 		this.setPermission("Command.Gamemode");
 		this.commandParameters.clear();
 	}
@@ -26,7 +26,7 @@ public class GamemodeCommand extends Command {
 			switch (args[0]) {
 			case "0": {
 				player.setGamemode(0);
-				player.sendMessage("§l§6• §r§fРежим §7(§6Выживание§7) успешно включен§7!");
+				player.sendMessage("§l§6• §r§fРежим §7(§6Выживание§7) §fуспешно включен§7!");
 			}
 			break;
 
@@ -47,7 +47,6 @@ public class GamemodeCommand extends Command {
 				player.sendMessage("§l§6• §r§fРежим §7(§6Спектатор§7) §fуспешно включен§7!");
 			}
 			break;
-
 			}
 		}
 		return false;

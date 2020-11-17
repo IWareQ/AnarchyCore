@@ -1,7 +1,6 @@
 package Anarchy.Module.BanSystem.Utils;
 
 public class MuteUtils {
-	
 	private String player;
 	private String reason;
 	private String banner;

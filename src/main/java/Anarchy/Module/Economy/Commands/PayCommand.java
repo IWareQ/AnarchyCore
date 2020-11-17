@@ -13,7 +13,7 @@ import cn.nukkit.level.Sound;
 public class PayCommand extends Command {
 
 	public PayCommand() {
-		super("pay", "§l§fПеревести Монет");
+		super("pay", "§r§fПеревод монет");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false), new CommandParameter("money", CommandParamType.INT, false)});
 	}
@@ -23,7 +23,7 @@ public class PayCommand extends Command {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
 			if (args.length < 2) {
-				player.sendMessage("§l§6| §r§fИспользование §7- /§6pay §7(§3игрок§7) (§3сумма§7)");
+				player.sendMessage("§l§6• §r§fИспользование §7- /§6pay §7(§3игрок§7) (§3сумма§7)");
 				return true;
 			}
 			Player target = Server.getInstance().getPlayer(args[0]);
@@ -33,13 +33,13 @@ public class PayCommand extends Command {
 				return true;
 			}
 			if (!StringUtils.isDouble(args[1]) || Double.parseDouble(args[1]) < 0) {
-				player.sendMessage(EconomyAPI.PREFIX + "§fСумма может быть только положительным числом");
+				player.sendMessage(EconomyAPI.PREFIX + "§fСумма может быть только положительным числом§7!");
 				player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 				return true;
 			}
 			Double money = EconomyAPI.myMoney(player);
 			if (money < Double.parseDouble(args[1])) {
-				player.sendMessage(EconomyAPI.PREFIX + "§fВам не хватает §6монет §fдля перевода§7.\n§l§6| §r§fВаш баланс §7- §6" + String.format("%.1f", money) + "");
+				player.sendMessage(EconomyAPI.PREFIX + "§fВам не хватает §6монет §fдля перевода§7.\n§l§6• §r§fВаш баланс§7: §6" + String.format("%.1f", money) + "");
 				player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 				return true;
 			}

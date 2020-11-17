@@ -8,7 +8,7 @@ import cn.nukkit.level.Sound;
 public class FoodCommand extends Command {
 
 	public FoodCommand() {
-		super("food", "§r§l§fВосстановить Голод");
+		super("food", "§r§fВосстановить Голод");
 		this.setPermission("Command.Food");
 		this.commandParameters.clear();
 	}

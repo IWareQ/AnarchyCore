@@ -1,13 +1,14 @@
 package Anarchy.Module.Commands;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class ClearChatCommand extends Command {
 
 	public ClearChatCommand() {
-		super("clearchat", "§r§l§fОчистить чат для себя", "", new String[] {"cc"});
+		super("clearchat", "§r§fОчистка чата", "", new String[] {"cc"});
 		this.setPermission("Command.ClearChat");
 		this.commandParameters.clear();
 	}
@@ -19,7 +20,13 @@ public class ClearChatCommand extends Command {
 			if (!player.hasPermission("Command.ClearChat")) {
 				return false;
 			}
-			player.sendMessage("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n§l§6• §r§fЧат был очищен§7!");
+			Server.getInstance().broadcastMessage("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n§l§6• §r§fЧат был очищен§7!");
+			player.sendMessage("§l§a• §r§fВы успешно очистили чат для всех§7!");
+			for (Player admins : Server.getInstance().getOnlinePlayers().values()) {
+				if (admins.hasPermission("AdminChat")) {
+					admins.sendPopup("§l§fИгрок §6" + player.getName() + " §fочистил чат для всех§7!");
+				}
+			}
 		}
 		return false;
 	}

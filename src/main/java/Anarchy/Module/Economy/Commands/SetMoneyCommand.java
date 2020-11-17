@@ -11,21 +11,21 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 
 public class SetMoneyCommand extends Command {
-
+	
 	public SetMoneyCommand() {
-		super("setmoney", "§l§fУстановить монет");
+		super("setmoney", "§r§fУстановить баланс");
 		this.setPermission("Command.SetMoney");
 		this.commandParameters.clear();
-		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("money", CommandParamType.INT, false), new CommandParameter("player", CommandParamType.TARGET, false)});
+		this.commandParameters.put("default", new CommandParameter[]{new CommandParameter("money", CommandParamType.INT, false), new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
-
+	
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (!sender.hasPermission("Command.SetMoney")) {
 			return true;
 		}
 		if (args.length < 2) {
-			sender.sendMessage("§l§6| §r§fИспользование §7- /§6setmoney §7(§3сумма§7) (§3игрок§7)");
+			sender.sendMessage("§l§6• §r§fИспользование §7- /§6setmoney §7(§3сумма§7) (§3игрок§7)");
 			return true;
 		}
 		String nickname = StringUtils.implode(args, 1);

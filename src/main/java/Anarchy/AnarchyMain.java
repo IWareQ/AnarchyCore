@@ -42,7 +42,6 @@ import Anarchy.Module.Commands.RepairCommand;
 import Anarchy.Module.Commands.ReportCommand;
 import Anarchy.Module.Commands.ResyncCommand;
 import Anarchy.Module.Commands.SpawnCommand;
-import Anarchy.Module.Commands.TestCommand;
 import Anarchy.Module.Commands.CraftingTable.CraftingTableCommand;
 import Anarchy.Module.Commands.Defaults.ListCommand;
 import Anarchy.Module.Commands.Defaults.StopCommand;
@@ -164,7 +163,7 @@ public class AnarchyMain extends PluginBase {
 	}
 
 	private void registerCommands() {
-		Command[] commands = new Command[] {new GarbageCommand(), new UnMuteCommand(), new UnBanCommand(), new DonateShopHandler(), new SpawnCommand(), new BonusCommand(), new MuteCommand(), new NPCCommand(), new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new Anarchy.Module.BanSystem.Commands.KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		Command[] commands = new Command[] {new GarbageCommand(), new UnMuteCommand(), new UnBanCommand(), new DonateShopHandler(), new SpawnCommand(), new BonusCommand(), new MuteCommand(), new NPCCommand(), new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new DonateCommand(), new RepairCommand(), new Anarchy.Module.BanSystem.Commands.KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 

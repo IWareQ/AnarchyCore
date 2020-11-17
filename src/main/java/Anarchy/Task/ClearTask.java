@@ -35,7 +35,7 @@ public class ClearTask extends Task {
 					level.doChunkGarbageCollection();
 					level.unloadChunks(true);
 					for (Entity entity : level.getEntities()) {
-						if (!(entity instanceof Player) &&  !(entity instanceof EntityMinecartChest) && !(entity instanceof Wither) && !(entity.getLevel().equals(FunctionsAPI.SPAWN)) && !(entity instanceof SilverfishBoss) && !(entity instanceof SlimeBoss) && !(entity instanceof EvokerBoss) && !(entity instanceof RavagerBoss) && !(entity instanceof WitchBoss)) {
+						if (!(entity instanceof Player) && !(entity instanceof EntityMinecartChest) && !(entity instanceof Wither) && !(entity.getLevel().equals(FunctionsAPI.SPAWN)) && !(entity instanceof SilverfishBoss) && !(entity instanceof SlimeBoss) && !(entity instanceof EvokerBoss) && !(entity instanceof RavagerBoss) && !(entity instanceof WitchBoss)) {
 							level.removeEntity(entity);
 						}
 					}

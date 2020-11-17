@@ -7,7 +7,7 @@ import cn.nukkit.command.CommandSender;
 public class HealCommand extends Command {
 
 	public HealCommand() {
-		super("heal", "§r§l§fВосстановить Здоровье");
+		super("heal", "§r§fВосстановить Здоровье");
 		this.setPermission("Command.Heal");
 		this.commandParameters.clear();
 	}

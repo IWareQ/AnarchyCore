@@ -13,7 +13,7 @@ public class HomeCommand extends Command {
 	public static String PREFIX = "§l§7(§3Дом§7) §r";
 
 	public HomeCommand() {
-		super("home", "Телепортироватся домой");
+		super("home", "§r§fТелепортироватся домой");
 		this.commandParameters.clear();
 	}
 
@@ -21,9 +21,9 @@ public class HomeCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
-			Map<String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM HOMES WHERE UPPER(Username) = '" + player.getName().toUpperCase() + "';");
+			Map<String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM HOMES WHERE UPPER(Username) = \'" + player.getName().toUpperCase() + "\';");
 			if (homeData == null || homeData.isEmpty()) {
-				player.sendMessage(PREFIX + "§fТочек дома не обнаружено§7, §fдля создания используйте §7/§3sethome");
+				player.sendMessage(PREFIX + "§fТочек дома не обнаружено§7, §fдля создания используйте §7/§6sethome");
 			} else {
 				int x = Integer.parseInt(homeData.get("X"));
 				int y = Integer.parseInt(homeData.get("Y"));

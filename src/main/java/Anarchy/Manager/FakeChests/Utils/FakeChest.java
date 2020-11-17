@@ -21,8 +21,8 @@ import cn.nukkit.scheduler.NukkitRunnable;
 
 public abstract class FakeChest extends ContainerInventory {
 	private static final BlockVector3 ZERO = new BlockVector3(0, 0, 0);
-	static final Map < Player, FakeChest > open = new ConcurrentHashMap < > ();
-	protected final Map < Player, List < BlockVector3 >> blockPositions = new HashMap < > ();
+	static final Map<Player, FakeChest> open = new ConcurrentHashMap<>();
+	protected final Map<Player, List<BlockVector3>> blockPositions = new HashMap<>();
 	private boolean closed = false;
 	private String title;
 
@@ -38,12 +38,12 @@ public abstract class FakeChest extends ContainerInventory {
 		if (open.putIfAbsent(player, this) != null) {
 			throw new IllegalStateException("Inventory was already open");
 		}
-		List < BlockVector3 > blocks = onOpenBlock(player);
+		List<BlockVector3> blocks = onOpenBlock(player);
 		blockPositions.put(player, blocks);
 		onFakeOpen(player, blocks);
 	}
 
-	protected void onFakeOpen(Player player, List < BlockVector3 > blocks) {
+	protected void onFakeOpen(Player player, List<BlockVector3> blocks) {
 		BlockVector3 blockPosition = blocks.isEmpty() ? ZERO : blocks.get(0);
 		ContainerOpenPacket containerOpen = new ContainerOpenPacket();
 		containerOpen.windowId = player.getWindowId(this);
@@ -55,13 +55,13 @@ public abstract class FakeChest extends ContainerInventory {
 		this.sendContents(player);
 	}
 
-	protected abstract List < BlockVector3 > onOpenBlock(Player player);
+	protected abstract List<BlockVector3> onOpenBlock(Player player);
 
 	@Override()
 	public void onClose(Player player) {
 		super.onClose(player);
 		open.remove(player, this);
-		List < BlockVector3 > blocks = blockPositions.get(player);
+		List<BlockVector3> blocks = blockPositions.get(player);
 		for (int i = 0, size = blocks.size(); i < size; i++) {
 			final int index = i;
 			new NukkitRunnable() {
@@ -81,7 +81,7 @@ public abstract class FakeChest extends ContainerInventory {
 		}
 	}
 
-	public List < BlockVector3 > getPosition(Player player) {
+	public List<BlockVector3> getPosition(Player player) {
 		checkForClosed();
 		return blockPositions.getOrDefault(player, null);
 	}
@@ -90,7 +90,7 @@ public abstract class FakeChest extends ContainerInventory {
 		Preconditions.checkState(!closed, "Already closed");
 	}
 
-	void close() {
+	public void close() {
 		Preconditions.checkState(!closed, "Already closed");
 		for (Player player : getViewers()) {
 			player.removeWindow(this);

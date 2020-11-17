@@ -101,7 +101,7 @@ public class AuctionEventsHandler implements Listener {
 								CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 								compoundTag.putString("UUID", tradeItem.UUID);
 								item.setNamedTag(compoundTag);
-								sellChest.addItem(item.setLore("\n§r§fСтоимость§7: §6" + String.format("%.1f", tradeItem.itemPrice) + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6"  + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7."));
+								sellChest.addItem(item.setLore("\n§r§fСтоимость§7: §6" + String.format("%.1f", tradeItem.itemPrice) + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6" + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7."));
 							}
 						}
 						FakeChestsAPI.openDoubleChestInventory(player, sellChest);
@@ -176,7 +176,6 @@ public class AuctionEventsHandler implements Listener {
 								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже продан или его сняли с продажи§7!");
 							}
 						}
-						break;
 					}
 				} else if (slotChange.getInventory() instanceof SellChest) {
 					event.setCancelled();

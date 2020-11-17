@@ -1,10 +1,7 @@
 package Anarchy.Module.Commands.Inventory;
 
-import java.util.Map;
-
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
-import Anarchy.Module.Commands.Inventory.Utils.InventoryChest;
-import Anarchy.Module.Commands.Inventory.Utils.InventoryEnderChest;
+import Anarchy.Module.Commands.Inventory.Utils.DoubleChest;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Utils.StringUtils;
 import FormAPI.Forms.Elements.ImageType;
@@ -21,14 +18,12 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.inventory.InventoryTransactionEvent;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
-import cn.nukkit.nbt.tag.CompoundTag;
 
 public class InventoryHandler extends Command implements Listener {
 
 	public InventoryHandler() {
-		super("inv", "§l§fПросмотр инвентаря");
+		super("inv", "§r§fПросмотр инвентаря");
 		this.setPermission("Command.Inventory");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
@@ -52,23 +47,22 @@ public class InventoryHandler extends Command implements Listener {
 	}
 
 	public static void checkInventory(String checked, Player player) {
-		CompoundTag nbt = Server.getInstance().getOfflinePlayerData(checked);
 		Player target = Server.getInstance().getPlayer(checked);
-		SimpleForm simpleForm = new SimpleForm("§l§6" + checked + " §7> §fВыберите Инвентарь");
+		SimpleForm simpleForm = new SimpleForm("§l§6" + checked + " §7› §fВыберите Инвентарь");
 		simpleForm.setContent("§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "");
-		simpleForm.addButton("§l§fИнвентарь", ImageType.PATH, "textures/ui/inventory_icon");
-		simpleForm.addButton("§l§fЭндер Сундук", ImageType.PATH, "textures/ui/icon_blackfriday");
+		simpleForm.addButton("§r§fИнвентарь", ImageType.PATH, "textures/ui/inventory_icon");
+		simpleForm.addButton("§r§fЭндер Сундук", ImageType.PATH, "textures/ui/icon_blackfriday");
 		simpleForm.send(player, (targetPlayer, form, data)-> {
 			if (data == -1) return;
 			if (data == 0) {
-				InventoryChest InventoryChest = new InventoryChest("§l§6" + target.getName() + " §7- §fИнвентарь");
-				InventoryChest.setContents(target.getInventory().getContents());
-				FakeChestsAPI.openInventory(player, InventoryChest);
+				DoubleChest doubleChest = new DoubleChest("§r§6" + target.getName() + " §7- §fИнвентарь");
+				doubleChest.setContents(target.getInventory().getContents());
+				FakeChestsAPI.openInventory(player, doubleChest);
 			}
 			if (data == 1) {
-				InventoryEnderChest inventoryEnderChest = new InventoryEnderChest("§l§6" + target.getName() + " §7- §fЭндер Сундук");
-				inventoryEnderChest.setContents(target.getEnderChestInventory().getContents());
-				FakeChestsAPI.openInventory(player, inventoryEnderChest);
+				DoubleChest doubleChest = new DoubleChest("§r§6" + target.getName() + " §7- §fЭндер Сундук");
+				doubleChest.setContents(target.getEnderChestInventory().getContents());
+				FakeChestsAPI.openInventory(player, doubleChest);
 			}
 		});
 	}
@@ -78,7 +72,7 @@ public class InventoryHandler extends Command implements Listener {
 		for (InventoryAction action : event.getTransaction().getActions()) {
 			if (action instanceof SlotChangeAction) {
 				SlotChangeAction slotChange = (SlotChangeAction)action;
-				if (slotChange.getInventory() instanceof InventoryChest || slotChange.getInventory() instanceof InventoryEnderChest) {
+				if (slotChange.getInventory() instanceof DoubleChest) {
 					Player player = event.getTransaction().getSource();
 					player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 					event.setCancelled(true);

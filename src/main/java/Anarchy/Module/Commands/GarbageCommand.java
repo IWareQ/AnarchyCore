@@ -33,7 +33,7 @@ public class GarbageCommand extends Command {
 			Player player = (Player)sender;
 			if (args.length == 0) {
 				SimpleForm simpleForm = new SimpleForm("§r§fОчистка Дропа");
-				simpleForm.setContent("§r§l§6• §r§fБыстрые команды§7:\n\n   §7/§6gb get §7- §fколличество дропа\n   §7/§6gb process §7- §fпроверка нна превышение лимита\n   §7/§6gb start §7- §fпринудительная очистка\n\nТекущий лимит дропа§7: §6" + LIMIT + " §fпредметов\nОбнаружено дропа§7: §6" + getGarbageCount() + " §fшт§7.");
+				simpleForm.setContent("§r§l§6• §r§fБыстрые команды§7:\n\n§7/§6gb get §7- §fколличество дропа\n§7/§6gb process §7- §fпроверка нна превышение лимита\n§7/§6gb start §7- §fпринудительная очистка\n\nТекущий лимит дропа§7: §6" + LIMIT + " §fпредметов\nОбнаружено дропа§7: §6" + getGarbageCount() + " §fшт§7.");
 				simpleForm.send(player);
 				return true;
 			}
@@ -55,7 +55,7 @@ public class GarbageCommand extends Command {
 
 			default: {
 				SimpleForm simpleForm = new SimpleForm("§r§fОчистка Дропа");
-				simpleForm.setContent("§r§l§6• §r§fБыстрые команды§7:\n\n   §7/§6gb get §7- §fколличество дропа\n   §7/§6gb process §7- §fпроверка нна превышение лимита\n   §7/§6gb start §7- §fпринудительная очистка\n\nТекущий лимит дропа§7: §6" + LIMIT + " §fпредметов\nОбнаружено дропа§7: §6" + getGarbageCount() + " §fшт§7.");
+				simpleForm.setContent("§r§l§6• §r§fБыстрые команды§7:\n\n§7/§6gb get §7- §fколличество дропа\n§7/§6gb process §7- §fпроверка нна превышение лимита\n§7/§6gb start §7- §fпринудительная очистка\n\nТекущий лимит дропа§7: §6" + LIMIT + " §fпредметов\nОбнаружено дропа§7: §6" + getGarbageCount() + " §fшт§7.");
 				simpleForm.send(player);
 			}
 			break;

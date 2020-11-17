@@ -9,7 +9,7 @@ import cn.nukkit.level.Position;
 public class TprCommand extends Command {
 
 	public TprCommand() {
-		super("tpr", "Телепортироваться в случайное место", "", new String[] {"rtp"});
+		super("tpr", "§r§fТелепортироваться в случайное место", "", new String[] {"rtp"});
 		this.commandParameters.clear();
 	}
 

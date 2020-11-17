@@ -12,7 +12,7 @@ import cn.nukkit.level.Sound;
 public class TellCommand extends Command {
 
 	public TellCommand() {
-		super("tell", "§l§fОтправить Личное Сообщение");
+		super("tell", "§r§fОтправить Личное Сообщение");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
@@ -34,7 +34,7 @@ public class TellCommand extends Command {
 			player.sendMessage("§7(§6Вы §7-> §6" + target.getName() + "§7) §f" + message);
 			target.sendMessage("§7(§6" + player.getName() + " §7-> §6Вы§7) §f" + message);
 			target.sendTip("§r§l§fНовое Личное Сообщение§7!");
-			target.getLevel().addSound(target, Sound.ITEM_BOOK_PUT, 1, 1, target);
+			target.getLevel().addSound(target, Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, 1, 1, target);
 		}
 		return true;
 	}

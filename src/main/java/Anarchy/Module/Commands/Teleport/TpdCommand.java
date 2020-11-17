@@ -8,7 +8,7 @@ import cn.nukkit.command.CommandSender;
 public class TpdCommand extends Command {
 
 	public TpdCommand() {
-		super("tpd", "Отклонить запрос на телепортацию");
+		super("tpd", "§r§fОтклонить запрос на телепортацию");
 		this.commandParameters.clear();
 	}
 

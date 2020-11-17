@@ -6,10 +6,10 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class NearCommand extends Command {
-	public static int RADIUS;
+	public static int RADIUS = 70;
 
 	public NearCommand() {
-		super("near", "§r§l§fПосмотреть кто рядом с тобой");
+		super("near", "§r§fПосмотреть кто рядом с Вами");
 		this.setPermission("Command.Near");
 		this.commandParameters.clear();
 	}

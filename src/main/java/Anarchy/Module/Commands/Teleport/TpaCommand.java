@@ -17,7 +17,7 @@ public class TpaCommand extends Command {
 	public static Map<Player, Long> COOLDOWN = new HashMap<>();
 
 	public TpaCommand() {
-		super("tpa", "Отправить запрос на телепортацию");
+		super("tpa", "§r§fОтправить запрос на телепортацию");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
 	}
@@ -27,7 +27,7 @@ public class TpaCommand extends Command {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
 			if (args.length != 1) {
-				player.sendMessage("§l§6| §r§fИспользование §7- /§6tpa §7(§3игрок§7)");
+				player.sendMessage("§l§6• §r§fИспользование §7- /§6tpa §7(§3игрок§7)");
 				return true;
 			}
 			Long cooldownTime = COOLDOWN.get(player);

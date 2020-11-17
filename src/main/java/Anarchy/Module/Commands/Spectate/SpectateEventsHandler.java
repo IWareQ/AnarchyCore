@@ -30,9 +30,9 @@ public class SpectateEventsHandler implements Listener {
 		DataPacket dataPacket = event.getPacket();
 		Player player = event.getPlayer();
 		if (dataPacket instanceof InventoryTransactionPacket) {
-			InventoryTransactionPacket transactionPacket = (InventoryTransactionPacket) dataPacket;
+			InventoryTransactionPacket transactionPacket = (InventoryTransactionPacket)dataPacket;
 			if (transactionPacket.transactionType == InventoryTransactionPacket.TYPE_USE_ITEM) {
-				UseItemData useItemData = (UseItemData) transactionPacket.transactionData;
+				UseItemData useItemData = (UseItemData)transactionPacket.transactionData;
 				Vector3 blockVector3 = new Vector3(useItemData.blockPos.getX(), useItemData.blockPos.getY(), useItemData.blockPos.getZ());
 				Block block = player.getLevel().getBlock(blockVector3);
 				Item item = player.getInventory().getItemInHand();
@@ -70,7 +70,7 @@ public class SpectateEventsHandler implements Listener {
 					if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && player.getGamemode() == 3) {
 						BlockEntity blockEntity = block.getLevel().getBlockEntity(blockVector3);
 						if (blockEntity instanceof BlockEntityChest) {
-							BlockEntityChest blockEntityChest = (BlockEntityChest) blockEntity;
+							BlockEntityChest blockEntityChest = (BlockEntityChest)blockEntity;
 							Map<Integer, Item> contents = blockEntityChest.getInventory().getContents();
 							DoubleChest doubleChest = new DoubleChest("Просмотр содержимого");
 							doubleChest.setContents(contents);
@@ -79,12 +79,12 @@ public class SpectateEventsHandler implements Listener {
 					}
 				}
 				break;
-				
+
 				default: {
-					if (player.getGamemode() == 3) {
+					if (!SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && player.getGamemode() == 3) {
 						BlockEntity blockEntity = block.getLevel().getBlockEntity(blockVector3);
 						if (blockEntity instanceof BlockEntityChest) {
-							BlockEntityChest blockEntityChest = (BlockEntityChest) blockEntity;
+							BlockEntityChest blockEntityChest = (BlockEntityChest)blockEntity;
 							Map<Integer, Item> contents = blockEntityChest.getInventory().getContents();
 							DoubleChest doubleChest = new DoubleChest("Просмотр содержимого");
 							doubleChest.setContents(contents);

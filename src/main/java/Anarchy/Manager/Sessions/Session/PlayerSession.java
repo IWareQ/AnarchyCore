@@ -23,7 +23,7 @@ public class PlayerSession {
 		queryData.remove("Account_ID");
 		queryData.remove("Username");
 		queryData.remove("Gametime");
-		SQLiteUtils.query("Users.db", "UPDATE `USERS` SET " + SQLiteUtils.buildQueryFromMap(queryData) + ", `Gametime` = " + (Integer.parseInt(playerData.get("Gametime")) + getSessionTime()) + " WHERE UPPER(`Username`) = \'" + playerName.toUpperCase() + "\';");
+		SQLiteUtils.query("Users.db", "UPDATE `USERS` SET " + SQLiteUtils.buildQueryFromMap(queryData) + ", `Gametime` = " + (Integer.parseInt(playerData.get("Gametime")) + getSessionTime()) +  " WHERE UPPER(`Username`) = \'" + playerName.toUpperCase() + "\';");
 	}
 
 	public String getName() {

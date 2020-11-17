@@ -32,8 +32,8 @@ public class DefaultCraftingTable extends FakeChest {
 	}
 
 	@Override()
-	protected List < BlockVector3 > onOpenBlock(Player player) {
-		BlockVector3 blockPosition = new BlockVector3((int) player.x, ((int) player.y) + 2, (int) player.z);
+	protected List<BlockVector3> onOpenBlock(Player player) {
+		BlockVector3 blockPosition = new BlockVector3((int)player.x, ((int)player.y) + 2, (int)player.z);
 		placeCraftingTable(player, blockPosition);
 		return Collections.singletonList(blockPosition);
 	}

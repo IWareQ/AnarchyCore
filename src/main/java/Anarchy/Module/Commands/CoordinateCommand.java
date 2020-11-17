@@ -11,7 +11,7 @@ import cn.nukkit.network.protocol.GameRulesChangedPacket;
 public class CoordinateCommand extends Command {
 
 	public CoordinateCommand() {
-		super("coordinate", "§r§l§fВключить§7/§fВыключить координаты");
+		super("coordinate", "§r§fУправление координатами");
 		this.setPermission("Command.Coordinate");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("value", new String[]{"on", "off"})});
@@ -25,7 +25,7 @@ public class CoordinateCommand extends Command {
 				return false;
 			}
 			if (args.length == 0) {
-				player.sendMessage("§l§6• §r§fИспользование §7- /§6coordinate on§7/§6off");
+				player.sendMessage("§l§6• §r§fИспользование §7- /§6coordinate §3on§7/§3off");
 				return true;
 			}
 			switch (args[0]) {
@@ -34,7 +34,7 @@ public class CoordinateCommand extends Command {
 				gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
 				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
 				player.dataPacket(gameRulesChanged);
-				player.sendMessage("§l§6• §r§fКоординаты успешно включены§7!");
+				player.sendMessage("§l§a• §r§fКоординаты успешно включены§7!");
 			}
 			break;
 
@@ -43,9 +43,9 @@ public class CoordinateCommand extends Command {
 				gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
 				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
 				player.dataPacket(gameRulesChanged);
-				player.sendMessage("§l§6• §r§fКоординаты успешно отключены§7!");
+				player.sendMessage("§l§a• §r§fКоординаты успешно отключены§7!");
 			}
-
+			break;
 			}
 		}
 		return false;

@@ -1,5 +1,8 @@
 package Anarchy.Module.Boss;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
@@ -18,69 +21,62 @@ import cn.nukkit.potion.Potion;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class WitchBoss extends WalkingMonster {
-
 	public static final int NETWORK_ID = 45;
 
 	public WitchBoss(FullChunk chunk, CompoundTag nbt) {
 		super(chunk, nbt);
 	}
 
-	@Override
+	@Override()
 	public int getNetworkId() {
 		return NETWORK_ID;
 	}
 
-	@Override
+	@Override()
 	public float getWidth() {
-		return 0.6f;
+		return 0.6F;
 	}
 
-	@Override
+	@Override()
 	public float getHeight() {
-		return 1.95f;
+		return 1.95F;
 	}
 
-	@Override
+	@Override()
 	protected void initEntity() {
 		super.initEntity();
 		this.setMaxHealth(1000);
 	}
 
-	@Override
+	@Override()
 	public boolean targetOption(EntityCreature creature, double distance) {
 		if (creature instanceof Player) {
-			Player player = (Player) creature;
+			Player player = (Player)creature;
 			return !player.closed && player.spawned && player.isAlive() && (player.isSurvival() || player.isAdventure()) && distance <= 100;
 		}
 		return creature.isAlive() && !creature.closed && distance <= 80;
 	}
 
-	@Override
+	@Override()
 	public boolean attack(EntityDamageEvent ev) {
 		super.attack(ev);
 		return true;
 	}
 
-	@Override
+	@Override()
 	public void attackEntity(Entity player) {
 		if (this.attackDelay > 10 && Utils.rand(1, 3) == 2 && this.distanceSquared(player) <= 60) {
 			this.attackDelay = 0;
 			if (player.isAlive() && !player.closed) {
-
 				double f = 1;
 				double yaw = this.yaw + Utils.rand(-5.0, 5.0);
 				Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(), this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
-				if (this.getLevel().getBlockIdAt((int) pos.getX(), (int) pos.getY(), (int) pos.getZ()) != Block.AIR) {
+				if (this.getLevel().getBlockIdAt((int)pos.getX(), (int)pos.getY(), (int)pos.getZ()) != Block.AIR) {
 					return;
 				}
-				EntityPotion thrownPotion = (EntityPotion) Entity.createEntity("ThrownPotion", pos, this);
-
+				EntityPotion thrownPotion = (EntityPotion)Entity.createEntity("ThrownPotion", pos, this);
 				double distance = this.distanceSquared(player);
-
 				if (!player.hasEffect(Effect.SLOWNESS) && distance <= 64) {
 					thrownPotion.potionId = Potion.POISON_II;
 				} else if (player.getHealth() >= 8) {
@@ -90,7 +86,6 @@ public class WitchBoss extends WalkingMonster {
 				} else {
 					thrownPotion.potionId = Potion.INSTANT_HEALTH_II;
 				}
-
 				thrownPotion.setMotion(new Vector3(-Math.sin(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f, -Math.sin(Math.toDegrees(pitch)) * f * f, Math.cos(Math.toDegrees(yaw)) * Math.cos(Math.toDegrees(pitch)) * f * f));
 				ProjectileLaunchEvent launch = new ProjectileLaunchEvent(thrownPotion);
 				this.server.getPluginManager().callEvent(launch);
@@ -104,7 +99,7 @@ public class WitchBoss extends WalkingMonster {
 		}
 	}
 
-	@Override
+	@Override()
 	public Item[] getDrops() {
 		List<Item> drops = new ArrayList<>();
 		drops.add(Item.get(Item.DIAMOND_BLOCK, 0, 1));
@@ -113,49 +108,52 @@ public class WitchBoss extends WalkingMonster {
 		if (Utils.rand(1, 4) == 1) {
 			drops.add(Item.get(Item.STICK, 0, Utils.rand(0, 16)));
 		}
-
 		if (Utils.rand(1, 3) == 1) {
 			switch (Utils.rand(1, 6)) {
 			case 1:
 				drops.add(Item.get(Item.BOTTLE, 0, Utils.rand(0, 16)));
 				break;
+
 			case 2:
 				drops.add(Item.get(Item.GLOWSTONE_DUST, 0, Utils.rand(0, 16)));
 				break;
+
 			case 3:
 				drops.add(Item.get(Item.GUNPOWDER, 0, Utils.rand(0, 16)));
 				break;
+
 			case 4:
 				drops.add(Item.get(Item.REDSTONE, 0, Utils.rand(0, 16)));
 				break;
+
 			case 5:
 				drops.add(Item.get(Item.SPIDER_EYE, 0, Utils.rand(0, 16)));
 				break;
+
 			case 6:
 				drops.add(Item.get(Item.SUGAR, 0, Utils.rand(0, 16)));
 				break;
+
 			}
 		}
-
 		return drops.toArray(new Item[0]);
 	}
 
-	@Override
+	@Override()
 	public int getKillExperience() {
 		return 1000;
 	}
 
-	@Override
+	@Override()
 	public boolean entityBaseTick(int tickDiff) {
 		if (getServer().getDifficulty() == 0) {
 			this.close();
 			return true;
 		}
-
 		return super.entityBaseTick(tickDiff);
 	}
 
-	@Override
+	@Override()
 	public int nearbyDistanceMultiplier() {
 		return 8;
 	}

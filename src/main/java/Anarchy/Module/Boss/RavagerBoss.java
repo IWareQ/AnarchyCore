@@ -84,8 +84,7 @@ public class RavagerBoss extends WalkingMonster {
 				for (Item i : ((Player)player).getInventory().getArmorContents()) {
 					points += armorValues.getOrDefault(i.getId(), 0.0F);
 				}
-				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float)(damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE,
-						   1.0F) * points * 0.04)));
+				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float)(damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1.0F) * points * 0.04)));
 			}
 			player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
 		}

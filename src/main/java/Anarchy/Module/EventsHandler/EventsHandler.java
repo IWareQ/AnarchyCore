@@ -47,7 +47,6 @@ import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
-import cn.nukkit.event.player.PlayerServerSettingsRequestEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
@@ -57,7 +56,6 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.Sound;
-import cn.nukkit.network.protocol.ServerSettingsResponsePacket;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.block.BlockEntitySpawner;
@@ -74,8 +72,7 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0),
-					  (double)(int)Math.round(event.getPlayer().z - 0.5)));
+		Block block = player.getLevel().getBlock(new Position(Math.round(event.getPlayer().x - 0.5), Math.round(event.getPlayer().y - 1.0), Math.round(event.getPlayer().z - 0.5)));
 		if (!player.hasPermission("Acces.Admin")) {
 			if (player.x < FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z < FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
 				player.sendTip("§l§c• §fВы пытаетесь §6выйти §fза границу мира§7! §c•§r");
@@ -84,11 +81,11 @@ public class EventsHandler implements Listener {
 		}
 		if (player.getFloorY() <= -10 && player.getLevel() != Server.getInstance().getLevelByName("the_end")) {
 			player.teleport(FunctionsAPI.SPAWN.getSafeSpawn(new Position(-8.5, 51, -3.5)));
-			player.sendMessage("§l§a• §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!\n§l§6• §r§fЗапомните§7, §fесли вы упадете в бездну в мире §6TheEnd§7, §fто Вас не спасут§7!");
+			player.sendMessage("§l§6• §r§fВы упали за границу мира§7! §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!\n§l§6• §r§fЗапомните§7, §fесли вы упадете в бездну в мире §6TheEnd§7, §fто Вас не спасут§7!");
 		}
 		if (player.getLevel().equals(FunctionsAPI.SPAWN) && block.getId() == 544) {
 			player.teleport(FunctionsAPI.randomPos(new Position(0, 0, 0, FunctionsAPI.MAP)));
-			player.sendMessage("§l§a| §r§fВас §6успешно §fтелепортировало на рандомное место§7.");
+			player.sendMessage("§l§a• §r§fВас §6успешно §fтелепортировало на рандомное место§7.");
 		}
 	}
 
@@ -98,7 +95,7 @@ public class EventsHandler implements Listener {
 		Location location = event.getTo();
 		if (!player.hasPermission("Acces.Admin")) {
 			if (location.x < FunctionsAPI.BORDER[0] || location.x > FunctionsAPI.BORDER[1] || location.z < FunctionsAPI.BORDER[2] || location.z > FunctionsAPI.BORDER[3]) {
-				player.sendTip("§l§c| §fВы пытаетесь §6телепортироваться §fза границу мира§7! §c|§r");
+				player.sendTip("§l§c• §fВы пытаетесь §6телепортироваться §fза границу мира§7! §c•§r");
 				event.setCancelled(true);
 			}
 		}
@@ -152,14 +149,7 @@ public class EventsHandler implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		Item item = event.getItem();
-		PlayerInventory playerInventory = player.getInventory();
 		Block block = event.getBlock();
-		if (item != null && item.getId() == 57) {
-			ServerSettingsResponsePacket pk = new ServerSettingsResponsePacket();
-			pk.formId = 5928;
-			pk.data = "Тест";
-			player.dataPacket(pk);
-		}
 		if (item != null && item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
 			player.sendMessage("§l§6• §r§fСокровище успешно Активированно§7!");
 			player.getInventory().removeItem(item);
@@ -172,7 +162,7 @@ public class EventsHandler implements Listener {
 			if (block.getId() == Item.BEDROCK) {
 				player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
 				player.sendMessage("§l§6• §r§fБедрок был успешно сломан");
-				playerInventory.setItemInHand(Item.get(Item.AIR));
+				player.getInventory().setItemInHand(Item.get(Item.AIR));
 				player.getLevel().setBlock(new Position(block.getX(), block.getY(), block.getZ()), Block.get(0));
 			} else {
 				player.sendTip("§l§fИспользуй только на §6Бедроке§7!");
@@ -190,7 +180,6 @@ public class EventsHandler implements Listener {
 			player.sendTip("§l§fТерритория не доступна для взаимодействия§7!");
 			event.setCancelled(true);
 		}
-
 		if (block.getId() == Block.MONSTER_SPAWNER) {
 			if (item != null && item.isPickaxe() && item.getName().equals("§r§fКирка похитителя")) {
 				BlockEntity be = block.getLevel().getBlockEntity(block);
@@ -206,38 +195,40 @@ public class EventsHandler implements Listener {
 				event.setDrops(new Item[] {Item.get(52, 0, 1)});
 			}
 		}
-		if (block.getId() == Block.DIAMOND_ORE) {
-			int dropExp = block.getDropExp();
-			player.addExperience(dropExp);
-			event.setDropExp(0);
-		} else if (block.getId() == Block.REDSTONE_ORE) {
-			int dropExp = block.getDropExp();
-			player.addExperience(dropExp);
-			event.setDropExp(0);
-		} else if (block.getId() == Block.COAL_ORE) {
-			int dropExp = block.getDropExp();
-			player.addExperience(dropExp);
-			event.setDropExp(0);
-		} else if (block.getId() == Block.EMERALD_ORE) {
-			int dropExp = block.getDropExp();
-			player.addExperience(dropExp);
-			event.setDropExp(0);
-		} else if (block.getId() == Block.LAPIS_ORE) {
-			int dropExp = block.getDropExp();
-			player.addExperience(dropExp);
-			event.setDropExp(0);
-		} else if (block.getId() == Block.QUARTZ_ORE) {
-			int dropExp = block.getDropExp();
-			player.addExperience(dropExp);
-			event.setDropExp(0);
-		} else if (block.getId() == Block.NETHER_GOLD_ORE) {
-			int dropExp = block.getDropExp();
-			player.addExperience(dropExp);
-			event.setDropExp(0);
-		} else if (block.getId() == Block.LIT_REDSTONE_ORE) {
-			int dropExp = block.getDropExp();
-			player.addExperience(dropExp);
-			event.setDropExp(0);
+		if (item.getEnchantment(16) == null) {
+			if (block.getId() == Block.DIAMOND_ORE) {
+				int dropExp = block.getDropExp();
+				player.addExperience(dropExp);
+				event.setDropExp(0);
+			} else if (block.getId() == Block.REDSTONE_ORE) {
+				int dropExp = block.getDropExp();
+				player.addExperience(dropExp);
+				event.setDropExp(0);
+			} else if (block.getId() == Block.COAL_ORE) {
+				int dropExp = block.getDropExp();
+				player.addExperience(dropExp);
+				event.setDropExp(0);
+			} else if (block.getId() == Block.EMERALD_ORE) {
+				int dropExp = block.getDropExp();
+				player.addExperience(dropExp);
+				event.setDropExp(0);
+			} else if (block.getId() == Block.LAPIS_ORE) {
+				int dropExp = block.getDropExp();
+				player.addExperience(dropExp);
+				event.setDropExp(0);
+			} else if (block.getId() == Block.QUARTZ_ORE) {
+				int dropExp = block.getDropExp();
+				player.addExperience(dropExp);
+				event.setDropExp(0);
+			} else if (block.getId() == Block.NETHER_GOLD_ORE) {
+				int dropExp = block.getDropExp();
+				player.addExperience(dropExp);
+				event.setDropExp(0);
+			} else if (block.getId() == Block.LIT_REDSTONE_ORE) {
+				int dropExp = block.getDropExp();
+				player.addExperience(dropExp);
+				event.setDropExp(0);
+			}
 		}
 	}
 
@@ -270,10 +261,8 @@ public class EventsHandler implements Listener {
 			}
 			if (entity.getNameTag().equalsIgnoreCase("§l§6Барыга")) {
 				Hopper hopper = new Hopper("§l§6Барыга");
-				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0,
-												 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
-				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0,
-											1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
+				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0, 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
+				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0, 1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
 				hopper.addItem(netheritePickaxe);
 				hopper.addItem(goldPickaxe);
 				FakeChestsAPI.openInventory((Player)damager, hopper);
@@ -302,7 +291,7 @@ public class EventsHandler implements Listener {
 						}
 						PlayerInventory playerInventory = player.getInventory();
 						if (playerInventory.canAddItem(sourceItem)) {
-							playerInventory.addItem(sourceItem.setLore(""));
+							playerInventory.addItem(sourceItem.setLore());
 							player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 							player.sendMessage("§l§7(§3Барыга§7) §r§7«§6Злодейская кирка§7» §fуспешно куплена за §630000§7!");
 							EconomyAPI.reduceMoney(player, 30000.0);
@@ -318,7 +307,7 @@ public class EventsHandler implements Listener {
 						}
 						PlayerInventory playerInventory = player.getInventory();
 						if (playerInventory.canAddItem(sourceItem)) {
-							playerInventory.addItem(sourceItem.setLore(""));
+							playerInventory.addItem(sourceItem.setLore());
 							player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 							player.sendMessage("§l§7(§3Барыга§7) §r§7«§6Кирка похитителя§7» §fуспешно куплена за §620000§7!");
 							EconomyAPI.reduceMoney(player, 20000.0);
@@ -408,9 +397,7 @@ public class EventsHandler implements Listener {
 				event.setCancelled(true);
 				return;
 			} else {
-				player.sendMessage("§l§c• §r§fТебя замутили§7! §fАдминистратор §6" + muteUtils.getBanner() + " §fзакрыл тебе доступ к чату на §6" + ((
-									   muteUtils.getTime() - System.currentTimeMillis() / 1000L) / 60 % 60) + " §fмин§7. §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) % 60) +
-								   " §fсек§7. §fпо причине §6" + muteUtils.getReason() + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
+				player.sendMessage("§l§c• §r§fТебя замутили§7! §fАдминистратор §6" + muteUtils.getBanner() + " §fзакрыл тебе доступ к чату на §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) / 60 % 60) + " §fмин§7. §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) % 60) + " §fсек§7. §fпо причине §6" + muteUtils.getReason() + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
 				event.setCancelled(true);
 			}
 		}

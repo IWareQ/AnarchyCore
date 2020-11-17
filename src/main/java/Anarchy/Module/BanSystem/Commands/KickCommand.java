@@ -1,12 +1,8 @@
 package Anarchy.Module.BanSystem.Commands;
 
-import java.util.Arrays;
-import java.util.List;
-
 import Anarchy.AnarchyMain;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
-import Anarchy.Module.BanSystem.BanSystemAPI;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import FormAPI.Forms.Elements.CustomForm;
 import cn.nukkit.Player;
@@ -17,9 +13,9 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 
 public class KickCommand extends Command {
-	
+
 	public KickCommand() {
-		super("kick", "§r§l§fКикнуть с сервера");
+		super("kick", "§r§fВыгнать с сервера");
 		this.setPermission("Command.Kick");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
@@ -42,13 +38,16 @@ public class KickCommand extends Command {
 				return true;
 			}
 			PlayerSession playerSession = PlayerSessionManager.getPlayerSession(target);
-			new CustomForm("§l§fКикнуть с сервера").addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n").addInput("§l§6• §r§fПричина кика с сервера§7:").send(player, (targetPlayer, form, data)-> {
+			CustomForm customForm = new CustomForm("§fВыгнать с сервера");
+			customForm.addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n");
+			customForm.addInput("§l§6• §r§fПричина кика с сервера§7:");
+			customForm.send(player, (targetPlayer, targetForm, data)-> {
 				if (data == null) return;
 				if ((String)data.get(1) == null) {
-					player.sendMessage(AnarchyMain.PREFIX + "§fПричина не может быть пустой§7!");
+					player.sendMessage(AnarchyMain.PREFIX + "§fПричина кика не может быть пустой§7!");
 				}
 				player.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + target.getName() + " §fбыл кикнут с сервера§7!\n§l§6• §r§fПричина§7: §6" + (String)data.get(1));
-				target.close("", "");
+				target.close("", (String)data.get(1));
 			});
 		}
 		return false;

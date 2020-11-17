@@ -12,7 +12,7 @@ import cn.nukkit.command.data.CommandParameter;
 public class UnMuteCommand extends Command {
 
 	public UnMuteCommand() {
-		super("unmute", "§r§l§fСнять блокировку чата");
+		super("unmute", "§r§fСнять блокировку чата");
 		this.setPermission("Command.UnMute");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
