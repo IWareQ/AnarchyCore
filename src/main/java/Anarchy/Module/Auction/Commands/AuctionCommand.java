@@ -13,7 +13,6 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 import cn.nukkit.utils.Config;
@@ -38,7 +37,7 @@ public class AuctionCommand extends Command {
 					return false;
 				}
 				int count = 0;
-				File dataFile = new File(AnarchyMain.port + "/Auction/PlayerItems/" + player.getName() + ".yml");
+				File dataFile = new File(AnarchyMain.folder + "/Auction/PlayerItems/" + player.getName() + ".yml");
 				Config config = new Config(dataFile, Config.YAML);
 				for (Map.Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 					TradeItem tradeItem = entry.getValue();
@@ -57,8 +56,7 @@ public class AuctionCommand extends Command {
 					}
 					return false;
 				}
-				PlayerInventory playerInventory = player.getInventory();
-				Item sellItem = playerInventory.getItemInHand();
+				Item sellItem = player.getInventory().getItemInHand();
 				if (sellItem == null || sellItem.getId() == Item.AIR) {
 					player.sendMessage(AuctionAPI.PREFIX + "§fЧтобы выставить предмет на продажу§7, §fвозьмите его в руку");
 					return false;
@@ -72,7 +70,7 @@ public class AuctionCommand extends Command {
 				Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fвыставил предмет на продажу§7!");
 				String UUID = java.util.UUID.randomUUID().toString();
 				AuctionAPI.AUCTION.put(UUID, new TradeItem(sellItem, player.getName(), itemPrice, AuctionAPI.getTradeTime(), UUID));
-				playerInventory.setItemInHand(Item.get(Item.AIR));
+				player.getInventory().setItemInHand(Item.get(Item.AIR));
 				AuctionAPI.AUCTION_COOLDOWN.put(player, nowTime + AuctionAPI.AUCTION_ADD_COOLDOWN);
 				AuctionAPI.saveAuction();
 			} else {

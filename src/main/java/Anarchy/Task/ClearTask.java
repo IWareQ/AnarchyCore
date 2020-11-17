@@ -32,9 +32,11 @@ public class ClearTask extends Task {
 			}
 			if (TIMER_CLEAR == 0) {
 				for (Level level : Server.getInstance().getLevels().values()) {
+					level.doChunkGarbageCollection();
+					level.unloadChunks(true);
 					for (Entity entity : level.getEntities()) {
 						if (!(entity instanceof Player) &&  !(entity instanceof EntityMinecartChest) && !(entity instanceof Wither) && !(entity.getLevel().equals(FunctionsAPI.SPAWN)) && !(entity instanceof SilverfishBoss) && !(entity instanceof SlimeBoss) && !(entity instanceof EvokerBoss) && !(entity instanceof RavagerBoss) && !(entity instanceof WitchBoss)) {
-							entity.close();
+							level.removeEntity(entity);
 						}
 					}
 				}

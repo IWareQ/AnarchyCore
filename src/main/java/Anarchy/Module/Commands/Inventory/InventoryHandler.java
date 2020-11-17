@@ -1,5 +1,7 @@
 package Anarchy.Module.Commands.Inventory;
 
+import java.util.Map;
+
 import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.Inventory.Utils.InventoryChest;
 import Anarchy.Module.Commands.Inventory.Utils.InventoryEnderChest;
@@ -7,22 +9,21 @@ import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Utils.StringUtils;
 import FormAPI.Forms.Elements.ImageType;
 import FormAPI.Forms.Elements.SimpleForm;
-import cn.nukkit.IPlayer;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.EntityHumanType;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.inventory.InventoryTransactionEvent;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
+import cn.nukkit.nbt.tag.CompoundTag;
 
 public class InventoryHandler extends Command implements Listener {
 
@@ -51,6 +52,7 @@ public class InventoryHandler extends Command implements Listener {
 	}
 
 	public static void checkInventory(String checked, Player player) {
+		CompoundTag nbt = Server.getInstance().getOfflinePlayerData(checked);
 		Player target = Server.getInstance().getPlayer(checked);
 		SimpleForm simpleForm = new SimpleForm("§l§6" + checked + " §7> §fВыберите Инвентарь");
 		simpleForm.setContent("§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "");

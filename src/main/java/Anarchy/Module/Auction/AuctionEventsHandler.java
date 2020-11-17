@@ -109,7 +109,7 @@ public class AuctionEventsHandler implements Listener {
 					break;
 
 					case "§r§6Хранилище": {
-						File dataFile = new File(AnarchyMain.port + "/Auction/PlayerItems/" + player.getName() + ".yml");
+						File dataFile = new File(AnarchyMain.folder + "/Auction/PlayerItems/" + player.getName() + ".yml");
 						Config config = new Config(dataFile, Config.YAML);
 						if (config.getAll().isEmpty()) {
 							dataFile.delete();
@@ -157,7 +157,7 @@ public class AuctionEventsHandler implements Listener {
 								if (playerInventory.canAddItem(sourceItem)) {
 									auctionChest.removeItem(sourceItem);
 									compoundTag.remove("UUID");
-									playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(compoundTag));
+									playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(compoundTag).setLore());
 									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 									player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §6" + String.format("%.1f", tradeItem.itemPrice) + "§7, §fв колличестве §6" + sourceItem.getCount() + " §fшт§7.");
 									Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.sellerName);
@@ -190,7 +190,7 @@ public class AuctionEventsHandler implements Listener {
 							if (playerInventory.canAddItem(sourceItem)) {
 								compoundTag.remove("UUID");
 								sellChest.removeItem(sourceItem);
-								playerInventory.addItem(sourceItem.clearCustomBlockData());
+								playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(compoundTag).setLore());
 								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет был снят с продажи и отправлен Вам в Инвентарь");
 								AuctionAPI.AUCTION.remove(tradeItem.UUID);
@@ -210,7 +210,7 @@ public class AuctionEventsHandler implements Listener {
 						if (playerInventory.canAddItem(sourceItem)) {
 							takeChest.removeItem(sourceItem);
 							compoundTag.remove("UUID");
-							playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(compoundTag));
+							playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(compoundTag).setLore());
 							player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
 							player.sendMessage(AuctionAPI.PREFIX + "§fПредмет с Хранилища успешно взят§7!");
 						}

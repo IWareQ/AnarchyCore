@@ -31,8 +31,9 @@ public class SpectateAPI {
 			player.setGamemode(3);
 			player.getInventory().clearAll();
 			player.getInventory().setHeldItemIndex(0);
-			player.getInventory().setItem(5, Item.get(Item.STICK).setCustomName("§r§fПроверка регионов").setLore("§r§l§6• §fВозьмите в руку§7, §fчтобы проверить\n§fнет ли в блези регионов§7"));
-			player.getInventory().setItem(6, Item.get(Item.CHEST).setCustomName("§r§fПросмотреть Инвентарь").setLore("§r§l§6• §fВозьмите в руку чтобы просмотреть §6Инвентарь §fнаблюдаемого§7!"));
+			player.getInventory().setItem(0, Item.get(Item.STICK).setCustomName("§r§fПроверка регионов").setLore("§r§l§6• §fВозьмите в руку§7, §fчтобы проверить\n§fнет ли в блези регионов§7"));
+			player.getInventory().setItem(5, Item.get(Item.SHULKER_BOX).setCustomName("§r§fПросмотр содержимого").setLore("\n§r§l§6• §r§fНажмите на сундук§7, §fчтобы посмотреть его содержимое§7!"));
+			player.getInventory().setItem(4, Item.get(Item.CHEST).setCustomName("§r§fПросмотреть Инвентарь").setLore("§r§l§6• §fВозьмите в руку чтобы просмотреть §6Инвентарь §fнаблюдаемого§7!"));
 			player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§r§fЗавершить Наблюдение"));
 			player.teleport(target);
 			player.sendMessage(AnarchyMain.PREFIX + "§fВы начали наблюдать за Игроком §6" + target.getName() + "\n§l§6• §r§fДля окончания наблюдения возьмите в руку §6Редстоун§7!");

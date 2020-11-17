@@ -15,7 +15,7 @@ import DbLib.DbLib;
 public class SQLiteUtils {
 
 	public static Connection connectToSQLite(String filename) {
-		return DbLib.getSQLiteConnection(new File(AnarchyMain.port + File.separator + filename));
+		return DbLib.getSQLiteConnection(new File(AnarchyMain.folder + File.separator + filename));
 	}
 
 	public static boolean query(String filename, String query) {

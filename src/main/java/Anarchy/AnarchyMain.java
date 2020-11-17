@@ -33,6 +33,7 @@ import Anarchy.Module.Commands.DayCommand;
 import Anarchy.Module.Commands.DonateCommand;
 import Anarchy.Module.Commands.FoodCommand;
 import Anarchy.Module.Commands.GamemodeCommand;
+import Anarchy.Module.Commands.GarbageCommand;
 import Anarchy.Module.Commands.HealCommand;
 import Anarchy.Module.Commands.NearCommand;
 import Anarchy.Module.Commands.NightCommand;
@@ -88,7 +89,7 @@ public class AnarchyMain extends PluginBase {
 	public static String PREFIX = "§l§7(§3Система§7) §r";
 	public static String accessToken = "fa4b98ffb89a364cbffd6a855f47e42ae669ba5bb76a2a6b943a5340351d9fd28c4d572767f5ba16ae0a9";
 	public static AnarchyMain plugin;
-	public static int port = Server.getInstance().getPort();
+	public static String folder = "DeathMC";
 
 	@Override()
 	public void onEnable() {
@@ -101,7 +102,7 @@ public class AnarchyMain extends PluginBase {
 			}
 		}
 		plugin = this;
-		File dataFile = new File(String.valueOf(port));
+		File dataFile = new File(folder);
 		dataFile.mkdirs();
 		this.registerAll();
 		this.registerEvents();
@@ -155,15 +156,15 @@ public class AnarchyMain extends PluginBase {
 	private void registerEntity() {
 		Entity.registerEntity(SilverfishBoss.class.getSimpleName(), SilverfishBoss.class);
 		Entity.registerEntity(RavagerBoss.class.getSimpleName(), RavagerBoss.class);
-		Entity.registerEntity(WitchBoss.class .getSimpleName(), WitchBoss.class);
-		Entity.registerEntity(SlimeBoss.class .getSimpleName(), SlimeBoss.class);
-		Entity.registerEntity(EvokerBoss.class .getSimpleName(), EvokerBoss.class);
-		Entity.registerEntity(PiglinBruteNPC.class .getSimpleName(), PiglinBruteNPC.class);
+		Entity.registerEntity(WitchBoss.class.getSimpleName(), WitchBoss.class);
+		Entity.registerEntity(SlimeBoss.class.getSimpleName(), SlimeBoss.class);
+		Entity.registerEntity(EvokerBoss.class.getSimpleName(), EvokerBoss.class);
+		Entity.registerEntity(PiglinBruteNPC.class.getSimpleName(), PiglinBruteNPC.class);
 		Entity.registerEntity(VillagerNPC.class.getSimpleName(), VillagerNPC.class);
 	}
 
 	private void registerCommands() {
-		Command[] commands = new Command[] {new UnMuteCommand(), new UnBanCommand(), new DonateShopHandler(), new SpawnCommand(), new BonusCommand(), new MuteCommand(), new NPCCommand(), new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new Anarchy.Module.BanSystem.Commands.KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
+		Command[] commands = new Command[] {new GarbageCommand(), new UnMuteCommand(), new UnBanCommand(), new DonateShopHandler(), new SpawnCommand(), new BonusCommand(), new MuteCommand(), new NPCCommand(), new BanCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new AuctionCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new TestCommand(), new DonateCommand(), new RepairCommand(), new Anarchy.Module.BanSystem.Commands.KickCommand(), new GamemodeCommand(), new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SetMoneyCommand(), new SeeMoneyCommand(), new GroupCommand(), new RegionCommand()};
 		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 
@@ -182,7 +183,7 @@ public class AnarchyMain extends PluginBase {
 			Server.getInstance().getLogger().alert("§l§fОшибка в §6sendMessageToChat§7: §6" + e);
 		}
 	}
-	
+
 	public static void sendMessage(String message, int peerId) {
 		try {
 			String url = "https://api.vk.com/method/messages.send?user_id=" + peerId + "&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(message, "UTF-8") + "&v=5.124";

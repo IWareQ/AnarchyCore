@@ -32,9 +32,9 @@ import cn.nukkit.network.protocol.SetLocalPlayerAsInitializedPacket;
 import cn.nukkit.utils.Config;
 
 public class AuthEventsHandler implements Listener {
-	File dataFileDeaths = new File(AnarchyMain.port + "/Deaths.yml");
+	File dataFileDeaths = new File(AnarchyMain.folder + "/Deaths.yml");
 	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
-	File dataFileKills = new File(AnarchyMain.port + "/Kills.yml");
+	File dataFileKills = new File(AnarchyMain.folder + "/Kills.yml");
 	Config configKills = new Config(dataFileKills, Config.YAML);
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)

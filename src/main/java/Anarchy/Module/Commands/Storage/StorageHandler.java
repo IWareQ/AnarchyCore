@@ -33,7 +33,7 @@ public class StorageHandler extends Command implements Listener {
 	public StorageHandler() {
 		super("storage", "§r§l§fХранилище купленных Предметов");
 		this.commandParameters.clear();
-		new File(AnarchyMain.port + "/StorageItems/").mkdirs();
+		new File(AnarchyMain.folder + "/StorageItems/").mkdirs();
 	}
 
 	@Override()
@@ -41,7 +41,7 @@ public class StorageHandler extends Command implements Listener {
 		if (sender instanceof Player) {
 			if (args.length == 0) {
 				Player player = (Player)sender;
-				File dataFile = new File(AnarchyMain.port + "/StorageItems/" + player.getName().toLowerCase() + ".yml");
+				File dataFile = new File(AnarchyMain.folder + "/StorageItems/" + player.getName().toLowerCase() + ".yml");
 				if (!dataFile.exists()) {
 					player.sendMessage("§l§c| §r§fВ хранилище §6пусто §7:§fc§7!");
 					return false;
@@ -75,7 +75,7 @@ public class StorageHandler extends Command implements Listener {
 			Item item = Item.get(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
 			try {
 				sender.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + playerName + " §fполучил §6" + item.getName() + " §fв колличестве §6" + split[2] + " §fшт§7!");
-				Config config = new Config(AnarchyMain.port + "/StorageItems/" + playerName + ".yml", Config.YAML);
+				Config config = new Config(AnarchyMain.folder + "/StorageItems/" + playerName + ".yml", Config.YAML);
 				config.set(UUID.randomUUID().toString(), item.hasCompoundTag() ? new Object[] {Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} : new Object[] {Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2])});
 				config.save();
 			} catch (IOException e) {

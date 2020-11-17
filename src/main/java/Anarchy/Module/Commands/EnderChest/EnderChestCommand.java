@@ -1,7 +1,7 @@
-package Survival.Module.Commands.EnderChest;
+package Anarchy.Module.Commands.EnderChest;
 
-import Survival.Manager.FakeChests.FakeChestsAPI;
-import Survival.Module.Commands.EnderChest.Utils.EnderChest;
+import Anarchy.Manager.FakeChests.FakeChestsAPI;
+import Anarchy.Module.Commands.EnderChest.Utils.EnderChest;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;

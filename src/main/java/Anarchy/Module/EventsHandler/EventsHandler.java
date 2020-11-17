@@ -47,6 +47,7 @@ import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
+import cn.nukkit.event.player.PlayerServerSettingsRequestEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
@@ -56,14 +57,15 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.Sound;
+import cn.nukkit.network.protocol.ServerSettingsResponsePacket;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.block.BlockEntitySpawner;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 
 public class EventsHandler implements Listener {
-	File dataFileDeaths = new File(AnarchyMain.port + "/Deaths.yml");
-	File dataFileKills = new File(AnarchyMain.port + "/Kills.yml");
+	File dataFileDeaths = new File(AnarchyMain.folder + "/Deaths.yml");
+	File dataFileKills = new File(AnarchyMain.folder + "/Kills.yml");
 	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
 	Config configKills = new Config(dataFileKills, Config.YAML);
 	public static Map<Player, Long> COOLDOWN = new HashMap<>();
@@ -72,7 +74,8 @@ public class EventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0), (double)(int)Math.round(event.getPlayer().z - 0.5)));
+		Block block = player.getLevel().getBlock(new Position((double)(int)Math.round(event.getPlayer().x - 0.5), (double)(int)Math.round(event.getPlayer().y - 1.0),
+					  (double)(int)Math.round(event.getPlayer().z - 0.5)));
 		if (!player.hasPermission("Acces.Admin")) {
 			if (player.x < FunctionsAPI.BORDER[0] || player.x > FunctionsAPI.BORDER[1] || player.z < FunctionsAPI.BORDER[2] || player.z > FunctionsAPI.BORDER[3]) {
 				player.sendTip("§l§c• §fВы пытаетесь §6выйти §fза границу мира§7! §c•§r");
@@ -151,6 +154,12 @@ public class EventsHandler implements Listener {
 		Item item = event.getItem();
 		PlayerInventory playerInventory = player.getInventory();
 		Block block = event.getBlock();
+		if (item != null && item.getId() == 57) {
+			ServerSettingsResponsePacket pk = new ServerSettingsResponsePacket();
+			pk.formId = 5928;
+			pk.data = "Тест";
+			player.dataPacket(pk);
+		}
 		if (item != null && item.getCustomName().equals("§r§l§f๑ Сокровище ๑") && item.getId() == Item.DOUBLE_PLANT) {
 			player.sendMessage("§l§6• §r§fСокровище успешно Активированно§7!");
 			player.getInventory().removeItem(item);
@@ -261,8 +270,10 @@ public class EventsHandler implements Listener {
 			}
 			if (entity.getNameTag().equalsIgnoreCase("§l§6Барыга")) {
 				Hopper hopper = new Hopper("§l§6Барыга");
-				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0, 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
-				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0, 1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
+				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0,
+												 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
+				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0,
+											1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
 				hopper.addItem(netheritePickaxe);
 				hopper.addItem(goldPickaxe);
 				FakeChestsAPI.openInventory((Player)damager, hopper);
@@ -397,7 +408,9 @@ public class EventsHandler implements Listener {
 				event.setCancelled(true);
 				return;
 			} else {
-				player.sendMessage("§l§c• §r§fТебя замутили§7! §fАдминистратор §6" + muteUtils.getBanner() + " §fзакрыл тебе доступ к чату на §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) / 60 % 60) + " §fмин§7. §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) % 60) + " §fсек§7. §fпо причине §6" + muteUtils.getReason() + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
+				player.sendMessage("§l§c• §r§fТебя замутили§7! §fАдминистратор §6" + muteUtils.getBanner() + " §fзакрыл тебе доступ к чату на §6" + ((
+									   muteUtils.getTime() - System.currentTimeMillis() / 1000L) / 60 % 60) + " §fмин§7. §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) % 60) +
+								   " §fсек§7. §fпо причине §6" + muteUtils.getReason() + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
 				event.setCancelled(true);
 			}
 		}

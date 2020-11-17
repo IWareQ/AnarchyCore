@@ -30,8 +30,7 @@ public class HotbarTask extends Task {
 		Scoreboard scoreboard = ScoreboardAPI.createScoreboard();
 		ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "§3DEATH §fMC");
 		scoreboardDisplay.addLine("§r§fНик§7: §6" + player.getName(), 0);
-		scoreboardDisplay.addLine("§r§fРанг§7: " + PermissionsAPI.GROUPS.get(PermissionsAPI.getGroup(player)), 1);
-		//scoreboardDisplay.addLine("§r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")), 1);
+		scoreboardDisplay.addLine("§r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")), 1);
 		scoreboardDisplay.addLine("", 2);
 		scoreboardDisplay.addLine("§r§fБаланс§7: §6" + String.format("%.1f", playerSession.getDouble("Money")), 3);
 		scoreboardDisplay.addLine("§r§fПинг§7: §6" + player.getPing(), 4);

@@ -1,6 +1,6 @@
-package Survival.Module.Commands.EnderChest.Utils;
+package Anarchy.Module.Commands.EnderChest.Utils;
 
-import Survival.Manager.FakeChests.Inventory.DefaultChest;
+import Anarchy.Manager.FakeChests.Inventory.DefaultChest;
 import cn.nukkit.Player;
 import cn.nukkit.level.Sound;
 

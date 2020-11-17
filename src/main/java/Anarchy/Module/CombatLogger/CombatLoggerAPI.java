@@ -55,7 +55,7 @@ public class CombatLoggerAPI {
 		}
 		removeBossBar(player);
 	}
-
+	
 	public static Map<Player, Long> getPlayers() {
 		return inCombat;
 	}
