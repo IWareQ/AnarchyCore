@@ -1,6 +1,6 @@
 package Anarchy.Module.Commands.CraftingTable.Utils;
 
-import Anarchy.Manager.FakeChests.Inventory.DefaultCraftingTable;
+import FakeInventoryAPI.Inventory.DefaultCraftingTable;
 
 public class CraftingTable extends DefaultCraftingTable {
 

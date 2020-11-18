@@ -1,8 +1,8 @@
 package Anarchy.Module.Commands.DonateShop;
 
-import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.DonateShop.Utils.DonateShopChest;
 import Anarchy.Module.Economy.EconomyAPI;
+import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -39,7 +39,7 @@ public class DonateShopHandler extends Command implements Listener {
 			donateShopChest.addItem(Item.get(Item.ELYTRA, 0, 1).setLore("\n§r§fЦена§7: §62000\n\n§r§fНажмите§7, §fчтобы купить§7!"));
 			donateShopChest.addItem(Item.get(Item.DRAGON_BREATH, 0, 1).setLore("\n§r§fЦена§7: §6750\n\n§r§fНажмите§7, §fчтобы купить§7!"));
 			donateShopChest.addItem(Item.get(Item.SHULKER_BOX, 0, 1).setLore("\n§r§fЦена§7: §61000\n\n§r§fНажмите§7, §fчтобы купить§7!"));
-			FakeChestsAPI.openInventory(player, donateShopChest);
+			FakeInventoryAPI.openInventory(player, donateShopChest);
 		}
 		return false;
 	}

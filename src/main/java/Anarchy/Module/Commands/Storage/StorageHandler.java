@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.Storage.Utils.StorageChest;
 import Anarchy.Utils.StringUtils;
+import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -67,7 +67,7 @@ public class StorageHandler extends Command implements Listener {
 					item.setNamedTag(compoundTag);
 					storageChest.addItem(item);
 				}
-				FakeChestsAPI.openInventory(player, storageChest);
+				FakeInventoryAPI.openInventory(player, storageChest);
 			}
 		} else if (args.length >= 2 && !(sender instanceof Player)) {
 			String[] split = args[0].split(":");

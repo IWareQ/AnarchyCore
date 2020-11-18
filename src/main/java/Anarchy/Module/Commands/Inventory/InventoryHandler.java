@@ -1,9 +1,9 @@
 package Anarchy.Module.Commands.Inventory;
 
-import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.Inventory.Utils.DoubleChest;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Utils.StringUtils;
+import FakeInventoryAPI.FakeInventoryAPI;
 import FormAPI.Forms.Elements.ImageType;
 import FormAPI.Forms.Elements.SimpleForm;
 import cn.nukkit.Player;
@@ -57,12 +57,12 @@ public class InventoryHandler extends Command implements Listener {
 			if (data == 0) {
 				DoubleChest doubleChest = new DoubleChest("§r§6" + target.getName() + " §7- §fИнвентарь");
 				doubleChest.setContents(target.getInventory().getContents());
-				FakeChestsAPI.openInventory(player, doubleChest);
+				FakeInventoryAPI.openInventory(player, doubleChest);
 			}
 			if (data == 1) {
 				DoubleChest doubleChest = new DoubleChest("§r§6" + target.getName() + " §7- §fЭндер Сундук");
 				doubleChest.setContents(target.getEnderChestInventory().getContents());
-				FakeChestsAPI.openInventory(player, doubleChest);
+				FakeInventoryAPI.openInventory(player, doubleChest);
 			}
 		});
 	}

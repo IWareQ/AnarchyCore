@@ -1,6 +1,6 @@
 package Anarchy.Module.Commands.EnderChest.Utils;
 
-import Anarchy.Manager.FakeChests.Inventory.DefaultChest;
+import FakeInventoryAPI.Inventory.DefaultChest;
 import cn.nukkit.Player;
 import cn.nukkit.level.Sound;
 

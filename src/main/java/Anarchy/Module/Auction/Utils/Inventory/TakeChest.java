@@ -6,14 +6,14 @@ import java.nio.ByteOrder;
 import java.util.Map;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.FakeChests.Inventory.DoubleDefaultChest;
+import FakeInventoryAPI.Inventory.DefaultDoubleChest;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.utils.Config;
 
-public class TakeChest extends DoubleDefaultChest {
+public class TakeChest extends DefaultDoubleChest {
 	private static File dataFile;
 
 	public TakeChest(String title, File file) {

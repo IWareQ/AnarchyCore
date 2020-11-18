@@ -1,6 +1,6 @@
 package Anarchy.Module.EventsHandler.Utils;
 
-import Anarchy.Manager.FakeChests.Inventory.DefaultHopper;
+import FakeInventoryAPI.Inventory.DefaultHopper;
 
 public class Hopper extends DefaultHopper {
 

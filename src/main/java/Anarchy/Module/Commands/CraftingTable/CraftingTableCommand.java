@@ -1,7 +1,7 @@
 package Anarchy.Module.Commands.CraftingTable;
 
-import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.CraftingTable.Utils.CraftingTable;
+import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -22,7 +22,7 @@ public class CraftingTableCommand extends Command {
 				return false;
 			}
 			CraftingTable craftingTable = new CraftingTable();
-			FakeChestsAPI.openInventory(player, craftingTable);
+			FakeInventoryAPI.openInventory(player, craftingTable);
 		}
 		return false;
 	}

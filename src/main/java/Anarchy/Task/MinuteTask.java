@@ -22,7 +22,7 @@ public class MinuteTask extends Task {
 
 	@Override()
 	public void onRun(int currentTick) {
-		AuctionAPI.updateAuction();
+		//AuctionAPI.updateAuction();
 		if (TIMER_RESTART == 10) {
 			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §610 §fминут!");
 		} else if (TIMER_RESTART == 1) {

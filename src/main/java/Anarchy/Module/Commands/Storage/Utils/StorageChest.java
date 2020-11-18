@@ -5,14 +5,14 @@ import java.nio.ByteOrder;
 import java.util.Map;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.FakeChests.Inventory.DoubleDefaultChest;
+import FakeInventoryAPI.Inventory.DefaultDoubleChest;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.utils.Config;
 
-public class StorageChest extends DoubleDefaultChest {
+public class StorageChest extends DefaultDoubleChest {
 	private static File dataFile;
 
 	public StorageChest(String title, File file) {

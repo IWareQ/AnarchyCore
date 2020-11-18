@@ -53,6 +53,13 @@
     </plugins>
   </build>
   <dependencies>
+  	<dependency>
+            <groupId>FakeInventoryAPI</groupId>
+            <artifactId>FakeInventoryAPI</artifactId>
+            <version>3.0</version>
+            <scope>system</scope>
+      <systemPath>${basedir}/libs/FakeInventoryAPI-3.0.jar</systemPath>
+        </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

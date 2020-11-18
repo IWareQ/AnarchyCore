@@ -1,8 +1,8 @@
 package Anarchy.Module.Auction.Utils.Inventory;
 
-import Anarchy.Manager.FakeChests.Inventory.DoubleDefaultChest;
+import FakeInventoryAPI.Inventory.DefaultDoubleChest;
 
-public class AuctionChest extends DoubleDefaultChest {
+public class AuctionChest extends DefaultDoubleChest {
 
 	public AuctionChest(String title) {
 		super(title);

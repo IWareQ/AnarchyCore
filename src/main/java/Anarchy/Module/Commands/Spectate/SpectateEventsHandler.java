@@ -2,11 +2,11 @@ package Anarchy.Module.Commands.Spectate;
 
 import java.util.Map;
 
-import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.Inventory.InventoryHandler;
 import Anarchy.Module.Commands.Spectate.Utils.DoubleChest;
 import Anarchy.Module.Commands.Spectate.Utils.SpectatePlayer;
 import Anarchy.Module.Regions.RegionsAPI;
+import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
@@ -74,7 +74,7 @@ public class SpectateEventsHandler implements Listener {
 							Map<Integer, Item> contents = blockEntityChest.getInventory().getContents();
 							DoubleChest doubleChest = new DoubleChest("Просмотр содержимого");
 							doubleChest.setContents(contents);
-							FakeChestsAPI.openInventory(player, doubleChest);
+							FakeInventoryAPI.openInventory(player, doubleChest);
 						}
 					}
 				}
@@ -88,13 +88,13 @@ public class SpectateEventsHandler implements Listener {
 							Map<Integer, Item> contents = blockEntityChest.getInventory().getContents();
 							DoubleChest doubleChest = new DoubleChest("Просмотр содержимого");
 							doubleChest.setContents(contents);
-							FakeChestsAPI.openInventory(player, doubleChest);
+							FakeInventoryAPI.openInventory(player, doubleChest);
 						} else if (blockEntity instanceof BlockEntityBarrel) {
 							BlockEntityBarrel entityBarrel = (BlockEntityBarrel)blockEntity;
 							Map<Integer, Item> contents = entityBarrel.getInventory().getContents();
 							DoubleChest doubleChest = new DoubleChest("Просмотр содержимого");
 							doubleChest.setContents(contents);
-							FakeChestsAPI.openInventory(player, doubleChest);
+							FakeInventoryAPI.openInventory(player, doubleChest);
 						}
 					}
 				}

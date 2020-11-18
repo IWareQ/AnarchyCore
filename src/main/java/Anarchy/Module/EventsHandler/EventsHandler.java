@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Manager.Functions.FunctionsAPI;
 import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Manager.Sessions.Session.PlayerSession;
@@ -18,6 +17,7 @@ import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Module.EventsHandler.Utils.Hopper;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import Anarchy.Utils.RandomUtils;
+import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -251,6 +251,7 @@ public class EventsHandler implements Listener {
 			if (entity.getNameTag().equals("§l§6Аукционер")) {
 				AuctionAPI.AUCTION_PAGE.put((Player)damager, 0);
 				AuctionAPI.showAuction((Player)damager, true);
+				((Player)damager).sendMessage(AuctionAPI.PREFIX + "§fАукцион временно отключен на Тех§7. §fОбслуживание§7!");
 			}
 			if (entity.getNameTag().equalsIgnoreCase("§l§6Барыга")) {
 				Hopper hopper = new Hopper("§l§6Барыга");
@@ -258,7 +259,7 @@ public class EventsHandler implements Listener {
 				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0, 1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
 				hopper.addItem(netheritePickaxe);
 				hopper.addItem(goldPickaxe);
-				FakeChestsAPI.openInventory((Player)damager, hopper);
+				FakeInventoryAPI.openInventory((Player)damager, hopper);
 			}
 		}
 		if (entity.getLevel().equals(FunctionsAPI.SPAWN)) {

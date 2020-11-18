@@ -10,9 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Auction.Utils.TradeItem;
 import Anarchy.Module.Auction.Utils.Inventory.AuctionChest;
+import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
@@ -156,7 +156,7 @@ public class AuctionAPI extends PluginBase {
 			}
 		}
 		if (firstTime) {
-			FakeChestsAPI.openInventory(player, auctionChest);
+			FakeInventoryAPI.openInventory(player, auctionChest);
 		}
 		AUCTION_CHEST.put(player, auctionChest);
 	}

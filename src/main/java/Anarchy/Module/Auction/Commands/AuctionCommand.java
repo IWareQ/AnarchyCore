@@ -77,6 +77,7 @@ public class AuctionCommand extends Command {
 				AuctionAPI.AUCTION_PAGE.put(player, 0);
 				AuctionAPI.showAuction(player, true);
 			}
+			//player.sendMessage(AuctionAPI.PREFIX + "§fАукцион временно отключен на Тех§7. §fОбслуживание§7!");
 		}
 		return false;
 	}

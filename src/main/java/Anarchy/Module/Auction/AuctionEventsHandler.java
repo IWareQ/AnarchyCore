@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Auction.Utils.TradeItem;
 import Anarchy.Module.Auction.Utils.Inventory.AuctionChest;
 import Anarchy.Module.Auction.Utils.Inventory.SellChest;
 import Anarchy.Module.Auction.Utils.Inventory.TakeChest;
 import Anarchy.Module.Economy.EconomyAPI;
+import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.event.EventHandler;
@@ -104,7 +104,7 @@ public class AuctionEventsHandler implements Listener {
 								sellChest.addItem(item.setLore("\n§r§fСтоимость§7: §6" + String.format("%.1f", tradeItem.itemPrice) + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6" + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7."));
 							}
 						}
-						FakeChestsAPI.openDoubleChestInventory(player, sellChest);
+						FakeInventoryAPI.openDoubleChestInventory(player, sellChest);
 					}
 					break;
 
@@ -134,7 +134,7 @@ public class AuctionEventsHandler implements Listener {
 							item.setNamedTag(compoundTag);
 							takeChest.addItem(item.setLore("\n§r§l§6• §r§fНажмите§7, §fчтобы забрать§7!"));
 						}
-						FakeChestsAPI.openDoubleChestInventory(player, takeChest);
+						FakeInventoryAPI.openDoubleChestInventory(player, takeChest);
 					}
 					break;
 
@@ -172,7 +172,7 @@ public class AuctionEventsHandler implements Listener {
 								}
 							} else {
 								auctionChest.removeItem(sourceItem);
-								FakeChestsAPI.closeInventory(player, auctionChest);
+								FakeInventoryAPI.closeInventory(player, auctionChest);
 								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже продан или его сняли с продажи§7!");
 							}
 						}
@@ -195,7 +195,7 @@ public class AuctionEventsHandler implements Listener {
 								AuctionAPI.AUCTION.remove(tradeItem.UUID);
 							}
 						} else {
-							FakeChestsAPI.closeInventory(player, sellChest);
+							FakeInventoryAPI.closeInventory(player, sellChest);
 							player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже продан§7!");
 						}
 					}
@@ -214,7 +214,7 @@ public class AuctionEventsHandler implements Listener {
 							player.sendMessage(AuctionAPI.PREFIX + "§fПредмет с Хранилища успешно взят§7!");
 						}
 					} else {
-						FakeChestsAPI.closeInventory(player, takeChest);
+						FakeInventoryAPI.closeInventory(player, takeChest);
 						player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже был получен§7!");
 					}
 				}

@@ -1,7 +1,7 @@
 package Anarchy.Module.Commands.EnderChest;
 
-import Anarchy.Manager.FakeChests.FakeChestsAPI;
 import Anarchy.Module.Commands.EnderChest.Utils.EnderChest;
+import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -25,7 +25,7 @@ public class EnderChestCommand extends Command {
 			EnderChest enderChest = new EnderChest("§r§fСундук края");
 			enderChest.setContents(player.getEnderChestInventory().getContents());
 			player.getLevel().addSound(player, Sound.RANDOM_ENDERCHESTOPEN, 1, 1, player);
-			FakeChestsAPI.openInventory(player, enderChest);
+			FakeInventoryAPI.openInventory(player, enderChest);
 		}
 		return false;
 	}
