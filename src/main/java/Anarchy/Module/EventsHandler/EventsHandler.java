@@ -195,37 +195,30 @@ public class EventsHandler implements Listener {
 				event.setDrops(new Item[] {Item.get(52, 0, 1)});
 			}
 		}
-		if (item.getEnchantment(16) == null) {
+		int dropExp = block.getDropExp();
+		if (item.getEnchantment(16) == null && !block.getLevel().equals(FunctionsAPI.SPAWN)) {
 			if (block.getId() == Block.DIAMOND_ORE) {
-				int dropExp = block.getDropExp();
 				player.addExperience(dropExp);
 				event.setDropExp(0);
 			} else if (block.getId() == Block.REDSTONE_ORE) {
-				int dropExp = block.getDropExp();
 				player.addExperience(dropExp);
 				event.setDropExp(0);
 			} else if (block.getId() == Block.COAL_ORE) {
-				int dropExp = block.getDropExp();
 				player.addExperience(dropExp);
 				event.setDropExp(0);
 			} else if (block.getId() == Block.EMERALD_ORE) {
-				int dropExp = block.getDropExp();
 				player.addExperience(dropExp);
 				event.setDropExp(0);
 			} else if (block.getId() == Block.LAPIS_ORE) {
-				int dropExp = block.getDropExp();
 				player.addExperience(dropExp);
 				event.setDropExp(0);
 			} else if (block.getId() == Block.QUARTZ_ORE) {
-				int dropExp = block.getDropExp();
 				player.addExperience(dropExp);
 				event.setDropExp(0);
 			} else if (block.getId() == Block.NETHER_GOLD_ORE) {
-				int dropExp = block.getDropExp();
 				player.addExperience(dropExp);
 				event.setDropExp(0);
 			} else if (block.getId() == Block.LIT_REDSTONE_ORE) {
-				int dropExp = block.getDropExp();
 				player.addExperience(dropExp);
 				event.setDropExp(0);
 			}
