@@ -10,7 +10,7 @@ import cn.nukkit.scheduler.Task;
 public class RestartTask extends Task {
 
 	@Override()
-	public void onRun(int i) {
+	public void onRun(int currentTick) {
 		if (MinuteTask.SECONDS_RESTART == 60) {
 			Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §61 §fминуту!");
 		} else if (MinuteTask.SECONDS_RESTART == 30) {

@@ -16,7 +16,7 @@ import cn.nukkit.scheduler.Task;
 public class HotbarTask extends Task {
 
 	@Override()
-	public void onRun(int i) {
+	public void onRun(int currentTick) {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 			if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
 				PlayerSessionManager.SCOREBOARDS.get(player.getName()).hideFor(player);

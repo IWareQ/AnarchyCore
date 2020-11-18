@@ -13,6 +13,7 @@ import Anarchy.Manager.Sessions.PlayerSessionManager;
 import Anarchy.Module.BanSystem.BanSystemAPI;
 import Anarchy.Module.BanSystem.Utils.BanUtils;
 import Anarchy.Module.Permissions.PermissionsAPI;
+import Anarchy.Task.HotbarTask;
 import Anarchy.Utils.SQLiteUtils;
 import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
@@ -116,10 +117,6 @@ public class AuthEventsHandler implements Listener {
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.5, 52.5, -5.5), "§l§6Press F to pay respects"), player);
 		player.sendMessage("§l§6• §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§6• §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§6death§fanarchy §l§6| §r§fНаш сайт §7- §6death§7-§6mc§7.§6online");
 		PlayerSessionManager.startPlayerSession(player);
-		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
-			PlayerSessionManager.SCOREBOARDS.get(player.getName()).hideFor(player);
-			PlayerSessionManager.SCOREBOARD.remove(player.getName());
-		}
 		PermissionsAPI.updateTag(player);
 		PermissionsAPI.updatePermissions(player);
 		player.setCheckMovement(false);
@@ -132,6 +129,10 @@ public class AuthEventsHandler implements Listener {
 		Player player = event.getPlayer();
 		if (PlayerSessionManager.hasPlayerSession(player)) {
 			PlayerSessionManager.stopPlayerSession(player);
+		}
+		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
+			PlayerSessionManager.SCOREBOARDS.get(player.getName()).hideFor(player);
+			PlayerSessionManager.SCOREBOARD.remove(player.getName());
 		}
 		event.setQuitMessage("");
 	}

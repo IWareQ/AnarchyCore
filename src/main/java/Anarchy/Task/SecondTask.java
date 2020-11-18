@@ -12,7 +12,7 @@ import cn.nukkit.scheduler.Task;
 public class SecondTask extends Task {
 
 	@Override()
-	public void onRun(int i) {
+	public void onRun(int currentTick) {
 		CombatLoggerAPI.getPlayers().forEach((player, time)-> {
 			if (time < System.currentTimeMillis() / 1000) {
 				if (player != null) {
