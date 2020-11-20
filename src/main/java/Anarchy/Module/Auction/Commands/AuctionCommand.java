@@ -20,7 +20,7 @@ import cn.nukkit.utils.Config;
 public class AuctionCommand extends Command {
 
 	public AuctionCommand() {
-		super("aucion", "§r§fОткрыть Аукцион", "", new String[] {"auc"});
+		super("ah", "§r§fОткрыть Аукцион", "", new String[] {"auc"});
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("money", CommandParamType.INT, false)});
 	}
@@ -41,7 +41,7 @@ public class AuctionCommand extends Command {
 				Config config = new Config(dataFile, Config.YAML);
 				for (Map.Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 					TradeItem tradeItem = entry.getValue();
-					if (tradeItem.sellerName.equals(player.getName())) {
+					if (tradeItem.getSellerName().equals(player.getName())) {
 						count++;
 					}
 				}
@@ -69,7 +69,7 @@ public class AuctionCommand extends Command {
 				player.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §6успешно §fвыставлен за §6" + String.format("%.1f", itemPrice) + "§7, §fв колличестве §6" + sellItem.count + " §fшт§7.");
 				Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fвыставил предмет на продажу§7!");
 				String UUID = java.util.UUID.randomUUID().toString();
-				AuctionAPI.AUCTION.put(UUID, new TradeItem(sellItem, player.getName(), itemPrice, AuctionAPI.getTradeTime(), UUID));
+				AuctionAPI.AUCTION.put(UUID, new TradeItem(player.getName(), itemPrice, AuctionAPI.getTradeTime(), sellItem, UUID));
 				player.getInventory().setItemInHand(Item.get(Item.AIR));
 				AuctionAPI.AUCTION_COOLDOWN.put(player, nowTime + AuctionAPI.AUCTION_ADD_COOLDOWN);
 				AuctionAPI.saveAuction();
