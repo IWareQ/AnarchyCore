@@ -16,6 +16,7 @@ import Anarchy.Module.BanSystem.Utils.MuteUtils;
 import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Module.EventsHandler.Utils.Hopper;
 import Anarchy.Module.Permissions.PermissionsAPI;
+import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Utils.RandomUtils;
 import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
@@ -196,31 +197,33 @@ public class EventsHandler implements Listener {
 			}
 		}
 		int dropExp = block.getDropExp();
-		if (item.getEnchantment(16) == null && !block.getLevel().equals(FunctionsAPI.SPAWN)) {
-			if (block.getId() == Block.DIAMOND_ORE) {
-				player.addExperience(dropExp);
-				event.setDropExp(0);
-			} else if (block.getId() == Block.REDSTONE_ORE) {
-				player.addExperience(dropExp);
-				event.setDropExp(0);
-			} else if (block.getId() == Block.COAL_ORE) {
-				player.addExperience(dropExp);
-				event.setDropExp(0);
-			} else if (block.getId() == Block.EMERALD_ORE) {
-				player.addExperience(dropExp);
-				event.setDropExp(0);
-			} else if (block.getId() == Block.LAPIS_ORE) {
-				player.addExperience(dropExp);
-				event.setDropExp(0);
-			} else if (block.getId() == Block.QUARTZ_ORE) {
-				player.addExperience(dropExp);
-				event.setDropExp(0);
-			} else if (block.getId() == Block.NETHER_GOLD_ORE) {
-				player.addExperience(dropExp);
-				event.setDropExp(0);
-			} else if (block.getId() == Block.LIT_REDSTONE_ORE) {
-				player.addExperience(dropExp);
-				event.setDropExp(0);
+		if (RegionsAPI.canInteractHere(player, block.getLocation())) {
+			if (item.getEnchantment(16) == null && !block.getLevel().equals(FunctionsAPI.SPAWN)) {
+				if (block.getId() == Block.DIAMOND_ORE) {
+					player.addExperience(dropExp);
+					event.setDropExp(0);
+				} else if (block.getId() == Block.REDSTONE_ORE) {
+					player.addExperience(dropExp);
+					event.setDropExp(0);
+				} else if (block.getId() == Block.COAL_ORE) {
+					player.addExperience(dropExp);
+					event.setDropExp(0);
+				} else if (block.getId() == Block.EMERALD_ORE) {
+					player.addExperience(dropExp);
+					event.setDropExp(0);
+				} else if (block.getId() == Block.LAPIS_ORE) {
+					player.addExperience(dropExp);
+					event.setDropExp(0);
+				} else if (block.getId() == Block.QUARTZ_ORE) {
+					player.addExperience(dropExp);
+					event.setDropExp(0);
+				} else if (block.getId() == Block.NETHER_GOLD_ORE) {
+					player.addExperience(dropExp);
+					event.setDropExp(0);
+				} else if (block.getId() == Block.LIT_REDSTONE_ORE) {
+					player.addExperience(dropExp);
+					event.setDropExp(0);
+				}
 			}
 		}
 	}
@@ -255,8 +258,10 @@ public class EventsHandler implements Listener {
 			}
 			if (entity.getNameTag().equalsIgnoreCase("§l§6Барыга")) {
 				Hopper hopper = new Hopper("§l§6Барыга");
-				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0, 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
-				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0, 1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
+				Item netheritePickaxe = Item.get(Item.NETHERITE_PICKAXE, 0,
+												 1).setCustomName("§r§fЗлодейская кирка").setLore("§l§6• §r§fХотели сломать §6Бедрок §fкоторый мешается?\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §630000");
+				Item goldPickaxe = Item.get(Item.WOODEN_PICKAXE, 0,
+											1).setCustomName("§r§fКирка похитителя").setLore("§l§6• §r§fНе правильно поставили §6Спавнер?\n§r§fХотели бы переставить§7? §fНе беда§7!\n§r§fЭта кирка поможет Вам с этим§7!\n\n§r§fЦена§7: §620000");
 				hopper.addItem(netheritePickaxe);
 				hopper.addItem(goldPickaxe);
 				FakeInventoryAPI.openInventory((Player)damager, hopper);
@@ -391,7 +396,9 @@ public class EventsHandler implements Listener {
 				event.setCancelled(true);
 				return;
 			} else {
-				player.sendMessage("§l§c• §r§fТебя замутили§7! §fАдминистратор §6" + muteUtils.getBanner() + " §fзакрыл тебе доступ к чату на §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) / 60 % 60) + " §fмин§7. §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) % 60) + " §fсек§7. §fпо причине §6" + muteUtils.getReason() + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
+				player.sendMessage("§l§c• §r§fТебя замутили§7! §fАдминистратор §6" + muteUtils.getBanner() + " §fзакрыл тебе доступ к чату на §6" + ((
+									   muteUtils.getTime() - System.currentTimeMillis() / 1000L) / 60 % 60) + " §fмин§7. §6" + ((muteUtils.getTime() - System.currentTimeMillis() / 1000L) % 60) +
+								   " §fсек§7. §fпо причине §6" + muteUtils.getReason() + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
 				event.setCancelled(true);
 			}
 		}
