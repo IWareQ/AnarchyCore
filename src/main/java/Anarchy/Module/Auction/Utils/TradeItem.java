@@ -11,8 +11,8 @@ public class TradeItem {
 
 	public TradeItem(String sellerName, Double itemPrice, Long sellTime, Item sellItem, String UUID) {
 		this.sellerName = sellerName;
-		this.itemPrice =	itemPrice;
-		this.sellTime =	sellTime;
+		this.itemPrice = itemPrice;
+		this.sellTime = sellTime;
 		this.sellItem = sellItem;
 		this.UUID = UUID;
 	}

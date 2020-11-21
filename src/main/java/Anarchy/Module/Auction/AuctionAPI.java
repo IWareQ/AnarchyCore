@@ -26,8 +26,8 @@ public class AuctionAPI extends PluginBase {
 	public static Map<Player, Integer> AUCTION_PAGE = new HashMap<>();
 	public static double AUCTION_MAX_PRICE = 10000.0;
 	public static int AUCTION_CHEST_SIZE = 36;
-	public static int AUCTION_MAX_SELLS = 10;
-	public static int AUCTION_ADD_COOLDOWN = 60;
+	public static int AUCTION_MAX_SELLS = 4;
+	public static int AUCTION_ADD_COOLDOWN = 30;
 	public static String PREFIX = "§l§7(§3Аукцион§7) §r";
 
 	public static void register() {
@@ -44,7 +44,7 @@ public class AuctionAPI extends PluginBase {
 				compoundTag.putString("UUID", entry.getKey());
 				Item item = Item.get((int)itemData.get(3), (int)itemData.get(4), (int)itemData.get(5));
 				item.setNamedTag(compoundTag);
-				AUCTION.put(entry.getKey(), new TradeItem(itemData.get(0).toString(), Double.parseDouble(itemData.get(1).toString()), Long.parseLong(itemData.get(2).toString()), item, entry.getKey()));
+				AUCTION.put(entry.getKey(), new TradeItem(itemData.get(0).toString(), Double.parseDouble(itemData.get(1).toString()), Long.valueOf(itemData.get(2).toString()), item, entry.getKey()));
 			}
 		}
 	}
@@ -119,7 +119,7 @@ public class AuctionAPI extends PluginBase {
 			compoundTag.putString("UUID", tradeItem.getUUID());
 			item.setNamedTag(compoundTag);
 			item.setLore("\n§r§fПродавец§7: §6" + tradeItem.getSellerName() + "\n§r§fСтоимость§7: §6" + tradeItem.getItemPrice() + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6" + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7.\n\n§r§l§6• §r§fНажмите§7, §fчтобы купить предмет§7!");
-			auctionChest.addItem(item);
+			auctionChest.setItem(i, item);
 		}
 		if (playerPage >= 0) {
 			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§6Ваши Предметы на Продаже").setLore("\n§r§l§6• §r§fНажмите§7, §fчтобы открыть§7!"));
