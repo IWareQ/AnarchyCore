@@ -27,8 +27,8 @@ public class AuctionAPI extends PluginBase {
 	public static Map<Player, Integer> AUCTION_PAGE = new HashMap<>();
 	public static double AUCTION_MAX_PRICE = 10000.0;
 	public static int AUCTION_CHEST_SIZE = 36;
-	public static int AUCTION_MAX_SELLS = 1000000;
-	public static int AUCTION_ADD_COOLDOWN = 1;
+	public static int AUCTION_MAX_SELLS = 5;
+	public static int AUCTION_ADD_COOLDOWN = 60;
 	public static String PREFIX = "§l§7(§3Аукцион§7) §r";
 
 	public static void register() {
@@ -91,7 +91,6 @@ public class AuctionAPI extends PluginBase {
 	}
 
 	public static void showAuction(Player player, boolean firstTime) {
-		Map<String, String> test = SQLiteUtils.selectStringMap("Test.db", "SELECT * FROM test_auction;");
 		int playerPage = AUCTION_PAGE.get(player);
 		AuctionChest auctionChest;
 		if (firstTime) {
@@ -101,7 +100,7 @@ public class AuctionAPI extends PluginBase {
 			auctionChest.clearAll();
 		}
 		auctionChest.setTitle("§l§fТорговая Площадка");
-		int tradeSize = test.size();
+		int tradeSize = AUCTION.size();
 		if (tradeSize == 0) {
 			player.sendMessage(AuctionAPI.PREFIX + "§fАукцион пуст§7!");
 			return;
@@ -113,7 +112,7 @@ public class AuctionAPI extends PluginBase {
 		} else {
 			stop = tradeSize;
 		}
-		Object[] tradeItems = test.values().toArray();
+		Object[] tradeItems = AUCTION.values().toArray();
 		for (int i = start; i < stop; i++) {
 			TradeItem tradeItem = (TradeItem)tradeItems[i];
 			Item item = tradeItem.getSellItem().clone();

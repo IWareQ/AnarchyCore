@@ -50,9 +50,7 @@ public class AuctionEventsHandler implements Listener {
 						int playerPage = AuctionAPI.AUCTION_PAGE.get(player);
 						int tradeSize = AuctionAPI.AUCTION.size();
 						int start = playerPage * AuctionAPI.AUCTION_CHEST_SIZE;
-						int stop;
 						if (tradeSize > start + AuctionAPI.AUCTION_CHEST_SIZE) {
-							stop = start + AuctionAPI.AUCTION_CHEST_SIZE;
 							AuctionAPI.AUCTION_PAGE.put(player, AuctionAPI.AUCTION_PAGE.get(player) + 1);
 							AuctionAPI.showAuction(player, false);
 							AuctionAPI.showAuction(player, true);
@@ -60,7 +58,6 @@ public class AuctionEventsHandler implements Listener {
 						} else {
 							player.sendMessage(AuctionAPI.PREFIX + "§fВы уже находитесь на самой последней странице§7!");
 							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
-							stop = tradeSize;
 						}
 					}
 					break;
