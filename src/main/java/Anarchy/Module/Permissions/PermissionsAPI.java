@@ -73,7 +73,7 @@ public class PermissionsAPI {
 		if (Server.getInstance().getPlayerExact(playerName) != null) {
 			return PlayerSessionManager.getPlayerSession(playerName).getInteger("Permission");
 		} else {
-			return SQLiteUtils.selectInteger("Users.db", "SELECT Permission FROM USERS WHERE UPPER (Username) = \'" + playerName.toUpperCase() + "\';");
+			return SQLiteUtils.selectInteger("SELECT `Permission` FROM `Users` WHERE UPPER (`Username`) = '" + playerName.toUpperCase() + "';");
 		}
 	}
 
@@ -82,7 +82,7 @@ public class PermissionsAPI {
 			PlayerSessionManager.getPlayerSession(playerName).setInteger("Permission", groupID);
 			updatePermissions(Server.getInstance().getPlayerExact(playerName));
 		} else {
-			SQLiteUtils.query("Users.db", "UPDATE USERS SET Permission = \'" + groupID + "\' WHERE UPPER(Username) = \'" + playerName.toUpperCase() + "\';");
+			SQLiteUtils.query("UPDATE `Users` SET `Permission` = '" + groupID + "' WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "';");
 		}
 	}
 
@@ -93,9 +93,9 @@ public class PermissionsAPI {
 
 	public static void updateTag(Player player) {
 		String playerName = player.getName();
-		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player.getName());
-		String device = String.valueOf(player.getLoginChainData().getDeviceOS()).replace("0", "Неизвестно").replace("1", "Android").replace("2", "iOS").replace("3", "MacOS").replace("4", "FireOS").replace("5", "GearVR").replace("6", "HoloLens").replace("10", "PS 4").replace("7", "Win 10").replace("8", "Win").replace("9", "Dedicated").replace("11", "Switch");
-		String nameTag = GROUPS.get(playerSession.getInteger("Permission")) + " §f" + playerName + "\n§7" + device;
+		String device = String.valueOf(player.getLoginChainData().getDeviceOS()).replace("0", "Неизвестно").replace("1", "Android").replace("2", "iOS").replace("3", "MacOS").replace("4",
+						"FireOS").replace("5", "GearVR").replace("6", "HoloLens").replace("10", "PS 4").replace("7", "Win 10").replace("8", "Win").replace("9", "Dedicated").replace("11", "Switch");
+		String nameTag = GROUPS.get(PlayerSessionManager.getPlayerSession(playerName).getInteger("Permission")) + " §f" + playerName + "\n§7" + device;
 		player.setNameTag(nameTag);
 	}
 
@@ -105,7 +105,7 @@ public class PermissionsAPI {
 		Map<String, Boolean> permissionAllows = new HashMap<>();
 		int permissionGroup = getGroup(player);
 		switch (permissionGroup) {
-		case 0: 
+		case 0:
 			break;
 
 		case 1:

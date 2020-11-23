@@ -2,6 +2,7 @@ package Anarchy.Module.Regions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import Anarchy.Manager.Functions.FunctionsAPI;
@@ -61,7 +62,7 @@ public class RegionsAPI {
 			return;
 		}
 		player.sendMessage(PREFIX + "§fВы успешно создали новый защищеный регион§7!\n§l§6• §r§fДля проверки владений используйте палку§7!");
-		SQLiteUtils.query("Regions.db", "INSERT INTO AREAS (DATE_REG, Username, Main_X, Main_Y, Main_Z, Pos1_X, Pos1_Y, Pos1_Z, Pos2_X, Pos2_Y, Pos2_Z) VALUES ('" + StringUtils.getDate() + "', '" + player.getName() + "', '" + x + "', '" + y + "', '" + z + "', '" + pos1[0] + "', '" + pos1[1] + "', '" + pos1[2] + "', '" + pos2[0] + "', '" + pos2[1] + "', '" + pos2[2] + "');");
+		SQLiteUtils.query("INSERT INTO Areas (DATE_REG, Username, Main_X, Main_Y, Main_Z, Pos1_X, Pos1_Y, Pos1_Z, Pos2_X, Pos2_Y, Pos2_Z) VALUES ('" + StringUtils.getDate() + "', '" + player.getName() + "', '" + x + "', '" + y + "', '" + z + "', '" + pos1[0] + "', '" + pos1[1] + "', '" + pos1[2] + "', '" + pos2[0] + "', '" + pos2[1] + "', '" + pos2[2] + "');");
 		player.getLevel().addSound(player, Sound.HIT_ANVIL, 1, 1, player);
 	}
 
@@ -78,34 +79,34 @@ public class RegionsAPI {
 	}
 
 	public static boolean isRegionMember(String playerName, int regionID) {
-		return SQLiteUtils.selectInteger("Regions.db", "SELECT Member_ID FROM MEMBERS WHERE UPPER(Username) = '" + playerName.toUpperCase() + "' AND Region_ID = '" + regionID + "';") != -1;
+		return SQLiteUtils.selectInteger("SELECT Member_ID FROM Members WHERE UPPER(Username) = '" + playerName.toUpperCase() + "' AND Region_ID = '" + regionID + "';") != -1;
 	}
 
 	public static String getRegionOwner(int regionID) {
-		return SQLiteUtils.selectString("Regions.db", "SELECT Username FROM AREAS WHERE (Region_ID = '" + regionID + "');");
+		return SQLiteUtils.selectString("SELECT Username FROM Areas WHERE (Region_ID = '" + regionID + "');");
 	}
 
 	public static Map<String, String> getRegionInfo(int regionID) {
-		return SQLiteUtils.selectStringMap("Regions.db", "SELECT * FROM AREAS WHERE (Region_ID = '" + regionID + "');");
+		return (Map<String, String>) SQLiteUtils.selectStringMap("SELECT * FROM Areas WHERE (Region_ID = '" + regionID + "');");
 	}
 
 	public static Integer getRegionIDByPosition(Position position) {
-		return SQLiteUtils.selectInteger("Regions.db", "SELECT Region_ID FROM AREAS WHERE (Pos1_X<= " + position.x + " AND " + position.x + "<= Pos2_X) AND (Pos1_Y<= " + position.y + " AND " + position.y + "<= Pos2_Y) AND (Pos1_Z<= " + position.z + " AND " + position.z + "<= Pos2_Z);");
+		return SQLiteUtils.selectInteger("SELECT Region_ID FROM Areas WHERE (Pos1_X<= " + position.x + " AND " + position.x + "<= Pos2_X) AND (Pos1_Y<= " + position.y + " AND " + position.y + "<= Pos2_Y) AND (Pos1_Z<= " + position.z + " AND " + position.z + "<= Pos2_Z);");
 	}
 
 	public static Integer getRegionIDByLocation(Location location) {
-		return SQLiteUtils.selectInteger("Regions.db", "SELECT Region_ID FROM AREAS WHERE (Pos1_X<= " + location.x + " AND " + location.x + "<= Pos2_X) AND (Pos1_Y<= " + location.y + " AND " + location.y + "<= Pos2_Y) AND (Pos1_Z<= " + location.z + " AND " + location.z + "<= Pos2_Z);");
+		return SQLiteUtils.selectInteger("SELECT Region_ID FROM Areas WHERE (Pos1_X<= " + location.x + " AND " + location.x + "<= Pos2_X) AND (Pos1_Y<= " + location.y + " AND " + location.y + "<= Pos2_Y) AND (Pos1_Z<= " + location.z + " AND " + location.z + "<= Pos2_Z);");
 	}
 
 	public static boolean canCreateRegion(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
-		return SQLiteUtils.selectInteger("Regions.db", "SELECT Region_ID FROM AREAS WHERE Pos2_X >= " + minX + " AND Pos1_X<= " + maxX + " AND Pos2_Y >= " + minY + " AND Pos1_Y<= " + maxY + " AND Pos2_Z >= " + minZ + " AND Pos1_Z<= " + maxZ + ";") == -1;
+		return SQLiteUtils.selectInteger("SELECT Region_ID FROM Areas WHERE Pos2_X >= " + minX + " AND Pos1_X<= " + maxX + " AND Pos2_Y >= " + minY + " AND Pos1_Y<= " + maxY + " AND Pos2_Z >= " + minZ + " AND Pos1_Z<= " + maxZ + ";") == -1;
 	}
 
 	public static int getRegionsCount(String playerName) {
-		return SQLiteUtils.selectInteger("Regions.db", "SELECT COUNT(*) as COUNT FROM AREAS WHERE UPPER(Username) = '" + playerName.toUpperCase() + "';");
+		return SQLiteUtils.selectInteger("SELECT COUNT(*) as COUNT FROM Areas WHERE UPPER(Username) = '" + playerName.toUpperCase() + "';");
 	}
 
-	public static ArrayList<String> getRegionMembers(int regionID) {
-		return SQLiteUtils.selectList("Regions.db", "SELECT Username FROM MEMBERS WHERE Region_ID = '" + regionID + "';");
+	public static List<String> getRegionMembers(int regionID) {
+		return SQLiteUtils.selectStringList("SELECT Username FROM Members WHERE Region_ID = '" + regionID + "';");
 	}
 }

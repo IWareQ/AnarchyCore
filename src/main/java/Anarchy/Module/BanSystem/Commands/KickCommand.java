@@ -47,7 +47,8 @@ public class KickCommand extends Command {
 					player.sendMessage(AnarchyMain.PREFIX + "§fПричина кика не может быть пустой§7!");
 				}
 				player.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + target.getName() + " §fбыл кикнут с сервера§7!\n§l§6• §r§fПричина§7: §6" + (String)data.get(1));
-				target.close("", (String)data.get(1));
+				//target.close("", (String)data.get(1));
+				target.close("", "1\n2\n3\n3\n4\n5\n6");
 			});
 		}
 		return false;

@@ -76,18 +76,13 @@ public class AuthEventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		String playerName = player.getName();
-		String upperCase = playerName.toUpperCase();
 		String ip = player.getAddress();
 		String date = StringUtils.getDate();
-		Integer accountID = SQLiteUtils.selectInteger("Users.db", "SELECT Account_ID FROM USERS WHERE UPPER(Username) = \'" + upperCase + "\';");
-		String userNameAuth = SQLiteUtils.selectString("Auth.db", "SELECT Username FROM AUTH WHERE UPPER(Username) = \'" + upperCase + "\';");
-		if (accountID == -1) {
-			SQLiteUtils.query("Users.db", "INSERT INTO USERS (Username) VALUES (\'" + playerName + "\');");
-			SQLiteUtils.query("Auth.db", "INSERT INTO AUTH (Username, IP_Reg, Date_Reg) VALUES (\'" + playerName + "\', \'" + ip + "\', \'" + date + "\');");
-			Server.getInstance().getLogger().info("§l§7(§6Система§7) §fИгрок §6" + playerName + " §fне зарегистрирован§7! §fРегистрируем§7!");
-		} else if (userNameAuth == null) {
-			SQLiteUtils.query("Auth.db", "INSERT INTO AUTH (Username, IP_Reg, Date_Reg) VALUES (\'" + playerName + "\', \'" + ip + "\', \'" + date + "\');");
+		Integer accountID = SQLiteUtils.selectInteger("SELECT `Account_ID` FROM `Users` WHERE UPPER(`Username`) = '" + player.getName().toUpperCase() + "';");
+		if (accountID == null) {
+			SQLiteUtils.query("INSERT INTO `Users` (`Username`) VALUES ('" + player.getName() + "');");
+			SQLiteUtils.query("INSERT INTO `Auth` (`Username`, `IP_Reg`, `Date_Reg`) VALUES ('" + player.getName() + "', '" + ip + "', '" + date + "');");
+			Server.getInstance().getLogger().info("§l§7(§6Система§7) §fИгрок §6" + player.getName() + " §fне зарегистрирован§7! §fРегистрируем§7!");
 		}
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.5, 50, 0.5), "§l§6Заходи в портал§7!", "§l§fПросто заходи и начинай выживать"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-4.5, 51, 12.5), "§l§6Маленький приват", "§l§f2 §7× §f2"), player);
@@ -120,7 +115,7 @@ public class AuthEventsHandler implements Listener {
 		PermissionsAPI.updateTag(player);
 		PermissionsAPI.updatePermissions(player);
 		player.setCheckMovement(false);
-		SQLiteUtils.query("Auth.db", "UPDATE AUTH SET IP_Last = \'" + ip + "\', Date_Last = \'" + date + "\' WHERE UPPER(Username) = \'" + upperCase + "\';");
+		SQLiteUtils.query("UPDATE `Auth` SET `IP_Last` = '" + ip + "', `Date_Last` = '" + date + "' WHERE UPPER(`Username`) = '" + player.getName().toUpperCase() + "';");
 		event.setJoinMessage("");
 	}
 

@@ -9,7 +9,7 @@ public class AuthAPI {
 		if (Server.getInstance().getPlayerExact(playerName) != null) {
 			return true;
 		} else {
-			return SQLiteUtils.selectString("Auth.db", "SELECT Username FROM AUTH WHERE UPPER(Username) = \'" + playerName.toUpperCase() + "\';") != null;
+			return SQLiteUtils.selectString("SELECT `Username` FROM `Auth` WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "';") != null;
 		}
 	}
 }

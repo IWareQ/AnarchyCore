@@ -16,7 +16,7 @@ public class EconomyAPI {
 		if (Server.getInstance().getPlayerExact(playerName) != null) {
 			return PlayerSessionManager.getPlayerSession(playerName).getDouble("Money");
 		} else {
-			return SQLiteUtils.selectDouble("Users.db", "SELECT Money FROM USERS WHERE UPPER(Username) = \'" + playerName.toUpperCase() + "\';");
+			return SQLiteUtils.selectDouble("SELECT `Money` FROM `Users` WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "';");
 		}
 	}
 
@@ -28,7 +28,7 @@ public class EconomyAPI {
 		if (Server.getInstance().getPlayerExact(playerName) != null) {
 			PlayerSessionManager.getPlayerSession(playerName).setDouble("Money", value);
 		} else {
-			SQLiteUtils.query("Users.db", "UPDATE USERS SET Money = \'" + value + "\' WHERE UPPER(Username) = \'" + playerName.toUpperCase() + "\';");
+			SQLiteUtils.query("UPDATE `Users` SET `Money` = '" + value + "' WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "';");
 		}
 	}
 

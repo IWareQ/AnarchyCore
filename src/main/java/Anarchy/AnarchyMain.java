@@ -93,7 +93,7 @@ public class AnarchyMain extends PluginBase {
 	@Override()
 	public void onEnable() {
 		PluginManager pluginManager = this.getServer().getPluginManager();
-		for (String pluginName : new String[] {"DbLib", "ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
+		for (String pluginName : new String[] {"ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
 				this.getLogger().alert("§l§fНе найден §3плагин §7- §6" + pluginName);
 				pluginManager.disablePlugin(this);
