@@ -1,6 +1,6 @@
 package Anarchy.Module.Commands;
 
-import Anarchy.Manager.Functions.FunctionsAPI;
+import Anarchy.Functions.FunctionsAPI;
 import Anarchy.Module.Boss.EvokerBoss;
 import Anarchy.Module.Boss.RavagerBoss;
 import Anarchy.Module.Boss.SilverfishBoss;

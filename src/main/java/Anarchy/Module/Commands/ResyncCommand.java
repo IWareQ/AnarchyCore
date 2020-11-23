@@ -29,8 +29,8 @@ public class ResyncCommand extends Command {
 			modalForm.send(player, (targetPlayer, targetForm, data)-> {
 				if (data == -1) return;
 				if (data == 0) {
-					SQLiteUtils.query("ALTER TABLE Users RENAME COLUMN DonateCase to Bonus");
-					SQLiteUtils.query("UPDATE Users SET Money = \'0\', Bonus = \'0\', Gametime = \'0\';");
+					SQLiteUtils.query("Users.db", "ALTER TABLE USERS RENAME COLUMN DonateCase to Bonus");
+					SQLiteUtils.query("Users.db", "UPDATE USERS SET Money = \'0\', Bonus = \'0\', Gametime = \'0\';");
 					player.sendMessage(AnarchyMain.PREFIX + "§fБаза данных успешно обновленна§7!");
 				}
 				if (data == 1) {

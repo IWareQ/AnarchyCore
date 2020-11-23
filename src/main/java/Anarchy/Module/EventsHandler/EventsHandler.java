@@ -7,9 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.Functions.FunctionsAPI;
-import Anarchy.Manager.Sessions.PlayerSessionManager;
-import Anarchy.Manager.Sessions.Session.PlayerSession;
+import Anarchy.Functions.FunctionsAPI;
 import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Module.BanSystem.BanSystemAPI;
 import Anarchy.Module.BanSystem.Utils.MuteUtils;
@@ -111,7 +109,7 @@ public class EventsHandler implements Listener {
 			if (damager instanceof Player && player != damager) {
 				player.sendMessage("§l§c• §r§fВы были убиты Игроком §6" + damager.getName());
 				event.setDeathMessage("§l§6• §r§fИгрок §6" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
-				Double money = EconomyAPI.myMoney(player) * 20 / 100;
+				Double money = EconomyAPI.myMoney(player.getName()) * 20 / 100;
 				if (money > 5.0) {
 					player.sendMessage("§l§c• §r§fПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20§7%)");
 					((Player)damager).sendMessage("§l§6• §r§fВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §6" + player.getName());
@@ -283,7 +281,7 @@ public class EventsHandler implements Listener {
 					event.setCancelled(true);
 					switch (sourceItem.getName()) {
 					case "§r§fЗлодейская кирка": {
-						if (EconomyAPI.myMoney(player) < 30000) {
+						if (EconomyAPI.myMoney(player.getName()) < 30000) {
 							player.sendMessage("§l§7(§3Барыга§7) §r§fНедостаточно монет§7, §fдля совершения покупки§7!");
 							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 							return;
@@ -299,7 +297,7 @@ public class EventsHandler implements Listener {
 					break;
 
 					case "§r§fКирка похитителя": {
-						if (EconomyAPI.myMoney(player) < 20000) {
+						if (EconomyAPI.myMoney(player.getName()) < 20000) {
 							player.sendMessage("§l§7(§3Барыга§7) §r§fНедостаточно монет§7, §fдля совершения покупки§7!");
 							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 							return;
@@ -380,8 +378,7 @@ public class EventsHandler implements Listener {
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String playerMessage = event.getMessage();
-		PlayerSession playerSession = PlayerSessionManager.getPlayerSession(player.getName());
-		String displayName = PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + " §f" + player.getName();
+		String displayName = PermissionsAPI.GROUPS.get(PermissionsAPI.getGroup(player.getName())) + " §f" + player.getName();
 		Long cooldownTime = COOLDOWN.get(player);
 		Long nowTime = System.currentTimeMillis() / 1000;
 		if (cooldownTime != null && cooldownTime > nowTime) {

@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.Sessions.PlayerSessionManager;
-import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.Permissions.Utils.GroupAllow;
 import Anarchy.Utils.SQLiteUtils;
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.permission.PermissionAttachment;
 
 public class PermissionsAPI {
@@ -61,41 +58,29 @@ public class PermissionsAPI {
 		return groupID >= 0 && groupID < PermissionsAPI.GROUPS.size();
 	}
 
-	public static int getGroup(Player player) {
-		return PlayerSessionManager.getPlayerSession(player).getInteger("Permission");
-	}
-
 	public static GroupAllow getGroupAllows(int permissionGroup) {
 		return GROUP_ALLOWS.get(permissionGroup);
 	}
 
 	public static int getGroup(String playerName) {
-		if (Server.getInstance().getPlayerExact(playerName) != null) {
-			return PlayerSessionManager.getPlayerSession(playerName).getInteger("Permission");
-		} else {
-			return SQLiteUtils.selectInteger("SELECT `Permission` FROM `Users` WHERE UPPER (`Username`) = '" + playerName.toUpperCase() + "';");
-		}
-	}
-
-	public static void setGroup(String playerName, int groupID) {
-		if (Server.getInstance().getPlayerExact(playerName) != null) {
-			PlayerSessionManager.getPlayerSession(playerName).setInteger("Permission", groupID);
-			updatePermissions(Server.getInstance().getPlayerExact(playerName));
-		} else {
-			SQLiteUtils.query("UPDATE `Users` SET `Permission` = '" + groupID + "' WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "';");
-		}
+		return SQLiteUtils.selectInteger("Users.db", "SELECT Permission FROM USERS WHERE UPPER (Username) = \'" + playerName.toUpperCase() + "\';");
 	}
 
 	public static void setGroup(Player player, int groupID) {
-		PlayerSessionManager.getPlayerSession(player.getName()).setInteger("Permission", groupID);
+		SQLiteUtils.query("Users.db", "UPDATE USERS SET Permission = \'" + groupID + "\' WHERE UPPER(Username) = \'" + player.getName().toUpperCase() + "\';");
 		updatePermissions(player);
+	}
+	
+	public static void setGroup(String playerName,  int groupID) {
+		SQLiteUtils.query("Users.db", "UPDATE USERS SET Permission = \'" + groupID + "\' WHERE UPPER(Username) = \'" + playerName.toUpperCase() + "\';");
 	}
 
 	public static void updateTag(Player player) {
 		String playerName = player.getName();
+		Integer permission = SQLiteUtils.selectInteger("Users.db", "SELECT `Permission` FROM USERS WHERE UPPER(`Username`) = '" + playerName.toUpperCase() + "'");
 		String device = String.valueOf(player.getLoginChainData().getDeviceOS()).replace("0", "Неизвестно").replace("1", "Android").replace("2", "iOS").replace("3", "MacOS").replace("4",
 						"FireOS").replace("5", "GearVR").replace("6", "HoloLens").replace("10", "PS 4").replace("7", "Win 10").replace("8", "Win").replace("9", "Dedicated").replace("11", "Switch");
-		String nameTag = GROUPS.get(PlayerSessionManager.getPlayerSession(playerName).getInteger("Permission")) + " §f" + playerName + "\n§7" + device;
+		String nameTag = GROUPS.get(permission) + " §f" + playerName + "\n§7" + device;
 		player.setNameTag(nameTag);
 	}
 
@@ -103,7 +88,7 @@ public class PermissionsAPI {
 		PermissionAttachment permissionAttachment = player.addAttachment(AnarchyMain.plugin, player.getName());
 		permissionAttachment.clearPermissions();
 		Map<String, Boolean> permissionAllows = new HashMap<>();
-		int permissionGroup = getGroup(player);
+		int permissionGroup = getGroup(player.getName());
 		switch (permissionGroup) {
 		case 0:
 			break;

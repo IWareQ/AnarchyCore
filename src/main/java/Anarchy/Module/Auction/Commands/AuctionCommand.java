@@ -6,6 +6,7 @@ import java.util.Map;
 import Anarchy.AnarchyMain;
 import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Module.Auction.Utils.TradeItem;
+import Anarchy.Utils.SQLiteUtils;
 import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -66,13 +67,14 @@ public class AuctionCommand extends Command {
 					player.sendMessage(AuctionAPI.PREFIX + "§fМаксимальная цена за предмет §7- §6" + AuctionAPI.AUCTION_MAX_PRICE + "");
 					return false;
 				}
+				String UUID = java.util.UUID.randomUUID().toString();
+				SQLiteUtils.query("Auction.db", "INSERT INTO Auction (Sellername, ItemPrice, SellTime, ItemID, ItemDATA, ItemCOUNT, UUID) VALUES (" + player.getName() + ", " + itemPrice + ", " + AuctionAPI.getTradeTime() + ", " + sellItem.getId() +", " + sellItem.getDamage() + ", " + sellItem.getCount() + ", " + UUID +");");
 				player.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §6успешно §fвыставлен за §6" + String.format("%.1f", itemPrice) + "§7, §fв колличестве §6" + sellItem.count + " §fшт§7.");
 				Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fвыставил предмет на продажу§7!");
-				String UUID = java.util.UUID.randomUUID().toString();
-				AuctionAPI.AUCTION.put(UUID, new TradeItem(player.getName(), itemPrice, AuctionAPI.getTradeTime(), sellItem, UUID));
+				//AuctionAPI.AUCTION.put(UUID, new TradeItem(player.getName(), itemPrice, AuctionAPI.getTradeTime(), sellItem, UUID));
 				player.getInventory().setItemInHand(Item.get(Item.AIR));
-				AuctionAPI.AUCTION_COOLDOWN.put(player, nowTime + AuctionAPI.AUCTION_ADD_COOLDOWN);
-				AuctionAPI.saveAuction();
+				//AuctionAPI.AUCTION_COOLDOWN.put(player, nowTime + AuctionAPI.AUCTION_ADD_COOLDOWN);
+				//AuctionAPI.saveAuction();
 			} else {
 				AuctionAPI.AUCTION_PAGE.put(player, 0);
 				AuctionAPI.showAuction(player, true);

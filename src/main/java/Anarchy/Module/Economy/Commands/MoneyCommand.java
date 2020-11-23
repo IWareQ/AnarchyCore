@@ -16,7 +16,7 @@ public class MoneyCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
-			player.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(player)) + "");
+			player.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(player.getName())) + "");
 		}
 		return false;
 	}

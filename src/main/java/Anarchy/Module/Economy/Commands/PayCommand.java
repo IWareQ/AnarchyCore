@@ -37,7 +37,7 @@ public class PayCommand extends Command {
 				player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 				return true;
 			}
-			Double money = EconomyAPI.myMoney(player);
+			Double money = EconomyAPI.myMoney(player.getName());
 			if (money < Double.parseDouble(args[1])) {
 				player.sendMessage(EconomyAPI.PREFIX + "§fВам не хватает §6монет §fдля перевода§7.\n§l§6• §r§fВаш баланс§7: §6" + String.format("%.1f", money) + "");
 				player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);

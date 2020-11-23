@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.Sessions.PlayerSessionManager;
-import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.BanSystem.BanSystemAPI;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import FormAPI.Forms.Elements.CustomForm;
@@ -41,10 +39,9 @@ public class MuteCommand extends Command {
 				player.sendMessage("§l§6• §r§fИгрок §6" + args[0] + " §fне в сети§7!");
 				return true;
 			}
-			PlayerSession playerSession = PlayerSessionManager.getPlayerSession(target);
 			List<String> timeMute = Arrays.asList("§61 §fМинута", "§65 §fМинут", "§610 §fМинут", "§615 §fМинут", "§620 §fМинут", "§625 §fМинут", "§630 §fМинут", "§635 §fМинут", "§640 §fМинут", "§645 §fМинут", "§650 §fМинут", "§655 §fМинут", "§61 §fЧас", "§6Тест время");
 			CustomForm customForm = new CustomForm("§l§fБлокировка чата");
-			customForm.addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n");
+			customForm.addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(PermissionsAPI.getGroup(target.getName())) + "\n");
 			customForm.addInput("§l§6• §r§fПричина блокировки чата§7:");
 			customForm.addDropDown("§l§6• §r§fВремя блокировки чата§7:", timeMute);
 			customForm.send(player, (targetPlayer, targetForm, data)-> {

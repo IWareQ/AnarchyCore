@@ -2,7 +2,7 @@ package Anarchy.Module.Commands.Home;
 
 import java.util.Map;
 
-import Anarchy.Manager.Functions.FunctionsAPI;
+import Anarchy.Functions.FunctionsAPI;
 import Anarchy.Utils.SQLiteUtils;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
@@ -21,8 +21,8 @@ public class HomeCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
-			Map<String, String> homeData = (Map<String, String>) SQLiteUtils.selectStringMap("SELECT * FROM Homes WHERE UPPER(Username) = \'" + player.getName().toUpperCase() + "\';");
-			if (homeData == null) {
+			Map<String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM HOMES WHERE UPPER(Username) = \'" + player.getName().toUpperCase() + "\';");
+			if (homeData == null || homeData.isEmpty()) {
 				player.sendMessage(PREFIX + "§fТочек дома не обнаружено§7, §fдля создания используйте §7/§6sethome");
 			} else {
 				int x = Integer.parseInt(homeData.get("X"));

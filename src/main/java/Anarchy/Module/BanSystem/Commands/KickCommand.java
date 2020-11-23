@@ -1,8 +1,6 @@
 package Anarchy.Module.BanSystem.Commands;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.Sessions.PlayerSessionManager;
-import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import FormAPI.Forms.Elements.CustomForm;
 import cn.nukkit.Player;
@@ -37,9 +35,8 @@ public class KickCommand extends Command {
 				player.sendMessage("§l§6• §r§fИгрок §6" + args[0] + " §fне в сети§7!");
 				return true;
 			}
-			PlayerSession playerSession = PlayerSessionManager.getPlayerSession(target);
 			CustomForm customForm = new CustomForm("§fВыгнать с сервера");
-			customForm.addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n");
+			customForm.addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(PermissionsAPI.getGroup(target.getName())) + "\n");
 			customForm.addInput("§l§6• §r§fПричина кика с сервера§7:");
 			customForm.send(player, (targetPlayer, targetForm, data)-> {
 				if (data == null) return;
@@ -47,8 +44,7 @@ public class KickCommand extends Command {
 					player.sendMessage(AnarchyMain.PREFIX + "§fПричина кика не может быть пустой§7!");
 				}
 				player.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + target.getName() + " §fбыл кикнут с сервера§7!\n§l§6• §r§fПричина§7: §6" + (String)data.get(1));
-				//target.close("", (String)data.get(1));
-				target.close("", "1\n2\n3\n3\n4\n5\n6");
+				target.close("", (String)data.get(1));
 			});
 		}
 		return false;

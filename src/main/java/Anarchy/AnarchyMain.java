@@ -9,8 +9,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
 
-import Anarchy.Manager.Functions.FunctionsAPI;
-import Anarchy.Manager.Sessions.AllSessionsManager;
+import Anarchy.Functions.FunctionsAPI;
 import Anarchy.Module.Auction.AuctionAPI;
 import Anarchy.Module.Auction.AuctionEventsHandler;
 import Anarchy.Module.Auction.Commands.AuctionCommand;
@@ -93,7 +92,7 @@ public class AnarchyMain extends PluginBase {
 	@Override()
 	public void onEnable() {
 		PluginManager pluginManager = this.getServer().getPluginManager();
-		for (String pluginName : new String[] {"ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
+		for (String pluginName : new String[] {"DbLib", "ScoreboardPlugin", "MobPlugin", "FormAPI"}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
 				this.getLogger().alert("§l§fНе найден §3плагин §7- §6" + pluginName);
 				pluginManager.disablePlugin(this);
@@ -128,7 +127,6 @@ public class AnarchyMain extends PluginBase {
 	}
 
 	private void unregisterAll() {
-		AllSessionsManager.saveAllSessions();
 		AuctionAPI.saveAuction();
 	}
 

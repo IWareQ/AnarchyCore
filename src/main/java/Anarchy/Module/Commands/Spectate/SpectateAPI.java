@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.Functions.FunctionsAPI;
+import Anarchy.Functions.FunctionsAPI;
 import Anarchy.Module.Commands.Spectate.Utils.SpectatePlayer;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;

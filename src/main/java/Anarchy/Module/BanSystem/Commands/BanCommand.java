@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.Sessions.PlayerSessionManager;
-import Anarchy.Manager.Sessions.Session.PlayerSession;
 import Anarchy.Module.BanSystem.BanSystemAPI;
 import Anarchy.Module.Permissions.PermissionsAPI;
 import FormAPI.Forms.Elements.CustomForm;
@@ -41,10 +39,9 @@ public class BanCommand extends Command {
 				player.sendMessage("§l§6• §r§fИгрок §6" + args[0] + " §fне в сети§7!");
 				return true;
 			}
-			PlayerSession playerSession = PlayerSessionManager.getPlayerSession(target);
 			List<String> timeBan = Arrays.asList("§62 §fДня", "§65 §fДней", "§610 §fДней", "§630 §fДней", "§6Навсегда");
 			CustomForm customForm = new CustomForm("§l§fБлокировка аккаунта");
-			customForm.addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(playerSession.getInteger("Permission")) + "\n");
+			customForm.addLabel("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(PermissionsAPI.getGroup(target.getName())) + "\n");
 			customForm.addInput("§l§6• §r§fПричина блокировки аккаунта§7:");
 			customForm.addDropDown("§l§6• §r§fВремя блокировки аккаунта§7:", timeBan);
 			customForm.send(player,(targetPlayer, targetForm, data)-> {

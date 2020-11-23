@@ -56,92 +56,92 @@ public class DonateShopHandler extends Command implements Listener {
 					PlayerInventory playerInventory = player.getInventory();
 					switch (sourceItem.getId()) {
 					case Item.TOTEM: {
-						if (EconomyAPI.myMoney(player) >= 500) {
+						if (EconomyAPI.myMoney(player.getName()) >= 500) {
 							if (playerInventory.canAddItem(sourceItem)) {
 								playerInventory.addItem(Item.get(Item.TOTEM, 0, 1));
 								player.sendMessage(PREFIX + "§6Тотем §fбыл успешно куплен§7!");
 								EconomyAPI.reduceMoney(player, 500.0);
 							}
 						} else {
-							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player));
+							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player.getName()));
 						}
 					}
 					break;
 
 					case Item.ENDER_PEARL: {
-						if (EconomyAPI.myMoney(player) >= 50) {
+						if (EconomyAPI.myMoney(player.getName()) >= 50) {
 							if (playerInventory.canAddItem(sourceItem)) {
 								playerInventory.addItem(Item.get(Item.ENDER_PEARL, 0, 1));
 								player.sendMessage(PREFIX + "§6Жемчуг края §fбыл успешно куплен§7!");
 								EconomyAPI.reduceMoney(player, 50.0);
 							}
 						} else {
-							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player));
+							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player.getName()));
 						}
 					}
 					break;
 
 					case Item.CHORUS_FRUIT: {
-						if (EconomyAPI.myMoney(player) >= 25) {
+						if (EconomyAPI.myMoney(player.getName()) >= 25) {
 							if (playerInventory.canAddItem(sourceItem)) {
 								playerInventory.addItem(Item.get(Item.CHORUS_FRUIT, 0, 1));
 								player.sendMessage(PREFIX + "§6Плод коруса §fбыл успешно куплен§7!");
 								EconomyAPI.reduceMoney(player, 25.0);
 							}
 						} else {
-							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player));
+							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player.getName()));
 						}
 					}
 					break;
 
 					case Item.GOLDEN_APPLE: {
-						if (EconomyAPI.myMoney(player) >= 100) {
+						if (EconomyAPI.myMoney(player.getName()) >= 100) {
 							if (playerInventory.canAddItem(sourceItem)) {
 								playerInventory.addItem(Item.get(Item.GOLDEN_APPLE, 0, 1));
 								player.sendMessage(PREFIX + "§6Золотое яблоко §fбыл успешно куплен§7!");
 								EconomyAPI.reduceMoney(player, 100.0);
 							}
 						} else {
-							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player));
+							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player.getName()));
 						}
 					}
 					break;
 
 					case Item.ELYTRA: {
-						if (EconomyAPI.myMoney(player) >= 2000) {
+						if (EconomyAPI.myMoney(player.getName()) >= 2000) {
 							if (playerInventory.canAddItem(sourceItem)) {
 								playerInventory.addItem(Item.get(Item.ELYTRA, 0, 1));
 								player.sendMessage(PREFIX + "§6Элитры §fбыл успешно куплен§7!");
 								EconomyAPI.reduceMoney(player, 2000.0);
 							}
 						} else {
-							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player));
+							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player.getName()));
 						}
 					}
 					break;
 
 					case Item.DRAGON_BREATH: {
-						if (EconomyAPI.myMoney(player) >= 750) {
+						if (EconomyAPI.myMoney(player.getName()) >= 750) {
 							if (playerInventory.canAddItem(sourceItem)) {
 								playerInventory.addItem(Item.get(Item.DRAGON_BREATH, 0, 1));
 								player.sendMessage(PREFIX + "§6Драконье дыхание §fбыл успешно куплен§7!");
 								EconomyAPI.reduceMoney(player, 750.0);
 							}
 						} else {
-							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player));
+							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player.getName()));
 						}
 					}
 					break;
 
 					case Item.SHULKER_BOX: {
-						if (EconomyAPI.myMoney(player) >= 1000) {
+						if (EconomyAPI.myMoney(player.getName()) >= 1000) {
 							if (playerInventory.canAddItem(sourceItem)) {
 								playerInventory.addItem(Item.get(Item.SHULKER_BOX, 0, 1));
 								player.sendMessage(PREFIX + "§6Белый шалкер бокс §fбыл успешно куплен§7!");
 								EconomyAPI.reduceMoney(player, 1000.0);
 							}
 						} else {
-							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player));
+							player.sendMessage(PREFIX + "§fНедостаточно монет для совершения покупки§7!\n§fБаланс§7: §6" + EconomyAPI.myMoney(player.getName()));
 						}
 					}
 					break;

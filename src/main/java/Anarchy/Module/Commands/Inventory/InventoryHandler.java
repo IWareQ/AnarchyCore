@@ -49,7 +49,7 @@ public class InventoryHandler extends Command implements Listener {
 	public static void checkInventory(String checked, Player player) {
 		Player target = Server.getInstance().getPlayer(checked);
 		SimpleForm simpleForm = new SimpleForm("§l§6" + checked + " §7› §fВыберите Инвентарь");
-		simpleForm.setContent("§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target)) + "");
+		simpleForm.setContent("§l§6• §r§fЗдоровье§7: §6" + String.format("%.0f", target.getHealth()) + "§7/§6" + target.getMaxHealth() + "\n§l§6• §r§fУровень§7: §6" + target.getExperienceLevel() + " §fур§7.\n§l§6• §r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(target.getName())) + "");
 		simpleForm.addButton("§r§fИнвентарь", ImageType.PATH, "textures/ui/inventory_icon");
 		simpleForm.addButton("§r§fЭндер Сундук", ImageType.PATH, "textures/ui/icon_blackfriday");
 		simpleForm.send(player, (targetPlayer, form, data)-> {

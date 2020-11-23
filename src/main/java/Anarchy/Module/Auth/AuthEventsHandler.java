@@ -8,8 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Manager.Functions.FunctionsAPI;
-import Anarchy.Manager.Sessions.PlayerSessionManager;
+import Anarchy.Functions.FunctionsAPI;
 import Anarchy.Module.BanSystem.BanSystemAPI;
 import Anarchy.Module.BanSystem.Utils.BanUtils;
 import Anarchy.Module.Permissions.PermissionsAPI;
@@ -36,6 +35,7 @@ public class AuthEventsHandler implements Listener {
 	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
 	File dataFileKills = new File(AnarchyMain.folder + "/Kills.yml");
 	Config configKills = new Config(dataFileKills, Config.YAML);
+	private Long startPlayerTime;
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onDataPacketReceive(DataPacketReceiveEvent event) {
@@ -76,13 +76,15 @@ public class AuthEventsHandler implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
+		String playerName = player.getName();
+		String upperCase = playerName.toUpperCase();
 		String ip = player.getAddress();
 		String date = StringUtils.getDate();
-		Integer accountID = SQLiteUtils.selectInteger("SELECT `Account_ID` FROM `Users` WHERE UPPER(`Username`) = '" + player.getName().toUpperCase() + "';");
-		if (accountID == null) {
-			SQLiteUtils.query("INSERT INTO `Users` (`Username`) VALUES ('" + player.getName() + "');");
-			SQLiteUtils.query("INSERT INTO `Auth` (`Username`, `IP_Reg`, `Date_Reg`) VALUES ('" + player.getName() + "', '" + ip + "', '" + date + "');");
-			Server.getInstance().getLogger().info("§l§7(§6Система§7) §fИгрок §6" + player.getName() + " §fне зарегистрирован§7! §fРегистрируем§7!");
+		Integer accountID = SQLiteUtils.selectInteger("Users.db", "SELECT Account_ID FROM USERS WHERE UPPER(Username) = \'" + upperCase + "\';");
+		if (accountID == -1) {
+			SQLiteUtils.query("Users.db", "INSERT INTO USERS (Username) VALUES (\'" + playerName + "\');");
+			SQLiteUtils.query("Auth.db", "INSERT INTO AUTH (Username, IP_Reg, Date_Reg) VALUES (\'" + playerName + "\', \'" + ip + "\', \'" + date + "\');");
+			Server.getInstance().getLogger().info("§l§7(§6Система§7) §fИгрок §6" + playerName + " §fне зарегистрирован§7! §fРегистрируем§7!");
 		}
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.5, 50, 0.5), "§l§6Заходи в портал§7!", "§l§fПросто заходи и начинай выживать"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-4.5, 51, 12.5), "§l§6Маленький приват", "§l§f2 §7× §f2"), player);
@@ -111,23 +113,23 @@ public class AuthEventsHandler implements Listener {
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.5, 52.5, 6.5), "§l§6Самые опасные Игроки сервера"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.5, 52.5, -5.5), "§l§6Press F to pay respects"), player);
 		player.sendMessage("§l§6• §r§fДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§6• §r§fМы в §9ВК §7- §fvk§7.§fcom§7/§6death§fanarchy §l§6| §r§fНаш сайт §7- §6death§7-§6mc§7.§6online");
-		PlayerSessionManager.startPlayerSession(player);
+		this.startPlayerTime = System.currentTimeMillis();
 		PermissionsAPI.updateTag(player);
 		PermissionsAPI.updatePermissions(player);
 		player.setCheckMovement(false);
-		SQLiteUtils.query("UPDATE `Auth` SET `IP_Last` = '" + ip + "', `Date_Last` = '" + date + "' WHERE UPPER(`Username`) = '" + player.getName().toUpperCase() + "';");
+		SQLiteUtils.query("Auth.db", "UPDATE AUTH SET IP_Last = \'" + ip + "\', Date_Last = \'" + date + "\' WHERE UPPER(Username) = \'" + upperCase + "\';");
 		event.setJoinMessage("");
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		if (PlayerSessionManager.hasPlayerSession(player)) {
-			PlayerSessionManager.stopPlayerSession(player);
-		}
-		if (PlayerSessionManager.SCOREBOARD.contains(player.getName())) {
-			PlayerSessionManager.SCOREBOARDS.get(player.getName()).hideFor(player);
-			PlayerSessionManager.SCOREBOARD.remove(player.getName());
+		long test = System.currentTimeMillis() / 1000L - startPlayerTime / 1000L;
+		Integer gameTime = SQLiteUtils.selectInteger("Users.db", "SELECT `Gametime` FROM USERS WHERE UPPER(`Username`) = '" + player.getName().toUpperCase() + "'");
+		SQLiteUtils.query("Users.db", "UPDATE `USERS` SET `Gametime` = '" + (gameTime + test) + "' WHERE UPPER(`Username`) = '" + player.getName().toUpperCase() + "';");
+		if (HotbarTask.SCOREBOARD.contains(player.getName())) {
+			HotbarTask.SCOREBOARDS.get(player.getName()).hideFor(player);
+			HotbarTask.SCOREBOARD.remove(player.getName());
 		}
 		event.setQuitMessage("");
 	}

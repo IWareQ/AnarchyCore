@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>Anarchy</groupId>
   <artifactId>Anarchy</artifactId>
-  <version>5.9</version>
+  <version>6.0</version>
   <build>
     <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
     <defaultGoal>install</defaultGoal>
@@ -97,7 +97,7 @@
     <dependency>
       <groupId>DbLib</groupId>
       <artifactId>DbLib</artifactId>
-      <version>3..0</version>
+      <version>3.0</version>
       <scope>system</scope>
       <systemPath>${basedir}/libs/DbLib-3.0.jar</systemPath>
     </dependency>

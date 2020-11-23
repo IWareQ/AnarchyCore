@@ -1,4 +1,4 @@
-package Anarchy.Manager.Functions;
+package Anarchy.Functions;
 
 import Anarchy.Utils.RandomUtils;
 import cn.nukkit.Server;

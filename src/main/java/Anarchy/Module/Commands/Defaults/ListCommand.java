@@ -1,6 +1,5 @@
 package Anarchy.Module.Commands.Defaults;
 
-import Anarchy.Manager.Sessions.PlayerSessionManager;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -17,7 +16,7 @@ public class ListCommand extends Command {
 		int onlineCount = 0;
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Player players : sender.getServer().getOnlinePlayers().values()) {
-			if (players.isOnline() && PlayerSessionManager.hasPlayerSession(players)) {
+			if (players.isOnline()) {
 				stringBuilder.append("§7, §6").append(players.getDisplayName());
 			}
 			++onlineCount;

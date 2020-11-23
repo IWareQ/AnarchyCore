@@ -148,7 +148,7 @@ public class AuctionEventsHandler implements Listener {
 									player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 									return;
 								}
-								if (EconomyAPI.myMoney(player) < tradeItem.getItemPrice()) {
+								if (EconomyAPI.myMoney(player.getName()) < tradeItem.getItemPrice()) {
 									player.sendMessage(AuctionAPI.PREFIX + "§fНедостаточно монет для совершения покупки§7!");
 									player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 									return;

@@ -1,6 +1,6 @@
 package Anarchy.Module.CombatLogger;
 
-import Anarchy.Manager.Functions.FunctionsAPI;
+import Anarchy.Functions.FunctionsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;

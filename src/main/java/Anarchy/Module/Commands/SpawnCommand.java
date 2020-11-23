@@ -1,6 +1,6 @@
 package Anarchy.Module.Commands;
 
-import Anarchy.Manager.Functions.FunctionsAPI;
+import Anarchy.Functions.FunctionsAPI;
 import Anarchy.Module.Commands.Teleport.TpaCommand;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;

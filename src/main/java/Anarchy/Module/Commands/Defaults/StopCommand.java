@@ -1,6 +1,5 @@
 package Anarchy.Module.Commands.Defaults;
 
-import Anarchy.Manager.Sessions.AllSessionsManager;
 import Anarchy.Task.RestartTask;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -20,7 +19,6 @@ public class StopCommand extends Command {
 			return false;
 		}
 		Server.getInstance().getScheduler().scheduleRepeatingTask(new RestartTask(), 20);
-		AllSessionsManager.saveAllSessions();
 		return false;
 	}
 }

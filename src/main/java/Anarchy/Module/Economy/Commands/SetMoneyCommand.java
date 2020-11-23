@@ -35,7 +35,7 @@ public class SetMoneyCommand extends Command {
 		}
 		Player target = Server.getInstance().getPlayerExact(nickname);
 		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + nickname + " §fтеперь имеет §6" + String.format("%.1f", Double.parseDouble(args[0])) + "");
-		EconomyAPI.setMoney(target, Double.parseDouble(args[0]));
+		EconomyAPI.setMoney(target.getName(), Double.parseDouble(args[0]));
 		return false;
 	}
 }
