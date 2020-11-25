@@ -20,6 +20,7 @@ import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.utils.Config;
 
 public class AuctionEventsHandler implements Listener {
 
@@ -100,6 +101,7 @@ public class AuctionEventsHandler implements Listener {
 
 					case "§r§6Хранилище": {
 						AuctionAPI.showAuction(player, false);
+						FakeInventoryAPI.closeDoubleChestInventory(player, auctionChest);
 						StorageAuction.showStorageAuction(player, true);
 					}
 					break;
@@ -179,13 +181,14 @@ public class AuctionEventsHandler implements Listener {
 
 					default: {
 						CompoundTag nbt = sourceItem.getNamedTag();
+						Config config = StorageAuction.getStorageAuctionConfig(player);
 						if (nbt != null && nbt.getString("UUID") != null) {
 							PlayerInventory playerInventory = player.getInventory();
 							if (playerInventory.canAddItem(sourceItem)) {
 								storageChest.removeItem(sourceItem);
-								StorageAuction.getStorageConfig(player).remove(nbt.getString("UUID"));
-								StorageAuction.getStorageConfig(player).save();
-								StorageAuction.getStorageConfig(player).reload();
+								config.remove(nbt.getString("UUID"));
+								config.save();
+								config.reload();
 								nbt.remove("UUID");
 								playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(nbt).setLore());
 								player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);

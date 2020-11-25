@@ -14,6 +14,7 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
+import cn.nukkit.utils.Config;
 
 public class AuctionCommand extends Command {
 
@@ -35,13 +36,14 @@ public class AuctionCommand extends Command {
 					return false;
 				}
 				int count = 0;
+				Config config = StorageAuction.getStorageAuctionConfig(player);
 				for (Map.Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 					TradeItem tradeItem = entry.getValue();
 					if (tradeItem.getSellerName().equals(player.getName())) {
 						count++;
 					}
 				}
-				if (StorageAuction.getStorageConfig(player).getAll().size() + count > AuctionAPI.AUCTION_MAX_SELLS) {
+				if (config.getAll().size() + count > AuctionAPI.AUCTION_MAX_SELLS) {
 					player.sendMessage(AuctionAPI.PREFIX + "§fВы уже разместили или храните максимальное колличество лотов §7(§6" + AuctionAPI.AUCTION_MAX_SELLS + "§7)");
 					return false;
 				}
@@ -62,9 +64,9 @@ public class AuctionCommand extends Command {
 					player.sendMessage(AuctionAPI.PREFIX + "§fМаксимальная цена за предмет §7- §6" + AuctionAPI.AUCTION_MAX_PRICE + "");
 					return false;
 				}
-				String UUID = java.util.UUID.randomUUID().toString();
 				player.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §6успешно §fвыставлен за §6" + String.format("%.1f", itemPrice) + "§7, §fв колличестве §6" + sellItem.count + " §fшт§7.");
 				Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fвыставил предмет на продажу§7!");
+				String UUID = java.util.UUID.randomUUID().toString();
 				AuctionAPI.AUCTION.put(UUID, new TradeItem(player.getName(), itemPrice, AuctionAPI.getTradeTime(), sellItem, UUID));
 				player.getInventory().setItemInHand(Item.get(Item.AIR));
 				AuctionAPI.AUCTION_COOLDOWN.put(player, nowTime + AuctionAPI.AUCTION_ADD_COOLDOWN);

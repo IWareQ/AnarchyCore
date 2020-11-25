@@ -37,14 +37,11 @@ public class AuctionAPI extends PluginBase {
 			Config config = new Config(auctionData, Config.YAML);
 			for (Map.Entry<String, Object> entry : config.getAll().entrySet()) {
 				ArrayList<Object> itemData = (ArrayList<Object>)entry.getValue();
-				CompoundTag compoundTag = null;
-				if (compoundTag == null) {
-					compoundTag = new CompoundTag();
-				}
+				CompoundTag compoundTag = new CompoundTag();
 				compoundTag.putString("UUID", entry.getKey());
 				Item item = Item.get((int)itemData.get(3), (int)itemData.get(4), (int)itemData.get(5));
 				item.setNamedTag(compoundTag);
-				AUCTION.put(entry.getKey(), new TradeItem(itemData.get(0).toString(), Double.parseDouble(itemData.get(1).toString()), Long.parseLong(itemData.get(2).toString()), item, entry.getKey()));
+				AUCTION.put(entry.getKey(), new TradeItem(itemData.get(0).toString(), Double.parseDouble(itemData.get(1).toString()), Long.valueOf(itemData.get(2).toString()), item, entry.getKey()));
 			}
 		}
 	}
@@ -61,6 +58,7 @@ public class AuctionAPI extends PluginBase {
 			config.set(entry.getKey(), new Object[] {tradeItem.getSellerName(), tradeItem.getItemPrice(), tradeItem.getTime(), item.getId(), item.getDamage(), item.getCount()});
 		}
 		config.save();
+		config.reload();
 	}
 
 	public static Long getTradeTime() {
