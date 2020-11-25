@@ -1,10 +1,9 @@
 package Anarchy.Module.Auction.Commands;
 
-import java.io.File;
 import java.util.Map;
 
-import Anarchy.AnarchyMain;
 import Anarchy.Module.Auction.AuctionAPI;
+import Anarchy.Module.Auction.StorageAuction;
 import Anarchy.Module.Auction.Utils.TradeItem;
 import Anarchy.Utils.StringUtils;
 import cn.nukkit.Player;
@@ -15,7 +14,6 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
-import cn.nukkit.utils.Config;
 
 public class AuctionCommand extends Command {
 
@@ -37,15 +35,13 @@ public class AuctionCommand extends Command {
 					return false;
 				}
 				int count = 0;
-				File dataFile = new File(AnarchyMain.folder + "/Auction/PlayerItems/" + player.getName() + ".yml");
-				Config config = new Config(dataFile, Config.YAML);
 				for (Map.Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 					TradeItem tradeItem = entry.getValue();
 					if (tradeItem.getSellerName().equals(player.getName())) {
 						count++;
 					}
 				}
-				if (config.getAll().size() + count > AuctionAPI.AUCTION_MAX_SELLS) {
+				if (StorageAuction.getStorageConfig(player).getAll().size() + count > AuctionAPI.AUCTION_MAX_SELLS) {
 					player.sendMessage(AuctionAPI.PREFIX + "§fВы уже разместили или храните максимальное колличество лотов §7(§6" + AuctionAPI.AUCTION_MAX_SELLS + "§7)");
 					return false;
 				}

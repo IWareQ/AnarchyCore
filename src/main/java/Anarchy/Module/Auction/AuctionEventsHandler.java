@@ -1,16 +1,11 @@
 package Anarchy.Module.Auction;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteOrder;
-import java.util.ArrayList;
 import java.util.Map;
 
-import Anarchy.AnarchyMain;
 import Anarchy.Module.Auction.Utils.TradeItem;
 import Anarchy.Module.Auction.Utils.Inventory.AuctionChest;
 import Anarchy.Module.Auction.Utils.Inventory.SellChest;
-import Anarchy.Module.Auction.Utils.Inventory.TakeChest;
+import Anarchy.Module.Auction.Utils.Inventory.StorageAuctionDoubleChest;
 import Anarchy.Module.Economy.EconomyAPI;
 import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
@@ -24,9 +19,7 @@ import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
-import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.utils.Config;
 
 public class AuctionEventsHandler implements Listener {
 
@@ -106,32 +99,8 @@ public class AuctionEventsHandler implements Listener {
 					break;
 
 					case "§r§6Хранилище": {
-						File dataFile = new File(AnarchyMain.folder + "/Auction/PlayerItems/" + player.getName() + ".yml");
-						Config config = new Config(dataFile, Config.YAML);
-						if (config.getAll().isEmpty()) {
-							dataFile.delete();
-						}
-						TakeChest takeChest = new TakeChest("§r§fХранилище Аукциона", dataFile);
-						for (Map.Entry<String, Object> entry : config.getAll().entrySet()) {
-							ArrayList<Object> itemData = (ArrayList<Object>)entry.getValue();
-							Item item = Item.get((int)itemData.get(0), (int)itemData.get(1), (int)itemData.get(2));
-							CompoundTag compoundTag = null;
-							if (itemData.size() > 3) {
-								try {
-									compoundTag = NBTIO.read((byte[])itemData.get(3), ByteOrder.LITTLE_ENDIAN);
-								} catch (IOException e) {
-									Server.getInstance().getLogger().alert("AuctionEventsHandler: " + e);
-									AnarchyMain.sendMessageToChat("AuctionEventsHandler.java\nСмотрите Server.log", 2000000004);
-								}
-							}
-							if (compoundTag == null) {
-								compoundTag = new CompoundTag();
-							}
-							compoundTag.putString("UUID", entry.getKey());
-							item.setNamedTag(compoundTag);
-							takeChest.addItem(item.setLore("\n§r§l§6• §r§fНажмите§7, §fчтобы забрать§7!"));
-						}
-						FakeInventoryAPI.openDoubleChestInventory(player, takeChest);
+						AuctionAPI.showAuction(player, false);
+						StorageAuction.showStorageAuction(player, true);
 					}
 					break;
 
@@ -173,6 +142,7 @@ public class AuctionEventsHandler implements Listener {
 								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже продан или его сняли с продажи§7!");
 							}
 						}
+
 					}
 				} else if (slotChange.getInventory() instanceof SellChest) {
 					event.setCancelled();
@@ -196,23 +166,35 @@ public class AuctionEventsHandler implements Listener {
 							player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже продан§7!");
 						}
 					}
-				} else if (slotChange.getInventory() instanceof TakeChest) {
+				} else if (slotChange.getInventory() instanceof StorageAuctionDoubleChest) {
 					event.setCancelled();
 					Item sourceItem = action.getSourceItem();
-					TakeChest takeChest = (TakeChest)slotChange.getInventory();
-					CompoundTag compoundTag = sourceItem.getNamedTag();
-					if (compoundTag != null && compoundTag.getString("UUID") != null) {
-						PlayerInventory playerInventory = player.getInventory();
-						if (playerInventory.canAddItem(sourceItem)) {
-							takeChest.removeItem(sourceItem);
-							compoundTag.remove("UUID");
-							playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(compoundTag).setLore());
-							player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
-							player.sendMessage(AuctionAPI.PREFIX + "§fПредмет с Хранилища успешно взят§7!");
+					StorageAuctionDoubleChest storageChest = (StorageAuctionDoubleChest)slotChange.getInventory();
+					switch (sourceItem.getName()) {
+					case "§r§6Обновление Хранилища": {
+						StorageAuction.showStorageAuction(player, false);
+						StorageAuction.showStorageAuction(player, true);
+					}
+					break;
+
+					default: {
+						CompoundTag nbt = sourceItem.getNamedTag();
+						if (nbt != null && nbt.getString("UUID") != null) {
+							PlayerInventory playerInventory = player.getInventory();
+							if (playerInventory.canAddItem(sourceItem)) {
+								storageChest.removeItem(sourceItem);
+								StorageAuction.getStorageConfig(player).remove(nbt.getString("UUID"));
+								StorageAuction.getStorageConfig(player).save();
+								StorageAuction.getStorageConfig(player).reload();
+								nbt.remove("UUID");
+								playerInventory.addItem(sourceItem.clearCustomName().clearCustomBlockData().setNamedTag(nbt).setLore());
+								player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
+								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет с Хранилища успешно взят§7!");
+							}
 						}
-					} else {
-						FakeInventoryAPI.closeInventory(player, takeChest);
-						player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже был получен§7!");
+					}
+					break;
+
 					}
 				}
 			}

@@ -10,7 +10,6 @@ import java.util.Map;
 import Anarchy.AnarchyMain;
 import Anarchy.Module.Auction.Utils.TradeItem;
 import Anarchy.Module.Auction.Utils.Inventory.AuctionChest;
-import Anarchy.Utils.SQLiteUtils;
 import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;

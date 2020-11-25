@@ -8,11 +8,11 @@ public class TradeItem {
 	private Long sellTime;
 	private Item sellItem;
 	private String UUID;
-
+	
 	public TradeItem(String sellerName, Double itemPrice, Long sellTime, Item sellItem, String UUID) {
 		this.sellerName = sellerName;
-		this.itemPrice =	itemPrice;
-		this.sellTime =	sellTime;
+		this.itemPrice = itemPrice;
+		this.sellTime = sellTime;
 		this.sellItem = sellItem;
 		this.UUID = UUID;
 	}
@@ -32,7 +32,7 @@ public class TradeItem {
 	public boolean isValid() {
 		return sellTime > System.currentTimeMillis() / 1000L;
 	}
-
+	
 	public long getTime() {
 		return sellTime - System.currentTimeMillis() / 1000L;
 	}
