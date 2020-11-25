@@ -26,7 +26,7 @@ public class AuctionAPI extends PluginBase {
 	public static Map<Player, Integer> AUCTION_PAGE = new HashMap<>();
 	public static double AUCTION_MAX_PRICE = 10000.0;
 	public static int AUCTION_CHEST_SIZE = 36;
-	public static int AUCTION_MAX_SELLS = 5;
+	public static int AUCTION_MAX_SELLS = 10;
 	public static int AUCTION_ADD_COOLDOWN = 60;
 	public static String PREFIX = "§l§7(§3Аукцион§7) §r";
 
@@ -41,7 +41,7 @@ public class AuctionAPI extends PluginBase {
 				compoundTag.putString("UUID", entry.getKey());
 				Item item = Item.get((int)itemData.get(3), (int)itemData.get(4), (int)itemData.get(5));
 				item.setNamedTag(compoundTag);
-				AUCTION.put(entry.getKey(), new TradeItem(itemData.get(0).toString(), Double.parseDouble(itemData.get(1).toString()), Long.valueOf(itemData.get(2).toString()), item, entry.getKey()));
+				AUCTION.put(entry.getKey(), new TradeItem(item, itemData.get(0).toString(), (double)itemData.get(1), Long.valueOf(itemData.get(2).toString()), entry.getKey()));
 			}
 		}
 	}
@@ -54,8 +54,8 @@ public class AuctionAPI extends PluginBase {
 		Config config = new Config(auctionData, Config.YAML);
 		for (Map.Entry<String, TradeItem> entry : AUCTION.entrySet()) {
 			TradeItem tradeItem = entry.getValue();
-			Item item = tradeItem.getSellItem();
-			config.set(entry.getKey(), new Object[] {tradeItem.getSellerName(), tradeItem.getItemPrice(), tradeItem.getTime(), item.getId(), item.getDamage(), item.getCount()});
+			Item item = tradeItem.sellItem;
+			config.set(entry.getKey(), new Object[] {tradeItem.sellerName, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount()});
 		}
 		config.save();
 		config.reload();
@@ -74,14 +74,14 @@ public class AuctionAPI extends PluginBase {
 		while (iterator.hasNext()) {
 			TradeItem tradeItem = (TradeItem)((Map.Entry)iterator.next()).getValue();
 			if (!tradeItem.isValid()) {
-				Player player = Server.getInstance().getPlayerExact(tradeItem.getSellerName());
+				Player player = Server.getInstance().getPlayerExact(tradeItem.sellerName);
 				if (player != null) {
 					player.sendMessage(PREFIX + "§fВаш товар никто не купил§7, §fпоэтому мы вернули его обртано\n§l§6| §r§fСмотрите вкладку §7(§6Хранилище§7) §fв §7/§6ah");
 				}
-				File dataFile = new File(AnarchyMain.folder + "/Auction/PlayerItems/" + tradeItem.getSellerName() + ".yml");
-				Config config = new Config(dataFile, Config.YAML);
-				config.set(tradeItem.getUUID(), new Object[] {tradeItem.getSellItem().getId(), tradeItem.getSellItem().getDamage(), tradeItem.getSellItem().getCount()});
+				Config config = StorageAuction.getStorageAuctionConfig(tradeItem.sellerName);
+				config.set(tradeItem.UUID, new Object[] {tradeItem.sellItem.getId(), tradeItem.sellItem.getDamage(), tradeItem.sellItem.getCount()});
 				config.save();
+				config.reload();
 				iterator.remove();
 			}
 		}
@@ -112,12 +112,12 @@ public class AuctionAPI extends PluginBase {
 		Object[] tradeItems = AUCTION.values().toArray();
 		for (int i = start; i < stop; i++) {
 			TradeItem tradeItem = (TradeItem)tradeItems[i];
-			Item item = tradeItem.getSellItem().clone();
+			Item item = tradeItem.sellItem.clone();
 			CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
-			compoundTag.putString("UUID", tradeItem.getUUID());
+			compoundTag.putString("UUID", tradeItem.UUID);
 			item.setNamedTag(compoundTag);
-			item.setLore("\n§r§fПродавец§7: §6" + tradeItem.getSellerName() + "\n§r§fСтоимость§7: §6" + tradeItem.getItemPrice() + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6" + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7.\n\n§r§l§6• §r§fНажмите§7, §fчтобы купить предмет§7!");
-			auctionChest.setItem(i, item);
+			item.setLore("\n§r§fПродавец§7: §6" + tradeItem.sellerName + "\n§r§fСтоимость§7: §6" + tradeItem.itemPrice + "\n§r§fДо окончания§7: §6" + (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6" + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" + (tradeItem.getTime() % 60) + " §fсек§7.\n\n§r§l§6• §r§fНажмите§7, §fчтобы купить предмет§7!");
+			auctionChest.addItem(item);
 		}
 		if (playerPage >= 0) {
 			auctionChest.setItem(46, Item.get(Item.CHEST).setCustomName("§r§6Ваши Предметы на Продаже").setLore("\n§r§l§6• §r§fНажмите§7, §fчтобы открыть§7!"));
@@ -131,7 +131,7 @@ public class AuctionAPI extends PluginBase {
 			}
 		}
 		if (firstTime) {
-			FakeInventoryAPI.openInventory(player, auctionChest);
+			FakeInventoryAPI.openDoubleChestInventory(player, auctionChest);
 		}
 		AUCTION_CHEST.put(player, auctionChest);
 	}

@@ -28,18 +28,23 @@ public class AuctionCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
-			if (args.length >= 1) {
-				Long cooldownTime = AuctionAPI.AUCTION_COOLDOWN.get(player);
-				Long nowTime = System.currentTimeMillis() / 1000L;
-				if (cooldownTime != null && cooldownTime > nowTime) {
-					player.sendMessage(AuctionAPI.PREFIX + "§fСледующее использование будет доступно через §6" + (cooldownTime - nowTime) + " §fсек§7.");
-					return false;
-				}
+			if (args.length == 0) {
+				AuctionAPI.AUCTION_PAGE.put(player, 0);
+				AuctionAPI.showAuction(player, true);
+				return true;
+			}
+			switch (args[0]) {
+			case "storage": {
+				StorageAuction.showStorageAuction(player, true);
+			}
+			break;
+
+			default: {
 				int count = 0;
-				Config config = StorageAuction.getStorageAuctionConfig(player);
+				Config config = StorageAuction.getStorageAuctionConfig(player.getName());
 				for (Map.Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 					TradeItem tradeItem = entry.getValue();
-					if (tradeItem.getSellerName().equals(player.getName())) {
+					if (tradeItem.sellerName.equals(player.getName())) {
 						count++;
 					}
 				}
@@ -67,15 +72,12 @@ public class AuctionCommand extends Command {
 				player.sendMessage(AuctionAPI.PREFIX + "§fПредмет на продажу §6успешно §fвыставлен за §6" + String.format("%.1f", itemPrice) + "§7, §fв колличестве §6" + sellItem.count + " §fшт§7.");
 				Server.getInstance().broadcastMessage(AuctionAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fвыставил предмет на продажу§7!");
 				String UUID = java.util.UUID.randomUUID().toString();
-				AuctionAPI.AUCTION.put(UUID, new TradeItem(player.getName(), itemPrice, AuctionAPI.getTradeTime(), sellItem, UUID));
+				AuctionAPI.AUCTION.put(UUID, new TradeItem(sellItem, player.getName(), itemPrice, AuctionAPI.getTradeTime(), UUID));
 				player.getInventory().setItemInHand(Item.get(Item.AIR));
-				AuctionAPI.AUCTION_COOLDOWN.put(player, nowTime + AuctionAPI.AUCTION_ADD_COOLDOWN);
 				AuctionAPI.saveAuction();
-			} else {
-				AuctionAPI.AUCTION_PAGE.put(player, 0);
-				AuctionAPI.showAuction(player, true);
 			}
-			//player.sendMessage(AuctionAPI.PREFIX + "§fАукцион временно отключен на Тех§7. §fОбслуживание§7!");
+			break;
+			}
 		}
 		return false;
 	}
