@@ -12,7 +12,7 @@ public class SpectatePlayer {
 		this.spectateName = target.getName();
 	}
 	
-	public String getSpectateName() {
+	public String getName() {
 		return spectateName;
 	}
 	

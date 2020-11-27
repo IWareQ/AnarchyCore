@@ -2,12 +2,17 @@ package Anarchy.Module.Commands.Spectate;
 
 import java.util.Map;
 
+import Anarchy.Module.BanSystem.Commands.BanCommand;
+import Anarchy.Module.BanSystem.Commands.MuteCommand;
 import Anarchy.Module.Commands.Inventory.InventoryHandler;
 import Anarchy.Module.Commands.Spectate.Utils.DoubleChest;
 import Anarchy.Module.Commands.Spectate.Utils.SpectatePlayer;
+import Anarchy.Module.Permissions.PermissionsAPI;
 import Anarchy.Module.Regions.RegionsAPI;
 import FakeInventoryAPI.FakeInventoryAPI;
+import FormAPI.Forms.Elements.SimpleForm;
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityBarrel;
@@ -61,27 +66,14 @@ public class SpectateEventsHandler implements Listener {
 				case Item.CHEST: {
 					if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && player.getGamemode() == 3) {
 						SpectatePlayer spectatePlayer = SpectateAPI.SPECTATE_PLAYERS.get(player.getName());
-						InventoryHandler.checkInventory(spectatePlayer.getSpectateName(), player);
+						Player target = Server.getInstance().getPlayer(spectatePlayer.getName());
+						InventoryHandler.checkInventory(target.getName(), player);
 					}
 				}
 				break;
 
 				case Item.SHULKER_BOX: {
 					if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && player.getGamemode() == 3) {
-						BlockEntity blockEntity = block.getLevel().getBlockEntity(blockVector3);
-						if (blockEntity instanceof BlockEntityChest) {
-							BlockEntityChest blockEntityChest = (BlockEntityChest)blockEntity;
-							Map<Integer, Item> contents = blockEntityChest.getInventory().getContents();
-							DoubleChest doubleChest = new DoubleChest("Просмотр содержимого");
-							doubleChest.setContents(contents);
-							FakeInventoryAPI.openInventory(player, doubleChest);
-						}
-					}
-				}
-				break;
-
-				default: {
-					if (!SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && player.getGamemode() == 3) {
 						BlockEntity blockEntity = block.getLevel().getBlockEntity(blockVector3);
 						if (blockEntity instanceof BlockEntityChest) {
 							BlockEntityChest blockEntityChest = (BlockEntityChest)blockEntity;
@@ -96,6 +88,40 @@ public class SpectateEventsHandler implements Listener {
 							doubleChest.setContents(contents);
 							FakeInventoryAPI.openInventory(player, doubleChest);
 						}
+					}
+				}
+				break;
+
+				case Item.CLOCK: {
+					if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && player.getGamemode() == 3) {
+						SpectatePlayer spectatePlayer = SpectateAPI.SPECTATE_PLAYERS.get(player.getName());
+						Player target = Server.getInstance().getPlayer(spectatePlayer.getName());
+						String brand = player.getLoginChainData().getDeviceModel().split("\\s+")[0];
+						String cheat;
+						if (!brand.equals(brand.toUpperCase())) {
+							cheat = "да";
+						} else {
+							cheat = "нет";
+						}
+						SimpleForm simpleForm = new SimpleForm("§r§fПанель Администрирования");
+						simpleForm.setContent("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(PermissionsAPI.getGroup(target.getName())) + "\n§l§6• §r§fУстройство§7: §6" + target.getLoginChainData().getDeviceModel() + "\n§l§6• §r§fШанс стороннего ПО§7: §6" + cheat + "\n\n§l§6• §r§fВыберите нужный пункт Меню§7:");
+						simpleForm.addButton("§r§fБлокировка Аккаунта");
+						simpleForm.addButton("§r§fБлокировка Чата");
+						simpleForm.send(player, (targetPlayer, targetForm, data)-> {
+							if (data == -1) return;
+							switch (data) {
+							case 0: {
+								BanCommand.banPlayerForm(player, target);
+							}
+							break;
+
+							case 1: {
+								MuteCommand.mutePlayerForm(player, target);
+							}
+							break;
+
+							}
+						});
 					}
 				}
 				break;

@@ -35,7 +35,7 @@ public class SecondTask extends Task {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 			if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName())) {
 				SpectatePlayer spectatePlayer = SpectateAPI.SPECTATE_PLAYERS.get(player.getName());
-				Player target = Server.getInstance().getPlayer(spectatePlayer.getSpectateName());
+				Player target = Server.getInstance().getPlayer(spectatePlayer.getName());
 				if ((int)player.distance(target) >= 21) {
 					player.sendMessage(AnarchyMain.PREFIX + "§fВы не можете отлететь дальше §620 §fблоков от Наблюдаемого§7!\n§l§6• §r§fДля окончания наблюдения возьмите в руку §6Редстоун§7!");
 					player.teleport(new Vector3(target.getFloorX(), target.getFloorY(), target.getFloorZ()));

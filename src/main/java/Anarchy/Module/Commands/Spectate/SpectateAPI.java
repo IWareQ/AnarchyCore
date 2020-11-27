@@ -19,7 +19,7 @@ public class SpectateAPI {
 	public static void addSpectate(Player player, Player target) {
 		SpectatePlayer spectatePlayer = SPECTATE_PLAYERS.get(player.getName());
 		if (SPECTATE_PLAYERS.containsKey(player.getName())) {
-			player.sendMessage(AnarchyMain.PREFIX + "§fВы уже наблюдаете за Игроком §6" + spectatePlayer.getSpectateName() + "\n§l§6• §r§fДля окончания наблюдения возьмите в руку §6Редстоун§7!");
+			player.sendMessage(AnarchyMain.PREFIX + "§fВы уже наблюдаете за Игроком §6" + spectatePlayer.getName() + "\n§l§6• §r§fДля окончания наблюдения возьмите в руку §6Редстоун§7!");
 		} else if (target != null) {
 			GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
 			gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
@@ -35,6 +35,7 @@ public class SpectateAPI {
 			player.getInventory().setItem(5, Item.get(Item.SHULKER_BOX).setCustomName("§r§fПросмотр содержимого").setLore("\n§r§l§6• §r§fНажмите на сундук§7, §fчтобы посмотреть его содержимое§7!"));
 			player.getInventory().setItem(4, Item.get(Item.CHEST).setCustomName("§r§fПросмотреть Инвентарь").setLore("§r§l§6• §fВозьмите в руку чтобы просмотреть §6Инвентарь §fнаблюдаемого§7!"));
 			player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§r§fЗавершить Наблюдение"));
+			player.getInventory().setItem(6, Item.get(Item.CLOCK).setCustomName("§r§fПанель Администрирования"));
 			player.teleport(target);
 			player.sendMessage(AnarchyMain.PREFIX + "§fВы начали наблюдать за Игроком §6" + target.getName() + "\n§l§6• §r§fДля окончания наблюдения возьмите в руку §6Редстоун§7!");
 		}
@@ -54,7 +55,7 @@ public class SpectateAPI {
 			gameRulesChanged.gameRules = FunctionsAPI.COORDINATE.getGameRules();
 			gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
 			player.dataPacket(gameRulesChanged);
-			player.sendMessage(AnarchyMain.PREFIX + "§fВы закончили наблюдение за Игроком §6" + spectatePlayer.getSpectateName());
+			player.sendMessage(AnarchyMain.PREFIX + "§fВы закончили наблюдение за Игроком §6" + spectatePlayer.getName());
 			SPECTATE_PLAYERS.remove(player.getName());
 		}
 	}
