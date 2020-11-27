@@ -61,10 +61,8 @@ import nukkitcoders.mobplugin.entities.block.BlockEntitySpawner;
 import nukkitcoders.mobplugin.entities.monster.Monster;
 
 public class EventsHandler implements Listener {
-	File dataFileDeaths = new File(AnarchyMain.folder + "/Deaths.yml");
-	File dataFileKills = new File(AnarchyMain.folder + "/Kills.yml");
-	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
-	Config configKills = new Config(dataFileKills, Config.YAML);
+	Config deathsConfig = new Config(AnarchyMain.folder + "/Deaths.yml", Config.YAML);
+	Config killsConfig = new Config(AnarchyMain.folder + "/Kills.yml", Config.YAML);
 	public static Map<Player, Long> COOLDOWN = new HashMap<>();
 	public static int CHAT_RADIUS = 70;
 
@@ -428,20 +426,20 @@ public class EventsHandler implements Listener {
 	}
 
 	private void addKill(Player player, int number) {
-		this.configKills.set(player.getName(), this.getKills(player) + number);
-		this.configKills.save();
+		this.killsConfig.set(player.getName(), this.getKills(player) + number);
+		this.killsConfig.save();
 	}
 
 	private int getKills(Player player) {
-		return this.configKills.getInt(player.getName(), 0);
+		return this.killsConfig.getInt(player.getName(), 0);
 	}
 
 	private int getDeaths(Player player) {
-		return this.configDeaths.getInt(player.getName(), 0);
+		return this.deathsConfig.getInt(player.getName(), 0);
 	}
 
 	private void addDeaths(Player player, int number) {
-		this.configDeaths.set(player.getName(), this.getDeaths(player) + number);
-		this.configDeaths.save();
+		this.deathsConfig.set(player.getName(), this.getDeaths(player) + number);
+		this.deathsConfig.save();
 	}
 }

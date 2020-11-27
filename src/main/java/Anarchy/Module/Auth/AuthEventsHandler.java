@@ -31,10 +31,8 @@ import cn.nukkit.network.protocol.SetLocalPlayerAsInitializedPacket;
 import cn.nukkit.utils.Config;
 
 public class AuthEventsHandler implements Listener {
-	File dataFileDeaths = new File(AnarchyMain.folder + "/Deaths.yml");
-	Config configDeaths = new Config(dataFileDeaths, Config.YAML);
-	File dataFileKills = new File(AnarchyMain.folder + "/Kills.yml");
-	Config configKills = new Config(dataFileKills, Config.YAML);
+	Config deathsConfig = new Config(AnarchyMain.folder + "/Deaths.yml", Config.YAML);
+	Config killsConfig = new Config(AnarchyMain.folder + "/Kills.yml", Config.YAML);
 	private Long startPlayerTime;
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
@@ -92,8 +90,8 @@ public class AuthEventsHandler implements Listener {
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-9.5, 51, 13.5), "§l§6Большой приват", "§l§f8 §7× §f8"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(-11.5, 51, 11.5), "§l§6Большой приват", "§l§f10 §7× §f10"), player);
 		FunctionsAPI.SPAWN.addParticle(new FloatingTextParticle(new Position(8.5, 150, 88.5), "§l§6Как приватить§7?", "§l§fЧтобы запривать регион§7,\n§l§fпросто установи один из блоков\n§l§fкоторые стоят рядом§7. §fКаждый блок имеет\n§l§fограниченный радиус привата§7,\n§l§fкоторый создается вокруг блока§7!"), player);
-		Map<String, Integer> counterKills = calculateScore(configKills);
-		Map<String, Integer> counterDeaths = calculateScore(configDeaths);
+		Map<String, Integer> counterKills = calculateScore(killsConfig);
+		Map<String, Integer> counterDeaths = calculateScore(deathsConfig);
 		int placeKills = 1;
 		for (Map.Entry<String, Integer> entry : counterKills.entrySet()) {
 			if (placeKills <= 10) {

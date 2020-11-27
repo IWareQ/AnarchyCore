@@ -82,12 +82,13 @@ import cn.nukkit.command.Command;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
+import cn.nukkit.utils.Config;
 
 public class AnarchyMain extends PluginBase {
 	public static String PREFIX = "§l§7(§3Система§7) §r";
 	public static String accessToken = "fa4b98ffb89a364cbffd6a855f47e42ae669ba5bb76a2a6b943a5340351d9fd28c4d572767f5ba16ae0a9";
 	public static AnarchyMain plugin;
-	public static String folder = "DeathMC";
+	public static File folder;
 
 	@Override()
 	public void onEnable() {
@@ -100,8 +101,9 @@ public class AnarchyMain extends PluginBase {
 			}
 		}
 		plugin = this;
-		File dataFile = new File(folder);
-		dataFile.mkdirs();
+		folder = this.getDataFolder();
+		new File(String.valueOf(folder)).mkdirs();
+		this.registerConfigs();
 		this.registerAll();
 		this.registerEvents();
 		this.registerEntity();
@@ -115,6 +117,16 @@ public class AnarchyMain extends PluginBase {
 	public void onDisable() {
 		this.unregisterAll();
 		this.getLogger().info("§l§fПлагин §cДеактивирован§7! (§fАвтор §7- @§6extranons§7)");
+	}
+	
+	private void registerConfigs() {
+		new Config(this.getDataFolder() + "/Auction/Auction.yml", Config.YAML);
+		new Config(this.getDataFolder() + "/Deaths.yml", Config.YAML);
+		new Config(this.getDataFolder() + "/Kills.yml", Config.YAML);
+		new Config(this.getDataFolder() + "/bans.yml", Config.YAML);
+		new Config(this.getDataFolder() + "/mutes.yml", Config.YAML);
+		new File(this.getDataFolder() + "/Auction/PlayerItems/").mkdirs();
+		new File(this.getDataFolder() + "/StorageItems/").mkdirs();
 	}
 
 	private void registerAll() {

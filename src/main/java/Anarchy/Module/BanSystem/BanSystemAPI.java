@@ -1,6 +1,5 @@
 package Anarchy.Module.BanSystem;
 
-import java.io.File;
 import java.util.Map;
 
 import Anarchy.AnarchyMain;
@@ -13,8 +12,7 @@ import cn.nukkit.utils.Config;
 public class BanSystemAPI {
 
 	public static void banPlayer(String player, String reason, String banner, int seconds) {
-		File dataFile = new File(AnarchyMain.folder + "/bans.yml");
-		Config bans = new Config(dataFile, Config.YAML);
+		Config bans = new Config(AnarchyMain.folder + "/bans.yml", Config.YAML);
 		long endBan = System.currentTimeMillis() / 1000L + seconds;
 		if (seconds == -1) endBan = -1L;
 		bans.set("Ban." + player + ".Reason", reason);
@@ -29,8 +27,7 @@ public class BanSystemAPI {
 	}
 
 	public static void mutePlayer(String player, String reason, String banner, int seconds) {
-		File dataFile = new File(AnarchyMain.folder + "/mutes.yml");
-		Config mutes = new Config(dataFile, Config.YAML);
+		Config mutes = new Config(AnarchyMain.folder + "/mutes.yml", Config.YAML);
 		long endMute = System.currentTimeMillis() / 1000L + seconds;
 		if (seconds == -1) endMute = -1L;
 		mutes.set("Mute." + player + ".Reason", reason);
@@ -45,14 +42,12 @@ public class BanSystemAPI {
 	}
 
 	public static boolean playerIsBanned(String playerName) {
-		File dataFile = new File(AnarchyMain.folder + "/bans.yml");
-		Config bans = new Config(dataFile, Config.YAML);
+		Config bans = new Config(AnarchyMain.folder + "/bans.yml", Config.YAML);
 		return bans.exists("Ban." + playerName);
 	}
 
 	public static void unBanPlayer(String playerName) {
-		File dataFile = new File(AnarchyMain.folder + "/bans.yml");
-		Config bans = new Config(dataFile, Config.YAML);
+		Config bans = new Config(AnarchyMain.folder + "/bans.yml", Config.YAML);
 		Map<String, Object> map = bans.getSection("Ban").getAllMap();
 		map.remove(playerName);
 		bans.set("Ban", map);
@@ -61,8 +56,7 @@ public class BanSystemAPI {
 	}
 
 	public static void unMutePlayer(String playerName) {
-		File dataFile = new File(AnarchyMain.folder + "/mutes.yml");
-		Config mutes = new Config(dataFile, Config.YAML);
+		Config mutes = new Config(AnarchyMain.folder + "/mutes.yml", Config.YAML);
 		Map<String, Object> map = mutes.getSection("Mute").getAllMap();
 		map.remove(playerName);
 		mutes.set("Mute", map);
@@ -71,8 +65,7 @@ public class BanSystemAPI {
 	}
 
 	public static BanUtils getBan(String player) {
-		File dataFile = new File(AnarchyMain.folder + "/bans.yml");
-		Config bans = new Config(dataFile, Config.YAML);
+		Config bans = new Config(AnarchyMain.folder + "/bans.yml", Config.YAML);
 		String reason = bans.getString("Ban." + player + ".Reason");
 		String banner = bans.getString("Ban." + player + ".Banner");
 		long time = bans.getLong("Ban." + player + ".Time");
@@ -80,8 +73,7 @@ public class BanSystemAPI {
 	}
 
 	public static MuteUtils getMute(String player) {
-		File dataFile = new File(AnarchyMain.folder + "/mutes.yml");
-		Config mutes = new Config(dataFile, Config.YAML);
+		Config mutes = new Config(AnarchyMain.folder + "/mutes.yml", Config.YAML);
 		String reason = mutes.getString("Mute." + player + ".Reason");
 		String banner = mutes.getString("Mute." + player + ".Banner");
 		long time = mutes.getLong("Mute." + player + ".Time");
@@ -89,8 +81,7 @@ public class BanSystemAPI {
 	}
 
 	public static boolean playerIsMuted(String playerName) {
-		File dataFile = new File(AnarchyMain.folder + "/mutes.yml");
-		Config mutes = new Config(dataFile, Config.YAML);
+		Config mutes = new Config(AnarchyMain.folder + "/mutes.yml", Config.YAML);
 		return mutes.exists("Mute." + playerName);
 	}
 }
