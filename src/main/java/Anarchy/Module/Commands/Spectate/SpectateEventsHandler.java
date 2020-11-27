@@ -104,7 +104,7 @@ public class SpectateEventsHandler implements Listener {
 							cheat = "нет";
 						}
 						SimpleForm simpleForm = new SimpleForm("§r§fПанель Администрирования");
-						simpleForm.setContent("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(PermissionsAPI.getGroup(target.getName())) + "\n§l§6• §r§fУстройство§7: §6" + target.getLoginChainData().getDeviceModel() + "\n§l§6• §r§fШанс стороннего ПО§7: §6" + cheat + "\n\n§l§6• §r§fВыберите нужный пункт Меню§7:");
+						simpleForm.setContent("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionsAPI.GROUPS.get(PermissionsAPI.getGroup(target.getName())) + "\n§l§6• §r§fУстройство§7: §6" + target.getLoginChainData().getDeviceModel() + "\n§l§6• §r§fШанс стороннего ПО§7: §6" + cheat + "\n§l§6• §r§fЭффекты§7: §6" + target.getEffects() + "\n\n§l§6• §r§fВыберите нужный пункт Меню§7:");
 						simpleForm.addButton("§r§fБлокировка Аккаунта");
 						simpleForm.addButton("§r§fБлокировка Чата");
 						simpleForm.send(player, (targetPlayer, targetForm, data)-> {

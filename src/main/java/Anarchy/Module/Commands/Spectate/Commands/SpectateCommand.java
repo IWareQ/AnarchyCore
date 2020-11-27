@@ -34,10 +34,10 @@ public class SpectateCommand extends Command {
 				player.sendMessage(AnarchyMain.PREFIX + "§fИгрок §6" + args[0] + " §fне в сети§7!");
 				return true;
 			}
-			/*if (target.equals(player)) {
+			if (target.equals(player)) {
 				player.sendMessage(AnarchyMain.PREFIX + "§fВы пытаетесь наблюдать за собой§7!");
 				return true;
-			}*/
+			}
 			SpectateAPI.addSpectate(player, target);
 		}
 		return false;
