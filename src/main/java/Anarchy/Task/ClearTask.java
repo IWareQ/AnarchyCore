@@ -1,11 +1,11 @@
 package Anarchy.Task;
 
 import Anarchy.Functions.FunctionsAPI;
-import Anarchy.Module.Boss.EvokerBoss;
-import Anarchy.Module.Boss.RavagerBoss;
-import Anarchy.Module.Boss.SilverfishBoss;
-import Anarchy.Module.Boss.SlimeBoss;
-import Anarchy.Module.Boss.WitchBoss;
+import BossAPI.Boss.EvokerBoss;
+import BossAPI.Boss.RavagerBoss;
+import BossAPI.Boss.SilverfishBoss;
+import BossAPI.Boss.SlimeBoss;
+import BossAPI.Boss.WitchBoss;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;

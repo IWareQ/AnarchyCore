@@ -1,7 +1,7 @@
 package Anarchy.Module.Commands.DonateShop;
 
 import Anarchy.Module.Commands.DonateShop.Utils.DonateShopChest;
-import Anarchy.Module.Economy.EconomyAPI;
+import EconomyAPI.Economy.EconomyAPI;
 import FakeInventoryAPI.FakeInventoryAPI;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;

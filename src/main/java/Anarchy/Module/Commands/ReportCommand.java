@@ -34,7 +34,7 @@ public class ReportCommand extends Command {
 			}
 			String message = StringUtils.implode(args, 1);
 			player.sendMessage("§l§7(§3Репорты§7) §r§fРепорт был отправлен§7!");
-			AnarchyMain.sendMessageToChat("Новая жалоба! (" + player.getName() + ")\nНарушитель: " + target.getName() + "\nПричина: " + message, 2000000001);
+			//AnarchyMain.sendMessageToChat("Новая жалоба! (" + player.getName() + ")\nНарушитель: " + target.getName() + "\nПричина: " + message, 2000000001);
 		}
 		return false;
 	}

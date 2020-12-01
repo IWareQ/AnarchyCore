@@ -1,8 +1,8 @@
 package Anarchy.Module.Commands;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Utils.SQLiteUtils;
 import FormAPI.Forms.Elements.ModalForm;
+import SQLiteAPI.Utils.SQLiteUtils;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;

@@ -1,7 +1,7 @@
 package Anarchy.Task;
 
-import Anarchy.Module.Auction.AuctionAPI;
-import Anarchy.Module.CombatLogger.CombatLoggerAPI;
+import AuctionAPI.Auction.AuctionAPI;
+import CombatLoggerAPI.CombatLogger.CombatLoggerAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Sound;

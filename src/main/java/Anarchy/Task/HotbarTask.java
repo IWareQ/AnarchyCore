@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import Anarchy.Module.Economy.EconomyAPI;
-import Anarchy.Module.Permissions.PermissionsAPI;
-import Anarchy.Utils.SQLiteUtils;
+import EconomyAPI.Economy.EconomyAPI;
+import PermissionsAPI.Permissions.PermissionsAPI;
+import SQLiteAPI.Utils.SQLiteUtils;
 import ScoreboardPlugin.API.ScoreboardAPI;
 import ScoreboardPlugin.Network.DisplaySlot;
 import ScoreboardPlugin.Network.Scoreboard;

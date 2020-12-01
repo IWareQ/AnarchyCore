@@ -1,11 +1,11 @@
 package Anarchy.Module.Commands;
 
 import Anarchy.Functions.FunctionsAPI;
-import Anarchy.Module.Boss.EvokerBoss;
-import Anarchy.Module.Boss.RavagerBoss;
-import Anarchy.Module.Boss.SilverfishBoss;
-import Anarchy.Module.Boss.SlimeBoss;
-import Anarchy.Module.Boss.WitchBoss;
+import BossAPI.Boss.EvokerBoss;
+import BossAPI.Boss.RavagerBoss;
+import BossAPI.Boss.SilverfishBoss;
+import BossAPI.Boss.SlimeBoss;
+import BossAPI.Boss.WitchBoss;
 import FormAPI.Forms.Elements.SimpleForm;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -55,7 +55,7 @@ public class GarbageCommand extends Command {
 
 			default: {
 				SimpleForm simpleForm = new SimpleForm("§r§fОчистка Дропа");
-				simpleForm.setContent("§r§l§6• §r§fБыстрые команды§7:\n\n§7/§6gb get §7- §fколличество дропа\n§7/§6gb process §7- §fпроверка нна превышение лимита\n§7/§6gb start §7- §fпринудительная очистка\n\nТекущий лимит дропа§7: §6" + LIMIT + " §fпредметов\nОбнаружено дропа§7: §6" + getGarbageCount() + " §fшт§7.");
+				simpleForm.setContent("§r§l§6• §r§fБыстрые команды§7:\n\n§7/§6gb get §7- §fколличество дропа\n§7/§6gb process §7- §fпроверка на превышение лимита\n§7/§6gb start §7- §fпринудительная очистка\n\nТекущий лимит дропа§7: §6" + LIMIT + " §fпредметов\nОбнаружено дропа§7: §6" + getGarbageCount() + " §fшт§7.");
 				simpleForm.send(player);
 			}
 			break;

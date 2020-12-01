@@ -67,6 +67,55 @@
       <systemPath>${basedir}/libs/FakeInventoryAPI-3.0.jar</systemPath>
     </dependency>
     <dependency>
+      <groupId>CombatLoggerAPI</groupId>
+      <artifactId>CombatLoggerAPI</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/CombatLoggerAPI-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>BossAPI</groupId>
+      <artifactId>BossAPI</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/BossAPI-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>BanSystemAPI</groupId>
+      <artifactId>BanSystemAPI</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/BanSystemAPI-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>AuctionAPI</groupId>
+      <artifactId>AuctionAPI</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/AuctionAPI-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>PermissionsAPI</groupId>
+      <artifactId>PermissionsAPI</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/PermissionsAPI-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>EconomyAPI</groupId>
+      <artifactId>EconomyAPI</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/EconomyAPI-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>BlockProtectionAPI</groupId>
+      <artifactId>BlockProtectionAPI</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/BlockProtectionAPI-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
       <groupId>cn.nukkit</groupId>
       <artifactId>PowerNukkit</artifactId>
       <version>1.14.0</version>
@@ -76,9 +125,9 @@
     <dependency>
       <groupId>nukkitcoders.mobplugin.MobPlugin</groupId>
       <artifactId>MobPlugin</artifactId>
-      <version>1.16.2</version>
+      <version>1.17.0</version>
       <scope>system</scope>
-      <systemPath>${basedir}/libs/MobPlugin-1.16.2.jar</systemPath>
+      <systemPath>${basedir}/libs/MobPlugin-1.17.0.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>ScoreboardPlugin</groupId>
@@ -95,11 +144,11 @@
       <systemPath>${basedir}/libs/FormAPI-3.1.jar</systemPath>
     </dependency>
     <dependency>
-      <groupId>DbLib</groupId>
-      <artifactId>DbLib</artifactId>
-      <version>3.0</version>
+      <groupId>SQLiteAPI</groupId>
+      <artifactId>SQLiteAPI</artifactId>
+      <version>1.0</version>
       <scope>system</scope>
-      <systemPath>${basedir}/libs/DbLib-3.0.jar</systemPath>
+      <systemPath>${basedir}/libs/SQLiteAPI-1.0.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>

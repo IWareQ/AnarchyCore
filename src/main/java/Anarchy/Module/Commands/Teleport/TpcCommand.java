@@ -1,9 +1,9 @@
 package Anarchy.Module.Commands.Teleport;
 
 import Anarchy.AnarchyMain;
-import Anarchy.Module.CombatLogger.CombatLoggerAPI;
 import Anarchy.Module.Commands.Spectate.SpectateAPI;
 import Anarchy.Module.Commands.Teleport.Utils.TpaPlayer;
+import CombatLoggerAPI.CombatLogger.CombatLoggerAPI;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;

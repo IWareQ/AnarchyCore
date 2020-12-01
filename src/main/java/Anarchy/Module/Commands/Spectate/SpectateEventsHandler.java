@@ -2,15 +2,15 @@ package Anarchy.Module.Commands.Spectate;
 
 import java.util.Map;
 
-import Anarchy.Module.BanSystem.Commands.BanCommand;
-import Anarchy.Module.BanSystem.Commands.MuteCommand;
 import Anarchy.Module.Commands.Inventory.InventoryHandler;
 import Anarchy.Module.Commands.Spectate.Utils.DoubleChest;
 import Anarchy.Module.Commands.Spectate.Utils.SpectatePlayer;
-import Anarchy.Module.Permissions.PermissionsAPI;
-import Anarchy.Module.Regions.RegionsAPI;
+import BanSystemAPI.BanSystem.Commands.BanCommand;
+import BanSystemAPI.BanSystem.Commands.MuteCommand;
+import BlockProtectionAPI.BlockProtection.BlockProtectionAPI;
 import FakeInventoryAPI.FakeInventoryAPI;
 import FormAPI.Forms.Elements.SimpleForm;
+import PermissionsAPI.Permissions.PermissionsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -51,12 +51,12 @@ public class SpectateEventsHandler implements Listener {
 
 				case Item.STICK: {
 					if (SpectateAPI.SPECTATE_PLAYERS.containsKey(player.getName()) && player.getGamemode() == 3) {
-						int regionID = RegionsAPI.getRegionIDByLocation(player.getLocation());
+						int regionID = BlockProtectionAPI.getRegionIDByLocation(player.getLocation());
 						if (regionID != -1) {
-							player.sendTip(RegionsAPI.BUSY_BY.replace("{PLAYER}", RegionsAPI.getRegionOwner(regionID)));
+							player.sendTip(BlockProtectionAPI.BUSY_BY.replace("{PLAYER}", BlockProtectionAPI.getRegionOwner(regionID)));
 							player.getLevel().addSound(player, Sound.RANDOM_FIZZ, 1, 1, player);
 						} else {
-							player.sendTip(RegionsAPI.FREE);
+							player.sendTip(BlockProtectionAPI.FREE);
 							player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 						}
 					}

@@ -3,7 +3,7 @@ package Anarchy.Module.Commands.Home;
 import java.util.Map;
 
 import Anarchy.Functions.FunctionsAPI;
-import Anarchy.Utils.SQLiteUtils;
+import SQLiteAPI.Utils.SQLiteUtils;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;

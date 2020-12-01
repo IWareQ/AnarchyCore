@@ -1,8 +1,8 @@
 package Anarchy.Module.Commands.Inventory;
 
 import Anarchy.Module.Commands.Inventory.Utils.DoubleChest;
-import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Utils.StringUtils;
+import EconomyAPI.Economy.EconomyAPI;
 import FakeInventoryAPI.FakeInventoryAPI;
 import FormAPI.Forms.Elements.ImageType;
 import FormAPI.Forms.Elements.SimpleForm;

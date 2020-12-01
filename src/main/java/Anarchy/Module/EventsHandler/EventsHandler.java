@@ -1,6 +1,5 @@
 package Anarchy.Module.EventsHandler;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,15 +7,13 @@ import java.util.Set;
 
 import Anarchy.AnarchyMain;
 import Anarchy.Functions.FunctionsAPI;
-import Anarchy.Module.Auction.AuctionAPI;
-import Anarchy.Module.BanSystem.BanSystemAPI;
-import Anarchy.Module.BanSystem.Utils.MuteUtils;
-import Anarchy.Module.Economy.EconomyAPI;
 import Anarchy.Module.EventsHandler.Utils.Hopper;
-import Anarchy.Module.Permissions.PermissionsAPI;
-import Anarchy.Module.Regions.RegionsAPI;
 import Anarchy.Utils.RandomUtils;
+import AuctionAPI.Auction.AuctionAPI;
+import BlockProtectionAPI.BlockProtection.BlockProtectionAPI;
+import EconomyAPI.Economy.EconomyAPI;
 import FakeInventoryAPI.FakeInventoryAPI;
+import PermissionsAPI.Permissions.PermissionsAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -193,7 +190,7 @@ public class EventsHandler implements Listener {
 			}
 		}
 		int dropExp = block.getDropExp();
-		if (RegionsAPI.canInteractHere(player, block.getLocation())) {
+		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
 			if (item.getEnchantment(16) == null && !block.getLevel().equals(FunctionsAPI.SPAWN)) {
 				if (block.getId() == Block.DIAMOND_ORE) {
 					player.addExperience(dropExp);
@@ -250,7 +247,7 @@ public class EventsHandler implements Listener {
 			if (entity.getNameTag().equals("§l§6Аукционер")) {
 				AuctionAPI.AUCTION_PAGE.put((Player)damager, 0);
 				AuctionAPI.showAuction((Player)damager, true);
-				((Player)damager).sendMessage(AuctionAPI.PREFIX + "§fАукцион временно отключен на Тех§7. §fОбслуживание§7!");
+				//((Player)damager).sendMessage(AuctionAPI.PREFIX + "§fАукцион временно отключен на Тех§7. §fОбслуживание§7!");
 			}
 			if (entity.getNameTag().equalsIgnoreCase("§l§6Барыга")) {
 				Hopper hopper = new Hopper("§l§6Барыга");
@@ -384,7 +381,7 @@ public class EventsHandler implements Listener {
 			event.setCancelled(true);
 			return;
 		}
-		MuteUtils muteUtils = BanSystemAPI.getMute(player.getName());
+		/*MuteUtils muteUtils = BanSystemAPI.getMute(player.getName());
 		if (BanSystemAPI.playerIsMuted(player.getName())) {
 			if (muteUtils.getTime() < System.currentTimeMillis() / 1000L) {
 				BanSystemAPI.unMutePlayer(player.getName());
@@ -396,7 +393,7 @@ public class EventsHandler implements Listener {
 								   " §fсек§7. §fпо причине §6" + muteUtils.getReason() + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
 				event.setCancelled(true);
 			}
-		}
+		}*/
 		if (String.valueOf(playerMessage.charAt(0)).equals("#")) {
 			Set<CommandSender> adminPlayer = new HashSet<>();
 			for (Player players : Server.getInstance().getOnlinePlayers().values()) {
