@@ -1,7 +1,6 @@
 package Anarchy.Task;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,16 +16,13 @@ import cn.nukkit.Server;
 import cn.nukkit.scheduler.Task;
 
 public class HotbarTask extends Task {
-	public static Map<String, Scoreboard> SCOREBOARDS = new HashMap<>();
-	public static ArrayList<String> SCOREBOARD = new ArrayList<>();
+	public static Map<Player, Scoreboard> SCOREBOARDS = new HashMap<>();
 
 	@Override()
 	public void onRun(int currentTick) {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
-			if (SCOREBOARD.contains(player.getName())) {
-				SCOREBOARDS.get(player.getName()).hideFor(player);
-				showScoreboard(player);
-			}
+			SCOREBOARDS.get(player).hideFor(player);
+			showScoreboard(player);
 		}
 	}
 
@@ -38,12 +34,12 @@ public class HotbarTask extends Task {
 		scoreboardDisplay.addLine("§r§fРанг§7: " + PermissionsAPI.GROUPS.get(PermissionsAPI.getGroup(player.getName())), 1);
 		scoreboardDisplay.addLine("", 2);
 		scoreboardDisplay.addLine("§r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(player.getName())), 3);
-		scoreboardDisplay.addLine("§r§fПинг§7: §6" + player.getPing(), 4);
+		scoreboardDisplay.addLine("§r§fОнлайн§7: §6" + Server.getInstance().getOnlinePlayers().size(), 4);
 		scoreboardDisplay.addLine("§r", 5);
-		scoreboardDisplay.addLine("§r§fОнлайн§7: §6" + Server.getInstance().getOnlinePlayers().size(), 6);
-		scoreboardDisplay.addLine("§r§fНаигранно§7: §6" + new DecimalFormat("#.#").format((float)gameTime / 3600).replace("§7,", "§7.") + " §fч§7.", 7);
-		scoreboardDisplay.addLine("§r§fСайт§7: §6death§7-§6mc§7.§6online", 8);
+		//scoreboardDisplay.addLine("§r§fОнлайн§7: §6" + Server.getInstance().getOnlinePlayers().size(), 6);
+		scoreboardDisplay.addLine("§r§fНаигранно§7: §6" + new DecimalFormat("#.#").format((float)gameTime / 3600).replace("§7,", "§7.") + " §fч§7.", 6);
+		scoreboardDisplay.addLine("§r§fСайт§7: §6death§7-§6mc§7.§6online", 7);
 		scoreboard.showFor(player);
-		SCOREBOARDS.put(player.getName(), scoreboard);
+		SCOREBOARDS.put(player, scoreboard);
 	}
 }

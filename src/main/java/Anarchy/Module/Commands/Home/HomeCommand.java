@@ -1,16 +1,13 @@
 package Anarchy.Module.Commands.Home;
 
-import java.util.Map;
-
 import Anarchy.Functions.FunctionsAPI;
-import SQLiteAPI.Utils.SQLiteUtils;
+import Anarchy.Module.Commands.Home.Utils.HomeUtils;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.level.Position;
 
 public class HomeCommand extends Command {
-	public static String PREFIX = "§l§7(§3Дом§7) §r";
 
 	public HomeCommand() {
 		super("home", "§r§fТелепортироватся домой");
@@ -21,15 +18,12 @@ public class HomeCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
-			Map<String, String> homeData = SQLiteUtils.selectStringMap("Homes.db", "SELECT * FROM HOMES WHERE UPPER(Username) = \'" + player.getName().toUpperCase() + "\';");
-			if (homeData == null || homeData.isEmpty()) {
-				player.sendMessage(PREFIX + "§fТочек дома не обнаружено§7, §fдля создания используйте §7/§6sethome");
+			if (!HomeAPI.playerIsHome(player.getName())) {
+				player.sendMessage(HomeAPI.PREFIX + "§fТочек дома не обнаружено§7!\n§l§6• §r§fДля создания точки Дома используйте §7/§6sethome");
 			} else {
-				int x = Integer.parseInt(homeData.get("X"));
-				int y = Integer.parseInt(homeData.get("Y"));
-				int z = Integer.parseInt(homeData.get("Z"));
-				player.sendMessage(PREFIX + "§fВы успешно телепортированы домой§7!");
-				player.teleport(new Position(x + 0.5, y + 0.5, z + 0.5, FunctionsAPI.MAP));
+				HomeUtils homeUtils = HomeAPI.getHomeUtils(player.getName());
+				player.sendMessage(HomeAPI.PREFIX + "§fВы успешно телепортированы домой§7!");
+				player.teleport(new Position(homeUtils.getX() + 0.5, homeUtils.getY(), homeUtils.getZ() + 0.5, FunctionsAPI.MAP));
 			}
 		}
 		return false;

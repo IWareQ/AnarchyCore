@@ -6,7 +6,7 @@ import cn.nukkit.scheduler.Task;
 
 public class MinuteTask extends Task {
 	private static int TIMER_BROADCAST = 0;
-	public static int TIMER_RESTART = 60;
+	public static int TIMER_RESTART = 40;
 	public static int SECONDS_RESTART = 60;
 
 	@Override()

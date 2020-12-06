@@ -1,6 +1,5 @@
 package Anarchy.Module.Commands.Home;
 
-import SQLiteAPI.Utils.SQLiteUtils;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -16,12 +15,11 @@ public class DelHomeCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
-			Integer homeId = SQLiteUtils.selectInteger("Homes.db", "SELECT Home_ID FROM HOMES WHERE UPPER(Username) = \'" + player.getName().toUpperCase() + "\';");
-			if (homeId == -1) {
-				player.sendMessage(HomeCommand.PREFIX + "§fТочки дома не обнаружено§7, §fдля создания используйте §7/§6sethome");
+			if (!HomeAPI.playerIsHome(player.getName())) {
+				player.sendMessage(HomeAPI.PREFIX + "§fТочек дома не обнаружено§7!\n§l§6• §r§fДля создания точки Дома используйте §7/§6sethome");
 			} else {
-				player.sendMessage(HomeCommand.PREFIX + "§fТочка дома успешно §fудалена§7!");
-				SQLiteUtils.query("Homes.db", "DELETE FROM HOMES WHERE UPPER(Username) = \'" + player.getName().toUpperCase() + "\';");
+				player.sendMessage(HomeAPI.PREFIX + "§fТочка дома §6успешно §fудалена§7!");
+				HomeAPI.delHome(player.getName());
 			}
 		}
 		return false;

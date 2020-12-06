@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Map;
 
 import Anarchy.Functions.FunctionsAPI;
-import Anarchy.Module.Commands.BarCommand;
 import Anarchy.Module.Commands.BonusCommand;
 import Anarchy.Module.Commands.ClearChatCommand;
 import Anarchy.Module.Commands.CoordinateCommand;
@@ -64,7 +63,7 @@ public class AnarchyMain extends PluginBase {
 		PluginManager pluginManager = this.getServer().getPluginManager();
 		for (String pluginName : new String[] {"ScoreboardPlugin", "FormAPI"}) {
 			if (pluginManager.getPlugin(pluginName) == null) {
-				this.getLogger().alert("§l§fНе найден §3плагин §7- §6" + pluginName);
+				this.getLogger().alert("§l§fНе найден плагин на §6" + pluginName);
 				pluginManager.disablePlugin(this);
 				return;
 			}
@@ -115,13 +114,13 @@ public class AnarchyMain extends PluginBase {
 	}
 
 	private void registerCommands() {
-		Command[] commands = new Command[] {new ExperienceBottleHandler(), new GarbageCommand(), new DonateShopHandler(), new SpawnCommand(), new BonusCommand(), new NPCCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new BarCommand(), new NearCommand(), new DonateCommand(), new RepairCommand(), new GamemodeCommand()};
+		Command[] commands = new Command[] {new ExperienceBottleHandler(), new GarbageCommand(), new DonateShopHandler(), new SpawnCommand(), new BonusCommand(), new NPCCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ResyncCommand(), new ClearChatCommand(), new StopCommand(), new InventoryHandler(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new SetHomeCommand(), new HomeCommand(), new DelHomeCommand(), new SpectateCommand(), new StorageHandler(), new TpaCommand(), new TpcCommand(), new TpdCommand(), new TprCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new NearCommand(), new DonateCommand(), new RepairCommand(), new GamemodeCommand()};
 		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
 	}
 
 	private void registerTask() {
 		this.getServer().getScheduler().scheduleRepeatingTask(new MinuteTask(), 60 * 20);
-		this.getServer().getScheduler().scheduleRepeatingTask(new HotbarTask(), 20);
+		this.getServer().getScheduler().scheduleRepeatingTask(new HotbarTask(), 60 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new SecondTask(), 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
 	}

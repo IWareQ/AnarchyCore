@@ -8,6 +8,7 @@ import java.util.Set;
 import Anarchy.AnarchyMain;
 import Anarchy.Functions.FunctionsAPI;
 import Anarchy.Module.EventsHandler.Utils.Hopper;
+import Anarchy.Task.HotbarTask;
 import Anarchy.Utils.RandomUtils;
 import AuctionAPI.Auction.AuctionAPI;
 import BlockProtectionAPI.BlockProtection.BlockProtectionAPI;
@@ -42,7 +43,9 @@ import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
+import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
+import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
@@ -62,7 +65,17 @@ public class EventsHandler implements Listener {
 	Config killsConfig = new Config(AnarchyMain.folder + "/Kills.yml", Config.YAML);
 	public static Map<Player, Long> COOLDOWN = new HashMap<>();
 	public static int CHAT_RADIUS = 70;
-
+	
+	@EventHandler()
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		HotbarTask.showScoreboard(event.getPlayer());
+	}
+	
+	@EventHandler()
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		HotbarTask.SCOREBOARDS.remove(event.getPlayer());
+	}
+	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();

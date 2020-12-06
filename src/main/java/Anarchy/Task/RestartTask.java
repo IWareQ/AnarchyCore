@@ -1,6 +1,6 @@
 package Anarchy.Task;
 
-import AuctionAPI.Auction.AuctionAPI;
+//import AuctionAPI.Auction.AuctionAPI;
 import CombatLoggerAPI.CombatLogger.CombatLoggerAPI;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -22,7 +22,7 @@ public class RestartTask extends Task {
 			if (MinuteTask.SECONDS_RESTART == 0) {
 				for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 					CombatLoggerAPI.removeCombat(player);
-					AuctionAPI.saveAuction();
+					//AuctionAPI.saveAuction();
 					player.close("", "§l§6Перезагрузка");
 				}
 				Server.getInstance().shutdown();
