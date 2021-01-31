@@ -2,8 +2,8 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>AnarchySystem</groupId>
-    <artifactId>AnarchySystem</artifactId>
+    <groupId>ru.Jl1mbo.AnarchyCore</groupId>
+    <artifactId>AnarchyCore</artifactId>
     <version>1.0</version>
     <build>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -18,7 +18,7 @@
                 </includes>
             </resource>
         </resources>
-        <finalName>AnarchySystem-${pom.version}</finalName>
+        <finalName>AnarchyCore-${pom.version}</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -54,7 +54,7 @@
         </plugins>
     </build>
     <dependencies>
-    <dependency>
+        <dependency>
             <groupId>ru.nukkit.dblib</groupId>
             <artifactId>DbLib</artifactId>
             <version>3.0</version>
