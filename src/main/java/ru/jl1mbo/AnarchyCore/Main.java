@@ -54,6 +54,7 @@ import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryAPI;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.FormsAPI;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.BanSystem.BanSystemAPI;
+import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CheatCheacker.CheatCheackerAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.EconomyAPI.EconomyAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.SeeInventory.SeeInventoryAPI;
@@ -96,12 +97,14 @@ public class Main extends PluginBase {
 		NPC.register();
 		StorageItemsAPI.registers();
 		AntiCheatAPI.register();
+		CheatCheackerAPI.register();
 	}
 
 	private void registerTask() {
 		this.getServer().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new BroadcastTask(), 60 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new RestartTask(), 20);
+		this.getServer().getScheduler().scheduleRepeatingTask(new ScoreboardTask(), 60 * 20);
 	}
 
 	@Override()

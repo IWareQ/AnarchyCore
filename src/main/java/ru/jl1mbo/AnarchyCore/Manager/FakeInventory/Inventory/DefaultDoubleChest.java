@@ -53,7 +53,7 @@ public class DefaultDoubleChest extends DefaultChest {
 
     @Override()
     protected List<BlockVector3> onOpenBlock(Player player) {
-        BlockVector3 blockPositionA = new BlockVector3(player.getFloorX(), player.getFloorY() + 2, player.getFloorZ());
+        BlockVector3 blockPositionA = new BlockVector3(player.getFloorX(), player.getFloorY() - 2, player.getFloorZ());
         BlockVector3 blockPositionB = blockPositionA.add(1, 0, 0);
         placeChest(player, blockPositionA);
         placeChest(player, blockPositionB);

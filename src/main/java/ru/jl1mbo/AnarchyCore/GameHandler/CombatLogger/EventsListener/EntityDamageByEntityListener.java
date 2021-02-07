@@ -7,6 +7,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import ru.jl1mbo.AnarchyCore.GameHandler.CombatLogger.CombatLoggerAPI;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
+import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CheatCheacker.CheatCheackerAPI;
 
 public class EntityDamageByEntityListener implements Listener {
 
@@ -15,10 +16,12 @@ public class EntityDamageByEntityListener implements Listener {
 		Entity victim = event.getEntity();
 		Entity damager = event.getDamager();
 		if (damager instanceof Player) {
-			((Player) damager).sendTip("§l§f" + String.format("%.0f", victim.getHealth()) + " §c❤");
-			if (victim instanceof Player && victim.getLevel() != WorldSystemAPI.getSpawn() && damager != victim) {
-				for (Player players : new Player[] {(Player) victim, (Player) damager}) {
-					CombatLoggerAPI.addCombat(players);
+			if (!CheatCheackerAPI.isCheatChecker(((Player)victim).getName())) {
+				((Player) damager).sendTip("§l§f" + String.format("%.0f", victim.getHealth()) + " §c❤");
+				if (victim instanceof Player && victim.getLevel() != WorldSystemAPI.getSpawn() && damager != victim) {
+					for (Player players : new Player[] {(Player) victim, (Player) damager}) {
+						CombatLoggerAPI.addCombat(players);
+					}
 				}
 			}
 		}

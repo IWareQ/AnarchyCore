@@ -17,7 +17,7 @@ import ru.jl1mbo.AnarchyCore.Utils.ConfigUtils;
 public class AuctionUpdateTask extends Task {
 
     @Override()
-    public void onRun(int currentTick) {
+    public void onRun(int tick) {
         Iterator<Map.Entry<String, TradeItem>> iterator = AuctionAPI.AUCTION.entrySet().iterator();
         while (iterator.hasNext()) {
             TradeItem tradeItem = (TradeItem) ((Map.Entry) iterator.next()).getValue();

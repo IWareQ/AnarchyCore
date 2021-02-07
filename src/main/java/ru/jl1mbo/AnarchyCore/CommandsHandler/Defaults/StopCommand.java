@@ -18,7 +18,7 @@ public class StopCommand extends Command {
 			return false;
 		}
 		sender.sendMessage("§l§7(§3Перезагрузка§7) §r§fНачинается принудительная §6Перезагрузка§7!");
-		RestartTask.seconds = 10;
+		RestartTask.seconds = 11;
 		return false;
 	}
 }

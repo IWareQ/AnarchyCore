@@ -25,7 +25,6 @@ public class BlockBreakListener implements Listener {
 			for (BlockVector3 pos : positions) {
 				if (pos.getX() == block.getX() && pos.getY() == block.getZ() && pos.getZ() == block.getZ()) {
 					event.setCancelled(true);
-					return;
 				}
 			}
 		}

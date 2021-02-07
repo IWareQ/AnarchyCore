@@ -8,11 +8,11 @@ import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.BlockProtectionAPI;
 
 public class BlockPistonListener implements Listener {
 
-    @EventHandler()
-    public void onBlockPiston(BlockPistonEvent event) {
-        Block block = event.getBlock();
-        if (BlockProtectionAPI.REGIONS.get(block.getId()) != null || block.getId() == 52) {
-            event.setCancelled(true);
-        }
-    }
+	@EventHandler()
+	public void onBlockPiston(BlockPistonEvent event) {
+		Block block = event.getBlock();
+		if (BlockProtectionAPI.getAllBlocks().get(block.getId()).getBlockId() != null || block.getId() == 52) {
+			event.setCancelled(true);
+		}
+	}
 }

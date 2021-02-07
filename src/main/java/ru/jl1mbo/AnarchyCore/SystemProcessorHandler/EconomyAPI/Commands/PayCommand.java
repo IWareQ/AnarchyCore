@@ -30,7 +30,7 @@ public class PayCommand extends Command {
                 player.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + nickname + " §fне зарегистрирован§7!");
                 return true;
             }
-            if (Utils.isDouble(args[0]) || Double.parseDouble(args[0]) < 0) {
+            if (!Utils.isDouble(args[0]) || Double.parseDouble(args[0]) < 0) {
                 player.sendMessage(EconomyAPI.PREFIX + "§fСумма может быть только положительным числом§7!");
                 return true;
             }

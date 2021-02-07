@@ -7,7 +7,7 @@ import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.level.Location;
 
 public class PlayerTeleportListener implements Listener {
-	private static Integer[] BORDER = new Integer[] {-1500, 1500, -1500, 1500};
+	private static Integer[] BORDER = new Integer[] {-2000, 2000, -2000, 2000};
 
 	@EventHandler()
 	public void onPlayerTeleport(PlayerTeleportEvent event) {

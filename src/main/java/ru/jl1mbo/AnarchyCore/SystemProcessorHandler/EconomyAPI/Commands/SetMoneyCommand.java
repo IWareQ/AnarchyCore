@@ -18,7 +18,7 @@ public class SetMoneyCommand extends Command {
 
     @Override()
     public boolean execute(CommandSender sender, String label, String[] args) {
-        if (!sender.hasPermission("Command.SetMoney")) {
+        if (!sender.hasPermission(this.getPermission())) {
             return true;
         }
         if (args.length < 2) {

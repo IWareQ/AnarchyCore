@@ -1,5 +1,6 @@
 package ru.jl1mbo.AnarchyCore.Utils;
 
+import cn.nukkit.Player;
 import cn.nukkit.Server;
 
 import java.io.BufferedReader;
@@ -34,6 +35,10 @@ public class Utils {
             return " §fсекунды";
         }
         return " §fсекунд";
+    }
+    
+    public static String getDeviceOS(Player player) {
+    	return String.valueOf(player.getLoginChainData().getDeviceOS()).replace("0", "Неизвестно").replace("1", "Android").replace("2", "iOS").replace("3", "MacOS").replace("4", "FireOS").replace("5", "GearVR").replace("6", "HoloLens").replace("10", "PS 4").replace("7", "Win 10").replace("8", "Win").replace("9", "Dedicated").replace("11", "Switch");
     }
 
     private static void URL(String url) {

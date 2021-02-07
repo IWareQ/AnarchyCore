@@ -92,15 +92,14 @@ public class InventoryTransactionListener implements Listener {
 								if (playerInventory.canAddItem(sourceItem)) {
 									if (tradeItem.sellerName.equals(player.getName())) {
 										namedTag.remove("UUID");
-										namedTag.remove("Lore");
 										auctionChest.removeItem(sourceItem);
-										playerInventory.addItem(sourceItem.clearNamedTag().setNamedTag(namedTag));
+										playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(namedTag));
 										player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 										player.sendMessage(AuctionAPI.PREFIX + "§fПредмет был снят с продажи и отправлен Вам в Инвентарь");
 									} else {
 										auctionChest.removeItem(sourceItem);
 										namedTag.remove("UUID");
-										playerInventory.addItem(sourceItem.setNamedTag(namedTag).setLore());
+										playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(namedTag));
 										player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 										player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §6" + String.format("%.1f",
 														   tradeItem.itemPrice) + "§7, §fв колличестве §6" + sourceItem.getCount() + " §fшт§7.");

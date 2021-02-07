@@ -21,7 +21,7 @@ public class SeeMoneyCommand extends Command {
     public boolean execute(CommandSender sender, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!player.hasPermission("Command.SeeMoney")) {
+            if (!player.hasPermission(this.getPermission())) {
                 return true;
             }
             if (args.length < 1) {

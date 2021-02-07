@@ -22,12 +22,13 @@ import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Spectate.EventsListener.Data
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Spectate.EventsListener.PlayerCommandPreprocessListener;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Spectate.EventsListener.PlayerJoinListener;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Spectate.Task.SpectateTask;
-import ru.jl1mbo.AnarchyCore.Utils.ConfigUtils;
 
 public class SpectateAPI {
+	public static Config config;
 	public static String PREFIX = "§l§7(§3Система§7) §r";
 
 	public static void register() {
+		config = new Config(Main.getInstance().getDataFolder() + "/AdminSystem/Spectate.yml", Config.YAML);
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		pluginManager.registerEvents(new DataPacketReceiveListener(), Main.getInstance());
 		pluginManager.registerEvents(new PlayerCommandPreprocessListener(), Main.getInstance());
@@ -37,11 +38,10 @@ public class SpectateAPI {
 	}
 
 	public static boolean isSpectate(String playerName) {
-		return ConfigUtils.getSpectateConfig().exists(playerName.toLowerCase());
+		return config.exists(playerName.toLowerCase());
 	}
 
 	public static void addSpectate(Player player, Player target) {
-		Config config = ConfigUtils.getSpectateConfig();
 		CompoundTag namedTag = new CompoundTag();
 		if (isSpectate(player.getName())) {
 			player.sendMessage(PREFIX + "§fПереключение на §6" + target.getName() + "§7!");
@@ -108,7 +108,6 @@ public class SpectateAPI {
 	}
 
 	public static void removeSpectate(Player player) {
-		Config config = ConfigUtils.getSpectateConfig();
 		CompoundTag namedTag = null;
 		if (isSpectate(player.getName())) {
 			try {

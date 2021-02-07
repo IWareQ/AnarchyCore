@@ -1,5 +1,7 @@
 package ru.jl1mbo.AnarchyCore.LoginPlayerHandler.Authorization;
 
+import java.util.HashMap;
+
 import cn.nukkit.Server;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.Config;
@@ -10,8 +12,11 @@ import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.Authorization.EventsListener.Pla
 import ru.jl1mbo.AnarchyCore.Utils.ConfigUtils;
 
 public class AuthorizationAPI {
+	public static HashMap<String, Long> playerTime = new HashMap<>();
+	private static Config config;
 
 	public static void register() {
+		config = ConfigUtils.getAuthorizationConfig();
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		pluginManager.registerEvents(new PlayerJoinListener(), Main.getInstance());
 		pluginManager.registerEvents(new PlayerLocallyInitializedListener(), Main.getInstance());
@@ -19,25 +24,28 @@ public class AuthorizationAPI {
 	}
 
 	public static boolean isRegister(String playerName) {
-		return ConfigUtils.getAuthorizationConfig().exists(playerName.toLowerCase());
+		return config.exists(playerName.toLowerCase());
 	}
 
 	public static void registerPlayer(String playerName, String ip, String date) {
-		Config config = ConfigUtils.getAuthorizationConfig();
-		config.set(playerName.toLowerCase() + ".registerIP", ip);
-		config.set(playerName.toLowerCase() + ".registerDATE", date);
+		config.set(playerName.toLowerCase() + ".reg_IP", ip);
+		config.set(playerName.toLowerCase() + ".reg_DATE", date);
+		config.set(playerName.toLowerCase() + ".last_IP", ip);
+		config.set(playerName.toLowerCase() + ".last_DATE", date);
+		config.set(playerName.toLowerCase() + ".gameTime", 0L);
 		config.save();
 		config.reload();
 	}
 
-	public static void updateGameTime(String playerName, Long gameTime) {
-		Config config = ConfigUtils.getAuthorizationConfig();
-		config.set(playerName.toLowerCase() + ".gameTime", (ConfigUtils.getAuthorizationConfig().getLong(playerName) + gameTime));
+	public static void updatePlayerInfo(String playerName, Long gameTime, String ip, String date) {
+		config.set(playerName.toLowerCase() + ".last_IP", ip);
+		config.set(playerName.toLowerCase() + ".last_DATE", date);
+		config.set(playerName.toLowerCase() + ".gameTime", getGameTime(playerName) + gameTime);
 		config.save();
 		config.reload();
 	}
 
 	public static long getGameTime(String playerName) {
-		return ConfigUtils.getAuthorizationConfig().getLong(playerName.toLowerCase() + ".gameTime", 0L);
+		return config.getLong(playerName.toLowerCase() + ".gameTime", 0L);
 	}
 }

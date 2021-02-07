@@ -8,7 +8,7 @@ import cn.nukkit.command.CommandSender;
 public class ClearChatCommand extends Command {
 
 	public ClearChatCommand() {
-		super("clearchat", "§r§fОчистка чата", "", new String[] {"cc"});
+		super("clearchat", "§r§fОчистка чата");
 		this.setPermission("Command.ClearChat");
 		this.commandParameters.clear();
 	}

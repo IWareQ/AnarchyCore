@@ -13,12 +13,13 @@ import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.EconomyAPI.Commands.PayComma
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.EconomyAPI.Commands.SeeMoneyCommand;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.EconomyAPI.Commands.SetMoneyCommand;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.EconomyAPI.EventsListener.PlayerJoinListener;
-import ru.jl1mbo.AnarchyCore.Utils.ConfigUtils;
 
 public class EconomyAPI {
 	public static String PREFIX = "§l§7(§3Экономика§7) §r";
+	public static Config config;
 
 	public static void register() {
+		config = new Config(Main.getInstance().getDataFolder() + "/EconomyAPI/Users.yml", Config.YAML);
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		pluginManager.registerEvents(new PlayerJoinListener(), Main.getInstance());
 		Command[] commands = new Command[] {new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SeeMoneyCommand(), new SetMoneyCommand()};
@@ -26,22 +27,20 @@ public class EconomyAPI {
 	}
 
 	public static boolean isRegister(String playerName) {
-		return ConfigUtils.getEconomyConfig().exists(playerName.toLowerCase());
+		return config.exists(playerName.toLowerCase());
 	}
 
 	public static void registerPlayer(String playerName) {
-		Config config = ConfigUtils.getEconomyConfig();
 		config.set(playerName.toLowerCase(), 0.0);
 		config.save();
 		config.reload();
 	}
 
 	public static Double myMoney(String playerName) {
-		return ConfigUtils.getEconomyConfig().getDouble(playerName.toLowerCase(), 0.0);
+		return config.getDouble(playerName.toLowerCase(), 0.0);
 	}
 
 	public static void setMoney(String playerName, Double count) {
-		Config config = ConfigUtils.getEconomyConfig();
 		config.set(playerName.toLowerCase(), count);
 		config.save();
 		config.reload();

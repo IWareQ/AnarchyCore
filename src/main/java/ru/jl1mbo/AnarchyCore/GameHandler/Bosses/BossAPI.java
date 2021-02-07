@@ -16,6 +16,7 @@ import ru.jl1mbo.AnarchyCore.GameHandler.Bosses.Items.BlazeRodArtifact;
 import ru.jl1mbo.AnarchyCore.GameHandler.Bosses.Items.CobwebArtifact;
 import ru.jl1mbo.AnarchyCore.GameHandler.Bosses.Items.IceFrostedArtifact;
 import ru.jl1mbo.AnarchyCore.GameHandler.Bosses.Items.SkullArtifact;
+import ru.jl1mbo.AnarchyCore.GameHandler.Bosses.Task.BossesSpawnTask;
 
 public class BossAPI {
 
@@ -26,6 +27,7 @@ public class BossAPI {
 		prefabManager.registerItem(new IceFrostedArtifact(Item.get(Item.ICE_FROSTED)));
 		prefabManager.registerItem(new SkullArtifact(Item.get(Item.SKULL)));
 		Server.getInstance().getCommandMap().register("", new BossesCommand());
+		Server.getInstance().getScheduler().scheduleRepeatingTask(new BossesSpawnTask(), 60 * 20);
 		Entity.registerEntity(WitherSkeletonBoss.class.getSimpleName(), WitherSkeletonBoss.class);
 		Entity.registerEntity(HuskBoss.class.getSimpleName(), HuskBoss.class);
 		Entity.registerEntity(SpiderBoss.class.getSimpleName(), SpiderBoss.class);

@@ -12,8 +12,12 @@ public class PlayerInteractListener implements Listener {
 	@EventHandler()
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
+		Block block = event.getBlock();
+		if (player.getLevel().equals(WorldSystemAPI.getSpawn()) && !player.hasPermission("Development") && block.getId() != Block.BOOKSHELF) {
+			event.setCancelled(true);
+		}
 		if (player.getLevel().equals(WorldSystemAPI.getMap()) || player.getLevel().equals(WorldSystemAPI.getSpawn())) {
-			if (event.getBlock().getId() == Block.BED_BLOCK) {
+			if (block.getId() == Block.BED_BLOCK) {
 				event.setCancelled(true);
 			}
 		}

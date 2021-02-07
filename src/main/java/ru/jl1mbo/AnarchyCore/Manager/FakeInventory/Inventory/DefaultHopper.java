@@ -47,7 +47,7 @@ public class DefaultHopper extends FakeChest {
 
     @Override()
     protected List<BlockVector3> onOpenBlock(Player player) {
-        BlockVector3 blockPosition = new BlockVector3(player.getFloorX(), player.getFloorY() + 2, player.getFloorZ());
+        BlockVector3 blockPosition = new BlockVector3(player.getFloorX(), player.getFloorY() - 2, player.getFloorZ());
         placeHopper(player, blockPosition);
         return Collections.singletonList(blockPosition);
     }

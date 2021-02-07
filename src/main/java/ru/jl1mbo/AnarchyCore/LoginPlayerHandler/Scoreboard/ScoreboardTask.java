@@ -1,6 +1,5 @@
 package ru.jl1mbo.AnarchyCore.LoginPlayerHandler.Scoreboard;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,27 +31,32 @@ public class ScoreboardTask extends Task {
 		if (hide) {
 			Scoreboard scoreboard = ScoreboardAPI.createScoreboard();
 			ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "§3DEATH §fMC");
-			scoreboardDisplay.addLine(PermissionAPI.GROUPS.get(PermissionAPI.getGroup(player.getName())) + player.getName(), 0);
+			scoreboardDisplay.addLine(PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(player.getName())).getGroupName() + player.getName(), 0);
 			scoreboardDisplay.addLine("§1", 1);
 			scoreboardDisplay.addLine("§r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(player.getName())), 2);
 			scoreboardDisplay.addLine("§r§fОнлайн§7: §6" + Server.getInstance().getOnlinePlayers().size(), 3);
 			scoreboardDisplay.addLine("§4", 4);
-			scoreboardDisplay.addLine("§r§fНаигранно§7: §6" + new DecimalFormat("#.#").format((float) AuthorizationAPI.getGameTime(player.getName()) / 3600).replace("§7,", "§7.") + " §fч§7.",
-									  5);
-			scoreboardDisplay.addLine("§r§fСайт§7: §6death§7-§6mc§7.§6online", 6);
+			scoreboardDisplay.addLine("§r§fНаигранно§7: §6" + (AuthorizationAPI.getGameTime(player.getName()) /  86400 % 24) + "§7/§6" + (AuthorizationAPI.getGameTime(
+										  player.getName()) / 3600 % 24) + "§7/§6" + (AuthorizationAPI.getGameTime(player.getName()) / 60 % 60), 5);
+			scoreboardDisplay.addLine("§r§6death§7-§6mc§7.§6online", 6);
 			scoreboard.showFor(player);
 			SCOREBOARDS.put(player, scoreboard);
 		} else {
+			Scoreboard scoreboard = SCOREBOARDS.get(player);
+			if (scoreboard != null) {
+				scoreboard.hideFor(player);
+			}
 			ScoreboardTask.SCOREBOARDS.remove(player);
 		}
 	}
 
 	@Override()
-	public void onRun(int currentTick) {
+	public void onRun(int tick) {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
-			if (player != null) {
+			if (player.isOnline()) {
 				if (player.spawned) {
-					SCOREBOARDS.get(player).hideFor(player);
+					//SCOREBOARDS.get(player).hideFor(player);
+					showScoreboard(player, false);
 					showScoreboard(player, true);
 				}
 			}

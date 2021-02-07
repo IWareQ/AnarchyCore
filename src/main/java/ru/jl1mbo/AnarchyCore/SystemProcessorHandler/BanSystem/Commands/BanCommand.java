@@ -22,7 +22,7 @@ public class BanCommand extends Command {
 
     public static void banPlayerForm(Player player, String targetName) {
         CustomForm customForm = new CustomForm("§l§fБлокировка Аккаунта");
-        customForm.addLabel("§l§6• §r§fИгрок§7: §6" + targetName + "\n§l§6• §r§fРанг§7: " + PermissionAPI.GROUPS.get(PermissionAPI.getGroup(targetName)) + "\n");
+        customForm.addLabel("§l§6• §r§fИгрок§7: §6" + targetName + "\n§l§6• §r§fРанг§7: " + PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(targetName)).getGroupName() + "\n");
         customForm.addInput("§l§6• §r§fПричина блокировки Аккаунта§7:");
         customForm.addLabel("§l§6• §r§fВремя блокировки Аккаунта§7:");
         customForm.addSlider("§6Минуты§7", 0, 60, 5, 0);

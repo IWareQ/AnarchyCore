@@ -23,7 +23,7 @@ public class PlayerChatListener implements Listener {
     public void onPlayerChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
         String playerMessage = event.getMessage();
-        String displayName = PermissionAPI.GROUPS.get(PermissionAPI.getGroup(player.getName())) + player.getName();
+        String displayName = PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(player.getName())).getGroupName() + " " + player.getName();
         Long cooldownTime = COOLDOWN.get(player);
         long nowTime = System.currentTimeMillis() / 1000;
         if (cooldownTime != null && cooldownTime > nowTime) {
@@ -31,7 +31,7 @@ public class PlayerChatListener implements Listener {
             event.setCancelled(true);
             return;
         }
-        if (String.valueOf(playerMessage.charAt(0)).equals("#")) {
+        if (String.valueOf(playerMessage.charAt(0)).equals("#") && player.hasPermission("AdminChat")) {
             Set<CommandSender> adminPlayer = new HashSet<>();
             for (Player players : Server.getInstance().getOnlinePlayers().values()) {
                 if (players.hasPermission("AdminChat")) {
@@ -41,7 +41,6 @@ public class PlayerChatListener implements Listener {
             adminPlayer.add(new ConsoleCommandSender());
             event.setFormat("§7(§cA§7) " + displayName + " §8» §6" + playerMessage.substring(1).replaceAll("§", ""));
             event.setRecipients(adminPlayer);
-            COOLDOWN.put(player, nowTime + 2);
         } else if (String.valueOf(playerMessage.charAt(0)).equals("!")) {
             event.setFormat("§7(§aG§7) " + displayName + " §8» §7" + playerMessage.substring(1).replaceAll("§", ""));
             COOLDOWN.put(player, nowTime + 2);

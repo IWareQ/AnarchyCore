@@ -7,9 +7,9 @@ import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Permissions.PermissionAPI;
 
 public class PlayerJoinListener implements Listener {
 
-    @EventHandler()
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        PermissionAPI.updatePermissions(event.getPlayer());
-        PermissionAPI.updateTag(event.getPlayer());
-    }
+	@EventHandler()
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		PermissionAPI.updatePermissions(event.getPlayer());
+		PermissionAPI.updateNamedTag(event.getPlayer());
+	}
 }

@@ -9,17 +9,16 @@ import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.BlockProtectionAPI;
 
 public class BlockPlaceListener implements Listener {
 
-    @EventHandler()
-    public void onBlockPlace(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        Block block = event.getBlock();
-        if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
-            player.sendTip(BlockProtectionAPI.BUSY);
-            event.setCancelled(true);
-            return;
-        }
-        if (BlockProtectionAPI.REGIONS.containsKey(block.getId())) {
-            BlockProtectionAPI.placeRegion(player, block);
-        }
-    }
+	@EventHandler()
+	public void onBlockPlace(BlockPlaceEvent event) {
+		Player player = event.getPlayer();
+		Block block = event.getBlock();
+		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
+			player.sendTip("§rТерритория §6не доступна §fдля взаимодействия");
+			event.setCancelled(true);
+		}
+		if (BlockProtectionAPI.getAllBlocks().containsKey(block.getId())) {
+			BlockProtectionAPI.placeRegion(player, block);
+		}
+	}
 }

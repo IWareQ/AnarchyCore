@@ -19,8 +19,11 @@ public class BonusCommand extends Command {
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
-			Config config = new Config(Main.getInstance().getDataFolder() + "/BonusCommand/users.yml", Config.YAML);
 			Player player = (Player) sender;
+			if (!player.hasPermission("Command.Bonus")) {
+				return false;
+			}
+			Config config = new Config(Main.getInstance().getDataFolder() + "/BonusCommand/users.yml", Config.YAML);
 			if (config.exists(player.getName().toLowerCase())) {
 				player.sendMessage("§l§6• §r§fБонус можно получить §61 §fраз в вайп§7!");
 				return false;

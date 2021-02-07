@@ -22,13 +22,14 @@ import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryAPI;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.SimpleForm;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.BanSystem.Commands.BanCommand;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.BanSystem.Commands.MuteCommand;
+import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CheatCheacker.CheatCheackerAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.SeeInventory.SeeInventoryAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Spectate.SpectateAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Spectate.Inventory.DoubleChest;
-import ru.jl1mbo.AnarchyCore.Utils.ConfigUtils;
 
-public class DataPacketReceiveListener implements Listener {
+public class DataPacketReceiveListener implements Listener  {
+	private static Config config = SpectateAPI.config;
 
 	@EventHandler()
 	public void onDataPacketReceive(DataPacketReceiveEvent event) {
@@ -49,18 +50,15 @@ public class DataPacketReceiveListener implements Listener {
 					break;
 				case Item.CHEST:
 					if (SpectateAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
-						Config config = ConfigUtils.getSpectateConfig();
 						Player target = Server.getInstance().getPlayerExact(config.getString(player.getName().toLowerCase() + ".Spectate"));
 						SeeInventoryAPI.checkInventory(target.getName(), player);
 					}
 					break;
 				case Item.CLOCK:
 					if (SpectateAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
-						Config config = ConfigUtils.getSpectateConfig();
 						Player target = Server.getInstance().getPlayerExact(config.getString(player.getName().toLowerCase() + ".Spectate"));
 						SimpleForm simpleForm = new SimpleForm("§r§fПанель Администрирования");
-						simpleForm.setContent("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionAPI.GROUPS.get(PermissionAPI.getGroup(
-												  target.getName())) + "\n§l§6• §r§fУстройство§7: §6" + target.getLoginChainData().getDeviceModel() + "\n§l§6• §r§fЭффекты§7: §6" + target.getEffects() +
+						simpleForm.setContent("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(target.getName())).getGroupName() + "\n§l§6• §r§fУстройство§7: §6" + target.getLoginChainData().getDeviceModel() + "\n§l§6• §r§fЭффекты§7: §6" + target.getEffects() +
 											  "\n\n§l§6• §r§fВыберите нужный пункт Меню§7:");
 						simpleForm.addButton("§r§fБлокировка Аккаунта");
 						simpleForm.addButton("§r§fБлокировка Чата");
@@ -79,6 +77,12 @@ public class DataPacketReceiveListener implements Listener {
 
 							}
 						});
+					}
+					break;
+				case Item.MOB_SPAWNER:
+					if (SpectateAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
+						Player target = Server.getInstance().getPlayerExact(config.getString(player.getName().toLowerCase() + ".Spectate"));
+						CheatCheackerAPI.addCheatCheacker(player, target);
 					}
 					break;
 				default:

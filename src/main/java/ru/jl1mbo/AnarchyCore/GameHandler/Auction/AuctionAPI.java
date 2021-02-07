@@ -1,5 +1,6 @@
 package ru.jl1mbo.AnarchyCore.GameHandler.Auction;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import cn.nukkit.utils.Config;
 import ru.jl1mbo.AnarchyCore.Main;
 import ru.jl1mbo.AnarchyCore.GameHandler.Auction.Commands.AuctionCommand;
 import ru.jl1mbo.AnarchyCore.GameHandler.Auction.EventsListener.InventoryTransactionListener;
+import ru.jl1mbo.AnarchyCore.GameHandler.Auction.Task.AuctionUpdateTask;
 import ru.jl1mbo.AnarchyCore.GameHandler.Auction.Utils.TradeItem;
 import ru.jl1mbo.AnarchyCore.GameHandler.Auction.Utils.Inventory.AuctionChest;
 import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryAPI;
@@ -36,27 +38,33 @@ public class AuctionAPI extends PluginBase {
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		pluginManager.registerEvents(new InventoryTransactionListener(), Main.getInstance());
 		Server.getInstance().getCommandMap().register("", new AuctionCommand());
-		for (Map.Entry<String, Object> entry : ConfigUtils.getAuctionConfig().getAll().entrySet()) {
-			ArrayList<Object> itemData = (ArrayList<Object>) entry.getValue();
-			CompoundTag nbt = null;
-			if (itemData.size() > 6) {
-				try {
-					nbt = NBTIO.read((byte[]) itemData.get(6), ByteOrder.LITTLE_ENDIAN);
-				} catch (IOException e) {
-					e.printStackTrace();
+		Server.getInstance().getScheduler().scheduleRepeatingTask(new AuctionUpdateTask(), 20);
+		File auctionData = new File(Main.getInstance().getDataFolder() + "/Auction/Items.yml");
+		if (auctionData.exists()) {
+			for (Map.Entry<String, Object> entry : ConfigUtils.getAuctionConfig().getAll().entrySet()) {
+				ArrayList<Object> itemData = (ArrayList<Object>) entry.getValue();
+				CompoundTag namedTag = null;
+				if (itemData.size() > 6) {
+					try {
+						namedTag = NBTIO.read((byte[]) itemData.get(6), ByteOrder.LITTLE_ENDIAN);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
+				if (namedTag == null) {
+					namedTag = new CompoundTag();
+				}
+				namedTag.putString("UUID", entry.getKey());
+				Item item = Item.get((int) itemData.get(3), (int) itemData.get(4), (int) itemData.get(5));
+				item.setNamedTag(namedTag);
+				AUCTION.put(entry.getKey(), new TradeItem(item, itemData.get(0).toString(), (double) itemData.get(1), Long.valueOf(itemData.get(2).toString()), entry.getKey()));
 			}
-			if (nbt == null) {
-				nbt = new CompoundTag();
-			}
-			nbt.putString("UUID", entry.getKey());
-			Item item = Item.get((int) itemData.get(3), (int) itemData.get(4), (int) itemData.get(5));
-			item.setNamedTag(nbt);
-			AUCTION.put(entry.getKey(), new TradeItem(item, itemData.get(0).toString(), (double) itemData.get(1), Long.valueOf(itemData.get(2).toString()), entry.getKey()));
 		}
 	}
 
 	public static void saveAuction() {
+		File auctionData = new File(Main.getInstance().getDataFolder() + "/Auction/Items.yml");
+		if (auctionData.exists()) auctionData.delete();
 		Config config = ConfigUtils.getAuctionConfig();
 		for (Map.Entry<String, TradeItem> entry : AUCTION.entrySet()) {
 			try {
@@ -101,12 +109,12 @@ public class AuctionAPI extends PluginBase {
 		for (int i = start; i < stop; i++) {
 			TradeItem tradeItem = (TradeItem) tradeItems[i];
 			Item item = tradeItem.sellItem.clone();
-			CompoundTag compoundTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
-			compoundTag.putString("UUID", tradeItem.UUID);
-			item.setNamedTag(compoundTag);
-			item.setLore("\n§r§fПродавец§7: §6" + tradeItem.sellerName + "\n§r§fСтоимость§7: §6" + tradeItem.itemPrice + "\n§r§fДо окончания§7: §6" +
-						 (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6" + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" +
-						 (tradeItem.getTime() % 60) + " §fсек§7.\n\n§r§l§6• §r§fНажмите§7, §fчтобы купить предмет§7!");
+			CompoundTag namedTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
+			namedTag.putString("UUID", tradeItem.UUID);
+			item.setNamedTag(namedTag);
+			item.setCustomName("§r§fПродавец§7: §6" + tradeItem.sellerName + "\n§r§fСтоимость§7: §6" + tradeItem.itemPrice + "\n§r§fДо окончания§7: §6" +
+							   (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6" + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" +
+							   (tradeItem.getTime() % 60) + " §fсек§7.\n\n§r§l§6• §r§fНажмите§7, §fчтобы купить предмет§7!");
 			auctionChest.addItem(item);
 		}
 		if (playerPage >= 0) {

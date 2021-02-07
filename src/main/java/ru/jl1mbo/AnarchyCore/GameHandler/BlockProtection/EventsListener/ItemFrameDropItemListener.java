@@ -9,13 +9,13 @@ import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.BlockProtectionAPI;
 
 public class ItemFrameDropItemListener implements Listener {
 
-    @EventHandler()
-    public void onItemFrameDropItem(ItemFrameDropItemEvent event) {
-        Player player = event.getPlayer();
-        Block block = event.getBlock();
-        if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
-            player.sendTip(BlockProtectionAPI.BUSY);
-            event.setCancelled(true);
-        }
-    }
+	@EventHandler()
+	public void onItemFrameDropItem(ItemFrameDropItemEvent event) {
+		Player player = event.getPlayer();
+		Block block = event.getBlock();
+		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
+			player.sendTip("§rТерритория §6не доступна §fдля взаимодействия");
+			event.setCancelled(true);
+		}
+	}
 }

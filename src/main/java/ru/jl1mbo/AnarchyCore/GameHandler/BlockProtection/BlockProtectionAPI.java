@@ -3,17 +3,20 @@ package ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
-import cn.nukkit.level.Sound;
 import cn.nukkit.plugin.PluginManager;
 import ru.jl1mbo.AnarchyCore.Main;
+import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.DefaultBlockProtection;
+import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.DiamondOreProtection;
+import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.EmeraldBlockProtection;
+import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.EmeraldOreProtection;
+import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.IronBlockProtection;
+import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Commands.RegionCommand;
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.BlockBreakListener;
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.BlockPistonListener;
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.BlockPlaceListener;
@@ -23,21 +26,17 @@ import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.PlayerIn
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Utils.SQLiteUtils;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Permissions.PermissionAPI;
-import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Permissions.Utils.GroupAllow;
+import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Permissions.Group.DefaultGroup;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
 public class BlockProtectionAPI {
+	private static HashMap<Integer, DefaultBlockProtection> BLOCK_PROTECTION = new HashMap<>();
 	public static String PREFIX = "§l§7(§6Регионы§7) §r";
-	public static String FREE = "  §l§fТерритория свободна§7!";
-	public static String BUSY = "  §l§fТерритория не доступна для взаимодействия§7!";
-	public static String BUSY_BY = "  §l§fТерритория занята Игроком §6{PLAYER}";
-	public static String UNBREAK = "  §l§fЭтот блок невозможно сломать§7!";
-	public static String UNPLACE = "  §l§fЭтот блок не возможно установить тут§7!";
-	public static String BIOME = "  §l§fЭтот биом не доступен для строительства§7!";
-	public static Map<Integer, Integer> REGIONS = new HashMap<>();
 
 	public static void register() {
+		registerBlocks();
 		new File(Main.getInstance().getDataFolder() + "/BlockProtection").mkdir();
+		Server.getInstance().getCommandMap().register("", new RegionCommand());
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		pluginManager.registerEvents(new BlockBreakListener(), Main.getInstance());
 		pluginManager.registerEvents(new BlockPistonListener(), Main.getInstance());
@@ -45,15 +44,22 @@ public class BlockProtectionAPI {
 		pluginManager.registerEvents(new EntityExplodeListener(), Main.getInstance());
 		pluginManager.registerEvents(new ItemFrameDropItemListener(), Main.getInstance());
 		pluginManager.registerEvents(new PlayerInteractListener(), Main.getInstance());
-		registerBlocks();
 		createSQLiteTable();
 	}
-
+	
 	private static void registerBlocks() {
-		REGIONS.put(Item.IRON_BLOCK, 2);
-		REGIONS.put(Item.DIAMOND_ORE, 4);
-		REGIONS.put(Item.EMERALD_ORE, 8);
-		REGIONS.put(Item.EMERALD_BLOCK, 10);
+		registerBlockProtection(new IronBlockProtection());
+		registerBlockProtection(new DiamondOreProtection());
+		registerBlockProtection(new EmeraldOreProtection());
+		registerBlockProtection(new EmeraldBlockProtection());
+	}
+
+	private static void registerBlockProtection(DefaultBlockProtection blockProtection) {
+		BLOCK_PROTECTION.put(blockProtection.getBlockId(), blockProtection);
+	}
+	
+	public static HashMap<Integer, DefaultBlockProtection> getAllBlocks() {
+		return BLOCK_PROTECTION;
 	}
 
 	private static void createSQLiteTable() {
@@ -67,16 +73,16 @@ public class BlockProtectionAPI {
 			player.sendTitle("§l§cОшибка");
 			return;
 		}
-		GroupAllow groupAllow = PermissionAPI.getGroupAllows(PermissionAPI.getGroup(player.getName()));
-		if (groupAllow != null) {
+		DefaultGroup defaultGroup = PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(player.getName()));
+		if (defaultGroup != null) {
 			int regionCount = getRegionsCount(player.getName());
-			if (regionCount >= groupAllow.getMaxRegions()) {
+			if (regionCount >= defaultGroup.getMaxRegions()) {
 				player.sendMessage(BlockProtectionAPI.PREFIX + "§fВы уже разместили максимальное количество §6Регионов §7(§6" + regionCount + "§7)");
 				player.sendTitle("§l§cОшибка");
 				return;
 			}
 		}
-		int radius = REGIONS.get(block.getId());
+		int radius = BLOCK_PROTECTION.get(block.getId()).getRadius();
 		int x = block.getFloorX();
 		int y = block.getFloorY();
 		int z = block.getFloorZ();
@@ -88,10 +94,9 @@ public class BlockProtectionAPI {
 			return;
 		}
 		player.sendMessage(PREFIX +
-						   "§fВы успешно создали новый защищеный регион§7!\n§l§6• §r§fДля проверки владений используйте палку§7!");
+						   "§fВы успешно создали новый " + BLOCK_PROTECTION.get(block.getId()).getBlockName() + "§7!");
 		SQLiteUtils.query("INSERT INTO AREAS (DATE_REG, Username, Main_X, Main_Y, Main_Z, Pos1_X, Pos1_Y, Pos1_Z, Pos2_X, Pos2_Y, Pos2_Z) VALUES ('" + Utils.getDate() + "', '" + player.getName() + "', '" + x
 						  + "', '" + y + "', '" + z + "', '" + pos1[0] + "', '" + pos1[1] + "', '" + pos1[2] + "', '" + pos2[0] + "', '" + pos2[1] + "', '" + pos2[2] + "');");
-		player.getLevel().addSound(player, Sound.HIT_ANVIL, 1, 1, player);
 	}
 
 	public static boolean canInteractHere(Player player, Location location) {
