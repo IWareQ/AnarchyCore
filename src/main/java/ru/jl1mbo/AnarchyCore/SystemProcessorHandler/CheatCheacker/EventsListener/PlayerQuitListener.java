@@ -14,7 +14,7 @@ public class PlayerQuitListener implements Listener {
 		Player player = event.getPlayer();
 		if (CheatCheackerAPI.isCheatChecker(player.getName())) {
 			CheatCheackerAPI.removeCheatCheacker(player.getName());
-			BanSystemAPI.addBan(player.getName(), "Перезашел при проверке", "CheatCheacker", 30 * 86400);
+			BanSystemAPI.addBan(player.getName(), "перезаход при проверке", "CheatCheacker", 30 * 86400);
 		}
 	}
 }

@@ -11,11 +11,16 @@ public class IronBlockProtection extends DefaultBlockProtection {
 
 	@Override
 	public String getBlockName() {
-		return "§r§6Железный Регион";
+		return "§6Железный Регион";
 	}
 
 	@Override
 	public Integer getRadius() {
 		return 2;
+	}
+
+	@Override
+	public String getBlockImage() {
+		return "textures/ui/iron_block";
 	}
 }

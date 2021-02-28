@@ -36,7 +36,7 @@ public class ModeratorGroup extends DefaultGroup {
 		permissionAllows.put("Command.NightVision", true);
 		permissionAllows.put("Command.Near", true);
 		permissionAllows.put("Command.Spectate", true);
-		permissionAllows.put("Command.Inventory", true);
+		permissionAllows.put("Command.SeeInventory", true);
 		permissionAllows.put("Command.ClearChat", true);
 		permissionAllows.put("Command.CheatCheacker", true);
 		permissionAllows.put("AdminChat", true);

@@ -9,7 +9,6 @@ import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
-import cn.nukkit.plugin.PluginManager;
 import ru.jl1mbo.AnarchyCore.Main;
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.DefaultBlockProtection;
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.DiamondOreProtection;
@@ -17,12 +16,7 @@ import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.EmeraldBlockProt
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.EmeraldOreProtection;
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Blocks.IronBlockProtection;
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Commands.RegionCommand;
-import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.BlockBreakListener;
-import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.BlockPistonListener;
-import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.BlockPlaceListener;
-import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.EntityExplodeListener;
-import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.ItemFrameDropItemListener;
-import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.PlayerInteractListener;
+import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.EventsListener.EventsListenerBlockProtection;
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.Utils.SQLiteUtils;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Permissions.PermissionAPI;
@@ -37,16 +31,10 @@ public class BlockProtectionAPI {
 		registerBlocks();
 		new File(Main.getInstance().getDataFolder() + "/BlockProtection").mkdir();
 		Server.getInstance().getCommandMap().register("", new RegionCommand());
-		PluginManager pluginManager = Server.getInstance().getPluginManager();
-		pluginManager.registerEvents(new BlockBreakListener(), Main.getInstance());
-		pluginManager.registerEvents(new BlockPistonListener(), Main.getInstance());
-		pluginManager.registerEvents(new BlockPlaceListener(), Main.getInstance());
-		pluginManager.registerEvents(new EntityExplodeListener(), Main.getInstance());
-		pluginManager.registerEvents(new ItemFrameDropItemListener(), Main.getInstance());
-		pluginManager.registerEvents(new PlayerInteractListener(), Main.getInstance());
+		EventsListenerBlockProtection.register();
 		createSQLiteTable();
 	}
-	
+
 	private static void registerBlocks() {
 		registerBlockProtection(new IronBlockProtection());
 		registerBlockProtection(new DiamondOreProtection());
@@ -57,7 +45,7 @@ public class BlockProtectionAPI {
 	private static void registerBlockProtection(DefaultBlockProtection blockProtection) {
 		BLOCK_PROTECTION.put(blockProtection.getBlockId(), blockProtection);
 	}
-	
+
 	public static HashMap<Integer, DefaultBlockProtection> getAllBlocks() {
 		return BLOCK_PROTECTION;
 	}
@@ -69,7 +57,7 @@ public class BlockProtectionAPI {
 
 	public static void placeRegion(Player player, Block block) {
 		if (player.getLevel() != WorldSystemAPI.getMap()) {
-			player.sendMessage(PREFIX + "§fРазместите блок в обычном мире§7!");
+			player.sendMessage(PREFIX + "Разместите блок в обычном мире§7!");
 			player.sendTitle("§l§cОшибка");
 			return;
 		}
@@ -77,7 +65,7 @@ public class BlockProtectionAPI {
 		if (defaultGroup != null) {
 			int regionCount = getRegionsCount(player.getName());
 			if (regionCount >= defaultGroup.getMaxRegions()) {
-				player.sendMessage(BlockProtectionAPI.PREFIX + "§fВы уже разместили максимальное количество §6Регионов §7(§6" + regionCount + "§7)");
+				player.sendMessage(BlockProtectionAPI.PREFIX + "Вы уже разместили §6максимальное §fколичество §6Регионов §7(§6" + regionCount + "§7)");
 				player.sendTitle("§l§cОшибка");
 				return;
 			}
@@ -89,12 +77,12 @@ public class BlockProtectionAPI {
 		int[] pos1 = {Math.min(x - radius, x + radius), y - radius, Math.min(z - radius, z + radius)};
 		int[] pos2 = {Math.max(x - radius, x + radius), y + radius, Math.max(z - radius, z + radius)};
 		if (!canCreateRegion(pos1[0], pos2[0], pos1[1], pos2[1], pos1[2], pos2[2])) {
-			player.sendMessage(PREFIX + "§fНе возможно установить блок в выбраном месте из§7-§fза пересечения регионов§7!");
+			player.sendMessage(PREFIX + "Не возможно установить блок §6в выбраном месте §fиз§7-§fза §6пересечения §fрегионов§7!");
 			player.sendTitle("§l§cОшибка");
 			return;
 		}
 		player.sendMessage(PREFIX +
-						   "§fВы успешно создали новый " + BLOCK_PROTECTION.get(block.getId()).getBlockName() + "§7!");
+						   "Вы успешно создали новый " + BLOCK_PROTECTION.get(block.getId()).getBlockName() + "§7!");
 		SQLiteUtils.query("INSERT INTO AREAS (DATE_REG, Username, Main_X, Main_Y, Main_Z, Pos1_X, Pos1_Y, Pos1_Z, Pos2_X, Pos2_Y, Pos2_Z) VALUES ('" + Utils.getDate() + "', '" + player.getName() + "', '" + x
 						  + "', '" + y + "', '" + z + "', '" + pos1[0] + "', '" + pos1[1] + "', '" + pos1[2] + "', '" + pos2[0] + "', '" + pos2[1] + "', '" + pos2[2] + "');");
 	}
@@ -107,16 +95,16 @@ public class BlockProtectionAPI {
 		return false;
 	}
 
-	public static boolean isRegionOwner(String playerName, int regionID) {
-		return playerName.equalsIgnoreCase(getRegionOwner(regionID));
+	public static boolean isRegionOwner(String playerName, int regionId) {
+		return playerName.equalsIgnoreCase(getRegionOwner(regionId));
 	}
 
-	public static boolean isRegionMember(String playerName, int regionID) {
-		return SQLiteUtils.selectInteger("SELECT Member_ID FROM MEMBERS WHERE UPPER(Username) = '" + playerName.toUpperCase() + "' AND Region_ID = '" + regionID + "';") == null;
+	public static boolean isRegionMember(String playerName, int regionId) {
+		return SQLiteUtils.selectInteger("SELECT Member_ID FROM MEMBERS WHERE UPPER(Username) = '" + playerName.toUpperCase() + "' AND Region_ID = '" + regionId + "';") == null;
 	}
 
-	public static String getRegionOwner(int regionID) {
-		return SQLiteUtils.selectString("SELECT Username FROM AREAS WHERE (Region_ID = '" + regionID + "');");
+	public static String getRegionOwner(int regionId) {
+		return SQLiteUtils.selectString("SELECT Username FROM AREAS WHERE (Region_ID = '" + regionId + "');");
 	}
 
 	public static Integer getRegionIDByPosition(Position position) {
@@ -148,7 +136,11 @@ public class BlockProtectionAPI {
 		return SQLiteUtils.selectInteger("SELECT COUNT(*) as COUNT FROM AREAS WHERE UPPER(Username) = '" + playerName.toUpperCase() + "';");
 	}
 
-	public static List<String> getRegionMembers(int regionID) {
-		return SQLiteUtils.selectStringList("SELECT Username FROM MEMBERS WHERE Region_ID = '" + regionID + "';");
+	public static List<String> getRegionMembers(int regionId) {
+		return SQLiteUtils.selectStringList("SELECT Username FROM MEMBERS WHERE Region_ID = '" + regionId + "';");
+	}
+
+	public static String getCreateRegionDate(int regionId) {
+		return SQLiteUtils.selectString("SELECT DATE_REG FROM AREAS WHERE Region_ID = '" + regionId + "';");
 	}
 }

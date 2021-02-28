@@ -11,7 +11,7 @@ import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CheatCheacker.CheatCheackerA
 public class CheatCheackCommand extends Command {
 
 	public CheatCheackCommand() {
-		super("cheatcheack", "§r§fВызвать на проверку", "", new String[] {"cc"});
+		super("cheatcheack", "§rВызвать на проверку", "", new String[] {"cc"});
 		this.setPermission("Command.CheatCheack");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("player", CommandParamType.TARGET, false)});
@@ -25,12 +25,12 @@ public class CheatCheackCommand extends Command {
 				return false;
 			}
 			if (args.length != 1) {
-				player.sendMessage("§l§6• §r§fИспользование §7- §6/cc §7(§6игрок§7)");
+				player.sendMessage("§l§6• §rИспользование §7- §6/cc §7(§6игрок§7)");
 				return true;
 			}
 			Player target = Server.getInstance().getPlayer(args[0]);
 			if (target == null) {
-				player.sendMessage("§l§6• §r§fИгрок §6" + args[0] + " §fне в сети§7!");
+				player.sendMessage("§l§6• §rИгрок §6" + args[0] + " §fне в сети§7!");
 				return true;
 			}
 			CheatCheackerAPI.addCheatCheacker(player, target);

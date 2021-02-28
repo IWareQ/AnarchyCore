@@ -12,7 +12,7 @@ import ru.jl1mbo.AnarchyCore.Utils.Utils;
 public class AddMoneyCommand extends Command {
 
 	public AddMoneyCommand() {
-		super("addmoney", "§r§fВыдача монет");
+		super("addmoney", "§rВыдача монет");
 		this.setPermission("Command.AddMoney");
 		this.commandParameters.clear();
 		this.commandParameters.put("default", new CommandParameter[] {new CommandParameter("money", CommandParamType.INT, false), new CommandParameter("player", CommandParamType.TARGET, false)});
@@ -28,10 +28,10 @@ public class AddMoneyCommand extends Command {
 			return true;
 		}
 		String nickname = Utils.implode(args, 1);
-		sender.sendMessage(EconomyAPI.PREFIX + "§fИгрок §6" + nickname + " §fполучил §6" + String.format("%.1f", Double.parseDouble(args[0])) + "");
+		sender.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + nickname + " §fполучил §6" + String.format("%.1f", Double.parseDouble(args[0])) + "");
 		Player target = Server.getInstance().getPlayerExact(nickname);
 		if (target != null) {
-			target.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс пополнен на §6" + String.format("%.1f", Double.parseDouble(args[0])) + "");
+			target.sendMessage(EconomyAPI.PREFIX + "Ваш баланс пополнен на §6" + String.format("%.1f", Double.parseDouble(args[0])) + "");
 		}
 		EconomyAPI.addMoney(nickname, Double.parseDouble(args[0]));
 		return false;

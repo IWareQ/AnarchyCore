@@ -38,8 +38,8 @@ public class AmmunitionAchievements extends Achievement {
 	}
 
 	public void action(Player player) {
-		player.sendMessage("§l§7(§3Достижения§7) §r§fДостижение §6" + this.getAchievementName() + " §fуспешно пройдено§7!");
+		player.sendMessage("§l§7(§3Достижения§7) §rДостижение §6" + this.getAchievementName() + " §fуспешно пройдено§7!");
 		player.sendTitle("§6Испытание", "§fзавершено", 20, 5 * 20, 5);
-		player.getLevel().addSound(player, Sound.RANDOM_TOAST, 1.0F, 1.0F, player);
+		player.getLevel().addSound(player, Sound.RANDOM_TOTEM, 1.0F, 1.0F, player);
 	}
 }

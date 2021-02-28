@@ -9,14 +9,13 @@ import ru.jl1mbo.AnarchyCore.Main;
 import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.Authorization.EventsListener.PlayerJoinListener;
 import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.Authorization.EventsListener.PlayerLocallyInitializedListener;
 import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.Authorization.EventsListener.PlayerQuitListener;
-import ru.jl1mbo.AnarchyCore.Utils.ConfigUtils;
 
 public class AuthorizationAPI {
 	public static HashMap<String, Long> playerTime = new HashMap<>();
-	private static Config config;
+	public static Config config;
 
 	public static void register() {
-		config = ConfigUtils.getAuthorizationConfig();
+		config = new Config(Main.getInstance().getDataFolder() + "/Authorization/Users.yml", Config.YAML);
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		pluginManager.registerEvents(new PlayerJoinListener(), Main.getInstance());
 		pluginManager.registerEvents(new PlayerLocallyInitializedListener(), Main.getInstance());

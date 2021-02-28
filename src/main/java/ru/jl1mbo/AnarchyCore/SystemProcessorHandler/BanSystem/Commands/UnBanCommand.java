@@ -28,7 +28,7 @@ public class UnBanCommand extends Command {
         String nickname = Utils.implode(args, 0);
         if (BanSystemAPI.IsBanned(nickname)) {
             sender.sendMessage(BanSystemAPI.PREFIX + "§fАккаунт игрока §6" + nickname + " §fбыл разблокирован§7!");
-            Utils.sendMessageToChat("🔓Разблокировка аккаунта\n\nИгрок: " + nickname + "\nАдминистратор: " + sender.getName(), 2000000001);
+            Utils.sendMessageToChat("🔓Разблокировка аккаунта\n\nИгрок: " + nickname + "\nАдминистратор: " + sender.getName());
             BanSystemAPI.removeBan(nickname);
         } else {
             sender.sendMessage(BanSystemAPI.PREFIX + "§fАккаунт игрока §6" + nickname + " §fне заблокирован§7!");

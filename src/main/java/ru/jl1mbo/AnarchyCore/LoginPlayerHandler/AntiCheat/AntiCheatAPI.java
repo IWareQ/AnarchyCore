@@ -1,5 +1,8 @@
 package ru.jl1mbo.AnarchyCore.LoginPlayerHandler.AntiCheat;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -8,6 +11,7 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.level.Location;
+import cn.nukkit.math.Vector3f;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.LoginChainData;
 import ru.jl1mbo.AnarchyCore.Main;
@@ -15,9 +19,7 @@ import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.AntiCheat.EventsListener.EntityD
 import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.AntiCheat.EventsListener.PlayerJoinListener;
 import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.AntiCheat.EventsListener.PlayerLoginListener;
 import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.AntiCheat.EventsListener.PlayerMoveListener;
-
-import java.util.HashMap;
-import java.util.Map;
+import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
 public class AntiCheatAPI {
 	private static final Map<String, Integer> flyDetect = new HashMap<>();
@@ -54,15 +56,10 @@ public class AntiCheatAPI {
 			if (reachDetect.get(damager.getName()) > 5) {
 				reachDetect.put(damager.getName(), 0);
 				event.setCancelled(true);
-				for (Player player : Server.getInstance().getOnlinePlayers().values()) {
-					if (player.hasPermission("AdminChat")) {
-						player.sendMessage("§fНовая жалоба§7! (§6AntiCheat§7)\n§fНарушитель§7: §6" + damager.getName() + "\n§fПричина§7: §6Reach");
-					}
-				}
+				Utils.sendMessageAdmins("§fНовая жалоба§7! (§6AntiCheat§7)\n§fНарушитель§7: §6" + damager.getName() + "\n§fПричина§7: §6Reach", 1);
 			}
 		}
 	}
-
 	public static void checkFly(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		Location oldLocation = event.getFrom();
@@ -75,11 +72,7 @@ public class AntiCheatAPI {
 						flyDetect.put(player.getName(), flyDetect.get(player.getName()) + 1);
 						if (flyDetect.get(player.getName()) > 5) {
 							flyDetect.put(player.getName(), 0);
-							for (Player players : Server.getInstance().getOnlinePlayers().values()) {
-								if (players.hasPermission("AdminChat")) {
-									players.sendMessage("§fНовая жалоба§7! (§6AntiCheat§7)\n§fНарушитель§7: §6" + player.getName() + "\n§fПричина§7: §6Fly");
-								}
-							}
+							Utils.sendMessageAdmins("§fНовая жалоба§7! (§6AntiCheat§7)\n§fНарушитель§7: §6" + player.getName() + "\n§fПричина§7: §6Fly", 1);
 						}
 					}
 				}

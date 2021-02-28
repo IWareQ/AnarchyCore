@@ -44,7 +44,7 @@ public class SpectateAPI {
 	public static void addSpectate(Player player, Player target) {
 		CompoundTag namedTag = new CompoundTag();
 		if (isSpectate(player.getName())) {
-			player.sendMessage(PREFIX + "§fПереключение на §6" + target.getName() + "§7!");
+			player.sendMessage(PREFIX + "Переключение на §6" + target.getName() + "§7!");
 			config.set(player.getName().toLowerCase() + ".Spectate", target.getName());
 			player.teleport(target);
 			enableCoordinate(player, false);
@@ -98,12 +98,11 @@ public class SpectateAPI {
 			player.getInventory().clearAll();
 			player.getInventory().setHeldItemIndex(0);
 			player.getInventory().setItem(4, Item.get(
-											  Item.CHEST).setCustomName("§r§fПросмотреть Инвентарь").setLore("§r§l§6• §r§fИспользуйте чтобы просмотреть §6Инвентарь §fнаблюдаемого§7!"));
-			player.getInventory().setItem(5, Item.get(Item.MOB_SPAWNER).setCustomName("§r§fСкоро").setLore("§r§l§6• §r§fСкоро тут что-то будет"));
-			player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§r§fЗавершить Наблюдение"));
-			player.getInventory().setItem(6, Item.get(Item.CLOCK).setCustomName("§r§fПанель Администрирования"));
-			player.sendMessage(PREFIX + "§fВы начали наблюдать за Игроком §6" + target.getName() +
-							   "\n§l§6• §r§fДля окончания наблюдения используйте §6Редстоун§7!");
+											  Item.CHEST).setCustomName("§r§6Просмотреть Инвентарь").setLore("§r§l§6• §rИспользуйте§7, §fчтобы просмотреть §6Инвентарь §fнаблюдаемого§7!"));
+			player.getInventory().setItem(5, Item.get(Item.MOB_SPAWNER).setCustomName("§r§6Вызвать на проверку").setLore("§r§l§6• §rИспользуйте§7, §fчтобы §6вызвать §fнаблюдаемого на §6проверку§7!"));
+			player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§r§6Завершить Наблюдение"));
+			player.getInventory().setItem(6, Item.get(Item.CLOCK).setCustomName("§r§6Панель Администрирования"));
+			player.sendMessage(PREFIX + "Вы начали §6наблюдать §fза игроком §6" + target.getName());
 		}
 	}
 
@@ -136,7 +135,7 @@ public class SpectateAPI {
 			player.removeEffect(Effect.NIGHT_VISION);
 			player.extinguish();
 			enableCoordinate(player, true);
-			player.sendMessage(PREFIX + "§fВы закончили наблюдение за игроком §6" + config.getString(player.getName().toLowerCase() + ".Spectate"));
+			player.sendMessage(PREFIX + "Вы §6закончили §fнаблюдение за игроком §6" + config.getString(player.getName().toLowerCase() + ".Spectate"));
 			namedTag.remove("Inventory");
 			config.remove(player.getName().toLowerCase());
 			config.save();

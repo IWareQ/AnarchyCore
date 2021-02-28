@@ -15,8 +15,11 @@ import ru.jl1mbo.AnarchyCore.Manager.Scoreboard.ScoreboardAPI;
 import ru.jl1mbo.AnarchyCore.Manager.Scoreboard.Network.DisplaySlot;
 import ru.jl1mbo.AnarchyCore.Manager.Scoreboard.Network.Scoreboard;
 import ru.jl1mbo.AnarchyCore.Manager.Scoreboard.Network.ScoreboardDisplay;
+import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.BanSystem.BanSystemAPI;
+import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.BanSystem.Utils.BanUtils;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.EconomyAPI.EconomyAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Permissions.PermissionAPI;
+import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
 public class ScoreboardTask extends Task {
 	private static Map<Player, Scoreboard> SCOREBOARDS = new HashMap<>();
@@ -29,9 +32,23 @@ public class ScoreboardTask extends Task {
 
 	public static void showScoreboard(Player player, boolean hide) {
 		if (hide) {
+			if (BanSystemAPI.IsBanned(player.getName())) {
+				BanUtils banUtils = BanSystemAPI.getBanUtils(player.getName());
+				Scoreboard scoreboard = ScoreboardAPI.createScoreboard();
+				ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "§6Аккаунт Заблокирован");
+				scoreboardDisplay.addLine(PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(player.getName())).getGroupName() + " " +  player.getName(), 0);
+				scoreboardDisplay.addLine("§1", 1);
+				scoreboardDisplay.addLine("Причина§7: §6" + banUtils.getReason(), 2);
+				scoreboardDisplay.addLine("§3", 3);
+				scoreboardDisplay.addLine("§6" + Utils.getRemainingTime(banUtils.getTime()), 4);
+				scoreboardDisplay.addLine("§5", 5);
+				scoreboardDisplay.addLine("§6death§7-§6mc§7.§6online", 6);
+				scoreboard.showFor(player);
+				SCOREBOARDS.put(player, scoreboard);
+			}
 			Scoreboard scoreboard = ScoreboardAPI.createScoreboard();
 			ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "§3DEATH §fMC");
-			scoreboardDisplay.addLine(PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(player.getName())).getGroupName() + player.getName(), 0);
+			scoreboardDisplay.addLine(PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(player.getName())).getGroupName() + " " +  player.getName(), 0);
 			scoreboardDisplay.addLine("§1", 1);
 			scoreboardDisplay.addLine("§r§fБаланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(player.getName())), 2);
 			scoreboardDisplay.addLine("§r§fОнлайн§7: §6" + Server.getInstance().getOnlinePlayers().size(), 3);
@@ -55,7 +72,6 @@ public class ScoreboardTask extends Task {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 			if (player.isOnline()) {
 				if (player.spawned) {
-					//SCOREBOARDS.get(player).hideFor(player);
 					showScoreboard(player, false);
 					showScoreboard(player, true);
 				}

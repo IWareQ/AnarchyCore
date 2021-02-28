@@ -12,6 +12,7 @@ import ru.jl1mbo.AnarchyCore.Entity.NPC.VillagerNPC;
 import ru.jl1mbo.AnarchyCore.Entity.NPC.WanderingTraderNPC;
 import ru.jl1mbo.AnarchyCore.GameHandler.Auction.AuctionAPI;
 import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryAPI;
+import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CustomManager.Utils.CustomItemID;
 
 public class EntityDamageListener implements Listener {
 
@@ -25,14 +26,14 @@ public class EntityDamageListener implements Listener {
 				AuctionAPI.showAuction((Player) damager, true);
 			} else if (entity instanceof WanderingTraderNPC) {
 				Hopper traderHopper = new Hopper("§r§l§6Собиратель Артефактов");
-				traderHopper.addItem(Item.get(Item.COBWEB, 0,
-											  1).setCustomName("§r§6Паутина Таратнула").setLore("\n§r§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7!"));
-				traderHopper.addItem(Item.get(Item.BLAZE_ROD, 0,
-											  1).setCustomName("§r§6Жезл Солнца").setLore("\n§r§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7!"));
-				traderHopper.addItem(Item.get(Item.ICE_FROSTED, 0,
-											  1).setCustomName("§r§6Льдышка").setLore("\n§r§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7!"));
-				traderHopper.addItem(Item.get(Item.SKULL, 0,
-											  1).setCustomName("§r§6Череп Стража").setLore("\n§r§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7!"));
+				traderHopper.addItem(Item.get(
+										 CustomItemID.TARANTULA_WEB).setLore("\n§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7!"));
+				traderHopper.addItem(Item.get(
+										 CustomItemID.SUN_WAND).setLore("\n§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7!"));
+				traderHopper.addItem(Item.get(
+										 CustomItemID.PIECE_ICE).setLore("\n§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7!"));
+				traderHopper.addItem(Item.get(
+										 CustomItemID.REMAINS_GUARDIAN).setLore("\n§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7!"));
 				FakeInventoryAPI.openInventory((Player) damager, traderHopper);
 			}
 		}

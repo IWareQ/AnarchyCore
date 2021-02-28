@@ -18,7 +18,7 @@ public class TartarusGroup extends DefaultGroup {
 
 	@Override
 	public Integer getMaxRegions() {
-		return 8;
+		return 7;
 	}
 
 	@Override

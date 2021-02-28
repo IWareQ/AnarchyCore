@@ -8,14 +8,14 @@ import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.EconomyAPI.EconomyAPI;
 public class MoneyCommand extends Command {
 
     public MoneyCommand() {
-        super("money", "§r§fИгровой баланс", "", new String[]{"mymoney"});
+        super("money", "§rИгровой баланс", "", new String[]{"mymoney"});
         this.commandParameters.clear();
     }
 
     @Override()
     public boolean execute(CommandSender sender, String label, String[] args) {
         if (sender instanceof Player) {
-            sender.sendMessage(EconomyAPI.PREFIX + "§fВаш баланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(sender.getName())) + "");
+            sender.sendMessage(EconomyAPI.PREFIX + "Ваш баланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(sender.getName())) + "");
         }
         return false;
     }

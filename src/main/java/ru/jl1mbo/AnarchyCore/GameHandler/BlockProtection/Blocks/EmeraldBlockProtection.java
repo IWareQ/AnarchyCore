@@ -11,11 +11,16 @@ public class EmeraldBlockProtection extends DefaultBlockProtection {
 
 	@Override
 	public String getBlockName() {
-		return "§r§6Изумрудный Регион";
+		return "§6Изумрудный Регион";
 	}
 
 	@Override
 	public Integer getRadius() {
 		return 10;
+	}
+
+	@Override
+	public String getBlockImage() {
+		return "textures/ui/emerald_block";
 	}
 }

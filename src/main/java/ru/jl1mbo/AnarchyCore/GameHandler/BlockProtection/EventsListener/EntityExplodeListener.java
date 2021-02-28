@@ -13,7 +13,7 @@ public class EntityExplodeListener implements Listener {
 	@EventHandler()
 	public void onEntityExplode(EntityExplodeEvent event) {
 		List<Block> blocks = event.getBlockList();
-		blocks.removeIf((block) -> BlockProtectionAPI.getAllBlocks().get(block.getId()).getBlockId() != null || block.getId() == 52);
+		blocks.removeIf((block) -> BlockProtectionAPI.getAllBlocks().get(block.getId()) != null || block.getId() == 52);
 		event.setBlockList(blocks);
 	}
 }

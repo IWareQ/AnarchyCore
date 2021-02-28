@@ -38,7 +38,7 @@ public class AdministratorGroup extends DefaultGroup {
 		permissionAllows.put("Command.Near.150", true);
 		permissionAllows.put("Command.Bonus", true);
 		permissionAllows.put("Command.Spectate", true);
-		permissionAllows.put("Command.Inventory", true);
+		permissionAllows.put("Command.SeeInventory", true);
 		permissionAllows.put("Command.CheatCheack", true);
 		permissionAllows.put("AdminChat", true);
 		permissionAllows.put("Command.Mute", true);

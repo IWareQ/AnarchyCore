@@ -18,7 +18,7 @@ public class GuardianGroup extends DefaultGroup {
 
 	@Override
 	public Integer getMaxRegions() {
-		return 3;
+		return 2;
 	}
 
 	@Override
@@ -26,9 +26,6 @@ public class GuardianGroup extends DefaultGroup {
 		HashMap<String, Boolean> permissionAllows = new HashMap<>();
 		permissionAllows.put("Command.CraftingTable", true);
 		permissionAllows.put("Command.Food", true);
-		permissionAllows.put("Command.Heal", true);
-		permissionAllows.put("Command.ClearInventory", true);
-		permissionAllows.put("Command.Day", true);
 		return permissionAllows;
 	}
 }

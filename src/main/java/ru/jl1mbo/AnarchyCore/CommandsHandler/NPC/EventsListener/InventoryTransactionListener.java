@@ -9,92 +9,90 @@ import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
-import ru.dragonestia.ironlib.IronLib;
 import ru.jl1mbo.AnarchyCore.CommandsHandler.NPC.EventsListener.Inventory.Hopper;
+import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CustomManager.Utils.CustomItemID;
 
 public class InventoryTransactionListener implements Listener {
 
-    @EventHandler()
-    public void onInventoryTransaction(InventoryTransactionEvent event) {
-        for (InventoryAction action : event.getTransaction().getActions()) {
-            if (action instanceof SlotChangeAction) {
-                SlotChangeAction slotChange = (SlotChangeAction) action;
-                if (slotChange.getInventory() instanceof Hopper) {
-                    Player player = event.getTransaction().getSource();
-                    Item sourceItem = action.getSourceItem();
-                    event.setCancelled(true);
-                    switch (sourceItem.getId()) {
-                        case Item.COBWEB: {
-                            PlayerInventory playerInventory = player.getInventory();
-                            Item artifact = IronLib.getInstance().getPrefabManager().getPrefab("cobweb_artifact").getItem(1);
-                            Item goldenMoney = IronLib.getInstance().getPrefabManager().getPrefab("golden_money").getItem(5);
-                            if (playerInventory.contains(artifact)) {
-                                if (playerInventory.canAddItem(goldenMoney)) {
-                                    playerInventory.removeItem(artifact);
-                                    playerInventory.addItem(goldenMoney);
-                                    player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-                                    player.sendMessage("§l§7(§3Собиратель§7) §r§fСпасибо за §6Артефакт§7, §fприходи еще§7!");
-                                }
-                            } else {
-                                player.sendMessage("§l§7(§3Собиратель§7) §r§fНедостаточно §6Артефактов§7, §fдля совершения обмена§7!");
-                                player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
-                            }
-                            break;
-                        }
-                        case Item.BLAZE_ROD: {
-                            PlayerInventory playerInventory = player.getInventory();
-                            Item artifact = IronLib.getInstance().getPrefabManager().getPrefab("blaze_rod_artifact").getItem(1);
-                            Item goldenMoney = IronLib.getInstance().getPrefabManager().getPrefab("golden_money").getItem(5);
-                            if (playerInventory.contains(artifact)) {
-                                if (playerInventory.canAddItem(goldenMoney)) {
-                                    playerInventory.removeItem(artifact);
-                                    playerInventory.addItem(goldenMoney);
-                                    player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-                                    player.sendMessage("§l§7(§3Собиратель§7) §r§fСпасибо за §6Артефакт§7, §fприходи еще§7!");
-                                }
-                            } else {
-                                player.sendMessage("§l§7(§3Собиратель§7) §r§fНедостаточно §6Артефактов§7, §fдля совершения обмена§7!");
-                                player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
-                            }
-                            break;
-                        }
-                        case Item.ICE_FROSTED: {
-                            PlayerInventory playerInventory = player.getInventory();
-                            Item artifact = IronLib.getInstance().getPrefabManager().getPrefab("ice_frosted_artifact").getItem(1);
-                            Item goldenMoney = IronLib.getInstance().getPrefabManager().getPrefab("golden_money").getItem(5);
-                            if (playerInventory.contains(artifact)) {
-                                if (playerInventory.canAddItem(goldenMoney)) {
-                                    playerInventory.removeItem(artifact);
-                                    playerInventory.addItem(goldenMoney);
-                                    player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-                                    player.sendMessage("§l§7(§3Собиратель§7) §r§fСпасибо за §6Артефакт§7, §fприходи еще§7!");
-                                }
-                            } else {
-                                player.sendMessage("§l§7(§3Собиратель§7) §r§fНедостаточно §6Артефактов§7, §fдля совершения обмена§7!");
-                                player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
-                            }
-                            break;
-                        }
-                        case Item.SKULL: {
-                            PlayerInventory playerInventory = player.getInventory();
-                            Item artifact = IronLib.getInstance().getPrefabManager().getPrefab("skull_artifact").getItem(1);
-                            Item goldenMoney = IronLib.getInstance().getPrefabManager().getPrefab("golden_money").getItem(5);
-                            if (playerInventory.contains(artifact)) {
-                                if (playerInventory.canAddItem(goldenMoney)) {
-                                    playerInventory.removeItem(artifact);
-                                    playerInventory.addItem(goldenMoney);
-                                    player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-                                    player.sendMessage("§l§7(§3Собиратель§7) §r§fСпасибо за §6Артефакт§7, §fприходи еще§7!");
-                                }
-                            } else {
-                                player.sendMessage("§l§7(§3Собиратель§7) §r§fНедостаточно §6Артефактов§7, §fдля совершения обмена§7!");
-                                player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
+	@EventHandler()
+	public void onInventoryTransaction(InventoryTransactionEvent event) {
+		for (InventoryAction action : event.getTransaction().getActions()) {
+			if (action instanceof SlotChangeAction) {
+				SlotChangeAction slotChange = (SlotChangeAction) action;
+				if (slotChange.getInventory() instanceof Hopper) {
+					Player player = event.getTransaction().getSource();
+					Item sourceItem = action.getSourceItem();
+					event.setCancelled(true);
+					Item goldenMoney = Item.get(CustomItemID.GOLDEN_MONEY);
+					switch (sourceItem.getId()) {
+					case 1004: {
+						PlayerInventory playerInventory = player.getInventory();
+						Item artifact = Item.get(CustomItemID.TARANTULA_WEB);
+						if (playerInventory.contains(artifact)) {
+							if (playerInventory.canAddItem(goldenMoney)) {
+								playerInventory.removeItem(artifact);
+								playerInventory.addItem(goldenMoney);
+								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+								player.sendMessage("§l§7(§3Собиратель§7) §r§fСпасибо за §6Артефакт§7, §fприходи еще§7!");
+							}
+						} else {
+							player.sendMessage("§l§7(§3Собиратель§7) §r§fНедостаточно §6Артефактов§7, §fдля совершения обмена§7!");
+							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
+						}
+					}
+					break;
+
+					case 1000: {
+						PlayerInventory playerInventory = player.getInventory();
+						Item artifact = Item.get(CustomItemID.SUN_WAND);
+						if (playerInventory.contains(artifact)) {
+							if (playerInventory.canAddItem(goldenMoney)) {
+								playerInventory.removeItem(artifact);
+								playerInventory.addItem(goldenMoney);
+								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+								player.sendMessage("§l§7(§3Собиратель§7) §r§fСпасибо за §6Артефакт§7, §fприходи еще§7!");
+							}
+						} else {
+							player.sendMessage("§l§7(§3Собиратель§7) §r§fНедостаточно §6Артефактов§7, §fдля совершения обмена§7!");
+							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
+						}
+						break;
+					}
+					case 1001: {
+						PlayerInventory playerInventory = player.getInventory();
+						Item artifact = Item.get(CustomItemID.PIECE_ICE);
+						if (playerInventory.contains(artifact)) {
+							if (playerInventory.canAddItem(goldenMoney)) {
+								playerInventory.removeItem(artifact);
+								playerInventory.addItem(goldenMoney);
+								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+								player.sendMessage("§l§7(§3Собиратель§7) §r§fСпасибо за §6Артефакт§7, §fприходи еще§7!");
+							}
+						} else {
+							player.sendMessage("§l§7(§3Собиратель§7) §r§fНедостаточно §6Артефактов§7, §fдля совершения обмена§7!");
+							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
+						}
+					}
+					break;
+					case 1002: {
+						PlayerInventory playerInventory = player.getInventory();
+						Item artifact = Item.get(CustomItemID.REMAINS_GUARDIAN);
+						if (playerInventory.contains(artifact)) {
+							if (playerInventory.canAddItem(goldenMoney)) {
+								playerInventory.removeItem(artifact);
+								playerInventory.addItem(goldenMoney);
+								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+								player.sendMessage("§l§7(§3Собиратель§7) §r§fСпасибо за §6Артефакт§7, §fприходи еще§7!");
+							}
+						} else {
+							player.sendMessage("§l§7(§3Собиратель§7) §r§fНедостаточно §6Артефактов§7, §fдля совершения обмена§7!");
+							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
+						}
+					}
+					break;
+					}
+				}
+			}
+		}
+	}
 }

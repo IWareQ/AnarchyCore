@@ -7,4 +7,6 @@ public abstract class DefaultBlockProtection {
 	public abstract String getBlockName();
 
 	public abstract Integer getRadius();
+	
+	public abstract String getBlockImage();
 }

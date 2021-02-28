@@ -22,8 +22,7 @@ public class EconomyAPI {
 		config = new Config(Main.getInstance().getDataFolder() + "/EconomyAPI/Users.yml", Config.YAML);
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
 		pluginManager.registerEvents(new PlayerJoinListener(), Main.getInstance());
-		Command[] commands = new Command[] {new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SeeMoneyCommand(), new SetMoneyCommand()};
-		Server.getInstance().getCommandMap().registerAll("", Arrays.asList(commands));
+		Server.getInstance().getCommandMap().registerAll("", Arrays.asList(new MoneyCommand(), new PayCommand(), new AddMoneyCommand(), new SeeMoneyCommand(), new SetMoneyCommand()));
 	}
 
 	public static boolean isRegister(String playerName) {

@@ -14,7 +14,7 @@ public class BlockPlaceListener implements Listener {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
 		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
-			player.sendTip("§rТерритория §6не доступна §fдля взаимодействия");
+			player.sendTip("Территория §6не доступна §fдля взаимодействия");
 			event.setCancelled(true);
 		}
 		if (BlockProtectionAPI.getAllBlocks().containsKey(block.getId())) {

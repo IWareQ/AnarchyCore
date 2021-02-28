@@ -76,16 +76,9 @@
         <dependency>
             <groupId>nukkitcoders.mobplugin.MobPlugin</groupId>
             <artifactId>MobPlugin</artifactId>
-            <version>1.17.2</version>
+            <version>1.18.3.1</version>
             <scope>system</scope>
-            <systemPath>${basedir}/libs/MobPlugin-1.17.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>ru.dragonestia</groupId>
-            <artifactId>IronLib</artifactId>
-            <version>3.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/libs/IronLib.jar</systemPath>
+            <systemPath>${basedir}/libs/MobPlugin-1.18.3.1.jar</systemPath>
         </dependency>
     </dependencies>
     <properties>

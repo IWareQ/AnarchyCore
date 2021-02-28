@@ -5,30 +5,31 @@ import java.util.HashMap;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.Config;
 import ru.jl1mbo.AnarchyCore.Main;
 import ru.jl1mbo.AnarchyCore.GameHandler.Achievements.Achievements.AmmunitionAchievements;
 import ru.jl1mbo.AnarchyCore.GameHandler.Achievements.Achievements.TheFirstStepsAchievements;
 import ru.jl1mbo.AnarchyCore.GameHandler.Achievements.Commands.AchievementsCommand;
+import ru.jl1mbo.AnarchyCore.GameHandler.Achievements.Task.AmmunitionTask;
 import ru.jl1mbo.AnarchyCore.GameHandler.Achievements.Utils.Achievement;
-import ru.jl1mbo.AnarchyCore.Utils.ConfigUtils;
 
 public class AchievementsAPI {
+	public static Config config;
 	private static final HashMap<String, Achievement> achievements = new HashMap<>();
 
 	public static void register() {
+		config = new Config(Main.getInstance().getDataFolder() + "/Achievements/Users.yml", Config.YAML);
 		Server.getInstance().getCommandMap().register("", new AchievementsCommand());
+		Server.getInstance().getScheduler().scheduleRepeatingTask(new AmmunitionTask(), 20);
 		registerAchievement(new TheFirstStepsAchievements());
 		registerAchievement(new AmmunitionAchievements());
 	}
 
 	public static boolean isRegister(String playerName) {
-		return ConfigUtils.getAchievementsConfig().exists(playerName.toLowerCase());
+		return config.exists(playerName.toLowerCase());
 	}
 
 	public static void resetAchievements(String playerName) {
-		Config config = ConfigUtils.getAchievementsConfig();
 		config.set(playerName.toLowerCase() + ".achievements", new ArrayList<String>());
 		config.set(playerName.toLowerCase() + ".completed", 0);
 		config.save();
@@ -36,11 +37,10 @@ public class AchievementsAPI {
 	}
 
 	public static int getAchievementPoints(String playerName, String achievementId) {
-		return Main.getInstance().getConfig().getInt(playerName.toLowerCase() + ".achievements." + achievementId.toLowerCase());
+		return config.getInt(playerName.toLowerCase() + ".achievements." + achievementId.toLowerCase());
 	}
 
 	public static void addPoints(Player player, String achievementId, int count) {
-		Config config = ConfigUtils.getAchievementsConfig();
 		String playerName = player.getName().toLowerCase();
 		int points = config.getInt(playerName.toLowerCase() + ".achievements." + achievementId.toLowerCase());
 		try {
@@ -51,27 +51,27 @@ public class AchievementsAPI {
 			config.set(playerName.toLowerCase() + ".achievements." + achievementId.toLowerCase(), points + count);
 			if (achievement.getAchievementMaxPoints() <= points + count) {
 				achievement.action(player);
-				config.set(playerName.toLowerCase() + ".completed", config.getInt(playerName.toLowerCase() + ".completed") + 1);
+				config.set(playerName.toLowerCase() + ".completed", getCompletedAchievementsCount(playerName) + 1);
 			}
 			config.save();
 			config.reload();
 		} catch (NullPointerException ex) {
-			Server.getInstance().getLogger().error("§r§fНевозможно найти достижение §6" + achievementId.toLowerCase() + "§7, §fт§7.§fк оно не существует§7!");
+			Server.getInstance().getLogger().error("Невозможно найти достижение §6" + achievementId.toLowerCase() + "§7, §fт§7.§fк оно не существует§7!");
 		}
 	}
 
 	public static boolean isCompleted(String playerName, String achievementId) {
 		try {
 			Achievement achievement = getAchievements().get(achievementId);
-			return Main.getInstance().getConfig().getInt(playerName.toLowerCase() + ".achievements." + achievementId.toLowerCase()) >= achievement.getAchievementMaxPoints();
+			return config.getInt(playerName.toLowerCase() + ".achievements." + achievementId.toLowerCase()) >= achievement.getAchievementMaxPoints();
 		} catch (NullPointerException e) {
-			Server.getInstance().getLogger().error("§r§fНевозможно найти достижение §6" + achievementId.toLowerCase() + "§7, §fт§7.§fк оно не существует§7!");
+			Server.getInstance().getLogger().error("Невозможно найти достижение §6" + achievementId.toLowerCase() + "§7, §fт§7.§fк оно не существует§7!");
 			return false;
 		}
 	}
 
 	public static int getCompletedAchievementsCount(String playerName) {
-		return Main.getInstance().getConfig().getInt(playerName.toLowerCase() + ".completed");
+		return config.getInt(playerName.toLowerCase() + ".completed");
 	}
 
 	public static HashMap<String, Achievement> getAchievements() {

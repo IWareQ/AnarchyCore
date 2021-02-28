@@ -15,10 +15,10 @@ public class PlayerInteractListener implements Listener {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
 		if (player.getLevel() != WorldSystemAPI.getMap()) {
-			player.sendTip("§rЭтот биом §6не доступен §fдля строительства");
+			player.sendTip("Этот биом §6не доступен §fдля строительства");
 		}
 		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
-			player.sendTip("§rТерритория §6не доступна §fдля взаимодействия");
+			player.sendTip("Территория §6не доступна §fдля взаимодействия");
 			event.setCancelled(true);
 		}
 	}

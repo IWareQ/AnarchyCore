@@ -7,6 +7,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.level.Position;
 import ru.jl1mbo.AnarchyCore.CommandsHandler.Home.HomeAPI;
+import ru.jl1mbo.AnarchyCore.GameHandler.Achievements.AchievementsAPI;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
 
 public class PlayerMoveListener implements Listener {
@@ -30,11 +31,10 @@ public class PlayerMoveListener implements Listener {
 			if (HomeAPI.isHome(player.getName())) {
 				player.teleport(HomeAPI.getHomePosition(player.getName()));
 			} else {
-				WorldSystemAPI.findRandomSafePosition(WorldSystemAPI.getMap(), position -> {
-					player.teleport(position.setLevel(WorldSystemAPI.getMap()));
-					player.sendTip("§r§fВы успешно телепортировались в рандомное место§7!");
-				});
+				WorldSystemAPI.randomPosition(player);
+				player.sendTip("Вы успешно §6телепортировались §fв рандомное место§7!");
 			}
+			AchievementsAPI.addPoints(player, "the_first_steps", 1);
 		}
 	}
 }

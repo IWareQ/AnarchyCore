@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Map;
 
 import cn.nukkit.command.Command;
-import cn.nukkit.entity.Entity;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
+import ru.jl1mbo.AnarchyCore.CommandsHandler.AdminPanelCommand;
 import ru.jl1mbo.AnarchyCore.CommandsHandler.BonusCommand;
 import ru.jl1mbo.AnarchyCore.CommandsHandler.ClearChatCommand;
 import ru.jl1mbo.AnarchyCore.CommandsHandler.CoordinateCommand;
@@ -31,9 +31,6 @@ import ru.jl1mbo.AnarchyCore.CommandsHandler.Home.HomeAPI;
 import ru.jl1mbo.AnarchyCore.CommandsHandler.NPC.NPC;
 import ru.jl1mbo.AnarchyCore.CommandsHandler.Shop.ShopHandler;
 import ru.jl1mbo.AnarchyCore.CommandsHandler.StorageItems.StorageItemsAPI;
-import ru.jl1mbo.AnarchyCore.CommandsHandler.Test.TestCommand;
-import ru.jl1mbo.AnarchyCore.CommandsHandler.Test.TestEntity;
-import ru.jl1mbo.AnarchyCore.CommandsHandler.WorldBorder.BorderBuildCommand;
 import ru.jl1mbo.AnarchyCore.EventsListener.EntityDamageByEntityListener;
 import ru.jl1mbo.AnarchyCore.EventsListener.EntityDeathListener;
 import ru.jl1mbo.AnarchyCore.EventsListener.PlayerDeathListener;
@@ -44,6 +41,7 @@ import ru.jl1mbo.AnarchyCore.GameHandler.Achievements.AchievementsAPI;
 import ru.jl1mbo.AnarchyCore.GameHandler.Auction.AuctionAPI;
 import ru.jl1mbo.AnarchyCore.GameHandler.BlockProtection.BlockProtectionAPI;
 import ru.jl1mbo.AnarchyCore.GameHandler.Bosses.BossAPI;
+import ru.jl1mbo.AnarchyCore.GameHandler.ClanManager.ClanManager;
 import ru.jl1mbo.AnarchyCore.GameHandler.CombatLogger.CombatLoggerAPI;
 import ru.jl1mbo.AnarchyCore.GameHandler.ExperienceBottle.ExperienceBottleAPI;
 import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.AntiCheat.AntiCheatAPI;
@@ -59,10 +57,7 @@ import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.EconomyAPI.EconomyAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.SeeInventory.SeeInventoryAPI;
 import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.Spectate.SpectateAPI;
-import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.TeleportSystem.RtpCommand;
-import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.TeleportSystem.TpaCommand;
-import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.TeleportSystem.TpcCommand;
-import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.TeleportSystem.TpdCommand;
+import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.TeleportSystem.TeleportAPI;
 import ru.jl1mbo.AnarchyCore.Task.BroadcastTask;
 import ru.jl1mbo.AnarchyCore.Task.ClearTask;
 import ru.jl1mbo.AnarchyCore.Task.RestartTask;
@@ -88,6 +83,7 @@ public class Main extends PluginBase {
 		FloatingTextsAPI.register();
 		AuthorizationAPI.register();
 		ExperienceBottleAPI.register();
+		ClanManager.registe();
 		CombatLoggerAPI.register();
 		BlockProtectionAPI.register();
 		AuctionAPI.register();
@@ -95,9 +91,10 @@ public class Main extends PluginBase {
 		HomeAPI.register();
 		BossAPI.register();
 		NPC.register();
-		StorageItemsAPI.registers();
+		StorageItemsAPI.register();
 		AntiCheatAPI.register();
 		CheatCheackerAPI.register();
+		TeleportAPI.register();
 	}
 
 	private void registerTask() {
@@ -114,14 +111,13 @@ public class Main extends PluginBase {
 		this.unregisterCommands();
 		this.registerCommands();
 		registerAll();
-		Entity.registerEntity(TestEntity.class.getSimpleName(), TestEntity.class);
 		registerTask();
-		this.getLogger().info("§l§fПлагин §aАктивирован§7!");
+		this.getLogger().info("§lПлагин §6AnarchyCore §aАктивирован§7!");
 	}
 
 	@Override()
 	public void onDisable() {
-		this.getLogger().info("§l§fПлагин §cДеактивирован§7!");
+		this.getLogger().info("§lПлагин §6AnarchyCore §cДеактивирован§7!");
 		AuctionAPI.saveAuction();
 	}
 
@@ -138,13 +134,12 @@ public class Main extends PluginBase {
 
 	private void unregisterCommands() {
 		Map<String, Command> commandMap = this.getServer().getCommandMap().getCommands();
-		for (String commands : new String[] {"help", "mixer", "gamemode", "gm", "?", "list", "tell", "stop"}) {
+		for (String commands : new String[] {"help", "mixer", "gamemode", "gm", "?", "list", "tell", "stop", "me"}) {
 			commandMap.remove(commands);
 		}
 	}
 
 	private void registerCommands() {
-		Command[] commands = new Command[] {new StopCommand(), new ShopHandler(), new TestCommand(), new TpaCommand(), new TpcCommand(), new RtpCommand(), new TpdCommand(), new BorderBuildCommand(), new BonusCommand(), new SayCommand(), new SpawnCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ClearChatCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new NearCommand(), new DonateCommand(), new RepairCommand(), new GamemodeCommand()};
-		this.getServer().getCommandMap().registerAll("", Arrays.asList(commands));
+		this.getServer().getCommandMap().registerAll("", Arrays.asList(new AdminPanelCommand(), new StopCommand(), new ShopHandler(), new BonusCommand(), new SayCommand(), new SpawnCommand(), new NightVisionCommand(), new CraftingTableCommand(), new ReportCommand(), new ClearChatCommand(), new ListCommand(), new TellCommand(), new EnderChestCommand(), new CoordinateCommand(), new HealCommand(), new NightCommand(), new DayCommand(), new FoodCommand(), new NearCommand(), new DonateCommand(), new RepairCommand(), new GamemodeCommand()));
 	}
 }

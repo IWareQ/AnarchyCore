@@ -47,7 +47,7 @@ public class InventoryTransactionListener implements Listener {
 							AuctionAPI.showAuction(player, true);
 							player.getLevel().addSound(player, Sound.ITEM_BOOK_PAGE_TURN, 1, 1, player);
 						} else {
-							player.sendMessage(AuctionAPI.PREFIX + "§fВы уже находитесь на самой последней странице§7!");
+							player.sendMessage(AuctionAPI.PREFIX + "Вы уже находитесь на §6последней §fстранице§7!");
 							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 						}
 						break;
@@ -63,7 +63,7 @@ public class InventoryTransactionListener implements Listener {
 					case "§r§6Листнуть назад": {
 						int playerPage = AuctionAPI.AUCTION_PAGE.get(player);
 						if (playerPage == 0) {
-							player.sendMessage(AuctionAPI.PREFIX + "§fВы уже находитесь на первой странице§7!");
+							player.sendMessage(AuctionAPI.PREFIX + "Вы уже находитесь на §6первой §fстранице§7!");
 							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 						} else {
 							AuctionAPI.AUCTION_PAGE.put(player, AuctionAPI.AUCTION_PAGE.get(player) - 1);
@@ -84,7 +84,7 @@ public class InventoryTransactionListener implements Listener {
 							TradeItem tradeItem = AuctionAPI.AUCTION.get(namedTag.getString("UUID"));
 							if (tradeItem != null) {
 								if (EconomyAPI.myMoney(player.getName()) < tradeItem.itemPrice) {
-									player.sendMessage(AuctionAPI.PREFIX + "§fНедостаточно монет для совершения покупки§7!");
+									player.sendMessage(AuctionAPI.PREFIX + "Недостаточно §6монет §fдля совершения покупки§7!");
 									player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 									return;
 								}
@@ -92,20 +92,23 @@ public class InventoryTransactionListener implements Listener {
 								if (playerInventory.canAddItem(sourceItem)) {
 									if (tradeItem.sellerName.equals(player.getName())) {
 										namedTag.remove("UUID");
+										namedTag.remove("display");
 										auctionChest.removeItem(sourceItem);
-										playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(namedTag));
+										playerInventory.addItem(sourceItem.setNamedTag(namedTag));
 										player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-										player.sendMessage(AuctionAPI.PREFIX + "§fПредмет был снят с продажи и отправлен Вам в Инвентарь");
+										player.sendMessage(AuctionAPI.PREFIX + "Предмет был §6снят с продажи §fи отправлен Вам в Инвентарь");
 									} else {
 										auctionChest.removeItem(sourceItem);
 										namedTag.remove("UUID");
-										playerInventory.addItem(sourceItem.clearCustomName().setNamedTag(namedTag));
+										namedTag.remove("display");
+										auctionChest.removeItem(sourceItem);
+										playerInventory.addItem(sourceItem.setNamedTag(namedTag));
 										player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-										player.sendMessage(AuctionAPI.PREFIX + "§fПредмет успешно куплен за §6" + String.format("%.1f",
+										player.sendMessage(AuctionAPI.PREFIX + "Предмет успешно куплен за §6" + String.format("%.1f",
 														   tradeItem.itemPrice) + "§7, §fв колличестве §6" + sourceItem.getCount() + " §fшт§7.");
 										Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.sellerName);
 										if (sellerPlayer != null) {
-											sellerPlayer.sendMessage(AuctionAPI.PREFIX + "§fИгрок §6" + player.getName() + " §fкупил Ваш товар за §6" + String.format("%.1f", tradeItem.itemPrice) + "");
+											sellerPlayer.sendMessage(AuctionAPI.PREFIX + "Игрок §6" + player.getName() + " §fкупил Ваш товар за §6" + String.format("%.1f", tradeItem.itemPrice) + "");
 											EconomyAPI.addMoney(sellerPlayer.getName(), tradeItem.itemPrice);
 										} else {
 											EconomyAPI.addMoney(tradeItem.sellerName, tradeItem.itemPrice);
@@ -117,7 +120,7 @@ public class InventoryTransactionListener implements Listener {
 							} else {
 								auctionChest.removeItem(sourceItem);
 								FakeInventoryAPI.closeInventory(player, auctionChest);
-								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет уже продан или его сняли с продажи§7!");
+								player.sendMessage(AuctionAPI.PREFIX + "Предмет уже §6продан §fили его §6сняли §fс продажи§7!");
 							}
 						}
 						break;
@@ -130,19 +133,20 @@ public class InventoryTransactionListener implements Listener {
 						StorageAuction.showStorageAuction(player, false);
 						StorageAuction.showStorageAuction(player, true);
 					} else {
-						CompoundTag nbt = sourceItem.getNamedTag();
+						CompoundTag namedTag = sourceItem.getNamedTag();
 						Config config = ConfigUtils.getAuctionStorageConfig(player.getName());
-						if (nbt != null && nbt.getString("UUID") != null) {
+						if (namedTag != null && namedTag.getString("UUID") != null) {
 							PlayerInventory playerInventory = player.getInventory();
 							if (playerInventory.canAddItem(sourceItem)) {
 								storageChest.removeItem(sourceItem);
-								config.remove(nbt.getString("UUID"));
+								config.remove(namedTag.getString("UUID"));
 								config.save();
 								config.reload();
-								nbt.remove("UUID");
-								playerInventory.addItem(sourceItem.clearNamedTag().setNamedTag(nbt).setLore());
+								namedTag.remove("UUID");
+								namedTag.remove("display");
+								playerInventory.addItem(sourceItem.setNamedTag(namedTag));
 								player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
-								player.sendMessage(AuctionAPI.PREFIX + "§fПредмет с Хранилища успешно взят§7!");
+								player.sendMessage(AuctionAPI.PREFIX + "Предмет с Хранилища успешно взят§7!");
 							}
 						}
 					}

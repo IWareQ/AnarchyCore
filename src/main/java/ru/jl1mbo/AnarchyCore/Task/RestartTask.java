@@ -14,13 +14,13 @@ public class RestartTask extends Task {
 		if (seconds != 0) {
 			seconds--;
 			if (seconds == 60) {
-				Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §61 §fминуту!");
+				Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §rСервер перезагрузится через §61 §fминуту!");
 			} else if (seconds == 10) {
-				Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §r§fСервер перезагрузится через §610 §fсекунд!");
+				Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §rСервер перезагрузится через §610 §fсекунд!");
 			}
 			if (seconds <= 9) {
-				Server.getInstance().getOnlinePlayers().values().forEach(players -> players.sendTitle("§l§fПерезагрузка",
-						"§f§lСервер перезагрузится через §6" + seconds + Utils.getSecond(seconds), 0, 20, 0));
+				Server.getInstance().getOnlinePlayers().values().forEach(players -> players.sendTitle("§lПерезагрузка",
+						"§lСервер перезагрузится через §6" + seconds + Utils.getSecond(seconds), 0, 20, 0));
 			}
 		} else {
 			for (Player players : Server.getInstance().getOnlinePlayers().values()) {

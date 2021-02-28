@@ -11,7 +11,7 @@ import ru.jl1mbo.AnarchyCore.Main;
 public class BonusCommand extends Command {
 
 	public BonusCommand() {
-		super("bonus", "§r§fПолучить бонус");
+		super("bonus", "§rПолучить бонус");
 		this.setPermission("Command.Bonus");
 		this.commandParameters.clear();
 	}
@@ -20,12 +20,12 @@ public class BonusCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			if (!player.hasPermission("Command.Bonus")) {
+			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}
 			Config config = new Config(Main.getInstance().getDataFolder() + "/BonusCommand/users.yml", Config.YAML);
 			if (config.exists(player.getName().toLowerCase())) {
-				player.sendMessage("§l§6• §r§fБонус можно получить §61 §fраз в вайп§7!");
+				player.sendMessage("§l§6• §rБонус можно получить §61 §fраз в вайп§7!");
 				return false;
 			}
 			PlayerInventory playerInventory = player.getInventory();
@@ -33,11 +33,11 @@ public class BonusCommand extends Command {
 			for (Item items : item) {
 				if (playerInventory.canAddItem(items)) {
 					playerInventory.addItem(items);
-					player.sendMessage("§l§a• §r§fВы успешно §6взяли §fбонус§7");
+					player.sendMessage("§l§a• §rВы успешно §6взяли §fбонус§7");
 					config.set(player.getName().toLowerCase(), true);
 					config.save();
 				} else {
-					player.sendMessage("§l§6• §r§fВаш инвентарь переполнен§7!");
+					player.sendMessage("§l§6• §rВаш инвентарь переполнен§7!");
 				}
 			}
 		}

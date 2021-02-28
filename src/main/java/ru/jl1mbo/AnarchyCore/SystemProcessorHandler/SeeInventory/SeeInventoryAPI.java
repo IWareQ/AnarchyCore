@@ -22,25 +22,22 @@ public class SeeInventoryAPI {
 		Server.getInstance().getCommandMap().register("", new SeeInventoryCommand());
 	}
 
-	public static void checkInventory(String checked, Player player) {
-		Player target = Server.getInstance().getPlayer(checked);
-		if (target != null) {
-			INVENTORY_PLAYER.put(player.getName(), target);
-			DoubleChest doubleChest = new DoubleChest("§r§fПросмотр Инвентаря");
-			doubleChest.setContents(setItems(target.getInventory().getContents()));
-			FakeInventoryAPI.openInventory(player, doubleChest);
-		}
+	public static void checkInventory(Player target, Player player) {
+		INVENTORY_PLAYER.put(player.getName(), target);
+		DoubleChest doubleChest = new DoubleChest("Просмотр Инвентаря");
+		doubleChest.setContents(setItems(target.getInventory().getContents()));
+		FakeInventoryAPI.openInventory(player, doubleChest);
 	}
 
 	public static Map<Integer, Item> setItems(Map<Integer, Item> items) {
-		DoubleChest doubleChest = new DoubleChest("§r§fПросмотр Инвентаря");
+		DoubleChest doubleChest = new DoubleChest("Просмотр Инвентаря");
 		doubleChest.setContents(items);
 		doubleChest.setItem(45, Item.get(
-								Item.ENDER_EYE).setCustomName("§r§6Назад").setLore("\n§r§fНажмите§7, §fчтобы вернуться в главное\nменю просмотра Инвентаря§7!"));
+								Item.ENDER_EYE).setCustomName("§r§6Назад").setLore("\n§rНажмите§7, §fчтобы вернуться в главное\nменю просмотра Инвентаря§7."));
 		doubleChest.setItem(49, Item.get(
-								Item.ENDER_CHEST).setCustomName("§r§6Открыть Эндер Сундук").setLore("\n§r§fНажмите§7, §fчтобы открыть\n§6Эндер Сундук§7!"));
+								Item.ENDER_CHEST).setCustomName("§r§6Открыть Сундук Края").setLore("\n§rНажмите§7, §fчтобы открыть\n§6Эндер Сундук§7!"));
 		doubleChest.setItem(53, Item.get(
-								Item.WRITTEN_BOOK).setCustomName("§r§6Справка").setLore("\n§r§fПока что здесь ничего нет§7,\n§fно я уже занимаюсь этим§7!"));
+								Item.BOOK).setCustomName("§r§6Справка").setLore("\n§rПока что здесь ничего нет§7,\n§fно я уже занимаюсь этим§7!"));
 		return doubleChest.getContents();
 	}
 }

@@ -97,10 +97,10 @@ public class AuctionAPI extends PluginBase {
 			auctionChest = AUCTION_CHEST.get(player);
 			auctionChest.clearAll();
 		}
-		auctionChest.setTitle("§l§fТорговая Площадка");
+		auctionChest.setTitle("Торговая Площадка");
 		int tradeSize = AUCTION.size();
 		if (tradeSize == 0) {
-			player.sendMessage(AuctionAPI.PREFIX + "§fАукцион пуст§7!");
+			player.sendMessage(AuctionAPI.PREFIX + "Аукцион пуст§7!");
 			return;
 		}
 		int start = playerPage * AUCTION_CHEST_SIZE;
@@ -112,7 +112,7 @@ public class AuctionAPI extends PluginBase {
 			CompoundTag namedTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
 			namedTag.putString("UUID", tradeItem.UUID);
 			item.setNamedTag(namedTag);
-			item.setCustomName("§r§fПродавец§7: §6" + tradeItem.sellerName + "\n§r§fСтоимость§7: §6" + tradeItem.itemPrice + "\n§r§fДо окончания§7: §6" +
+			item.setLore("\n§rПродавец§7: §6" + tradeItem.sellerName + "\n§r§fСтоимость§7: §6" + tradeItem.itemPrice + "\n§r§fДо окончания§7: §6" +
 							   (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6" + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" +
 							   (tradeItem.getTime() % 60) + " §fсек§7.\n\n§r§l§6• §r§fНажмите§7, §fчтобы купить предмет§7!");
 			auctionChest.addItem(item);

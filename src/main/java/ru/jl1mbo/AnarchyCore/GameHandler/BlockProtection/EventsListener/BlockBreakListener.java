@@ -15,7 +15,7 @@ public class BlockBreakListener implements Listener {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
 		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
-			player.sendTip("§rТерритория §6не доступна §fдля взаимодействия");
+			player.sendTip("Территория §6не доступна §fдля взаимодействия");
 			event.setCancelled(true);
 		}
 		int regionID = BlockProtectionAPI.getRegionIDByLocation(block.getLocation());
@@ -25,11 +25,11 @@ public class BlockBreakListener implements Listener {
 			Integer mainZ = SQLiteUtils.selectInteger("SELECT Main_Z FROM AREAS WHERE (Region_ID = '" + regionID + "');");
 			if (block.getFloorX() == mainX && block.getFloorY() == mainY && block.getFloorZ() == mainZ) {
 				if (BlockProtectionAPI.isRegionOwner(player.getName(), regionID)) {
-					player.sendMessage(BlockProtectionAPI.PREFIX + "§fРегион §7#§6" + regionID + " §fуспешно удален§7!");
+					player.sendMessage(BlockProtectionAPI.PREFIX + "Регион §7#§6" + regionID + " §fуспешно удален§7!");
 					SQLiteUtils.query("DELETE FROM AREAS WHERE Region_ID = '" + regionID + "';");
 					SQLiteUtils.query("DELETE FROM MEMBERS WHERE Region_ID = '" + regionID + "';");
 				} else {
-					player.sendMessage(BlockProtectionAPI.PREFIX + "§fВы не можете удалить чужой регион§7!");
+					player.sendMessage(BlockProtectionAPI.PREFIX + "Вы не можете удалить §6чужой §fрегион§7!");
 					event.setCancelled(true);
 				}
 			}

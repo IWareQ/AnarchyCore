@@ -33,9 +33,7 @@ public class PermissionAPI {
 	public static String PREFIX = "§7(§3Привилегии§7) §r";
 
 	public static void register() {
-		registerDonateGroup();
-		registerSpecialGroup();
-		registerStaffGroup();
+		registerAllGroups();
 		config = new Config(Main.getInstance().getDataFolder() + "/Permission/Users.yml", Config.YAML);
 		registerGroup(new PlayerGroup());
 		PluginManager pluginManager = Server.getInstance().getPluginManager();
@@ -44,7 +42,7 @@ public class PermissionAPI {
 		Server.getInstance().getCommandMap().register("", new GroupCommand());
 	}
 
-	private static void registerDonateGroup() {
+	private static void registerAllGroups() {
 		registerGroup(new BogGroup());
 		registerGroup(new GuardianGroup());
 		registerGroup(new HeroGroup());
@@ -53,13 +51,7 @@ public class PermissionAPI {
 		registerGroup(new PrinceGroup());
 		registerGroup(new TartarusGroup());
 		registerGroup(new TitanGroup());
-	}
-
-	private static void registerSpecialGroup() {
 		registerGroup(new YouTubeGroup());
-	}
-
-	private static void registerStaffGroup() {
 		registerGroup(new HelperGroup());
 		registerGroup(new ModeratorGroup());
 		registerGroup(new AdministratorGroup());
@@ -70,7 +62,7 @@ public class PermissionAPI {
 	}
 
 	public static boolean isGroup(String groupId) {
-		if (GROUPS.get(groupId).getGroupId() != null) {
+		if (GROUPS.get(groupId) != null) {
 			return true;
 		}
 		return false;

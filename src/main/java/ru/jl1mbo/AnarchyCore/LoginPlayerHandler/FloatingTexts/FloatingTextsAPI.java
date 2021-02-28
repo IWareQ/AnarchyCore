@@ -28,23 +28,23 @@ public class FloatingTextsAPI {
 	}
 
 	public static void addFloatingKillsTops(Position pos, Player player) {
-		FloatingTextParticle floatingTexts = new FloatingTextParticle(pos, "§6Самые опасные Игроки сервера");
+		FloatingTextParticle floatingTexts = new FloatingTextParticle(pos, "§l§6Самые опасные Игроки сервера");
 		StringBuilder stringBuilder = new StringBuilder();
 		Config config = new Config(Main.getInstance().getDataFolder() + "/kills.yml", Config.YAML);
 		for (Map.Entry<String, Integer> entry : calculateScore(config).entrySet()) {
-			stringBuilder.append(entry.getKey()).append(" §7- §6").append(entry.getValue()).append(" §f⚔\n");
-			floatingTexts.setText(stringBuilder.toString() + "§6Статистика обновляется каждый перезаход§7!");
+			stringBuilder.append("§l" + entry.getKey()).append(" §7- §6").append(entry.getValue()).append(" §f⚔\n");
+			floatingTexts.setText(stringBuilder.toString() + "§l§6Статистика обновляется каждый перезаход§7!");
 		}
 		WorldSystemAPI.getSpawn().addParticle(floatingTexts, player);
 	}
 
 	public static void addFloatingDeathsTops(Position pos, Player player) {
-		FloatingTextParticle floatingTexts = new FloatingTextParticle(pos, "§6Press F to pay respects");
+		FloatingTextParticle floatingTexts = new FloatingTextParticle(pos, "§l§6Press F to pay respects");
 		StringBuilder stringBuilder = new StringBuilder();
 		Config config = new Config(Main.getInstance().getDataFolder() + "/deaths.yml", Config.YAML);
 		for (Map.Entry<String, Integer> entry : calculateScore(config).entrySet()) {
-			stringBuilder.append(entry.getKey()).append(" §7- §6").append(entry.getValue()).append(" §f💀\n");
-			floatingTexts.setText(stringBuilder.toString() + "§6Статистика обновляется каждый перезаход§7!");
+			stringBuilder.append("§l" + entry.getKey()).append(" §7- §6").append(entry.getValue()).append(" §f☠\n");
+			floatingTexts.setText(stringBuilder.toString() + "§l§6Статистика обновляется каждый перезаход§7!");
 		}
 		WorldSystemAPI.getSpawn().addParticle(floatingTexts, player);
 	}

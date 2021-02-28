@@ -1,5 +1,7 @@
 package ru.jl1mbo.AnarchyCore.LoginPlayerHandler.AntiCheat.EventsListener;
 
+import cn.nukkit.Player;
+import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;

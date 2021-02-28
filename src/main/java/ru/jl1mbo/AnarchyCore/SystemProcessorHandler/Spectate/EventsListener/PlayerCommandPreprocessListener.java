@@ -14,7 +14,8 @@ public class PlayerCommandPreprocessListener implements Listener {
 		String command = event.getMessage().toLowerCase().replaceAll(" ", "");
 		if (SpectateAPI.isSpectate(player.getName())) {
 			if (command.equals("/tpc")) {
-				player.sendMessage(SpectateAPI.PREFIX + "§fЭта команда заблокированна в режиме слежки§7!");
+				player.sendMessage(SpectateAPI.PREFIX + "Команда §6заблокированна§7!");
+				event.setCancelled(true);
 			}
 		}
 	}

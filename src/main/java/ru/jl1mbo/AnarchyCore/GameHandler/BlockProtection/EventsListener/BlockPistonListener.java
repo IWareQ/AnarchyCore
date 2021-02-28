@@ -11,7 +11,7 @@ public class BlockPistonListener implements Listener {
 	@EventHandler()
 	public void onBlockPiston(BlockPistonEvent event) {
 		Block block = event.getBlock();
-		if (BlockProtectionAPI.getAllBlocks().get(block.getId()).getBlockId() != null || block.getId() == 52) {
+		if (BlockProtectionAPI.getAllBlocks().get(block.getId()) != null || block.getId() == 52) {
 			event.setCancelled(true);
 		}
 	}

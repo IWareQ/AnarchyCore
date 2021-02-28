@@ -25,7 +25,6 @@ public class HeroGroup extends DefaultGroup {
 	public HashMap<String, Boolean> getPermissionAttachment() {
 		HashMap<String, Boolean> permissionAllows = new HashMap<>();
 		permissionAllows.put("Command.CraftingTable", true);
-		permissionAllows.put("Command.Food", true);
 		return permissionAllows;
 	}
 }

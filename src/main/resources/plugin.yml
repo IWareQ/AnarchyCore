@@ -8,4 +8,3 @@ website: "vk.com/extranons"
 depend:
   - MobPlugin
   - DbLib
-  - IronLib

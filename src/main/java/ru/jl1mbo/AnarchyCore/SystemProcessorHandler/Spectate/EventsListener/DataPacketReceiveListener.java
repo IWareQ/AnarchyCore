@@ -51,17 +51,18 @@ public class DataPacketReceiveListener implements Listener  {
 				case Item.CHEST:
 					if (SpectateAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
 						Player target = Server.getInstance().getPlayerExact(config.getString(player.getName().toLowerCase() + ".Spectate"));
-						SeeInventoryAPI.checkInventory(target.getName(), player);
+						SeeInventoryAPI.checkInventory(target, player);
 					}
 					break;
 				case Item.CLOCK:
 					if (SpectateAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
 						Player target = Server.getInstance().getPlayerExact(config.getString(player.getName().toLowerCase() + ".Spectate"));
-						SimpleForm simpleForm = new SimpleForm("§r§fПанель Администрирования");
-						simpleForm.setContent("§l§6• §r§fИгрок§7: §6" + target.getName() + "\n§l§6• §r§fРанг§7: " + PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(target.getName())).getGroupName() + "\n§l§6• §r§fУстройство§7: §6" + target.getLoginChainData().getDeviceModel() + "\n§l§6• §r§fЭффекты§7: §6" + target.getEffects() +
-											  "\n\n§l§6• §r§fВыберите нужный пункт Меню§7:");
-						simpleForm.addButton("§r§fБлокировка Аккаунта");
-						simpleForm.addButton("§r§fБлокировка Чата");
+						SimpleForm simpleForm = new SimpleForm("Панель Администрирования",
+															   "§l§6• §rИгрок§7: §6" + target.getName() + "\n§l§6• §rРанг§7: " + PermissionAPI.getAllGroups().get(PermissionAPI.getGroup(
+																	   target.getName())).getGroupName() + "\n§l§6• §rУстройство§7: §6" + target.getLoginChainData().getDeviceModel() +
+															   "\n\n§rВыберите §6нужный пункт §fМеню§7:");
+						simpleForm.addButton("Блокировка Аккаунта");
+						simpleForm.addButton("Блокировка Чата");
 						simpleForm.send(player, (targetPlayer, targetForm, data) -> {
 							if (data == -1) return;
 							switch (data) {

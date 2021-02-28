@@ -11,6 +11,7 @@ import ru.jl1mbo.AnarchyCore.Entity.Bosses.HuskBoss;
 import ru.jl1mbo.AnarchyCore.Entity.Bosses.SpiderBoss;
 import ru.jl1mbo.AnarchyCore.Entity.Bosses.WitherSkeletonBoss;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
+import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
 public class ClearTask extends Task {
 	public static int seconds = 800;
@@ -20,10 +21,10 @@ public class ClearTask extends Task {
 		if (seconds != 0) {
 			seconds--;
 			if (seconds == 60) {
-				Server.getInstance().broadcastMessage("§l§7(§3Очистка§7) §r§fОчистка произойдет через §61 §fминуту§7!");
+				Server.getInstance().broadcastMessage("§l§7(§3Очистка§7) §rОчистка произойдет через §61 §fминуту§7!");
 			}
 			if (seconds <= 10) {
-				Server.getInstance().getOnlinePlayers().values().forEach(players -> players.sendTip("§f§lОчистка через §6" + seconds + " §fсек§7!"));
+				Server.getInstance().getOnlinePlayers().values().forEach(players -> players.sendTip("§lОчистка через §6" + seconds + Utils.getSecond(seconds) + " §7!"));
 			}
 		} else {
 			Server.getInstance().getLevels().values().forEach(level -> {

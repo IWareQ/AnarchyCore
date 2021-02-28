@@ -6,34 +6,37 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 
 public class NearCommand extends Command {
-    private static int RADIUS = 0;
+	private static int RADIUS = 50;
 
-    public NearCommand() {
-        super("near", "§r§fПосмотреть кто рядом с Вами");
-        this.setPermission("Command.Near");
-        this.commandParameters.clear();
-    }
+	public NearCommand() {
+		super("near", "§rУзнать кол§7-§fво игроков которые рядом");
+		this.setPermission("Command.Near");
+		this.commandParameters.clear();
+	}
 
-    @Override()
-    public boolean execute(CommandSender sender, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (!player.hasPermission("Command.Near")) {
-                return false;
-            }
-            StringBuilder stringBuilder = new StringBuilder();
-            if (player.hasPermission("Command.Near.65")) {
-                RADIUS = 65;
-            } else if (player.hasPermission("Command.Near.100")) {
-                RADIUS = 100;
-            }
-            for (Player players : Server.getInstance().getOnlinePlayers().values()) {
-                if (players.distance(player) < RADIUS && players.getGamemode() != 3) {
-                    stringBuilder.append("§7, §6").append(players.getName());
-                }
-            }
-            player.sendMessage("§l§6• §r§fИгроки в радиусе §6" + RADIUS + " §fблоков§7: §6" + stringBuilder.toString());
-        }
-        return false;
-    }
+	@Override()
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		if (sender instanceof Player) {
+			Player player = (Player) sender;
+			if (!player.hasPermission("Command.Near")) {
+				return false;
+			}
+			if (player.hasPermission("Command.Near.100")) {
+				RADIUS = 100;
+			} else if (player.hasPermission("Command.Near.150")) {
+				RADIUS = 150;
+			} else {
+				RADIUS = 50;
+			}
+			int count = 0;
+			for (Player players : Server.getInstance().getOnlinePlayers().values()) {
+				if (players.distance(player) <= RADIUS && players.getGamemode() != 3) {
+					count += 1;
+				}
+			}
+			player.sendMessage("§l§6• §rКол§7-§fво игроков в радиусе §6" + RADIUS + " §fблоков§7 - §6" + count);
+			count = 0;
+		}
+		return false;
+	}
 }
