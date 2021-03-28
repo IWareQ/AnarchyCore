@@ -24,7 +24,7 @@ public class ClearTask extends Task {
 				Server.getInstance().broadcastMessage("§l§7(§3Очистка§7) §rОчистка произойдет через §61 §fминуту§7!");
 			}
 			if (seconds <= 10) {
-				Server.getInstance().getOnlinePlayers().values().forEach(players -> players.sendTip("§lОчистка через §6" + seconds + Utils.getSecond(seconds) + " §7!"));
+				Server.getInstance().getOnlinePlayers().values().forEach(players -> players.sendTip("Очистка через §6" + Utils.getSecond(seconds) + "§7!"));
 			}
 		} else {
 			Server.getInstance().getLevels().values().forEach(level -> {

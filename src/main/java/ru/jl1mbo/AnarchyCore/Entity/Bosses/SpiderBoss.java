@@ -20,7 +20,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Utils;
 import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CustomManager.Utils.CustomItemID;
+import ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils.CustomItemID;
 
 public class SpiderBoss extends WalkingMonster implements EntityArthropod, Boss {
 	private static final int NETWORK_ID = EntitySpider.NETWORK_ID;

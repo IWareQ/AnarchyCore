@@ -5,5 +5,5 @@ import cn.nukkit.form.window.FormWindowSimple;
 
 public interface SimpleFormResponse extends FormResponse {
 
-    void handle(Player targetPlayer, FormWindowSimple targetForm, int data);
+	void handle(Player targetPlayer, FormWindowSimple targetForm, int data);
 }

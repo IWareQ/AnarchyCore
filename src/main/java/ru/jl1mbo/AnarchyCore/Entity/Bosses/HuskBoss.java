@@ -23,7 +23,7 @@ import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
-import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CustomManager.Utils.CustomItemID;
+import ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils.CustomItemID;
 
 public class HuskBoss extends WalkingMonster implements EntityAgeable, EntitySmite, Boss {
 	private static final int NETWORK_ID = EntityHusk.NETWORK_ID;

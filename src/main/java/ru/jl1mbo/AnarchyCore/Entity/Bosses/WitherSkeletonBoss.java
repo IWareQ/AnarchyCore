@@ -25,7 +25,7 @@ import cn.nukkit.potion.Effect;
 import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
-import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CustomManager.Utils.CustomItemID;
+import ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils.CustomItemID;
 
 public class WitherSkeletonBoss extends WalkingMonster implements Boss {
 	private static final int NETWORK_ID = EntityWitherSkeleton.NETWORK_ID;

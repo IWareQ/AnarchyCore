@@ -1,14 +1,13 @@
 package ru.jl1mbo.AnarchyCore.Manager.WorldSystem;
 
-import cn.nukkit.Player;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
-import cn.nukkit.entity.Entity;
 import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
-import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.EventsListener.EventsListenerWorldSystem;
-import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.Task.BorderBuildTask;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
 public class WorldSystemAPI {
@@ -20,8 +19,6 @@ public class WorldSystemAPI {
 	private static Level THE_END;
 
 	public static void register() {
-		Server.getInstance().getScheduler().scheduleRepeatingTask(new BorderBuildTask(), 20);
-		EventsListenerWorldSystem.register();
 		Server.getInstance().loadLevel("map");
 		Server.getInstance().loadLevel("spawn");
 		Server.getInstance().loadLevel("test");
@@ -34,6 +31,7 @@ public class WorldSystemAPI {
 		THE_END = Server.getInstance().getLevelByName("the_end");
 		MAP.getGameRules().setGameRule(GameRule.SHOW_COORDINATES, true);
 		MAP.getGameRules().setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+		SPAWN.getGameRules().setGameRule(GameRule.SPAWN_RADIUS, 0);
 		SPAWN.getGameRules().setGameRule(GameRule.SHOW_COORDINATES, false);
 		NETHER.getGameRules().setGameRule(GameRule.SHOW_COORDINATES, true);
 		NETHER.getGameRules().setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
@@ -41,12 +39,8 @@ public class WorldSystemAPI {
 		THE_END.getGameRules().setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
 	}
 
-	public static void randomPosition(Entity entity) {
-		new Thread(() -> {entity.teleport(findRandomPosition(new Position(0, 0, 0, MAP)));}).start();
-	}
-
-	public static void randomPosition(Player player) {
-		new Thread(() -> {player.teleport(findRandomPosition(new Position(0, 0, 0, MAP)));}).start();
+	public static void randomPosition(Level level, Consumer<Position> callback) {
+		CompletableFuture.runAsync(() -> callback.accept(findRandomPosition(new Position(0, 0, 0, level))));
 	}
 
 	private static Position findRandomPosition(Position position) {

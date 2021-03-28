@@ -7,18 +7,18 @@ import java.util.ArrayList;
 
 public class BroadcastTask extends Task {
 	private static final ArrayList<String> BROADCAST = new ArrayList<>();
-	private static final String PREFIX = "§l§1| §r";
-	private static int minutes = 10;
+	private static final String PREFIX = "§l§6 §r";
+	private static int minutes = 7;
 	private static int MESSAGES_SIZE = 0;
 
 	public static void register() {
-		BROADCAST.add("Во §9ВКонтакте §fу нас есть беседа\n§l§1| §r§fЗаходи и находи новых друзей§7.\n§l§1| §rЧат во §9ВКонтакте §7-  §fvk§7.§fcc§7/§3avEklQ");
-		BROADCAST.add("Будь в курсе всех последних новостей проекта§7!\n§l§1| §r§fПодпишись на нашу группу во §9ВКонтакте\n§l§1| §r§fНаше сообщество §9ВКонтакте §7- §fvk§7.§fcom§7/§3death§7.§3club");
-		BROADCAST.add("Обязательно посетите Наш сайт §7- §3death§7-§3mc§7.§3online");
-		BROADCAST.add("Для проверки границ территорий используйте обычную палку\n§l§1| §r§fДля создания региона§7, §fпоставьте блок привата\n§l§1| §r§fВсе блоки привата показанны на спавне§7!");
-		BROADCAST.add("Не пропустите важные новости из нашей группы §9ВКонтакте §7- §fvk§7.§fcom§7/§3death§7.§3club");
-		BROADCAST.add("При совершении покупок на нашем сайте\n§l§1| §r§fВы помогаете в развитии Сервера§7!\n§l§1| §r§fСайт §7- §3death§7-§3mc§7.§3online");
-		BROADCAST.add("На сервере присутствует Аукцион §7- §6/auc");
+		BROADCAST.add("Будь в курсе последних новостей проекта§7!\n§l§6 §rПодпишись на нашу группу §9ВКонтакте\n§l§6 §rСсылка на группу§7: §fvk§7.§fcom§7/§3death§fmc§7.§fclub");
+		BROADCAST.add("Не усложняй жизнь §6себе §fи §6другим!§7 §fНашел нарушителя§7? §fИспользуй §7/§6report§7!");
+		BROADCAST.add("Хочешь §6выделиться §fиз толпы§7? §fСтать §6круче§7?\n§l§6 §rТогда успей приобрести донат по §6шокирующим §fскидкам§7! §fСайт§7: §3death§7-§fmc§7.§fru");
+		BROADCAST.add("Не знаешь как приватить§7? §fИнформацию по регионами можно найти на §6спавне§7, §fлибо же введя команду §7/§6rg help");
+		BROADCAST.add("Обязательно посетите Наш сайт§7: §3death§7-§fmc§7.§fru");
+		BROADCAST.add("Зови друзей и получай бонусы§7!\n§l§6 §rСсылка на группу§7: §fvk§7.§fcom§7/§3death§fmc§7.§fclub");
+		BROADCAST.add("На сервере присутствует §6Аукцион§7! §fИспользуй §7/§6auc");
 	}
 
 	private static String getBroadcastMessage() {
@@ -36,7 +36,7 @@ public class BroadcastTask extends Task {
 			minutes--;
 		} else {
 			Server.getInstance().broadcastMessage(getBroadcastMessage());
-			minutes = 10;
+			minutes = 7;
 		}
 	}
 }

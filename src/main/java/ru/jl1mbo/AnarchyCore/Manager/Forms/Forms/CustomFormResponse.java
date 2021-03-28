@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CustomFormResponse extends FormResponse {
 
-    void handle(Player targetPlayer, FormWindowCustom targetForm, List<Object> data);
+	void handle(Player targetPlayer, FormWindowCustom targetForm, List<Object> data);
 }

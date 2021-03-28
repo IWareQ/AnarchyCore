@@ -1,11 +1,13 @@
 package ru.jl1mbo.AnarchyCore.Entity.Bosses;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntitySmite;
 import cn.nukkit.entity.mob.EntityEvoker;
-import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Sound;
@@ -14,15 +16,10 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
-import nukkitcoders.mobplugin.entities.monster.flying.Wither;
-import nukkitcoders.mobplugin.entities.projectile.EntityBlueWitherSkull;
 import nukkitcoders.mobplugin.entities.projectile.EntityWitherSkull;
 import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
-import ru.jl1mbo.AnarchyCore.SystemProcessorHandler.CustomManager.Utils.CustomItemID;
-
-import java.util.ArrayList;
-import java.util.List;
+import ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils.CustomItemID;
 
 public class EvokerBoss extends WalkingMonster implements Boss, EntitySmite {
 	private static final int NETWORK_ID = EntityEvoker.NETWORK_ID;
@@ -107,7 +104,8 @@ public class EvokerBoss extends WalkingMonster implements Boss, EntitySmite {
 	@Override()
 	public Item[] getDrops() {
 		List<Item> drops = new ArrayList<>();
-		drops.add(Item.get(CustomItemID.PIECE_ICE).setLore("\n§r§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7."));
+		drops.add(Item.get(
+					  CustomItemID.PIECE_ICE).setLore("\n§r§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7."));
 		drops.add(Item.get(Item.EMERALD, 0, Utils.rand(1, 2)));
 		return drops.toArray(new Item[0]);
 	}

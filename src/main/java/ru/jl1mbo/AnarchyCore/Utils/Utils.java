@@ -1,44 +1,116 @@
 package ru.jl1mbo.AnarchyCore.Utils;
 
-import cn.nukkit.Player;
-import cn.nukkit.Server;
-import ru.jl1mbo.AnarchyCore.LoginPlayerHandler.Authorization.AuthorizationAPI;
-
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.ByteOrder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
-import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.bind.DatatypeConverter;
+
+import cn.nukkit.Player;
+import cn.nukkit.Server;
+import cn.nukkit.nbt.NBTIO;
+import cn.nukkit.nbt.tag.CompoundTag;
+import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 
 public class Utils {
+	private  static String P = "пПnPp";
+	private  static String I = "иИiI1u";
+	private  static String E = "еЕeEёЁ";
+	private  static String D = "дДdD";
+	private  static String Z = "зЗ3zZ3";
+	private  static String M = "мМmM";
+	private  static String U = "уУyYuU";
+	private  static String O = "оОoO0";
+	private  static String L = "лЛlL";
+	private  static String S = "сСcCsS";
+	private  static String A = "аАaA@";
+	private  static String N = "нНhH";
+	private  static String G = "гГgG";
+	private  static String CH = "чЧ4";
+	private  static String K = "кКkK";
+	private  static String C = "цЦcC";
+	private  static String R = "рРpPrR";
+	private  static String H = "хХxXhH";
+	private  static String YI = "йЙy";
+	private  static String YA = "яЯ";
+	private  static String YU = "юЮ";
+	private  static String B = "бБ6bB";
+	private  static String T = "тТtT";
+	private  static String HS = "ъЪ";
+	private  static String SS = "ьЬ";
+	private  static String Y = "ыЫ";
+	private  static String SH = "ШшHhЩщ";
+	private  static String V = "вВvVBb";
 	private static final String accessToken = "55dd4f4f3ce1e286912bdb68d9d8cdec1f663608abf6b3463399e6255659347f7c069f7b9ef250de4c212";
 
 	public static void sendMessageToChat(String message) {
 		try {
-			String url = "https://api.vk.com/method/messages.send?peer_id=2000000001&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(
+			String url = "https://api.vk.com/method/messages.send?peer_id=2000000002&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(
 							 message, "UTF-8") + "&v=5.124";
 			URL(url);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
 	}
 
-	public static void sendMessageAdmins(String message, int type) {
-		if (type == 1) {
-			for (Player player : Server.getInstance().getOnlinePlayers().values()) {
-				if (player.hasPermission("AdminChat")) {
-					player.sendMessage(message);
-				}
-			}
+	public static boolean validText(String text) {
+		boolean pizda = preg_match(text, "\\b.*([" + P + "][" + I + E + Y + "][" + Z + "][" + D + "]).*\\b*");
+		boolean ebal = preg_match(text, "\\b.*([" + E + "][" + B + "](?:[" + A + O + "][" + T + N + K + L + "]+|[" + L + "])).*\\b*");
+		boolean blad = preg_match(text, "\\b.*([" + B + "][" + L + "][" + YA + "][" + D + "]).*\\b*");
+		boolean soska = preg_match(text, "\\b.*([" + S + "][" + A + O + "][" + S + "](?:[" + U + "]+|[" + K + "]+|[" + I + "])).*\\b*");
+		boolean mamka = preg_match(text, "\\b.*([" + M + "][" + A + "](?:[" + T + "]+|[" + M + "][" + K + "])).*\\b*");
+		if (pizda || ebal || blad || soska || mamka) {
+			return true;
 		}
+		return false;
+	}
+
+	public static boolean preg_match(String text, String regex) {
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(text);
+		return matcher.matches();
+	}
+
+	public static boolean isValidString(String text) {
+		return preg_match(text, "\\b.*([a-zA-Zа-яА-Я]).*\\b*");
+	}
+
+	public static String convertNbtToHex(CompoundTag namedTag) {
+		try {
+			return DatatypeConverter.printHexBinary(NBTIO.write(namedTag, ByteOrder.LITTLE_ENDIAN));
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
+		return null;
+	}
+
+	public static CompoundTag convertHexToNBT(String hex) {
+		try {
+			return NBTIO.read(DatatypeConverter.parseHexBinary(hex), ByteOrder.LITTLE_ENDIAN);
+		} catch (IOException exception) {
+			exception.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void sendMessageAdmins(String message, int type) {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
-			if (player.hasPermission("AdminChat")) {
-				player.sendPopup(message);
+			if (PermissionAPI.getPlayerGroup(player.getName()).isAdmin()) {
+				if (type == 1) {
+					player.sendMessage(message);
+				} else {
+					player.sendPopup(message);
+				}
 			}
 		}
 	}
@@ -60,14 +132,14 @@ public class Utils {
 	public static String getSecond(int seconds) {
 		int preLastDigit = seconds % 100 / 10;
 		if (preLastDigit == 1) {
-			return " §fсекунд";
+			return seconds + " §fсекунд";
 		}
 		if (seconds % 10 == 1) {
-			return " §fсекунду";
+			return seconds + " §fсекунду";
 		} else if (seconds % 10 == 2 || seconds % 10 == 3 || seconds % 10 == 4) {
-			return " §fсекунды";
+			return seconds + " §fсекунды";
 		}
-		return " §fсекунд";
+		return seconds + " §fсекунд";
 	}
 
 	public static String getDeviceOS(Player player) {
@@ -75,20 +147,21 @@ public class Utils {
 				"FireOS").replace("5", "GearVR").replace("6", "HoloLens").replace("10", "PS 4").replace("7", "Win 10").replace("8", "Win").replace("9", "Dedicated").replace("11", "Switch");
 	}
 
-	public static List<String> getPlayerToName(String playerName) {
-		ArrayList<String> arrayList = new ArrayList<>();
+	public static List<String> getPlayersList(String playerName) {
+		ArrayList<String> playerList = new ArrayList<>();
 		Player target = Server.getInstance().getPlayer(playerName);
+		ArrayList<String> players = SQLiteUtils.getStringList("Auth.db", "SELECT `Name` FROM `Auth`");
 		if (target == null) {
-			for (Entry<String, Object> entry : AuthorizationAPI.config.getAll().entrySet()) {
-				if (entry.getKey().startsWith(playerName)) {
-					arrayList.add(entry.getKey());
+			for (String name : players) {
+				if (name.startsWith(playerName)) {
+					playerList.add(name);
 				}
 			}
 		}
-		if (arrayList.isEmpty()) {
-			arrayList.add(target.getName());
+		if (playerList.isEmpty()) {
+			playerList.add(playerName);
 		}
-		return arrayList;
+		return playerList;
 	}
 
 	private static void URL(String url) {

@@ -19,52 +19,52 @@ import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.Utils.FakeChest;
 
 public class DefaultHopper extends FakeChest {
 
-    public DefaultHopper() {
-        super(InventoryType.HOPPER, null, null);
-    }
+	public DefaultHopper() {
+		super(InventoryType.HOPPER, null, null);
+	}
 
-    public DefaultHopper(String title) {
-        super(InventoryType.HOPPER, null, title);
-    }
+	public DefaultHopper(String title) {
+		super(InventoryType.HOPPER, null, title);
+	}
 
-    public DefaultHopper(InventoryType inventoryType, String title) {
-        super(inventoryType, null, title);
-    }
+	public DefaultHopper(InventoryType inventoryType, String title) {
+		super(inventoryType, null, title);
+	}
 
-    private static byte[] getNbt(BlockVector3 pos, String name) {
-        CompoundTag tag = new CompoundTag()
-                .putString("id", BlockEntity.HOPPER)
-                .putInt("x", pos.x)
-                .putInt("y", pos.y)
-                .putInt("z", pos.z)
-                .putString("CustomName", name == null ? "Воронка" : name);
-        try {
-            return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN, true);
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to create NBT for Hopper");
-        }
-    }
+	private static byte[] getNbt(BlockVector3 pos, String name) {
+		CompoundTag tag = new CompoundTag()
+		.putString("id", BlockEntity.HOPPER)
+		.putInt("x", pos.x)
+		.putInt("y", pos.y)
+		.putInt("z", pos.z)
+		.putString("CustomName", name == null ? "Воронка" : name);
+		try {
+			return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN, true);
+		} catch (IOException e) {
+			throw new RuntimeException("Unable to create NBT for Hopper");
+		}
+	}
 
-    @Override()
-    protected List<BlockVector3> onOpenBlock(Player player) {
-        BlockVector3 blockPosition = new BlockVector3(player.getFloorX(), player.getFloorY() - 2, player.getFloorZ());
-        placeHopper(player, blockPosition);
-        return Collections.singletonList(blockPosition);
-    }
+	@Override()
+	protected List<BlockVector3> onOpenBlock(Player player) {
+		BlockVector3 blockPosition = new BlockVector3(player.getFloorX(), player.getFloorY() + 2, player.getFloorZ());
+		placeHopper(player, blockPosition);
+		return Collections.singletonList(blockPosition);
+	}
 
-    protected void placeHopper(Player player, BlockVector3 pos) {
-        UpdateBlockPacket updateBlock = new UpdateBlockPacket();
-        updateBlock.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(BlockID.HOPPER_BLOCK, 0);
-        updateBlock.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
-        updateBlock.x = pos.x;
-        updateBlock.y = pos.y;
-        updateBlock.z = pos.z;
-        player.dataPacket(updateBlock);
-        BlockEntityDataPacket blockEntityData = new BlockEntityDataPacket();
-        blockEntityData.x = pos.x;
-        blockEntityData.y = pos.y;
-        blockEntityData.z = pos.z;
-        blockEntityData.namedTag = getNbt(pos, getName());
-        player.dataPacket(blockEntityData);
-    }
+	protected void placeHopper(Player player, BlockVector3 pos) {
+		UpdateBlockPacket updateBlock = new UpdateBlockPacket();
+		updateBlock.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(BlockID.HOPPER_BLOCK, 0);
+		updateBlock.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
+		updateBlock.x = pos.x;
+		updateBlock.y = pos.y;
+		updateBlock.z = pos.z;
+		player.dataPacket(updateBlock);
+		BlockEntityDataPacket blockEntityData = new BlockEntityDataPacket();
+		blockEntityData.x = pos.x;
+		blockEntityData.y = pos.y;
+		blockEntityData.z = pos.z;
+		blockEntityData.namedTag = getNbt(pos, getName());
+		player.dataPacket(blockEntityData);
+	}
 }

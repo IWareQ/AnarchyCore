@@ -3,7 +3,7 @@ package ru.jl1mbo.AnarchyCore.Task;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.scheduler.Task;
-import ru.jl1mbo.AnarchyCore.GameHandler.CombatLogger.CombatLoggerAPI;
+import ru.jl1mbo.AnarchyCore.Modules.CombatLogger.CombatLoggerAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
 public class RestartTask extends Task {
@@ -20,7 +20,7 @@ public class RestartTask extends Task {
 			}
 			if (seconds <= 9) {
 				Server.getInstance().getOnlinePlayers().values().forEach(players -> players.sendTitle("§lПерезагрузка",
-						"§lСервер перезагрузится через §6" + seconds + Utils.getSecond(seconds), 0, 20, 0));
+						"§lСервер перезагрузится через §6" + Utils.getSecond(seconds), 0, 20, 0));
 			}
 		} else {
 			for (Player players : Server.getInstance().getOnlinePlayers().values()) {
