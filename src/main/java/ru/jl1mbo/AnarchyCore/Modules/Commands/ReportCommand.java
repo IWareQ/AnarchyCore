@@ -30,8 +30,8 @@ public class ReportCommand extends Command {
 			customForm.addInput("§l§6• §rВведите причину§7:", "Он меня ударил :0");
 			customForm.send(player, (targetPlayer, targetForm, data) -> {
 				if (data == null) return;
-				String targetName = data.get(1).toString();
-				String reason = data.get(2).toString();
+				String targetName = data.get(0).toString();
+				String reason = data.get(1).toString();
 				if (reason == null || reason.equals("")) {
 					player.sendMessage("§l§7(§3Репорты§7) §rВведите причину жалобы§7!");
 					return;
