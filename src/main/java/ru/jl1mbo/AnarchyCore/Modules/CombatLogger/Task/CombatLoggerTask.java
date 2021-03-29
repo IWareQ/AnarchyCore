@@ -20,13 +20,13 @@ public class CombatLoggerTask extends Task {
 				}
 				CombatLoggerAPI.removeCombat(player);
 			} else {
-				long seconds = entry.getValue() + System.currentTimeMillis() / 1000L;
+				long seconds = entry.getValue() - System.currentTimeMillis() / 1000L;
 				if (seconds <= 30) {
-					seconds--;
 					if (player != null) {
-						CombatLoggerAPI.updateBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n§l§fНе выходите из игры еще §6" + seconds + " §fсек§7.!",
+						CombatLoggerAPI.updateBossBar(player, "        §fВы вошли в §6PvP §fрежим§7!\n\n§fНе выходите из игры еще §6" + seconds + " §fсек§7!",
 													  (int)(((seconds + 0.) / 30) * 100));
 					}
+					seconds--;
 				}
 			}
 		}

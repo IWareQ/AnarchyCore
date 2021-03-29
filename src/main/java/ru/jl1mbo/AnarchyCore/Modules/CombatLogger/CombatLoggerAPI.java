@@ -34,7 +34,7 @@ public class CombatLoggerAPI {
 
 	public static void addCombat(Player player) {
 		if (!inCombat(player)) {
-			createBossBar(player, "        §l§fВы вошли в §6PvP §fрежим§7!\n\n§l§fНе выходите из игры еще §630 §fсек§7.!", 100);
+			createBossBar(player, "        §fВы вошли в §6PvP §fрежим§7!\n\n§fНе выходите из игры еще §630 §fсек§7.!", 100);
 		}
 		combat.put(player.getName(), System.currentTimeMillis() / 1000L + 30);
 	}
