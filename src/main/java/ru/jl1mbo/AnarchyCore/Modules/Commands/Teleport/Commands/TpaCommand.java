@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.Commands;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -11,14 +8,14 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.TeleportAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.Utils.TeleportUtils;
+import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownAPI;
 
 public class TpaCommand extends Command {
-	private static Map<Player, Long> COOLDOWN = new HashMap<>();
 
 	public TpaCommand() {
 		super("tpa", "§rОтправить запрос на телепортацию");
 		this.commandParameters.clear();
-		this.commandParameters.put("tpa", new CommandParameter[] {new CommandParameter("target", CommandParamType.TARGET, false)});
+		this.commandParameters.put("tpa", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	@Override()
@@ -27,12 +24,6 @@ public class TpaCommand extends Command {
 			Player player = (Player) sender;
 			if (args.length != 1) {
 				player.sendMessage("§l§6• §rИспользование §7- /§6tpa §7(§6игрок§7)");
-				return true;
-			}
-			Long cooldownTime = COOLDOWN.get(player);
-			long time = System.currentTimeMillis() / 1000L;
-			if (cooldownTime != null && cooldownTime > time) {
-				player.sendMessage("§l§7(§3Задержка§7) §rСледующее использование будет доступно через §6" + (cooldownTime - time) + " §fсек§7.");
 				return true;
 			}
 			Player target = Server.getInstance().getPlayer(args[0]);
@@ -51,7 +42,7 @@ public class TpaCommand extends Command {
 							   " §fуспешно отправлен§7!\n§l§6• §rЗапрос действует только §630 §fсекунд§7!");
 			target.sendMessage(TeleportAPI.PREFIX + "Игрок §6" + player.getName() + " §fхочет телепортироваться к Вам§7!");
 			target.sendMessage("§l§6• §r§7/§atpc §7- §fпринять запрос");
-			COOLDOWN.put(player, time + 10);
+			CooldownAPI.addCooldown(player, this.getName(), 20);
 		}
 		return false;
 	}

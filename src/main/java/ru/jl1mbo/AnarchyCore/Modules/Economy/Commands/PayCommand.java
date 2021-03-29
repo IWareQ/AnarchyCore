@@ -7,6 +7,7 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import ru.jl1mbo.AnarchyCore.Modules.Auth.AuthAPI;
+import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Economy.EconomyAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
@@ -47,6 +48,7 @@ public class PayCommand extends Command {
 			}
 			EconomyAPI.reduceMoney(player.getName(), Double.parseDouble(args[0]));
 			EconomyAPI.addMoney(targetName, Double.parseDouble(args[0]));
+			CooldownAPI.addCooldown(player, this.getName(), 10);
 		}
 		return false;
 	}

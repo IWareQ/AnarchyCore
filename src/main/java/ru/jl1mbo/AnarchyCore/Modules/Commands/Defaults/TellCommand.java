@@ -14,7 +14,7 @@ public class TellCommand extends Command {
 	public TellCommand() {
 		super("tell", "§rОтправить Личное Сообщение");
 		this.commandParameters.clear();
-		this.commandParameters.put("tell", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET), CommandParameter.newType("message", CommandParamType.STRING)});
+		this.commandParameters.put("tell", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET), CommandParameter.newType("message", CommandParamType.MESSAGE)});
 	}
 
 	@Override()

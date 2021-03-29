@@ -3,9 +3,8 @@ package ru.jl1mbo.AnarchyCore.Modules.Commands.Home.Commands;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.level.Position;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.Home.HomeAPI;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
+import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownAPI;
 
 public class HomeCommand extends Command {
 
@@ -21,6 +20,7 @@ public class HomeCommand extends Command {
 			if (HomeAPI.isHome(player.getName())) {
 				player.sendMessage(HomeAPI.PREFIX + "Вы успешно телепортированы домой§7!");
 				player.teleport(HomeAPI.getHomePosition(player.getName()));
+				CooldownAPI.addCooldown(player, this.getName(), 20);
 			} else {
 				player.sendMessage(HomeAPI.PREFIX + "Точек дома не обнаружено§7!\n§l§6• §rДля создания точки Дома используйте §7/§6sethome");
 			}

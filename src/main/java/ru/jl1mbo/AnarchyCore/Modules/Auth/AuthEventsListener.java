@@ -23,7 +23,7 @@ import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
 public class AuthEventsListener implements Listener {
-	private static HashMap<String, Long> playerTime = new HashMap<>();
+	private static HashMap<Player, Long> playerTime = new HashMap<>();
 
 	@EventHandler()
 	public void onPlayerLocallyInitialized(PlayerLocallyInitializedEvent event) {
@@ -38,7 +38,10 @@ public class AuthEventsListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		SQLiteUtils.query("Auth.db", "UPDATE `Auth` SET `DateLast` = '" + Utils.getDate() + "', `IpLast` = '" + player.getAddress() + "' WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
-		SQLiteUtils.query("Users.db", "UPDATE `Users` SET `GameTime` = '" + (AuthAPI.getGameTime(player.getName()) + (System.currentTimeMillis() / 1000L -  playerTime.get(player.getName()))) + "' WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
+		if (playerTime.containsKey(player)) {
+			SQLiteUtils.query("Users.db", "UPDATE `Users` SET `GameTime` = '" + (AuthAPI.getGameTime(player.getName()) + (System.currentTimeMillis() / 1000L -  playerTime.get(
+								  player))) + "' WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
+		}
 		ScoreboardTask.showScoreboard(player, false);
 		event.setQuitMessage("");
 	}
@@ -56,7 +59,7 @@ public class AuthEventsListener implements Listener {
 		PermissionAPI.updatePermissions(event.getPlayer());
 		PermissionAPI.updateNamedTag(event.getPlayer());
 		player.sendMessage("\u00a7l\u00a76\u2022 \u00a7r\u0414\u043e\u0431\u0440\u043e \u043f\u043e\u0436\u0430\u043b\u043e\u0432\u0430\u0442\u044c \u043d\u0430 \u00a73DEATH \u00a7fMC \u00a77(\u00a7c\u0410\u043d\u0430\u0440\u0445\u0438\u044f\u00a77)\n\u00a7l\u00a76\u2022 \u00a7r\u041c\u044b \u0432 \u00a79\u0412\u041a \u00a77- \u00a7fvk\u00a77.\u00a7fcom\u00a77/\u00a76deathmc\u00a77.\u00a76club \u00a7l\u00a76| \u00a7r\u00a7f\u041d\u0430\u0448 \u0441\u0430\u0439\u0442 \u00a77- \u00a76death\u00a77-\u00a76mc\u00a77.\u00a76online");
-		playerTime.put(player.getName(), System.currentTimeMillis() / 1000L);
+		playerTime.put(player, System.currentTimeMillis() / 1000L);
 		player.setCheckMovement(false);
 		event.setJoinMessage("");
 		WorldSystemAPI.getSpawn().addParticle(new FloatingTextParticle(new Position(90.5, 93.5, 26.5), "\u00a7l\u00a76\u0410\u043b\u0442\u0430\u0440\u044c",

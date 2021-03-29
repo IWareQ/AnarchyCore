@@ -7,6 +7,7 @@ import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.CustomForm;
+import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
 public class ReportCommand extends Command {
@@ -37,6 +38,7 @@ public class ReportCommand extends Command {
 				}
 				player.sendMessage("§l§7(§3Репорты§7) §rРепорт на игрока §6" + targetName + " §fотправлен§7!");
 				Utils.sendMessageToChat("Новая жалоба! (" + player.getName() + ")\nНарушитель: " + targetName + "\nПричина: " + reason);
+				CooldownAPI.addCooldown(player, this.getName(), 300);
 			});
 		}
 		return false;

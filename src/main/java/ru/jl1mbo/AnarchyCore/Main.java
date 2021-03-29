@@ -42,6 +42,7 @@ import ru.jl1mbo.AnarchyCore.Modules.Clans.ClanEventsListener;
 import ru.jl1mbo.AnarchyCore.Modules.Clans.Command.ClanCommand;
 import ru.jl1mbo.AnarchyCore.Modules.CombatLogger.CombatEventsListener;
 import ru.jl1mbo.AnarchyCore.Modules.CombatLogger.Task.CombatLoggerTask;
+import ru.jl1mbo.AnarchyCore.Modules.Commands.BonusCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.ClearChatCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.CoordinateCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.DayCommand;
@@ -71,6 +72,8 @@ import ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.Commands.RtpCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.Commands.TpaCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.Commands.TpcCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.Task.TpaRequestTask;
+import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownEventsListener;
+import ru.jl1mbo.AnarchyCore.Modules.Cooldown.Task.CooldownRemoveTask;
 import ru.jl1mbo.AnarchyCore.Modules.Economy.Commands.AddMoneyCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Economy.Commands.MoneyCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Economy.Commands.PayCommand;
@@ -112,6 +115,7 @@ public class Main extends PluginBase {
 		this.getServer().getScheduler().scheduleRepeatingTask(new AuctionUpdateTask(), 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new ClearTask(), 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new TpaRequestTask(), 20);
+		this.getServer().getScheduler().scheduleRepeatingTask(new CooldownRemoveTask(), 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new BroadcastTask(), 60 * 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new RestartTask(), 20);
 		this.getServer().getScheduler().scheduleRepeatingTask(new ScoreboardTask(), 10 * 20);
@@ -158,6 +162,7 @@ public class Main extends PluginBase {
 		pluginManager.registerEvents(new FormEventsListener(), this);
 		pluginManager.registerEvents(new FakeInventoryEventsListener(), this);
 		pluginManager.registerEvents(new WorldEventsListener(), this);
+		pluginManager.registerEvents(new CooldownEventsListener(), this);
 	}
 
 	private void unregisterCommands() {
@@ -168,6 +173,6 @@ public class Main extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		this.getServer().getCommandMap().registerAll("", Arrays.asList(new SeeInventoryCommand(), new SpectateCommand(), new AdminPanelCommand(), new UnMuteCommand(), new MuteCommand(), new UnBanCommand(), new BanCommand(), new AuctionCommand(), new RegionCommand(), new GroupCommand(), new AddMoneyCommand(), new MoneyCommand(), new PayCommand(), new SetMoneyCommand(), new ClearChatCommand(), new CoordinateCommand(), new CraftingTableCommand(), new DayCommand(), new ListCommand(), new SayCommand(), new TellCommand(), new StopCommand(), new DonateCommand(), new EnderChestCommand(), new FoodCommand(), new HealCommand(), new HomeCommand(), new SetHomeCommand(), new DelHomeCommand(), new NPCCommand(), new NearCommand(), new NightCommand(), new NightVisionCommand(), new RepairCommand(), new ReportCommand(), new SpawnCommand(), new StorageCommand(), new TpaCommand(), new TpcCommand(), new RtpCommand(), new ClanCommand()));
+		this.getServer().getCommandMap().registerAll("", Arrays.asList(new BonusCommand(), new SeeInventoryCommand(), new SpectateCommand(), new AdminPanelCommand(), new UnMuteCommand(), new MuteCommand(), new UnBanCommand(), new BanCommand(), new AuctionCommand(), new RegionCommand(), new GroupCommand(), new AddMoneyCommand(), new MoneyCommand(), new PayCommand(), new SetMoneyCommand(), new ClearChatCommand(), new CoordinateCommand(), new CraftingTableCommand(), new DayCommand(), new ListCommand(), new SayCommand(), new TellCommand(), new StopCommand(), new DonateCommand(), new EnderChestCommand(), new FoodCommand(), new HealCommand(), new HomeCommand(), new SetHomeCommand(), new DelHomeCommand(), new NPCCommand(), new NearCommand(), new NightCommand(), new NightVisionCommand(), new RepairCommand(), new ReportCommand(), new SpawnCommand(), new StorageCommand(), new TpaCommand(), new TpcCommand(), new RtpCommand(), new ClanCommand()));
 	}
 }

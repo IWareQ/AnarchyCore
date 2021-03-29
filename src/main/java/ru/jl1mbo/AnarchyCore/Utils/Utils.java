@@ -69,7 +69,13 @@ public class Utils {
 		boolean blad = preg_match(text, "\\b.*([" + B + "][" + L + "][" + YA + "][" + D + "]).*\\b*");
 		boolean soska = preg_match(text, "\\b.*([" + S + "][" + A + O + "][" + S + "](?:[" + U + "]+|[" + K + "]+|[" + I + "])).*\\b*");
 		boolean mamka = preg_match(text, "\\b.*([" + M + "][" + A + "](?:[" + T + "]+|[" + M + "][" + K + "])).*\\b*");
-		if (pizda || ebal || blad || soska || mamka) {
+		boolean dolbaeb = preg_match(text, "\\b.*([" + D + "][" + A  + O + "][" + L + "][" + B + "][" + A + O + "][" + E + "]).*\\b*");
+		boolean pidor = preg_match(text, "\\b.*([" + P + "][" + I + Y + "][" + D + "][" + A + O + "][" + R + "]).*\\b*");
+		boolean pedick = preg_match(text, "\\b.*([" + P + "][" + E + "][" + D + "][" + I + "][" + K + "]).*\\b*");
+		boolean chmo = preg_match(text, "\\b.*([" + CH + "][" + M + "][" + O + "]).*\\b*");
+		boolean xyisos = preg_match(text, "\\b.*([" + H + "][" + U + "][" + E + I  + "][" + S + "][" + O + I +"]).*\\b*");
+		boolean dayn = preg_match(text, "\\b.*([" + D + "][" + A + "][" + U  + "][" + N + "]).*\\b*");
+		if (pizda || ebal || blad || soska || mamka || dolbaeb || pidor || pedick || chmo || dayn || xyisos) {
 			return true;
 		}
 		return false;

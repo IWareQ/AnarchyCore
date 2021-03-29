@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownAPI;
 
 public class NearCommand extends Command {
 	private static int RADIUS = 50;
@@ -33,6 +34,7 @@ public class NearCommand extends Command {
 				}
 			}
 			player.sendMessage("§l§6• §rКол§7-§fво игроков в радиусе §6" + RADIUS + " §fблоков§7: §6" + count);
+			CooldownAPI.addCooldown(player, this.getName(), 480);
 			count = 0;
 		}
 		return false;

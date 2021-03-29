@@ -8,6 +8,7 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
+import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownAPI;
 
 public class RepairCommand extends Command {
 
@@ -39,8 +40,9 @@ public class RepairCommand extends Command {
 					inventory.setItemInHand(item);
 					player.sendMessage("§l§6• §rПредмет в руке починен§7!");
 					player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
+					CooldownAPI.addCooldown(player, this.getName(), 60);
 				} else {
-					player.sendMessage("§l§6• §rВам не хватает §6опыта §fдля починки предмета§7! нужно: " + item.getDamage() / 2 + " а у вас: " + convert(player));
+					player.sendMessage("§l§6• §rВам не хватает §6опыта §fдля починки предмета§7!");
 				}
 			}
 			if (args.length == 1 && args[0].equals("all")) {
@@ -52,8 +54,6 @@ public class RepairCommand extends Command {
 					}
 				}
 				if (convert(player) >= exp) {
-					player.sendMessage("§l§6• §rВсе предметы в §6Инвентаре §fпочинены§7!");
-					player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
 					for (Item items : contents.values()) {
 						if (items.isTool() || items.isArmor()) {
 							double xpPlayer = convert(player);
@@ -64,8 +64,11 @@ public class RepairCommand extends Command {
 							exp = 0;
 						}
 					}
+					player.sendMessage("§l§6• §rВсе предметы в §6Инвентаре §fпочинены§7!");
+					player.getLevel().addSound(player, Sound.RANDOM_ANVIL_USE, 1, 1, player);
+					CooldownAPI.addCooldown(player, this.getName(), 180);
 				} else {
-					player.sendMessage("§l§6• §rВам не хватает §6опыта §fдля починки предметов§7! нужно: " + exp);
+					player.sendMessage("§l§6• §rВам не хватает §6опыта §fдля починки предметов§7!");
 				}
 			}
 		}
