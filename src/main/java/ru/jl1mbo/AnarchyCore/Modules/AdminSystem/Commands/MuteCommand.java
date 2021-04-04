@@ -23,7 +23,7 @@ public class MuteCommand extends Command {
 	}
 
 	public static void openMutePlayerForm(Player player, String targetName) {
-		List<String> reasonList = Arrays.asList(new String[] {"1.1", "1.2", "1.3", "test"});
+		List<String> reasonList = Arrays.asList(new String[] {"2.1 (Обсуж. действий перносала)", "2.2 (Дискриминация)", "2.3 (Пропаганда)", "2.4 (Оскорбления)", "2.5 (Спам, флуд)", "2.6 (Реклама)"});
 		CustomForm customForm = new CustomForm("Блокировка Чата §6" + targetName);
 		customForm.addDropDown("§l§6• §rПричина блокировки чата§7:", reasonList);
 		customForm.addLabel("§l§6• §rВремя блокировки чата§7:");
@@ -38,7 +38,7 @@ public class MuteCommand extends Command {
 			}
 			float time = ((float) data.get(2) * 1 * 60) + ((float) data.get(3) * 1 * 3600) + ((float) data.get(4) * 1 * 86400);
 			AdminAPI.addMute(targetName, player.getName(), data.get(0).toString(), (int) time);
-			player.sendMessage(AdminAPI.PREFIX + "§fЧат игрока §6" + targetName + " §fбыл успешно заблокирован по причине §6" + data.get(0).toString() + "§7!");
+			player.sendMessage(AdminAPI.PREFIX + "Чат игрока §6" + targetName + " §fбыл успешно заблокирован по причине §6" + data.get(0).toString() + "§7!");
 		});
 	}
 

@@ -23,7 +23,7 @@ public class BanCommand extends Command {
 	}
 
 	public static void openBanPlayerForm(Player player, String targetName) {
-		List<String> reasonList = Arrays.asList(new String[]{"1.1", "1.2", "1.3", "test"});
+		List<String> reasonList = Arrays.asList(new String[]{"3.1 (Читы)", "3.2 (Скин)", "3.3 (Багоюз)", "3.4 (Само-признание)"});
 		CustomForm customForm = new CustomForm("Блокировка Аккаунта §6" + targetName);
 		customForm.addDropDown("§l§6• §rПричина блокировки Аккаунта§7:", reasonList);
 		customForm.addLabel("§l§6• §rВремя блокировки Аккаунта§7:");
@@ -38,7 +38,7 @@ public class BanCommand extends Command {
 			}
 			float time = ((float) data.get(2) * 1 * 60) + ((float) data.get(3) * 1 * 3600) + ((float) data.get(4) * 1 * 86400);
 			AdminAPI.addBan(targetName, player.getName(), data.get(0).toString(), (int) time);
-			Utils.sendMessageAdmins(AdminAPI.PREFIX + "Чат игрока §6" + targetName + " §fбыл заблокирован Администратором §6" + player.getName() + " §fпо причине§7: §6" + data.get(0).toString() + "§7!", 1);
+			Utils.sendMessageAdmins(AdminAPI.PREFIX + "Аккаунт игрока §6" + targetName + " §fбыл заблокирован Администратором §6" + player.getName() + " §fпо причине§7: §6" + data.get(0).toString() + "§7!", 1);
 		});
 	}
 

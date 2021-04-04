@@ -8,6 +8,7 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByChildEntityEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.level.Location;
 import cn.nukkit.utils.LoginChainData;
@@ -64,7 +65,7 @@ public class AntiCheatAPI {
 		}
 	}
 
-	public static void addDetect(PlayerJoinEvent event) {
+	public static void addDetect(PlayerLoginEvent event) {
 		Player player = event.getPlayer();
 		flyDetect.put(player.getName(), 0);
 		reachDetect.put(player.getName(), 0);

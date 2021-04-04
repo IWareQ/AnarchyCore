@@ -5,6 +5,7 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 
 public class AntiCheatEventsListener implements Listener {
@@ -17,7 +18,7 @@ public class AntiCheatEventsListener implements Listener {
 	}
 
 	@EventHandler()
-	public void onPlayerJoin(PlayerJoinEvent event) {
+	public void onPlayerLogin(PlayerLoginEvent event) {
 		Player player = event.getPlayer();
 		AntiCheatAPI.addDetect(event);
 		if (AntiCheatAPI.checkToolBox(player)) {

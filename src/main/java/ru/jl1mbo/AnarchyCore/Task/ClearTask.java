@@ -28,14 +28,14 @@ public class ClearTask extends Task {
 			}
 		} else {
 			Server.getInstance().getLevels().values().forEach(level -> {
-				level.doChunkGarbageCollection();
-				level.unloadChunks(true);
 				for (Entity entity : level.getEntities()) {
 					if (!(entity instanceof Player) && !(entity instanceof Wither) && !(entity.getLevel().equals(WorldSystemAPI.getSpawn()))
 							&& !(entity instanceof WitherSkeletonBoss) && !(entity instanceof HuskBoss) && !(entity instanceof EvokerBoss) && !(entity instanceof SpiderBoss)) {
-						level.removeEntity(entity);
+						entity.close();
 					}
 				}
+				level.doChunkGarbageCollection();
+				level.unloadChunks(true);
 			});
 			ThreadCache.clean();
 			System.gc();

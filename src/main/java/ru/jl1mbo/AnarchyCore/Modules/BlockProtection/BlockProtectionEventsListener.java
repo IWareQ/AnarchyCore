@@ -7,12 +7,11 @@ import cn.nukkit.block.Block;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
-import cn.nukkit.event.block.BlockPistonEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.block.ItemFrameDropItemEvent;
 import cn.nukkit.event.entity.EntityExplodeEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class BlockProtectionEventsListener implements Listener {
 
@@ -20,7 +19,7 @@ public class BlockProtectionEventsListener implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
-		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
+		if (!BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
 			player.sendTip("Территория §6не доступна §fдля взаимодействия");
 			event.setCancelled(true);
 		}
@@ -29,8 +28,8 @@ public class BlockProtectionEventsListener implements Listener {
 			if (block.getLocation().equals(BlockProtectionAPI.getRegionBlockLocation(regionId))) {
 				if (BlockProtectionAPI.isRegionOwner(player.getName(), regionId)) {
 					player.sendMessage(BlockProtectionAPI.PREFIX + "Регион §7#§6" + regionId + " §fуспешно удален§7!");
-					SQLiteUtils.query("BlockProtection.db", "DELETE FROM `Areas` WHERE (`ID`) = '" + regionId + "'");
-					SQLiteUtils.query("BlockProtection.db", "DELETE FROM `Members` WHERE (`ID`) = '" + regionId + "'");
+					MySQLUtils.query("DELETE FROM `Regions` WHERE (`ID`) = '" + regionId + "'");
+					MySQLUtils.query("DELETE FROM `RegionMembers` WHERE (`ID`) = '" + regionId + "'");
 				} else {
 					player.sendMessage(BlockProtectionAPI.PREFIX + "Вы не можете удалить §6чужой §fрегион§7!");
 					event.setCancelled(true);
@@ -40,15 +39,10 @@ public class BlockProtectionEventsListener implements Listener {
 	}
 
 	@EventHandler()
-	public void onBlockPiston(BlockPistonEvent event) {
-		//TODO
-	}
-
-	@EventHandler()
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
-		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
+		if (!BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
 			player.sendTip("Территория §6не доступна §fдля взаимодействия");
 			event.setCancelled(true);
 		}
@@ -76,7 +70,7 @@ public class BlockProtectionEventsListener implements Listener {
 	public void onItemFrameDropItem(ItemFrameDropItemEvent event) {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
-		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
+		if (!BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
 			player.sendTip("Территория §6не доступна §fдля взаимодействия");
 			event.setCancelled(true);
 		}
@@ -86,7 +80,7 @@ public class BlockProtectionEventsListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
-		if (BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
+		if (!BlockProtectionAPI.canInteractHere(player, block.getLocation())) {
 			player.sendTip("Территория §6не доступна §fдля взаимодействия");
 			event.setCancelled(true);
 		}

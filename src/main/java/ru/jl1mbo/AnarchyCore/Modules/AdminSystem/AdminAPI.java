@@ -18,6 +18,8 @@ import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.GameRulesChangedPacket;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.scheduler.Task;
+import cn.nukkit.utils.Config;
+import ru.jl1mbo.AnarchyCore.Main;
 import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryAPI;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.ModalForm;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.SimpleForm;
@@ -28,8 +30,8 @@ import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.UnBanCommand;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.UnMuteCommand;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Inventory.AdminChest;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class AdminAPI {
 	public static String PREFIX = "§l§7(§3Система§7) §r";
@@ -59,7 +61,7 @@ public class AdminAPI {
 			simpleForm.addContent("\n§l§6• §rУстройство§7: §6" + target.getLoginChainData().getDeviceModel());
 		}
 		simpleForm.addContent("\n\nВыберите §6нужный пункт §fМеню§7:");
-		if (isBanned(targetName) || player.hasPermission("Command.UnBan")) {
+		if (isBanned(targetName) && player.hasPermission("Command.UnBan")) {
 			simpleForm.addButton("Разблокировать аккаунт");
 		} else {
 			simpleForm.addButton("Заблокировать аккаунт");
@@ -74,7 +76,7 @@ public class AdminAPI {
 			if (data == -1) return;
 			switch (data) {
 			case 0: {
-				if (isBanned(targetName)) {
+				if (isBanned(targetName) && player.hasPermission("Command.UnBan")) {
 					UnBanCommand.openUnBanPlayerForm(player, targetName);
 				} else {
 					BanCommand.openBanPlayerForm(player, targetName);
@@ -121,28 +123,29 @@ public class AdminAPI {
 				switch (data) {
 				case 0: {
 					int checkCode = Utils.rand(0, 10000);
-					Utils.sendMessageToChat("💂CheatCheacker\n\nИгрок: " + player.getName() + "\nАдмин: " + player.getName() + "\nКод: " +
+					CHEAT_CHECK.put(target.getName(), checkCode);
+					Utils.sendMessageToChat("💂CheatCheacker\n\nИгрок: " + target.getName() + "\nАдмин: " + player.getName() + "\nКод: " +
 											checkCode);
-					player.sendMessage(PREFIX + "Игрок §6" + player.getName() +
+					player.sendMessage(PREFIX + "Игрок §6" + target.getName() +
 									   " §fвызван на проверку§7!");
-					player.sendTitle("§l§6Проверка");
-					player.getLevel().addParticle(new FloatingTextParticle(player.getPosition().add(3, 2, 0), "§6Проверка на читы§7!",
+					target.sendTitle("§l§6Проверка");
+					target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(3, 2, 0), "§6Проверка на читы§7!",
 												  "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6"
-												  + checkCode), player);
-					Entity.createEntity("CowNPC", player.getPosition().add(3, 0, 0)).spawnToAll();
-					player.getLevel().addParticle(new FloatingTextParticle(player.getPosition().add(-3, 2, 0), "§6Проверка на читы§7!",
+												  + checkCode), target);
+					Entity.createEntity("CowNPC", target.getPosition().add(3, 0, 0)).spawnToAll();
+					target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(-3, 2, 0), "§6Проверка на читы§7!",
 												  "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6"
-												  + checkCode), player);
-					Entity.createEntity("CowNPC", player.getPosition().add(-3, 0, 0)).spawnToAll();
-					player.getLevel().addParticle(new FloatingTextParticle(player.getPosition().add(0, 2, 3), "§6Проверка на читы§7!",
+												  + checkCode), target);
+					Entity.createEntity("CowNPC", target.getPosition().add(-3, 0, 0)).spawnToAll();
+					target.getLevel().addParticle(new FloatingTextParticle(player.getPosition().add(0, 2, 3), "§6Проверка на читы§7!",
 												  "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6"
-												  + checkCode), player);
-					Entity.createEntity("CowNPC", player.getPosition().add(0, 0, 3)).spawnToAll();
-					player.getLevel().addParticle(new FloatingTextParticle(player.getPosition().add(0, 2, -3), "§6Проверка на читы§7!",
+												  + checkCode), target);
+					Entity.createEntity("CowNPC", target.getPosition().add(0, 0, 3)).spawnToAll();
+					target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(0, 2, -3), "§6Проверка на читы§7!",
 												  "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6"
-												  + checkCode), player);
-					Entity.createEntity("CowNPC", player.getPosition().add(0, 0, -3)).spawnToAll();
-					player.getLevel().addSound(player, Sound.RANDOM_SCREENSHOT, 1.0F, 1.0F, player);
+												  + checkCode), target);
+					Entity.createEntity("CowNPC", target.getPosition().add(0, 0, -3)).spawnToAll();
+					target.getLevel().addSound(target, Sound.RANDOM_SCREENSHOT, 1.0F, 1.0F, target);
 					Server.getInstance().getScheduler().scheduleRepeatingTask(new Task() {
 
 						@Override()
@@ -150,7 +153,7 @@ public class AdminAPI {
 							if (seconds != 0) {
 								seconds--;
 								if (isCheatCheck(target.getName())) {
-									target.sendTip("Время§7: §6" + seconds + Utils.getSecond(seconds));
+									target.sendTip("Время§7: §6" + Utils.getSecond(seconds));
 									target.setImmobile(true);
 								}
 							} else {
@@ -175,7 +178,7 @@ public class AdminAPI {
 		} else {
 			player.sendMessage(PREFIX + "Игрок §6" + target.getName() +
 							   " §fуже находится на проверке§7, §fпроверочный код§7: §6"
-							   + CHEAT_CHECK.get(target.getName().toLowerCase()));
+							   + CHEAT_CHECK.get(target.getName()));
 		}
 	}
 
@@ -245,18 +248,18 @@ public class AdminAPI {
 	}
 
 	public static boolean isBanned(String playerName) {
-		return SQLiteUtils.getInteger("Admins.db", "SELECT `ID` FROM `Bans` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'") != -1;
+		return MySQLUtils.getInteger("SELECT `ID` FROM `Bans` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'") != -1;
 	}
 
 	public static boolean isMuted(String playerName) {
-		return SQLiteUtils.getInteger("Admins.db", "SELECT `ID` FROM `Mutes` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'") != -1;
+		return MySQLUtils.getInteger("SELECT `ID` FROM `Mutes` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'") != -1;
 	}
 
 	public static void addBan(String playerName, String bannerName, String reason, Integer time) {
 		long endBan = System.currentTimeMillis() / 1000L + time;
 		Utils.sendMessageToChat("🔒Блокировка аккаунта\n\nИгрок: " + playerName + "\nАдмин: " + bannerName + "\nПричина: " + reason + "\nПериод: " +
 								Utils.getRemainingTime(endBan).replaceAll("§[0-9]", "").replaceAll("§[a-zA-Z]", ""));
-		SQLiteUtils.query("Admins.db", "INSERT INTO `Bans` (`Name`, `Reason`, `Time`) VALUES ('" + playerName + "', '" + reason + "', '" + endBan + "')");
+		MySQLUtils.query("INSERT INTO `Bans` (`Name`, `Reason`, `Time`) VALUES ('" + playerName + "', '" + reason + "', '" + endBan + "')");
 		Player target = Server.getInstance().getPlayerExact(playerName);
 		if (target != null) {
 			target.sendTitle("§l§6Аккаунт", "§l§6заблокирован", 0, 60, 0);
@@ -268,7 +271,7 @@ public class AdminAPI {
 		long endMute = System.currentTimeMillis() / 1000L + time;
 		Utils.sendMessageToChat("🙊Блокировка чата\n\nИгрок: " + playerName + "\nАдмин: " + bannerName + "\nПричина: " + reason + "\nПериод: " + Utils.getRemainingTime(
 									endMute).replaceAll("§[0-9]", "").replaceAll("§[a-zA-Z]", ""));
-		SQLiteUtils.query("Admins.db", "INSERT INTO `Mutes` (`Name`, `Reason`, `Time`) VALUES ('" + playerName + "', '" + reason + "', '" + endMute + "')");
+		MySQLUtils.query("INSERT INTO `Mutes` (`Name`, `Reason`, `Time`) VALUES ('" + playerName + "', '" + reason + "', '" + endMute + "')");
 		Player target = Server.getInstance().getPlayerExact(playerName);
 		if (target != null) {
 			target.sendMessage("§l§6• §rТебя замутили§7! §fАдминистратор закрыл тебе доступ к чату на §6" + Utils.getRemainingTime(
@@ -277,25 +280,25 @@ public class AdminAPI {
 	}
 
 	public static void removeBan(String playerName, String unbannerName, String reason) {
-		SQLiteUtils.query("Admins.db", "DELETE FROM `Bans` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
+		MySQLUtils.query("DELETE FROM `Bans` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
 		if (!reason.equals("buy")) {
 			Utils.sendMessageToChat("🔓Разблокировка аккаунта\n\nИгрок: " + playerName + "\nАдмин: " + unbannerName + "\nПричина: " + reason);
 		}
 	}
 
 	public static void removeMute(String playerName, String unbannerName, String reason) {
-		SQLiteUtils.query("Admins.db", "DELETE FROM `Mutes` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
+		MySQLUtils.query("DELETE FROM `Mutes` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
 		if (!reason.equals("buy")) {
 			Utils.sendMessageToChat("🙉Разблокировка чата\n\nИгрок: " + playerName + "\nАдмин: " + unbannerName + "\nПричина: " + reason);
 		}
 	}
 
-	public static HashMap<String, String> getBanData(String playerName) {
-		return SQLiteUtils.getHashMap("Admins.db", "SELECT * FROM `Bans` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
+	public static Map<String, String> getBanData(String playerName) {
+		return MySQLUtils.getStringMap("SELECT * FROM `Bans` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
 	}
 
-	public static HashMap<String, String> getMuteData(String playerName) {
-		return SQLiteUtils.getHashMap("Admins.db", "SELECT * FROM `Mutes` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
+	public static Map<String, String> getMuteData(String playerName) {
+		return MySQLUtils.getStringMap("SELECT * FROM `Mutes` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
 	}
 
 
@@ -303,14 +306,14 @@ public class AdminAPI {
 
 
 	public static boolean isSpectate(String playerName) {
-		return SQLiteUtils.getInteger("Admins.db", "SELECT `ID` FROM `Spectates` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'") != -1;
+		return MySQLUtils.getInteger("SELECT `ID` FROM `Spectates` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'") != -1;
 	}
 
 	public static void addSpectate(Player player, Player target) {
 		CompoundTag namedTag = new CompoundTag();
 		if (isSpectate(player.getName())) {
 			player.sendMessage(PREFIX + "Переключение на §6" + target.getName() + "§7!");
-			SQLiteUtils.query("Admins.db", "UPDATE `Spectates` SET `Target` = '" + target.getName() + "'");
+			MySQLUtils.query("UPDATE `Spectates` SET `Target` = '" + target.getName() + "'");
 			player.teleport(new Position(target.getFloorX() + 0.5, target.getFloorY(), target.getFloorZ() + 0.5, target.getLevel()));
 			enableCoordinate(player, false);
 		} else {
@@ -343,7 +346,7 @@ public class AdminAPI {
 					inventoryTag.add(NBTIO.putItemHelper(item, -106));
 				}
 			}
-			SQLiteUtils.query("Admins.db", "INSERT INTO `Spectates` (`Name`, `Target`, `World`, `X`, `Y`, `Z`, `namedTag`) VALUES ('" + player.getName() + "', '" + target.getName() + "', '" +
+			MySQLUtils.query("INSERT INTO `Spectates` (`Name`, `Target`, `World`, `X`, `Y`, `Z`, `namedTag`) VALUES ('" + player.getName() + "', '" + target.getName() + "', '" +
 							  player.getLevel().getName() + "', '" + player.getFloorX() + "', '" + player.getFloorY() + "', '" + player.getFloorZ() + "', '" + Utils.convertNbtToHex(namedTag) + "')");
 			namedTag.remove("Inventory");
 			player.setGamemode(3);
@@ -365,12 +368,12 @@ public class AdminAPI {
 		}
 	}
 
-	public static HashMap<String, String> getSpectateData(String playerName) {
-		return SQLiteUtils.getHashMap("Admins.db", "SELECT * FROM `Spectates` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
+	public static Map<String, String> getSpectateData(String playerName) {
+		return MySQLUtils.getStringMap("SELECT * FROM `Spectates` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
 	}
 
 	public static void removeSpectate(Player player) {
-		HashMap<String, String> spectateData = getSpectateData(player.getName());
+		Map<String, String> spectateData = getSpectateData(player.getName());
 		CompoundTag namedTag = Utils.convertHexToNBT(spectateData.get("namedTag"));
 		if (namedTag.contains("Inventory") && namedTag.get("Inventory") instanceof ListTag) {
 			ListTag<CompoundTag> inventoryList = namedTag.getList("Inventory", CompoundTag.class);
@@ -395,7 +398,7 @@ public class AdminAPI {
 			player.sendMessage(PREFIX +
 							   "Вы §6закончили §fнаблюдение за игроком §6" + spectateData.get("Target"));
 			namedTag.remove("Inventory");
-			SQLiteUtils.query("Admins.db", "DELETE FROM `Spectates` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
+			MySQLUtils.query("DELETE FROM `Spectates` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
 		}
 	}
 }

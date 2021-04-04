@@ -19,8 +19,8 @@ import ru.jl1mbo.AnarchyCore.Main;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.Task.ScoreboardTask;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class AuthEventsListener implements Listener {
 	private static HashMap<Player, Long> playerTime = new HashMap<>();
@@ -37,9 +37,9 @@ public class AuthEventsListener implements Listener {
 	@EventHandler()
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		SQLiteUtils.query("Auth.db", "UPDATE `Auth` SET `DateLast` = '" + Utils.getDate() + "', `IpLast` = '" + player.getAddress() + "' WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
+		MySQLUtils.query("UPDATE `Auth` SET `DateLast` = '" + Utils.getDate() + "', `IpLast` = '" + player.getAddress() + "' WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
 		if (playerTime.containsKey(player)) {
-			SQLiteUtils.query("Users.db", "UPDATE `Users` SET `GameTime` = '" + (AuthAPI.getGameTime(player.getName()) + (System.currentTimeMillis() / 1000L -  playerTime.get(
+			MySQLUtils.query("UPDATE `Users` SET `GameTime` = '" + (AuthAPI.getGameTime(player.getName()) + (System.currentTimeMillis() / 1000L -  playerTime.get(
 								  player))) + "' WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
 		}
 		ScoreboardTask.showScoreboard(player, false);
@@ -52,8 +52,8 @@ public class AuthEventsListener implements Listener {
 		String date = Utils.getDate();
 		String ip = player.getAddress();
 		if (!AuthAPI.isRegister(player.getName())) {
-			SQLiteUtils.query("Auth.db", "INSERT INTO `Auth` (`Name`, `DateReg`, `IpReg`) VALUES ('" + player.getName() + "', '" + date + "', '" + ip + "');");
-			SQLiteUtils.query("Users.db", "INSERT INTO `Users` (`Name`, `XboxID`) VALUES ('" + player.getName() + "', '" + player.getLoginChainData().getXUID() + "');");
+			MySQLUtils.query("INSERT INTO `Auth` (`Name`, `DateReg`, `IpReg`) VALUES ('" + player.getName() + "', '" + date + "', '" + ip + "')");
+			MySQLUtils.query("INSERT INTO `Users` (`Name`, `XboxID`) VALUES ('" + player.getName() + "', '" + player.getLoginChainData().getXUID() + "')");
 		}
 		ScoreboardTask.showScoreboard(player, true);
 		PermissionAPI.updatePermissions(event.getPlayer());

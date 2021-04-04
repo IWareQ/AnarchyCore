@@ -14,7 +14,7 @@ public class RepairCommand extends Command {
 
 	public RepairCommand() {
 		super("repair", "§rПочинка предметов");
-		this.setPermission("Command.Repair");
+		this.setPermission("Command.Repair"); 
 		this.commandParameters.clear();
 	}
 
@@ -32,10 +32,10 @@ public class RepairCommand extends Command {
 					player.sendMessage("§l§6• §rЧинить можно только §6Инструменты §fи §6Броню§7!");
 					return true;
 				}
-				if (convert(player) >= item.getDamage() / 2) {
+				if (convert(player) >= item.getDamage() / 5) {
 					double xpPlayer = convert(player);
 					player.setExperience(0, 0);
-					player.addExperience((int)xpPlayer - item.getDamage());
+					player.addExperience((int)xpPlayer - item.getDamage() / 5);
 					item.setDamage(0);
 					inventory.setItemInHand(item);
 					player.sendMessage("§l§6• §rПредмет в руке починен§7!");
@@ -50,7 +50,7 @@ public class RepairCommand extends Command {
 				int exp = 0;
 				for (Item items : contents.values()) {
 					if (items.isTool() || items.isArmor()) {
-						exp += items.getDamage() / 4;
+						exp += items.getDamage() / 10;
 					}
 				}
 				if (convert(player) >= exp) {

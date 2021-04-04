@@ -6,7 +6,7 @@ import cn.nukkit.command.CommandSender;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
 import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.BlockProtectionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.Home.HomeAPI;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class SetHomeCommand extends Command {
 
@@ -23,19 +23,13 @@ public class SetHomeCommand extends Command {
 				player.sendMessage(HomeAPI.PREFIX + "В этом мире §6запрещено §fустанавливать точки §6Дома§7!");
 				return true;
 			}
-			if (BlockProtectionAPI.canInteractHere(player, player.getLocation())) {
+			if (!BlockProtectionAPI.canInteractHere(player, player.getLocation())) {
 				player.sendMessage(HomeAPI.PREFIX + "Запрещено ставить §6точки дома §fв чужих регионах§7!");
 				return true;
 			}
-			if (HomeAPI.isHome(player.getName())) {
-				SQLiteUtils.query("Homes.db", "UPDATE `Homes` SET `X` = '" + player.getFloorX() + "', `Y` = '" + player.getFloorY() + "', `Z` = '" + player.getFloorZ() + "' WHERE UPPER (`Name`) = '" +
-								  player.getName().toUpperCase() + "'");
-				player.sendMessage(HomeAPI.PREFIX + "Новая точка дома §6упешно §fустановлена§7!");
-			} else {
-				SQLiteUtils.query("Homes.db", "INSERT INTO `Homes` (`Name`, `X`, `Y`, `Z`) VALUES ('" + player.getName() + "', '" + player.getFloorX() + "', '" + player.getFloorY() + "', '" + player.getFloorZ() +
-								  "')");
-				player.sendMessage(HomeAPI.PREFIX + "Новая точка дома §6упешно §fустановлена§7!");
-			}
+			MySQLUtils.query("DELETE FROM `Homes` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
+			MySQLUtils.query("INSERT INTO `Homes` (`Name`, `X`, `Y`, `Z`) VALUES ('" + player.getName() + "', '" + player.getFloorX() + "', '" + player.getFloorY() + "', '" + player.getFloorZ() + "')");
+			player.sendMessage(HomeAPI.PREFIX + "Новая точка дома §6упешно §fустановлена§7!");
 		}
 		return false;
 	}

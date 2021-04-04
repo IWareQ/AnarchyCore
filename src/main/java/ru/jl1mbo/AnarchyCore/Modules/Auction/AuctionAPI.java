@@ -6,6 +6,7 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
@@ -19,8 +20,8 @@ import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.TradeItem;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.Inventory.AuctionChest;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.Inventory.AuctionStorageChest;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class AuctionAPI extends PluginBase {
 	private static HashMap<Player, AuctionStorageChest> auctionStorageChest = new HashMap<>();
@@ -136,16 +137,14 @@ public class AuctionAPI extends PluginBase {
 			doubleChest = auctionStorageChest.getOrDefault(player, new AuctionStorageChest("Хранилище Аукциона"));
 			doubleChest.clearAll();
 		}
-		ArrayList<Integer> itemsId = SQLiteUtils.getIntegerList("Auction.db", "SELECT `ID` FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
+		List<Integer> itemsId = MySQLUtils.getIntegerList("SELECT `ID` FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
 		for (int itemId : itemsId) {
-			HashMap<String, String> storageData =  SQLiteUtils.getHashMap("Auction.db", "SELECT * FROM `AuctionStorage` WHERE (`ID`) = '" + itemId + "'");
+			Map<String, String> storageData =  MySQLUtils.getStringMap("SELECT * FROM `AuctionStorage` WHERE (`ID`) = '" + itemId + "'");
 			Item item = Item.get(Integer.parseInt(storageData.get("ItemId")), Integer.parseInt(storageData.get("ItemDamage")),
 								 Integer.parseInt(storageData.get("ItemCount"))).setNamedTag(Utils.convertHexToNBT(storageData.get("ItemNBT")).putInt("UUID", Integer.parseInt(storageData.get("ID"))));
 			doubleChest.addItem(item.setLore("\n§r§l§6• §rНажмите§7, §fчтобы забрать§7!"));
 		}
-		doubleChest.setItem(49, Item.get(Item.DOUBLE_PLANT).setCustomName("§r§6Обновить").setLore("\n§rПредметов§7: §6" + SQLiteUtils.getIntegerList("Auction.db",
-							"SELECT `ID` FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'").size() +
-							"\n\n§l§6• §rНажмите§7, §fчтобы обновить страницу§7!"));
+		doubleChest.setItem(49, Item.get(Item.DOUBLE_PLANT).setCustomName("§r§6Обновить").setLore("\n\n§l§6• §rНажмите§7, §fчтобы обновить страницу§7!"));
 		FakeInventoryAPI.openDoubleChestInventory(player, doubleChest);
 		auctionStorageChest.put(player, doubleChest);
 	}

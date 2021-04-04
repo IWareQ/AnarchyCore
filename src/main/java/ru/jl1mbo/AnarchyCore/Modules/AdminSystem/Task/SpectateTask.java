@@ -1,6 +1,7 @@
 package ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Task;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -14,7 +15,7 @@ public class SpectateTask extends Task {
 	public void onRun(int currentTick) {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 			if (AdminAPI.isSpectate(player.getName())) {
-				HashMap<String, String> spectateData = AdminAPI.getSpectateData(player.getName());
+				Map<String, String> spectateData = AdminAPI.getSpectateData(player.getName());
 				Player target = Server.getInstance().getPlayer(spectateData.get("Target"));
 				if (target != null) {
 					if (player.distance(target) >= 35) {

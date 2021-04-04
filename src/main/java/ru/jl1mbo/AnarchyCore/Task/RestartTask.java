@@ -7,7 +7,7 @@ import ru.jl1mbo.AnarchyCore.Modules.CombatLogger.CombatLoggerAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
 public class RestartTask extends Task {
-	public static int seconds = 3600;
+	public static int seconds = 3600; //3600
 
 	@Override()
 	public void onRun(int tick) {

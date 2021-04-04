@@ -11,8 +11,8 @@ import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.item.Item;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.AuctionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.TradeItem;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class AuctionCommand extends Command {
 
@@ -41,7 +41,7 @@ public class AuctionCommand extends Command {
 						count++;
 					}
 				}
-				if (SQLiteUtils.getInteger("Auction.db", "SELECT COUNT(*) as COUNT FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'") + count >= AuctionAPI.AUCTION_MAX_SELLS) {
+				if (MySQLUtils.getInteger("SELECT COUNT(*) as COUNT FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'") + count >= AuctionAPI.AUCTION_MAX_SELLS) {
 					player.sendMessage(AuctionAPI.PREFIX + "Вы уже разместили или храните максимальное колличество лотов §7(§6" + AuctionAPI.AUCTION_MAX_SELLS +
 									   "§7)");
 					return false;

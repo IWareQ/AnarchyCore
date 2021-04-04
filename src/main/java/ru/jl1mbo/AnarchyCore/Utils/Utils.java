@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +21,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
+import ru.jl1mbo.AnarchyCore.Modules.Auth.AuthAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 
 public class Utils {
@@ -63,7 +65,8 @@ public class Utils {
 		}
 	}
 
-	public static boolean validText(String text) {
+	public static boolean validText(String texts) {
+		String text = texts.replaceAll(" ", "").replaceAll("[0-9]", "").replaceAll(".", "");
 		boolean pizda = preg_match(text, "\\b.*([" + P + "][" + I + E + Y + "][" + Z + "][" + D + "]).*\\b*");
 		boolean ebal = preg_match(text, "\\b.*([" + E + "][" + B + "](?:[" + A + O + "][" + T + N + K + L + "]+|[" + L + "])).*\\b*");
 		boolean blad = preg_match(text, "\\b.*([" + B + "][" + L + "][" + YA + "][" + D + "]).*\\b*");
@@ -73,7 +76,7 @@ public class Utils {
 		boolean pidor = preg_match(text, "\\b.*([" + P + "][" + I + Y + "][" + D + "][" + A + O + "][" + R + "]).*\\b*");
 		boolean pedick = preg_match(text, "\\b.*([" + P + "][" + E + "][" + D + "][" + I + "][" + K + "]).*\\b*");
 		boolean chmo = preg_match(text, "\\b.*([" + CH + "][" + M + "][" + O + "]).*\\b*");
-		boolean xyisos = preg_match(text, "\\b.*([" + H + "][" + U + "][" + E + I  + "][" + S + "][" + O + I +"]).*\\b*");
+		boolean xyisos = preg_match(text, "\\b.*([" + H + "][" + U + "][" + E + I  + "][" + S + "][" + O + I + "]).*\\b*");
 		boolean dayn = preg_match(text, "\\b.*([" + D + "][" + A + "][" + U  + "][" + N + "]).*\\b*");
 		if (pizda || ebal || blad || soska || mamka || dolbaeb || pidor || pedick || chmo || dayn || xyisos) {
 			return true;
@@ -156,13 +159,12 @@ public class Utils {
 	public static List<String> getPlayersList(String playerName) {
 		ArrayList<String> playerList = new ArrayList<>();
 		Player target = Server.getInstance().getPlayer(playerName);
-		ArrayList<String> players = SQLiteUtils.getStringList("Auth.db", "SELECT `Name` FROM `Auth`");
 		if (target == null) {
-			for (String name : players) {
-				if (name.startsWith(playerName)) {
-					playerList.add(name);
+			/*for (Entry<String, Object> entry : AuthAPI.config.getAll().entrySet()) {
+				if (entry.getKey().startsWith(playerName)) {
+					playerList.add(entry.getKey());
 				}
-			}
+			}*/
 		}
 		if (playerList.isEmpty()) {
 			playerList.add(playerName);

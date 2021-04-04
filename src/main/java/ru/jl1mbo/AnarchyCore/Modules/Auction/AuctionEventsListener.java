@@ -16,7 +16,7 @@ import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.TradeItem;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.Inventory.AuctionChest;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.Inventory.AuctionStorageChest;
 import ru.jl1mbo.AnarchyCore.Modules.Economy.EconomyAPI;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class AuctionEventsListener implements Listener {
 
@@ -128,11 +128,11 @@ public class AuctionEventsListener implements Listener {
 						AuctionAPI.openAuctionStorageChest(player, true);
 					} else {
 						CompoundTag namedTag = sourceItem.getNamedTag();
-						if (namedTag != null && namedTag.getInt("UUID") > 0) {
+						if (namedTag != null && namedTag.contains("UUID")) {
 							PlayerInventory playerInventory = player.getInventory();
 							if (playerInventory.canAddItem(sourceItem)) {
 								storageChest.removeItem(sourceItem);
-								SQLiteUtils.query("Auction.db", "DELETE FROM `AuctionStorage` WHERE (`ID`) = '" + namedTag.getInt("UUID") + "'");
+								MySQLUtils.query("DELETE FROM `AuctionStorage` WHERE (`ID`) = '" + namedTag.getInt("UUID") + "'");
 								namedTag.remove("UUID");
 								namedTag.remove("display");
 								playerInventory.addItem(sourceItem.setNamedTag(namedTag));

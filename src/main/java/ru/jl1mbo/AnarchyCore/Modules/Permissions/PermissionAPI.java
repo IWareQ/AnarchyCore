@@ -20,8 +20,8 @@ import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.SpecialGroup.YouTubeGroup
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.StaffGroup.AdministratorGroup;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.StaffGroup.HelperGroup;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.StaffGroup.ModeratorGroup;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class PermissionAPI {
 	public static final HashMap<String, DefaultGroup> GROUPS = new HashMap<>();
@@ -56,11 +56,11 @@ public class PermissionAPI {
 	}
 
 	public static DefaultGroup getPlayerGroup(String playerName) {
-		return GROUPS.get(SQLiteUtils.getString("Users.db", "SELECT `Permission` FROM `Users` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "';"));
+		return GROUPS.get(MySQLUtils.getString("SELECT `Permission` FROM `Users` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "';"));
 	}
 
 	public static void setGroup(String playerName, String groupId) {
-		SQLiteUtils.query("Users.db", "UPDATE `Users` SET `Permission` = '" + groupId + "' WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "';");
+		MySQLUtils.query("UPDATE `Users` SET `Permission` = '" + groupId + "' WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "';");
 	}
 
 	public static void updateNamedTag(Player player) {

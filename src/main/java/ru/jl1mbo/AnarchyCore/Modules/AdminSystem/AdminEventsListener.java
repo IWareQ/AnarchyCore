@@ -24,6 +24,7 @@ import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerFoodLevelChangeEvent;
+import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
@@ -47,6 +48,9 @@ public class AdminEventsListener implements Listener {
 	@EventHandler()
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
+		if (AdminAPI.isBanned(player.getName())) {
+			player.setImmobile(true);
+		}
 		if (AdminAPI.isSpectate(player.getName())) {
 			AdminAPI.removeSpectate(player);
 		}
@@ -63,7 +67,7 @@ public class AdminEventsListener implements Listener {
 				Vector3 blockVector3 = new Vector3(useItemData.blockPos.getX(), useItemData.blockPos.getY(), useItemData.blockPos.getZ());
 				Block block = player.getLevel().getBlock(blockVector3);
 				Item item = player.getInventory().getItemInHand();
-				HashMap<String, String> spectateData = AdminAPI.getSpectateData(player.getName());
+				Map<String, String> spectateData = AdminAPI.getSpectateData(player.getName());
 				switch (item.getId()) {
 				case Item.REDSTONE_DUST:
 					if (AdminAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
@@ -162,7 +166,7 @@ public class AdminEventsListener implements Listener {
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		if (AdminAPI.isMuted(player.getName())) {
-			HashMap<String, String> muteData = AdminAPI.getMuteData(player.getName());
+			Map<String, String> muteData = AdminAPI.getMuteData(player.getName());
 			if (Long.parseLong(muteData.get("Time")) <= System.currentTimeMillis() / 1000L) {
 				AdminAPI.removeMute(player.getName(), "", "buy");
 			} else {
@@ -200,6 +204,7 @@ public class AdminEventsListener implements Listener {
 			Player player = (Player)damager;
 			if (AdminAPI.isBanned(player.getName()) || AdminAPI.isCheatCheck(player.getName())) {
 				event.setCancelled(true);
+				player.setImmobile(true);
 			}
 		}
 	}

@@ -15,7 +15,7 @@ import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.Blocks.Protect.EmeraldOrePr
 import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.Blocks.Protect.IronBlockProtection;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DefaultGroup;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class BlockProtectionAPI {
 	private static HashMap<Integer, DefaultBlockProtection> BLOCK_PROTECTION = new HashMap<>();
@@ -64,7 +64,7 @@ public class BlockProtectionAPI {
 		}
 		player.sendMessage(PREFIX +
 						   "Вы успешно создали новый " + BLOCK_PROTECTION.get(block.getId()).getBlockName() + "§7!");
-		SQLiteUtils.query("BlockProtection.db", "INSERT INTO `Areas` (`Name`, `Main_X`, `Main_Y`, `Main_Z`, `Pos1_X`, `Pos1_Y`, `Pos1_Z`, `Pos2_X`, `Pos2_Y`, `Pos2_Z`) VALUES ('" +
+		MySQLUtils.query("INSERT INTO `Regions` (`Name`, `Main_X`, `Main_Y`, `Main_Z`, `Pos1_X`, `Pos1_Y`, `Pos1_Z`, `Pos2_X`, `Pos2_Y`, `Pos2_Z`) VALUES ('" +
 						  player.getName() + "', '" + x
 						  + "', '" + y + "', '" + z + "', '" + pos1[0] + "', '" + pos1[1] + "', '" + pos1[2] + "', '" + pos2[0] + "', '" + pos2[1] + "', '" + pos2[2] + "')");
 	}
@@ -72,9 +72,9 @@ public class BlockProtectionAPI {
 	public static boolean canInteractHere(Player player, Location location) {
 		int region_id = getRegionIDByLocation(location);
 		if (region_id != -1) {
-			return isRegionMember(player.getName(), region_id) && !isRegionOwner(player.getName(), region_id);
+			return isRegionMember(player.getName(), region_id) || isRegionOwner(player.getName(), region_id);
 		}
-		return false;
+		return true;
 	}
 
 	public static boolean isRegionOwner(String playerName, int regionId) {
@@ -82,37 +82,40 @@ public class BlockProtectionAPI {
 	}
 
 	public static boolean isRegionMember(String playerName, int regionId) {
-		return SQLiteUtils.getInteger("BlockProtection.db", "SELECT `ID` FROM `Members` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "' AND (`ID`) = '" + regionId + "'") != -1;
+		return MySQLUtils.getInteger("SELECT `ID` FROM `RegionMembers` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "' AND (`RegionID`) = '" + regionId + "'") != -1;
 	}
 
 	public static String getRegionOwner(int regionId) {
-		return SQLiteUtils.getString("BlockProtection.db", "SELECT `Name` FROM `Areas` WHERE (`ID`) = '" + regionId + "'");
+		return MySQLUtils.getString("SELECT `Name` FROM `Regions` WHERE (`ID`) = '" + regionId + "'");
 	}
 
 	public static Integer getRegionIDByPosition(Position position) {
-		return SQLiteUtils.getInteger("BlockProtection.db", "SELECT `ID` FROM `Areas` WHERE (`Pos1_X` <= " + position.getFloorX() + " AND " + position.getFloorX() + " <= `Pos2_X`) AND (`Pos1_Y` <= " + position.getFloorY() + " AND " + position.getFloorY() + " <= `Pos2_Y`) AND (`Pos1_Z` <= " + position.getFloorZ() + " AND " + position.getFloorZ() + " <= `Pos2_Z`);");
+		return MySQLUtils.getInteger("SELECT `ID` FROM `Regions` WHERE (`Pos1_X` <= " + position.getFloorX() + " AND " + position.getFloorX() + " <= `Pos2_X`) AND (`Pos1_Y` <= " +
+									  position.getFloorY() + " AND " + position.getFloorY() + " <= `Pos2_Y`) AND (`Pos1_Z` <= " + position.getFloorZ() + " AND " + position.getFloorZ() + " <= `Pos2_Z`);");
 	}
 
 	public static Integer getRegionIDByLocation(Location location) {
-		return SQLiteUtils.getInteger("BlockProtection.db", "SELECT `ID` FROM `Areas` WHERE (`Pos1_X` <= " + location.getFloorX() + " AND " + location.getFloorX() + " <= `Pos2_X`) AND (`Pos1_Y` <= " + location.getFloorY() + " AND " + location.getFloorY() + " <= `Pos2_Y`) AND (`Pos1_Z` <= " + location.getFloorZ() + " AND " + location.getFloorZ() + " <= `Pos2_Z`);");
+		return MySQLUtils.getInteger("SELECT `ID` FROM `Regions` WHERE (`Pos1_X` <= " + location.getFloorX() + " AND " + location.getFloorX() + " <= `Pos2_X`) AND (`Pos1_Y` <= " +
+									  location.getFloorY() + " AND " + location.getFloorY() + " <= `Pos2_Y`) AND (`Pos1_Z` <= " + location.getFloorZ() + " AND " + location.getFloorZ() + " <= `Pos2_Z`);");
 	}
 
 	public static boolean canCreateRegion(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
-		return SQLiteUtils.getInteger("BlockProtection.db", "SELECT `ID` FROM `Areas` WHERE `Pos2_X` >= " + minX + " AND `Pos1_X` <= " + maxX + " AND `Pos2_Y` >= " + minY + " AND `Pos1_Y` <= " + maxY + " AND `Pos2_Z` >= " + minZ + " AND `Pos1_Z` <= " + maxZ + ";") == -1;
+		return MySQLUtils.getInteger("SELECT `ID` FROM `Regions` WHERE `Pos2_X` >= " + minX + " AND `Pos1_X` <= " + maxX + " AND `Pos2_Y` >= " + minY + " AND `Pos1_Y` <= " + maxY +
+									  " AND `Pos2_Z` >= " + minZ + " AND `Pos1_Z` <= " + maxZ + "") == -1;
 	}
 
 	public static Location getRegionBlockLocation(int regionId) {
-		int mainX = SQLiteUtils.getInteger("BlockProtection.db", "SELECT `Main_X` FROM `Areas` WHERE (`ID`) = '" + regionId + "';");
-		int mainY = SQLiteUtils.getInteger("BlockProtection.db", "SELECT `Main_Y` FROM `Areas` WHERE (`ID`) = '" + regionId + "';");
-		int mainZ = SQLiteUtils.getInteger("BlockProtection.db", "SELECT `Main_Z` FROM `Areas` WHERE (`ID`) = '" + regionId + "';");
+		int mainX = MySQLUtils.getInteger("SELECT `Main_X` FROM `Regions` WHERE (`ID`) = '" + regionId + "'");
+		int mainY = MySQLUtils.getInteger("SELECT `Main_Y` FROM `Regions` WHERE (`ID`) = '" + regionId + "'");
+		int mainZ = MySQLUtils.getInteger("SELECT `Main_Z` FROM `Regions` WHERE (`ID`) = '" + regionId + "'");
 		return new Location(mainX, mainY, mainZ);
 	}
 
 	public static int getRegionsCount(String playerName) {
-		return SQLiteUtils.getInteger("BlockProtection.db", "SELECT COUNT(*) as COUNT FROM `Areas` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "';");
+		return MySQLUtils.getInteger("SELECT COUNT(*) as COUNT FROM `Regions` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
 	}
 
 	public static List<String> getRegionMembers(int regionId) {
-		return SQLiteUtils.getStringList("BlockProtection.db", "SELECT `Name` FROM `Members` WHERE (`RegionID`) = '" + regionId + "';");
+		return MySQLUtils.getStringList("SELECT `Name` FROM `RegionMembers` WHERE (`RegionID`) = '" + regionId + "'");
 	}
 }

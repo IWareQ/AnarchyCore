@@ -5,6 +5,3 @@ api: "1.0.11"
 load: POSTWORLD
 author: Jl1mbo
 website: "vk.com/extranons"
-depend:
-  - MobPlugin
-  - DbLib

@@ -17,8 +17,8 @@ import ru.jl1mbo.AnarchyCore.Modules.Auth.AuthAPI;
 import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.BlockProtectionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.Blocks.DefaultBlockProtection;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
-import ru.jl1mbo.AnarchyCore.Utils.SQLiteUtils;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class RegionCommand extends Command {
 
@@ -71,7 +71,7 @@ public class RegionCommand extends Command {
 				target.sendMessage(BlockProtectionAPI.PREFIX + "Игрок §6" + player.getName() + " §fудалил Вас из своего региона§7!");
 			}
 			player.sendMessage(BlockProtectionAPI.PREFIX + "Игрок §6" + targetName + " §fудален из региона§7!");
-			SQLiteUtils.query("BlockProtection.db", "DELETE FROM `Members` WHERE UPPER (`Name`) = '" + targetName.toUpperCase() + "' AND (`RegionID`) = '" + regionID + "'");
+			MySQLUtils.query("DELETE FROM `RegionMembers` WHERE UPPER (`Name`) = '" + targetName.toUpperCase() + "' AND (`RegionID`) = '" + regionID + "'");
 		});
 	}
 
@@ -79,7 +79,7 @@ public class RegionCommand extends Command {
 		SimpleForm simpleForm = new SimpleForm("Мои регионы");
 		simpleForm.addContent("Выберите один из регионов§7, §fс которым хотите §6взаимодействовать§7.");
 		simpleForm.addContent("\n\n§fСписок §6Ваших §fрегионов§7:");
-		List<Integer> regionsData = SQLiteUtils.getIntegerList("BlockProtection.db", "SELECT `ID` FROM `Areas` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
+		List<Integer> regionsData = MySQLUtils.getIntegerList( "SELECT `ID` FROM `Regions` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
 		if (regionsData == null || regionsData.isEmpty()) {
 			simpleForm.addContent("\n\n§fВы не имеете регионов§7!");
 		}
@@ -146,7 +146,7 @@ public class RegionCommand extends Command {
 		SimpleForm simpleForm = new SimpleForm("Членство в Регионах");
 		simpleForm.addContent("Здесь Вы можете увидеть регионы§7, §fв которых Вы §6состоите§7.");
 		simpleForm.addContent("\n\n§fСписок регионов§7:");
-		List<Integer> regionsData = SQLiteUtils.getIntegerList("BlockProtection.db", "SELECT `RegionID` FROM `Members` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
+		List<Integer> regionsData = MySQLUtils.getIntegerList("SELECT `RegionID` FROM `RegionMembers` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
 		if (regionsData == null || regionsData.isEmpty()) {
 			simpleForm.addContent("\n\n§fВас §6не добавили §fни в §61 §fиз регионов§7!");
 		}
@@ -202,7 +202,7 @@ public class RegionCommand extends Command {
 				if (target != null) {
 					target.sendMessage(BlockProtectionAPI.PREFIX + "Игрок §6" + player.getName() + " §fдобавил Вас в свой регион§7!");
 				}
-				SQLiteUtils.query("BlockProtection.db", "INSERT INTO `Members` (`Name`, `RegionID`) VALUES ('" + targetName + "', '" + regionID + "')");
+				MySQLUtils.query("INSERT INTO `RegionMembers` (`Name`, `RegionID`) VALUES ('" + targetName + "', '" + regionID + "')");
 			}
 			break;
 
@@ -230,7 +230,7 @@ public class RegionCommand extends Command {
 				if (target != null) {
 					target.sendMessage(BlockProtectionAPI.PREFIX + "Игрок §6" + player.getName() + " §fудалил Вас из своего региона§7!");
 				}
-				SQLiteUtils.query("BlockProtection.db", "DELETE FROM `Members` WHERE UPPER (`Name`) = '" + targetName.toUpperCase() + "' AND (`RegionID`) = '" + regionID + "'");
+				MySQLUtils.query("DELETE FROM `RegionMembers` WHERE UPPER (`Name`) = '" + targetName.toUpperCase() + "' AND (`RegionID`) = '" + regionID + "'");
 			}
 			break;
 

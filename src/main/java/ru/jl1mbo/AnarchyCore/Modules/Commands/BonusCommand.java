@@ -23,7 +23,7 @@ public class BonusCommand extends Command {
 				return false;
 			}
 			Config config = new Config(Main.getInstance().getDataFolder() + "/Other/Bonus.yml", Config.YAML);
-			if (config.exists(player.getName())) {
+			if (!config.exists(player.getName())) {
 				config.set(player.getName(), true);
 				player.getInventory().addItem(Item.get(Item.MONSTER_SPAWNER));
 				player.sendMessage("§l§6• §rБонус успешно взят§7!");
