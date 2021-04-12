@@ -26,11 +26,11 @@ public class Scoreboard {
 	private final Set<Player> viewers = new HashSet<>();
 	private final Map<DisplaySlot, ScoreboardDisplay> displays = new EnumMap<>(DisplaySlot.class);
 	private long scoreIdCounter = 0;
-
+	
 	public ScoreboardDisplay addDisplay(DisplaySlot slot, String objectiveName, String displayName) {
 		return this.addDisplay(slot, objectiveName, displayName, SortOrder.ASCENDING);
 	}
-
+	
 	public ScoreboardDisplay addDisplay(DisplaySlot slot, String objectiveName, String displayName, SortOrder sortOrder) {
 		ScoreboardDisplay scoreboardDisplay = this.displays.get(slot);
 		if (scoreboardDisplay == null) {
@@ -40,12 +40,12 @@ public class Scoreboard {
 		}
 		return scoreboardDisplay;
 	}
-
+	
 	public void removeDisplay(DisplaySlot slot) {
 		ScoreboardDisplay display = this.displays.remove(slot);
 		if (display != null) {
 			LongList validScoreIDs = new LongArrayList();
-			Long2ObjectMap.FastEntrySet<ScoreboardLine> fastSet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>) this.scoreboardLines.long2ObjectEntrySet();
+			Long2ObjectMap.FastEntrySet<ScoreboardLine> fastSet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>)this.scoreboardLines.long2ObjectEntrySet();
 			ObjectIterator<Long2ObjectMap.Entry<ScoreboardLine>> fastIterator = fastSet.fastIterator();
 			while (fastIterator.hasNext()) {
 				Long2ObjectMap.Entry<ScoreboardLine> entry = fastIterator.next();
@@ -60,7 +60,7 @@ public class Scoreboard {
 			this.broadcast(this.constructRemoveDisplayPacket(display));
 		}
 	}
-
+	
 	private DataPacket constructDisplayPacket(DisplaySlot slot, ScoreboardDisplay display) {
 		SetObjectivePacket packetSetObjective = new SetObjectivePacket();
 		packetSetObjective.setCriteriaName("dummy");
@@ -70,15 +70,15 @@ public class Scoreboard {
 		packetSetObjective.setSortOrder(display.getSortOrder().ordinal());
 		return packetSetObjective;
 	}
-
+	
 	private void broadcast(DataPacket packet) {
 		for (Player viewer : this.viewers) {
 			viewer.dataPacket(packet);
 		}
 	}
-
+	
 	long addOrUpdateLine(String line, String objective, int score) {
-		Long2ObjectMap.FastEntrySet<ScoreboardLine> fastEntrySet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>) this.scoreboardLines.long2ObjectEntrySet();
+		Long2ObjectMap.FastEntrySet<ScoreboardLine> fastEntrySet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>)this.scoreboardLines.long2ObjectEntrySet();
 		ObjectIterator<Long2ObjectMap.Entry<ScoreboardLine>> fastIterator = fastEntrySet.fastIterator();
 		while (fastIterator.hasNext()) {
 			Long2ObjectMap.Entry<ScoreboardLine> entry = fastIterator.next();
@@ -87,14 +87,14 @@ public class Scoreboard {
 			}
 		}
 		long newId = this.scoreIdCounter++;
-		ScoreboardLine scoreboardLine = new ScoreboardLine((byte) 3, 0, line, objective, score);
+		ScoreboardLine scoreboardLine = new ScoreboardLine((byte)3, 0, line, objective, score);
 		this.scoreboardLines.put(newId, scoreboardLine);
 		this.broadcast(this.constructSetScore(newId, scoreboardLine));
 		return newId;
 	}
-
+	
 	long addOrUpdateEntity(Entity entity, String objective, int score) {
-		Long2ObjectMap.FastEntrySet<ScoreboardLine> fastEntrySet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>) this.scoreboardLines.long2ObjectEntrySet();
+		Long2ObjectMap.FastEntrySet<ScoreboardLine> fastEntrySet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>)this.scoreboardLines.long2ObjectEntrySet();
 		ObjectIterator<Long2ObjectMap.Entry<ScoreboardLine>> fastIterator = fastEntrySet.fastIterator();
 		while (fastIterator.hasNext()) {
 			Long2ObjectMap.Entry<ScoreboardLine> entry = fastIterator.next();
@@ -108,23 +108,23 @@ public class Scoreboard {
 		this.broadcast(this.constructSetScore(newId, scoreboardLine));
 		return newId;
 	}
-
+	
 	private DataPacket constructSetScore(long newId, ScoreboardLine line) {
 		SetScorePacket setScorePacket = new SetScorePacket();
-		setScorePacket.setType((byte) 0);
-		setScorePacket.setEntries(new ArrayList<SetScorePacket.ScoreEntry>() {
+		setScorePacket.setType((byte)0);
+		setScorePacket.setEntries(new ArrayList<SetScorePacket.ScoreEntry>(){
 			{
 				this.add(new SetScorePacket.ScoreEntry(newId, line.objective, line.score, line.type, line.fakeName, line.entityId));
 			}
 		});
 		return setScorePacket;
 	}
-
+	
 	private DataPacket constructSetScore() {
 		SetScorePacket setScorePacket = new SetScorePacket();
-		setScorePacket.setType((byte) 0);
+		setScorePacket.setType((byte)0);
 		List<SetScorePacket.ScoreEntry> entries = new ArrayList<>();
-		Long2ObjectMap.FastEntrySet<ScoreboardLine> fastEntrySet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>) this.scoreboardLines.long2ObjectEntrySet();
+		Long2ObjectMap.FastEntrySet<ScoreboardLine> fastEntrySet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>)this.scoreboardLines.long2ObjectEntrySet();
 		ObjectIterator<Long2ObjectMap.Entry<ScoreboardLine>> fastIterator = fastEntrySet.fastIterator();
 		while (fastIterator.hasNext()) {
 			Long2ObjectMap.Entry<ScoreboardLine> entry = fastIterator.next();
@@ -133,7 +133,7 @@ public class Scoreboard {
 		setScorePacket.setEntries(entries);
 		return setScorePacket;
 	}
-
+	
 	public void showFor(Player player) {
 		if (this.viewers.add(player)) {
 			for (Map.Entry<DisplaySlot, ScoreboardDisplay> entry : this.displays.entrySet()) {
@@ -142,11 +142,11 @@ public class Scoreboard {
 			player.dataPacket(this.constructSetScore());
 		}
 	}
-
+	
 	public void hideFor(Player player) {
 		if (this.viewers.remove(player)) {
 			LongList validScoreIDs = new LongArrayList();
-			Long2ObjectMap.FastEntrySet<ScoreboardLine> fastSet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>) this.scoreboardLines.long2ObjectEntrySet();
+			Long2ObjectMap.FastEntrySet<ScoreboardLine> fastSet = (Long2ObjectMap.FastEntrySet<ScoreboardLine>)this.scoreboardLines.long2ObjectEntrySet();
 			ObjectIterator<Long2ObjectMap.Entry<ScoreboardLine>> fastIterator = fastSet.fastIterator();
 			while (fastIterator.hasNext()) {
 				validScoreIDs.add(fastIterator.next().getLongKey());
@@ -157,10 +157,10 @@ public class Scoreboard {
 			}
 		}
 	}
-
+	
 	private DataPacket constructRemoveScores(LongList scoreIDs) {
 		SetScorePacket setScorePacket = new SetScorePacket();
-		setScorePacket.setType((byte) 1);
+		setScorePacket.setType((byte)1);
 		List<SetScorePacket.ScoreEntry> entries = new ArrayList<>();
 		for (long scoreID : scoreIDs) {
 			entries.add(new SetScorePacket.ScoreEntry(scoreID, "", 0));
@@ -168,13 +168,13 @@ public class Scoreboard {
 		setScorePacket.setEntries(entries);
 		return setScorePacket;
 	}
-
+	
 	private DataPacket constructRemoveDisplayPacket(ScoreboardDisplay display) {
 		RemoveObjectivePacket removeObjectivePacket = new RemoveObjectivePacket();
 		removeObjectivePacket.setObjectiveName(display.getObjectiveName());
 		return removeObjectivePacket;
 	}
-
+	
 	public void updateScore(long scoreId, int score) {
 		ScoreboardLine line = this.scoreboardLines.get(scoreId);
 		if (line != null) {
@@ -182,25 +182,25 @@ public class Scoreboard {
 			this.broadcast(this.constructSetScore(scoreId, line));
 		}
 	}
-
+	
 	public void removeScoreEntry(long scoreId) {
 		ScoreboardLine line = this.scoreboardLines.remove(scoreId);
 		if (line != null) {
 			this.broadcast(this.constructRemoveScores(scoreId));
 		}
 	}
-
+	
 	private DataPacket constructRemoveScores(long scoreId) {
 		SetScorePacket setScorePacket = new SetScorePacket();
-		setScorePacket.setType((byte) 1);
-		setScorePacket.setEntries(new ArrayList<SetScorePacket.ScoreEntry>() {
+		setScorePacket.setType((byte)1);
+		setScorePacket.setEntries(new ArrayList<SetScorePacket.ScoreEntry>(){
 			{
 				add(new SetScorePacket.ScoreEntry(scoreId, "", 0));
 			}
 		});
 		return setScorePacket;
 	}
-
+	
 	public int getScore(long scoreId) {
 		ScoreboardLine line = this.scoreboardLines.remove(scoreId);
 		if (line != null) {
@@ -208,7 +208,7 @@ public class Scoreboard {
 		}
 		return 0;
 	}
-
+	
 	@Data()
 	private class ScoreboardLine {
 		private final byte type;
@@ -216,7 +216,7 @@ public class Scoreboard {
 		private final String fakeName;
 		private final String objective;
 		private int score;
-
+		
 		public ScoreboardLine(final byte type, final long entityId, final String fakeName, final String objective, final int score) {
 			this.type = type;
 			this.entityId = entityId;
@@ -224,31 +224,31 @@ public class Scoreboard {
 			this.objective = objective;
 			this.score = score;
 		}
-
+		
 		public byte getType() {
 			return this.type;
 		}
-
+		
 		public long getEntityId() {
 			return this.entityId;
 		}
-
+		
 		public String getFakeName() {
 			return this.fakeName;
 		}
-
+		
 		public String getObjective() {
 			return this.objective;
 		}
-
+		
 		public int getScore() {
 			return this.score;
 		}
-
+		
 		public void setScore(final int score) {
 			this.score = score;
 		}
-
+		
 		@Override()
 		public boolean equals(final Object o) {
 			if (o == this) {
@@ -257,7 +257,7 @@ public class Scoreboard {
 			if (!(o instanceof ScoreboardLine)) {
 				return false;
 			}
-			final ScoreboardLine other = (ScoreboardLine) o;
+			final ScoreboardLine other = (ScoreboardLine)o;
 			if (!other.canEqual(this)) {
 				return false;
 			}
@@ -290,11 +290,11 @@ public class Scoreboard {
 			}
 			return false;
 		}
-
+		
 		protected boolean canEqual(final Object other) {
 			return other instanceof ScoreboardLine;
 		}
-
+		
 		@Override()
 		public int hashCode() {
 			final int PRIME = 59;
@@ -309,11 +309,10 @@ public class Scoreboard {
 			result = result * 59 + this.getScore();
 			return result;
 		}
-
+		
 		@Override()
 		public String toString() {
-			return "Scoreboard.ScoreboardLine(type=" + this.getType() + ", entityId=" + this.getEntityId() + ", fakeName=" + this.getFakeName() + ", objective=" + this.getObjective() + ", score=" +
-				   this.getScore() + ")";
+			return "Scoreboard.ScoreboardLine(type=" + this.getType() + ", entityId=" + this.getEntityId() + ", fakeName=" + this.getFakeName() + ", objective=" + this.getObjective() + ", score=" + this.getScore() + ")";
 		}
 	}
 }

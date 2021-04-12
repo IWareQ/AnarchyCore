@@ -15,7 +15,7 @@ import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.Utils.FakeChests;
 @RequiredArgsConstructor()
 public class FakeInventoryEventsListener implements Listener {
 	private static final FakeChests fakeChests = new FakeChests();
-
+	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
@@ -25,6 +25,7 @@ public class FakeInventoryEventsListener implements Listener {
 			for (BlockVector3 pos : positions) {
 				if (pos.getX() == block.getX() && pos.getY() == block.getZ() && pos.getZ() == block.getZ()) {
 					event.setCancelled(true);
+					return;
 				}
 			}
 		}

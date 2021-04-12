@@ -21,9 +21,11 @@ public class EnderChestCommand extends Command {
 			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}
-			EnderChest enderChest = new EnderChest();
-			enderChest.setContents(player.getEnderChestInventory().getContents());
-			FakeInventoryAPI.openInventory(player, enderChest);
+			if (player.getFloorY() <= 256) {
+				EnderChest enderChest = new EnderChest();
+				enderChest.setContents(player.getEnderChestInventory().getContents());
+				FakeInventoryAPI.openInventory(player, enderChest);
+			}
 		}
 		return false;
 	}

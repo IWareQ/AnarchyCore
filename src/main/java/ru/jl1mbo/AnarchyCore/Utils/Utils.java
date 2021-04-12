@@ -23,6 +23,7 @@ import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import ru.jl1mbo.AnarchyCore.Modules.Auth.AuthAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
+import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
 public class Utils {
 	private  static String P = "пПnPp";
@@ -160,14 +161,14 @@ public class Utils {
 		ArrayList<String> playerList = new ArrayList<>();
 		Player target = Server.getInstance().getPlayer(playerName);
 		if (target == null) {
-			/*for (Entry<String, Object> entry : AuthAPI.config.getAll().entrySet()) {
-				if (entry.getKey().startsWith(playerName)) {
-					playerList.add(entry.getKey());
+			List<String> names = MySQLUtils.getStringList("");
+			for (String name : names) {
+				if (name.startsWith(playerName)) {
+					playerList.add(name);
 				}
-			}*/
-		}
-		if (playerList.isEmpty()) {
-			playerList.add(playerName);
+			}
+		} else {
+			playerList.add(target.getName());
 		}
 		return playerList;
 	}
@@ -188,6 +189,10 @@ public class Utils {
 
 	public static String getDate() {
 		return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(Calendar.getInstance().getTime());
+	}
+	
+	public static String getDate(int unixtime) {
+		return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(unixtime);
 	}
 
 	public static String implode(String[] args, int start) {

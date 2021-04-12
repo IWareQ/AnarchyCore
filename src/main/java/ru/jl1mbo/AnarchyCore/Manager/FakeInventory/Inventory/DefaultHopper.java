@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import cn.nukkit.Player;
-import cn.nukkit.block.BlockID;
+import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.inventory.InventoryType;
 import cn.nukkit.level.GlobalBlockPalette;
@@ -18,43 +18,45 @@ import cn.nukkit.network.protocol.UpdateBlockPacket;
 import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.Utils.FakeChest;
 
 public class DefaultHopper extends FakeChest {
-
+	
 	public DefaultHopper() {
 		super(InventoryType.HOPPER, null, null);
 	}
-
+	
 	public DefaultHopper(String title) {
 		super(InventoryType.HOPPER, null, title);
 	}
-
+	
 	public DefaultHopper(InventoryType inventoryType, String title) {
 		super(inventoryType, null, title);
 	}
-
+	
 	private static byte[] getNbt(BlockVector3 pos, String name) {
-		CompoundTag tag = new CompoundTag()
-		.putString("id", BlockEntity.HOPPER)
-		.putInt("x", pos.x)
-		.putInt("y", pos.y)
-		.putInt("z", pos.z)
-		.putString("CustomName", name == null ? "Воронка" : name);
+		CompoundTag namedTag = new CompoundTag().putString("id", BlockEntity.HOPPER).putInt("x", pos.x).putInt("y", pos.y).putInt("z", pos.z).putString("CustomName", name == null ? "Воронка" : name);
 		try {
-			return NBTIO.write(tag, ByteOrder.LITTLE_ENDIAN, true);
-		} catch (IOException e) {
+			return NBTIO.write(namedTag, ByteOrder.LITTLE_ENDIAN, true);
+		} catch (IOException exception) {
 			throw new RuntimeException("Unable to create NBT for Hopper");
 		}
 	}
-
+	
 	@Override()
 	protected List<BlockVector3> onOpenBlock(Player player) {
-		BlockVector3 blockPosition = new BlockVector3(player.getFloorX(), player.getFloorY() + 2, player.getFloorZ());
-		placeHopper(player, blockPosition);
+		BlockVector3 blockPosition = new BlockVector3(player.getFloorX(), player.getFloorY(), player.getFloorZ());
+		if (player.getFloorY() > 200) {
+			blockPosition = blockPosition.add(0, -2, 0);
+		} else {
+			blockPosition = blockPosition.add(0, 2, 0);
+		}
+		if (player.getFloorY() <= 256) {
+			placeHopper(player, blockPosition);
+		}
 		return Collections.singletonList(blockPosition);
 	}
-
+	
 	protected void placeHopper(Player player, BlockVector3 pos) {
 		UpdateBlockPacket updateBlock = new UpdateBlockPacket();
-		updateBlock.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(BlockID.HOPPER_BLOCK, 0);
+		updateBlock.blockRuntimeId = GlobalBlockPalette.getOrCreateRuntimeId(Block.HOPPER_BLOCK, 0);
 		updateBlock.flags = UpdateBlockPacket.FLAG_ALL_PRIORITY;
 		updateBlock.x = pos.x;
 		updateBlock.y = pos.y;
@@ -64,7 +66,7 @@ public class DefaultHopper extends FakeChest {
 		blockEntityData.x = pos.x;
 		blockEntityData.y = pos.y;
 		blockEntityData.z = pos.z;
-		blockEntityData.namedTag = getNbt(pos, getName());
+		blockEntityData.namedTag = getNbt(pos, this.getTitle());
 		player.dataPacket(blockEntityData);
 	}
 }

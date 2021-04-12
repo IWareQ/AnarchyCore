@@ -101,7 +101,6 @@ public class Main extends PluginBase {
 		BlockProtectionAPI.register();
 		AuctionAPI.register();
 		WorldSystemAPI.register();
-		SQLiteProvider.register();
 		BroadcastTask.register();
 		this.registerTask();
 		this.registerEntity();

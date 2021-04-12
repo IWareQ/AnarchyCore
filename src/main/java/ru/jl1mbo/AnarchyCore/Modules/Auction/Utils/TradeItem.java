@@ -1,12 +1,14 @@
 package ru.jl1mbo.AnarchyCore.Modules.Auction.Utils;
 
 import cn.nukkit.item.Item;
+import lombok.Getter;
 
 public class TradeItem {
 	public String sellerName;
 	public Double itemPrice;
 	public Long sellTime;
 	public Item sellItem;
+	@Getter
 	public String UUID;
 
 	public TradeItem(Item sellItem, String sellerName, Double itemPrice, Long sellTime, String UUID) {

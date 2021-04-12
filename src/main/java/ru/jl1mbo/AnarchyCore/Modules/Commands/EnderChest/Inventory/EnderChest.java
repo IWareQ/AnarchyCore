@@ -8,10 +8,10 @@ public class EnderChest extends DefaultEnderChest {
 	public EnderChest() {
 		super();
 	}
-
-	@Override
+	
+	@Override()
 	public void onClose(Player player) {
-		player.getEnderChestInventory().setContents(this.getContents());
 		super.onClose(player);
+		player.getEnderChestInventory().setContents(this.getContents());
 	}
 }

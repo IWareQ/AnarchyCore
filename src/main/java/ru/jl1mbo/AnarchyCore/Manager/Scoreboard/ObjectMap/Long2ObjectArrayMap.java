@@ -25,7 +25,7 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 	private transient long[] key;
 	private transient Object[] value;
 	private int size;
-
+	
 	public Long2ObjectArrayMap(long[] key, Object[] value) {
 		this.key = key;
 		this.value = value;
@@ -34,27 +34,27 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 			throw new IllegalArgumentException("Keys and values have different lengths (" + key.length + ", " + value.length + ")");
 		}
 	}
-
+	
 	public Long2ObjectArrayMap() {
 		this.key = LongArrays.EMPTY_ARRAY;
 		this.value = ObjectArrays.EMPTY_ARRAY;
 	}
-
+	
 	public Long2ObjectArrayMap(int capacity) {
 		this.key = new long[capacity];
 		this.value = new Object[capacity];
 	}
-
+	
 	public Long2ObjectArrayMap(Long2ObjectMap<V> m) {
 		this(m.size());
 		this.putAll(m);
 	}
-
+	
 	public Long2ObjectArrayMap(Map<? extends Long, ? extends V> m) {
 		this(m.size());
 		this.putAll(m);
 	}
-
+	
 	public Long2ObjectArrayMap(long[] key, Object[] value, int size) {
 		this.key = key;
 		this.value = value;
@@ -65,11 +65,11 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 			throw new IllegalArgumentException("The provided size (" + size + ") is larger than or equal to the backing-arrays size (" + key.length + ")");
 		}
 	}
-
+	
 	public FastEntrySet<V> long2ObjectEntrySet() {
 		return new EntrySet();
 	}
-
+	
 	private int findKey(long k) {
 		long[] key = this.key;
 		int i = this.size;
@@ -80,7 +80,7 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 		} while (key[i] != k);
 		return i;
 	}
-
+	
 	public V get(long k) {
 		long[] key = this.key;
 		int i = this.size;
@@ -89,24 +89,24 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 				return this.defRetValue;
 			}
 		} while (key[i] != k);
-		return (V) this.value[i];
+		return (V)this.value[i];
 	}
-
+	
 	public int size() {
 		return this.size;
 	}
-
+	
 	public void clear() {
 		for (int i = this.size; i-- != 0; this.value[i] = null) {
-
+			
 		}
 		this.size = 0;
 	}
-
+	
 	public boolean containsKey(long k) {
 		return this.findKey(k) != -1;
 	}
-
+	
 	public boolean containsValue(Object v) {
 		int i = this.size;
 		do {
@@ -116,15 +116,15 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 		} while (!Objects.equals(this.value[i], v));
 		return true;
 	}
-
+	
 	public boolean isEmpty() {
 		return this.size == 0;
 	}
-
+	
 	public V put(long k, V v) {
 		int oldKey = this.findKey(k);
 		if (oldKey != -1) {
-			V oldValue = (V) this.value[oldKey];
+			V oldValue = (V)this.value[oldKey];
 			this.value[oldKey] = v;
 			return oldValue;
 		} else {
@@ -143,13 +143,13 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 			return this.defRetValue;
 		}
 	}
-
+	
 	public V remove(long k) {
 		int oldPos = this.findKey(k);
 		if (oldPos == -1) {
 			return this.defRetValue;
 		} else {
-			V oldValue = (V) this.value[oldPos];
+			V oldValue = (V)this.value[oldPos];
 			int tail = this.size - oldPos - 1;
 			System.arraycopy(this.key, oldPos + 1, this.key, oldPos, tail);
 			System.arraycopy(this.value, oldPos + 1, this.value, oldPos, tail);
@@ -158,14 +158,14 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 			return oldValue;
 		}
 	}
-
+	
 	public LongSet keySet() {
-		return new AbstractLongSet() {
-
+		return new AbstractLongSet(){
+			
 			public boolean contains(long k) {
 				return Long2ObjectArrayMap.this.findKey(k) != -1;
 			}
-
+			
 			public boolean remove(long k) {
 				int oldPos = Long2ObjectArrayMap.this.findKey(k);
 				if (oldPos == -1) {
@@ -178,15 +178,15 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 					return true;
 				}
 			}
-
+			
 			public LongIterator iterator() {
-				return new LongIterator() {
+				return new LongIterator(){
 					int pos = 0;
-
+					
 					public boolean hasNext() {
 						return this.pos < Long2ObjectArrayMap.this.size;
 					}
-
+					
 					public long nextLong() {
 						if (!this.hasNext()) {
 							throw new NoSuchElementException();
@@ -194,7 +194,7 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 							return Long2ObjectArrayMap.this.key[this.pos++];
 						}
 					}
-
+					
 					public void remove() {
 						if (this.pos == 0) {
 							throw new IllegalStateException();
@@ -207,40 +207,40 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 					}
 				};
 			}
-
+			
 			public int size() {
 				return Long2ObjectArrayMap.this.size;
 			}
-
+			
 			public void clear() {
 				Long2ObjectArrayMap.this.clear();
 			}
 		};
 	}
-
+	
 	public ObjectCollection<V> values() {
-		return new AbstractObjectCollection<V>() {
-
+		return new AbstractObjectCollection<V>(){
+			
 			public boolean contains(Object v) {
 				return Long2ObjectArrayMap.this.containsValue(v);
 			}
-
+			
 			public ObjectIterator<V> iterator() {
-				return new ObjectIterator<V>() {
+				return new ObjectIterator<V>(){
 					int pos = 0;
-
+					
 					public boolean hasNext() {
 						return this.pos < Long2ObjectArrayMap.this.size;
 					}
-
+					
 					public V next() {
 						if (!this.hasNext()) {
 							throw new NoSuchElementException();
 						} else {
-							return (V) Long2ObjectArrayMap.this.value[this.pos++];
+							return (V)Long2ObjectArrayMap.this.value[this.pos++];
 						}
 					}
-
+					
 					public void remove() {
 						if (this.pos == 0) {
 							throw new IllegalStateException();
@@ -253,21 +253,21 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 					}
 				};
 			}
-
+			
 			public int size() {
 				return Long2ObjectArrayMap.this.size;
 			}
-
+			
 			public void clear() {
 				Long2ObjectArrayMap.this.clear();
 			}
 		};
 	}
-
+	
 	public Long2ObjectArrayMap<V> clone() {
 		Long2ObjectArrayMap c;
 		try {
-			c = (Long2ObjectArrayMap) super.clone();
+			c = (Long2ObjectArrayMap)super.clone();
 		} catch (CloneNotSupportedException var3) {
 			throw new InternalError();
 		}
@@ -275,7 +275,7 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 		c.value = this.value.clone();
 		return c;
 	}
-
+	
 	private void writeObject(ObjectOutputStream s) throws IOException {
 		s.defaultWriteObject();
 		for (int i = 0; i < this.size; ++i) {
@@ -283,7 +283,7 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 			s.writeObject(this.value[i]);
 		}
 	}
-
+	
 	private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
 		s.defaultReadObject();
 		this.key = new long[this.size];
@@ -293,53 +293,53 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 			this.value[i] = s.readObject();
 		}
 	}
-
+	
 	public class BasicEntry<V> implements Entry<V> {
 		public long key;
 		public V value;
-
+		
 		public BasicEntry() {
-
+			
 		}
-
+		
 		public BasicEntry(Long key, V value) {
 			this.key = key;
 			this.value = value;
 		}
-
+		
 		public BasicEntry(long key, V value) {
 			this.key = key;
 			this.value = value;
 		}
-
+		
 		public long getLongKey() {
 			return this.key;
 		}
-
+		
 		public V getValue() {
 			return this.value;
 		}
-
+		
 		public V setValue(V value) {
 			throw new UnsupportedOperationException();
 		}
 	}
-
+	
 	public class EntrySet extends AbstractObjectSet<Entry<V>> implements FastEntrySet<V> {
-
+		
 		private EntrySet() {
-
+			
 		}
-
+		
 		public ObjectIterator<Entry<V>> iterator() {
-			return new ObjectIterator<Entry<V>>() {
+			return new ObjectIterator<Entry<V>>(){
 				int curr = -1;
 				int next = 0;
-
+				
 				public boolean hasNext() {
 					return this.next < Long2ObjectArrayMap.this.size;
 				}
-
+				
 				public Entry<V> next() {
 					if (!this.hasNext()) {
 						throw new NoSuchElementException();
@@ -347,7 +347,7 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 						return new BasicEntry(Long2ObjectArrayMap.this.key[this.curr = this.next], Long2ObjectArrayMap.this.value[this.next++]);
 					}
 				}
-
+				
 				public void remove() {
 					if (this.curr == -1) {
 						throw new IllegalStateException();
@@ -361,27 +361,27 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 				}
 			};
 		}
-
+		
 		public ObjectIterator<Entry<V>> fastIterator() {
-			return new ObjectIterator<Entry<V>>() {
+			return new ObjectIterator<Entry<V>>(){
 				final BasicEntry<V> entry = new BasicEntry();
 				int next = 0;
 				int curr = -1;
-
+				
 				public boolean hasNext() {
 					return this.next < Long2ObjectArrayMap.this.size;
 				}
-
+				
 				public Entry<V> next() {
 					if (!this.hasNext()) {
 						throw new NoSuchElementException();
 					} else {
 						this.entry.key = Long2ObjectArrayMap.this.key[this.curr = this.next];
-						this.entry.value = (V) Long2ObjectArrayMap.this.value[this.next++];
+						this.entry.value = (V)Long2ObjectArrayMap.this.value[this.next++];
 						return this.entry;
 					}
 				}
-
+				
 				public void remove() {
 					if (this.curr == -1) {
 						throw new IllegalStateException();
@@ -395,33 +395,33 @@ public class Long2ObjectArrayMap<V> extends AbstractLong2ObjectMap<V> implements
 				}
 			};
 		}
-
+		
 		public int size() {
 			return Long2ObjectArrayMap.this.size;
 		}
-
+		
 		public boolean contains(Object o) {
 			if (!(o instanceof java.util.Map.Entry)) {
 				return false;
 			} else {
-				java.util.Map.Entry<?, ?> e = (java.util.Map.Entry) o;
+				java.util.Map.Entry<?, ?> e = (java.util.Map.Entry)o;
 				if (e.getKey() != null && e.getKey() instanceof Long) {
-					long k = (Long) e.getKey();
+					long k = (Long)e.getKey();
 					return Long2ObjectArrayMap.this.containsKey(k) && Objects.equals(Long2ObjectArrayMap.this.get(k), e.getValue());
 				} else {
 					return false;
 				}
 			}
 		}
-
+		
 		public boolean remove(Object o) {
 			if (!(o instanceof java.util.Map.Entry)) {
 				return false;
 			} else {
-				java.util.Map.Entry<?, ?> e = (java.util.Map.Entry) o;
+				java.util.Map.Entry<?, ?> e = (java.util.Map.Entry)o;
 				if (e.getKey() != null && e.getKey() instanceof Long) {
-					long k = (Long) e.getKey();
-					V v = (V) e.getValue();
+					long k = (Long)e.getKey();
+					V v = (V)e.getValue();
 					int oldPos = Long2ObjectArrayMap.this.findKey(k);
 					if (oldPos != -1 && Objects.equals(v, Long2ObjectArrayMap.this.value[oldPos])) {
 						int tail = Long2ObjectArrayMap.this.size - oldPos - 1;
