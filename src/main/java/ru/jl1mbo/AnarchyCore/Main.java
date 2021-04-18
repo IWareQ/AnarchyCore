@@ -20,6 +20,7 @@ import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryEventsListener;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.FormEventsListener;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldEventsListener;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
+import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.TheEnd.TheEndEventsListener;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.AdminEventsListener;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.AdminPanelCommand;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.BanCommand;
@@ -165,6 +166,8 @@ public class Main extends PluginBase {
 		pluginManager.registerEvents(new FakeInventoryEventsListener(), this);
 		pluginManager.registerEvents(new WorldEventsListener(), this);
 		pluginManager.registerEvents(new CooldownEventsListener(), this);
+		
+		pluginManager.registerEvents(new TheEndEventsListener(), this);
 	}
 
 	private void unregisterCommands() {

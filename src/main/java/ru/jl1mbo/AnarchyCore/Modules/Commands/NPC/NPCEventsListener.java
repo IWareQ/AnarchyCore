@@ -167,7 +167,7 @@ public class NPCEventsListener implements Listener {
 				absolutePacket.pitch = pitch;
 				absolutePacket.headYaw = yaw;
 				absolutePacket.onGround = entity.onGround;
-				player.directDataPacket(absolutePacket);
+				player.dataPacket(absolutePacket);
 			}
 		});
 	}

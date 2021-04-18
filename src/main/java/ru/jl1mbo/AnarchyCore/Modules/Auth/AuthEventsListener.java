@@ -80,7 +80,7 @@ public class AuthEventsListener implements Listener {
 											  player);
 		addFloatingKillsTops(new Position(115.5, 96, 97.5), player);
 		addFloatingDeathsTops(new Position(127.5, 96, 97.5), player);
-		NPC.spawnNPC(new Position(128.5, 95, 112.5, WorldSystemAPI.Spawn), new Position(114.5, 95, 112.5, WorldSystemAPI.Spawn));
+		//NPC.spawnNPC(new Position(128.5, 95, 112.5, WorldSystemAPI.Spawn), new Position(114.5, 95, 112.5, WorldSystemAPI.Spawn));
 	}
 
 	private static void addFloatingKillsTops(Position pos, Player player) {

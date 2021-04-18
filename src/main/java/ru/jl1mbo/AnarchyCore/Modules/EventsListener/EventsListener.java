@@ -22,7 +22,6 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.event.entity.EntityDeathEvent;
-import cn.nukkit.event.entity.EntityPortalEnterEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
@@ -32,7 +31,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.math.Vector3f;
-import cn.nukkit.scheduler.Task;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.monster.Monster;
@@ -142,7 +140,6 @@ public class EventsListener implements Listener {
 				});
 			}
 		}
-		Block block = player.getLevel().getBlock(new Position(player.getX(), player.getY() - 0.5, player.getZ()));
 		if (player.getGamemode() < Player.CREATIVE) {
 			if ((player.getFloorX() < BORDER[0]) || (player.getFloorX() > BORDER[1]) || (player.getFloorZ() < BORDER[2]) || (player.getFloorZ() > BORDER[3])) {
 				player.sendTip("Вы пытаетесь §6выйти §fза границу мира");
@@ -154,33 +151,8 @@ public class EventsListener implements Listener {
 			player.teleport(WorldSystemAPI.Spawn.getSafeSpawn());
 			player.sendMessage("§l§6• §rВы упали за границу мира§7. §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!");
 		}
-		if (player.getLevel().equals(WorldSystemAPI.Map) && block.getId() == Block.END_PORTAL) {
-			Server.getInstance().getScheduler().scheduleDelayedTask(new Task() {
-
-				@Override
-				public void onRun(int currentTick) {
-					WorldSystemAPI.generateTheEndPlatform();
-				}
-			}, 20);
-			player.teleport(WorldSystemAPI.TheEnd.getSafeSpawn().add(0, 2, 0));
-		}
-		if (player.getLevel().equals(WorldSystemAPI.TheEnd) && block.getId() == Block.END_PORTAL) {
-			WorldSystemAPI.randomPosition(WorldSystemAPI.Map, (position)-> {
-				player.teleport(position);
-			});
-		}
 	}
 
-	@EventHandler
-	public void onEntityPortalEnter(EntityPortalEnterEvent event) {
-		if (event.getPortalType() == EntityPortalEnterEvent.PortalType.NETHER) {
-			Entity entity = event.getEntity();
-			if (entity.getLevel().equals(WorldSystemAPI.TheEnd) || entity.getLevel().equals(WorldSystemAPI.Spawn)) {
-				event.setCancelled(true);
-			}
-		}
-	}
-	
 	@EventHandler()
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		Entity entity = event.getEntity();
