@@ -27,7 +27,7 @@ public class AuctionEventsListener implements Listener {
 			if (action instanceof SlotChangeAction) {
 				SlotChangeAction slotChange = (SlotChangeAction) action;
 				if (slotChange.getInventory() instanceof AuctionChest) {
-					event.setCancelled();
+					event.setCancelled(true);
 					AuctionChest auctionChest = (AuctionChest) slotChange.getInventory();
 					Item sourceItem = action.getSourceItem();
 					switch (sourceItem.getName()) {
@@ -78,14 +78,14 @@ public class AuctionEventsListener implements Listener {
 						if (namedTag != null && namedTag.getString("UUID") != null) {
 							TradeItem tradeItem = AuctionAPI.AUCTION.get(namedTag.getString("UUID"));
 							if (tradeItem != null) {
-								if (EconomyAPI.myMoney(player.getName()) < tradeItem.itemPrice) {
+								if (EconomyAPI.myMoney(player.getName()) < tradeItem.getPrice()) {
 									player.sendMessage(AuctionAPI.PREFIX + "Недостаточно §6монет §fдля совершения покупки§7!");
 									player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 									return;
 								}
 								PlayerInventory playerInventory = player.getInventory();
 								if (playerInventory.canAddItem(sourceItem)) {
-									if (tradeItem.sellerName.equals(player.getName())) {
+									if (tradeItem.getSeller().equals(player.getName())) {
 										namedTag.remove("UUID");
 										namedTag.remove("display");
 										auctionChest.removeItem(sourceItem);
@@ -100,17 +100,17 @@ public class AuctionEventsListener implements Listener {
 										playerInventory.addItem(sourceItem.setNamedTag(namedTag));
 										player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 										player.sendMessage(AuctionAPI.PREFIX + "Предмет успешно куплен за §6" + String.format("%.1f",
-														   tradeItem.itemPrice) + "§7, §fв колличестве §6" + sourceItem.getCount() + " §fшт§7.");
-										Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.sellerName);
+														   tradeItem.getPrice()) + "§7, §fв колличестве §6" + sourceItem.getCount() + " §fшт§7.");
+										Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.getSeller());
 										if (sellerPlayer != null) {
-											sellerPlayer.sendMessage(AuctionAPI.PREFIX + "Игрок §6" + player.getName() + " §fкупил Ваш товар за §6" + String.format("%.1f", tradeItem.itemPrice) + "");
-											EconomyAPI.addMoney(sellerPlayer.getName(), tradeItem.itemPrice);
+											sellerPlayer.sendMessage(AuctionAPI.PREFIX + "Игрок §6" + player.getName() + " §fкупил Ваш товар за §6" + String.format("%.1f", tradeItem.getPrice()) + "");
+											EconomyAPI.addMoney(sellerPlayer.getName(), tradeItem.getPrice());
 										} else {
-											EconomyAPI.addMoney(tradeItem.sellerName, tradeItem.itemPrice);
+											EconomyAPI.addMoney(tradeItem.getSeller(), tradeItem.getPrice());
 										}
-										EconomyAPI.reduceMoney(player.getName(), tradeItem.itemPrice);
+										EconomyAPI.reduceMoney(player.getName(), tradeItem.getPrice());
 									}
-									AuctionAPI.AUCTION.remove(tradeItem.UUID);
+									AuctionAPI.AUCTION.remove(tradeItem.getUUID());
 								}
 							} else {
 								auctionChest.removeItem(sourceItem);

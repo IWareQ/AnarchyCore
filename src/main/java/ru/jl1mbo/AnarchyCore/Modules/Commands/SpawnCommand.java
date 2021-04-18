@@ -16,8 +16,8 @@ public class SpawnCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			if (player.getLevel().equals(WorldSystemAPI.getMap())) {
-				player.teleport(WorldSystemAPI.getSpawn().getSafeSpawn());
+			if (player.getLevel().equals(WorldSystemAPI.Map)) {
+				player.teleport(WorldSystemAPI.Spawn.getSafeSpawn());
 				player.sendMessage("§l§6• §rВы §6успешно §fтелепортировались на спавн§7!");
 			} else {
 				player.sendMessage("§l§7(§3Телепорт§7) §rС этого измерения §6запрещено §fтелепортироваться§7!");

@@ -22,7 +22,7 @@ public class NightCommand extends Command {
 			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}
-			WorldSystemAPI.getMap().setTime(14000);
+			WorldSystemAPI.Map.setTime(14000);
 			Server.getInstance().broadcastMessage("§l§6• §rИгрок §6" + player.getName() + " §fустановил§7(§fа§7) §9Ночь");
 			CooldownAPI.addCooldown(player, this.getName(), 600);
 		}

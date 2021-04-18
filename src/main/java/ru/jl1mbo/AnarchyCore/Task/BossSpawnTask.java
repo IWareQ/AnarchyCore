@@ -18,7 +18,7 @@ public class BossSpawnTask extends Task {
 			minutes--;
 		} else {
 			if (Server.getInstance().getOnlinePlayers().size() >= 7) {
-				WorldSystemAPI.randomPosition(WorldSystemAPI.getMap(), pos -> {
+				WorldSystemAPI.randomPosition(WorldSystemAPI.Map, pos -> {
 					Entity entity = Entity.createEntity(getBossName(), pos);
 					if (entity != null) {
 						entity.spawnToAll();

@@ -15,8 +15,8 @@ public class AuctionUpdateTask extends Task {
 		for (Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 			TradeItem tradeItem = entry.getValue();
 			if (tradeItem.isOutdated()) {
-				MySQLUtils.query("INSERT INTO `AuctionStorage` (`Name`, `ItemId`, `ItemDamage`, `ItemCount`, `ItemNBT`) VALUES ('" + tradeItem.sellerName + "', '" + tradeItem.sellItem.getId() + "', '"
-								 + tradeItem.sellItem.getDamage() + "', '" + tradeItem.sellItem.getCount() + "', '" + Utils.convertNbtToHex(tradeItem.sellItem.getNamedTag()) + "')");
+				MySQLUtils.query("INSERT INTO `AuctionStorage` (`Name`, `ID`, `Damage`, `Count`, `namedTag`) VALUES ('" + tradeItem.getSeller() + "', '" + tradeItem.getItem().getId() + "', '"
+								 + tradeItem.getItem().getDamage() + "', '" + tradeItem.getItem().getCount() + "', '" + Utils.convertNbtToHex(tradeItem.getItem().getNamedTag()) + "');");
 				AuctionAPI.AUCTION.remove(entry.getKey());
 			}
 		}

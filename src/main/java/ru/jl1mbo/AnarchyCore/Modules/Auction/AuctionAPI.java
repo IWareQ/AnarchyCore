@@ -65,9 +65,9 @@ public class AuctionAPI extends PluginBase {
 		for (Map.Entry<String, TradeItem> entry : AUCTION.entrySet()) {
 			try {
 				TradeItem tradeItem = entry.getValue();
-				Item item = tradeItem.sellItem;
-				config.set(entry.getKey(), item.hasCompoundTag() ? new Object[] {tradeItem.sellerName, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} :
-						   new Object[] {tradeItem.sellerName, tradeItem.itemPrice, tradeItem.sellTime, item.getId(), item.getDamage(), item.getCount()});
+				Item item = tradeItem.getItem();
+				config.set(entry.getKey(), item.hasCompoundTag() ? new Object[] {tradeItem.getSeller(), tradeItem.getPrice(), tradeItem.getTime(), item.getId(), item.getDamage(), item.getCount(), NBTIO.write(item.getNamedTag(), ByteOrder.LITTLE_ENDIAN)} :
+						   new Object[] {tradeItem.getSeller(), tradeItem.getPrice(), tradeItem.getTime(), item.getId(), item.getDamage(), item.getCount()});
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -104,11 +104,11 @@ public class AuctionAPI extends PluginBase {
 		Object[] tradeItems = AUCTION.values().toArray();
 		for (int i = start; i < stop; i++) {
 			TradeItem tradeItem = (TradeItem) tradeItems[i];
-			Item item = tradeItem.sellItem.clone();
+			Item item = tradeItem.getItem().clone();
 			CompoundTag namedTag = item.hasCompoundTag() ? item.getNamedTag() : new CompoundTag();
-			namedTag.putString("UUID", tradeItem.UUID);
+			namedTag.putString("UUID", tradeItem.getUUID());
 			item.setNamedTag(namedTag);
-			item.setLore("\n§rПродавец§7: §6" + tradeItem.sellerName + "\n§r§fСтоимость§7: §6" + tradeItem.itemPrice + "\n§r§fДо окончания§7: §6" +
+			item.setLore("\n§rПродавец§7: §6" + tradeItem.getSeller() + "\n§r§fСтоимость§7: §6" + tradeItem.getPrice() + "\n§r§fДо окончания§7: §6" +
 						 (tradeItem.getTime() / 86400 % 24) + " §fд§7. §6" + (tradeItem.getTime() / 3600 % 24) + " §fч§7. §6" + (tradeItem.getTime() / 60 % 60) + " §fмин§7. §6" +
 						 (tradeItem.getTime() % 60) + " §fсек§7.\n\n§r§l§6• §r§fНажмите§7, §fчтобы купить предмет§7!");
 			auctionChest.addItem(item);
@@ -137,11 +137,11 @@ public class AuctionAPI extends PluginBase {
 			doubleChest = auctionStorageChest.getOrDefault(player, new AuctionStorageChest("Хранилище Аукциона"));
 			doubleChest.clearAll();
 		}
-		List<Integer> itemsId = MySQLUtils.getIntegerList("SELECT `ID` FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
+		List<Integer> itemsId = MySQLUtils.getIntegerList("SELECT `ID` FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "';");
 		for (int itemId : itemsId) {
-			Map<String, String> storageData =  MySQLUtils.getStringMap("SELECT * FROM `AuctionStorage` WHERE (`ID`) = '" + itemId + "'");
-			Item item = Item.get(Integer.parseInt(storageData.get("ItemId")), Integer.parseInt(storageData.get("ItemDamage")),
-								 Integer.parseInt(storageData.get("ItemCount"))).setNamedTag(Utils.convertHexToNBT(storageData.get("ItemNBT")).putInt("UUID", Integer.parseInt(storageData.get("ID"))));
+			Map<String, String> storageData =  MySQLUtils.getStringMap("SELECT * FROM `AuctionStorage` WHERE (`ID`) = '" + itemId + "';");
+			Item item = Item.get(itemId, Integer.parseInt(storageData.get("Damage")),
+								 Integer.parseInt(storageData.get("Count"))).setNamedTag(Utils.convertHexToNBT(storageData.get("namedTag")).putInt("UUID", itemId));
 			doubleChest.addItem(item.setLore("\n§r§l§6• §rНажмите§7, §fчтобы забрать§7!"));
 		}
 		doubleChest.setItem(49, Item.get(Item.DOUBLE_PLANT).setCustomName("§r§6Обновить").setLore("\n\n§l§6• §rНажмите§7, §fчтобы обновить страницу§7!"));

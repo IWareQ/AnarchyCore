@@ -85,7 +85,7 @@ public class RegionCommand extends Command {
 		}
 		for (int region_id : regionsData) {
 			Location location = BlockProtectionAPI.getRegionBlockLocation(region_id);
-			DefaultBlockProtection defaultBlock = BlockProtectionAPI.getAllBlocks().get(WorldSystemAPI.getMap().getBlock(location).getId());
+			DefaultBlockProtection defaultBlock = BlockProtectionAPI.getAllBlocks().get(WorldSystemAPI.Map.getBlock(location).getId());
 			simpleForm.addButton(defaultBlock.getBlockName() + "\n§f" + location.getFloorX() + "§7, §f" + location.getFloorY() + "§7, §f" + location.getFloorZ(), ImageType.PATH, defaultBlock.getBlockImage());
 		}
 		simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default");

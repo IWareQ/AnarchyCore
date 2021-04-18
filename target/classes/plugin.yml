@@ -1,7 +1,0 @@
-name: AnarchyCore
-main: ru.jl1mbo.AnarchyCore.Main
-version: "1.3"
-api: "1.0.11"
-load: POSTWORLD
-author: Jl1mbo
-website: "vk.com/extranons"

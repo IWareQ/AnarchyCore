@@ -104,7 +104,7 @@ public class AdminAPI {
 
 	private static void enableCoordinate(Player player, boolean value) {
 		GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-		gameRulesChanged.gameRules = WorldSystemAPI.getTest().getGameRules();
+		gameRulesChanged.gameRules = WorldSystemAPI.Test.getGameRules();
 		gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, value);
 		player.dataPacket(gameRulesChanged);
 	}

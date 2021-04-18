@@ -37,7 +37,7 @@ public class BlockProtectionAPI {
 	}
 
 	public static void placeRegion(Player player, Block block) {
-		if (player.getLevel() != WorldSystemAPI.getMap()) {
+		if (player.getLevel() != WorldSystemAPI.Map) {
 			player.sendMessage(PREFIX + "Разместите блок в §6обычном мире§7!");
 			player.sendTitle("§l§cОшибка");
 			return;

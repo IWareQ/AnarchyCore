@@ -22,7 +22,7 @@ public class CombatEventsListener implements Listener {
 			if (!AdminAPI.isBanned(victim.getName())) {
 				if (!AdminAPI.isCheatCheck(victim.getName())) {
 					if (!ClanAPI.isTeam(damager.getName(), victim.getName())) {
-						if (victim.getLevel() != WorldSystemAPI.getSpawn() && damager != victim) {
+						if (victim.getLevel() != WorldSystemAPI.Spawn && damager != victim) {
 							for (Player players : new Player[] {(Player) victim, (Player) damager}) {
 								CombatLoggerAPI.addCombat(players);
 							}

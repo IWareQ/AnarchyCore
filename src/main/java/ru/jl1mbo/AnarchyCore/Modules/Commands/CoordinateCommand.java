@@ -22,12 +22,12 @@ public class CoordinateCommand extends Command {
 			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}
-			if (player.getLevel().equals(WorldSystemAPI.getSpawn()) && !player.hasPermission("Development")) {
+			if (player.getLevel().equals(WorldSystemAPI.Spawn) && !player.hasPermission("Development")) {
 				player.sendMessage("§l§c• §rДанная команда §6заблокирована §fв этом мире§7!");
 				return true;
 			}
 			GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-			gameRulesChanged.gameRules = WorldSystemAPI.getTest().getGameRules();
+			gameRulesChanged.gameRules = WorldSystemAPI.Test.getGameRules();
 			if (gameRulesChanged.gameRules.getBoolean(GameRule.SHOW_COORDINATES)) {
 				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
 				player.dataPacket(gameRulesChanged);

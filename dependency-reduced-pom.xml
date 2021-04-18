@@ -60,17 +60,18 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.powernukkit</groupId>
-      <artifactId>powernukkit</artifactId>
-      <version>1.4.0.0-PN-ALPHA.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>ru.jl1mbo.MySQLUtils</groupId>
       <artifactId>SQLiteUtils</artifactId>
       <version>1.0</version>
       <scope>system</scope>
       <systemPath>${basedir}/libs/MySQLUtils-1.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>cn.nukkit</groupId>
+      <artifactId>PowerNukkit</artifactId>
+      <version>1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/PowerNukkit.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>nukkitcoders.mobplugin.MobPlugin</groupId>

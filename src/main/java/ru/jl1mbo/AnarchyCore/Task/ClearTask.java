@@ -29,7 +29,7 @@ public class ClearTask extends Task {
 		} else {
 			Server.getInstance().getLevels().values().forEach(level -> {
 				for (Entity entity : level.getEntities()) {
-					if (!(entity instanceof Player) && !(entity instanceof Wither) && !(entity.getLevel().equals(WorldSystemAPI.getSpawn()))
+					if (!(entity instanceof Player) && !(entity instanceof Wither) && !(entity.getLevel().equals(WorldSystemAPI.Spawn))
 							&& !(entity instanceof WitherSkeletonBoss) && !(entity instanceof HuskBoss) && !(entity instanceof EvokerBoss) && !(entity instanceof SpiderBoss)) {
 						entity.close();
 					}

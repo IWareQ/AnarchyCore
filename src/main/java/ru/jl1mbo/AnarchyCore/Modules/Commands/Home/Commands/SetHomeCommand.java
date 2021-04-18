@@ -19,7 +19,7 @@ public class SetHomeCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			if (player.getLevel() != WorldSystemAPI.getMap()) {
+			if (player.getLevel() != WorldSystemAPI.Map) {
 				player.sendMessage(HomeAPI.PREFIX + "В этом мире §6запрещено §fустанавливать точки §6Дома§7!");
 				return true;
 			}

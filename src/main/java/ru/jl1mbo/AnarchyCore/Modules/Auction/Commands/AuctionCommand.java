@@ -37,11 +37,11 @@ public class AuctionCommand extends Command {
 				int count = 0;
 				for (Map.Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 					TradeItem tradeItem = entry.getValue();
-					if (tradeItem.sellerName.equals(player.getName())) {
+					if (tradeItem.getSeller().equals(player.getName())) {
 						count++;
 					}
 				}
-				if (MySQLUtils.getInteger("SELECT COUNT(*) as COUNT FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'") + count >= AuctionAPI.AUCTION_MAX_SELLS) {
+				if (MySQLUtils.getInteger("SELECT COUNT(*) as COUNT FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "';") + count >= AuctionAPI.AUCTION_MAX_SELLS) {
 					player.sendMessage(AuctionAPI.PREFIX + "Вы уже разместили или храните максимальное колличество лотов §7(§6" + AuctionAPI.AUCTION_MAX_SELLS +
 									   "§7)");
 					return false;

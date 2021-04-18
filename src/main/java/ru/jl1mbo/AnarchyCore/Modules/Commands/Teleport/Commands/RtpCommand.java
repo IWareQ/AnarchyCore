@@ -17,8 +17,8 @@ public class RtpCommand extends Command {
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			if (player.getLevel().equals(WorldSystemAPI.getMap()) || player.getLevel().equals(WorldSystemAPI.getSpawn())) {
-				WorldSystemAPI.randomPosition(WorldSystemAPI.getMap(), pos -> {
+			if (player.getLevel().equals(WorldSystemAPI.Map) || player.getLevel().equals(WorldSystemAPI.Spawn)) {
+				WorldSystemAPI.randomPosition(WorldSystemAPI.Map, pos -> {
 					player.sendTitle("Телепортация§7...");
 					player.teleport(pos);
 				});

@@ -44,6 +44,7 @@ import ru.jl1mbo.AnarchyCore.Modules.Clans.Command.ClanCommand;
 import ru.jl1mbo.AnarchyCore.Modules.CombatLogger.CombatEventsListener;
 import ru.jl1mbo.AnarchyCore.Modules.CombatLogger.Task.CombatLoggerTask;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.BonusCommand;
+import ru.jl1mbo.AnarchyCore.Modules.Commands.BorderBuildCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.ClearChatCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.CoordinateCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.DayCommand;
@@ -174,6 +175,6 @@ public class Main extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		this.getServer().getCommandMap().registerAll("", Arrays.asList(new TestCommand(), new BonusCommand(), new SeeInventoryCommand(), new SpectateCommand(), new AdminPanelCommand(), new UnMuteCommand(), new MuteCommand(), new UnBanCommand(), new BanCommand(), new AuctionCommand(), new RegionCommand(), new GroupCommand(), new AddMoneyCommand(), new MoneyCommand(), new PayCommand(), new SetMoneyCommand(), new ClearChatCommand(), new CoordinateCommand(), new CraftingTableCommand(), new DayCommand(), new ListCommand(), new SayCommand(), new TellCommand(), new StopCommand(), new DonateCommand(), new EnderChestCommand(), new FoodCommand(), new HealCommand(), new HomeCommand(), new SetHomeCommand(), new DelHomeCommand(), new NPCCommand(), new NearCommand(), new NightCommand(), new NightVisionCommand(), new RepairCommand(), new ReportCommand(), new SpawnCommand(), new StorageCommand(), new TpaCommand(), new TpcCommand(), new RtpCommand(), new ClanCommand()));
+		this.getServer().getCommandMap().registerAll("", Arrays.asList(new BorderBuildCommand(), new TestCommand(), new BonusCommand(), new SeeInventoryCommand(), new SpectateCommand(), new AdminPanelCommand(), new UnMuteCommand(), new MuteCommand(), new UnBanCommand(), new BanCommand(), new AuctionCommand(), new RegionCommand(), new GroupCommand(), new AddMoneyCommand(), new MoneyCommand(), new PayCommand(), new SetMoneyCommand(), new ClearChatCommand(), new CoordinateCommand(), new CraftingTableCommand(), new DayCommand(), new ListCommand(), new SayCommand(), new TellCommand(), new StopCommand(), new DonateCommand(), new EnderChestCommand(), new FoodCommand(), new HealCommand(), new HomeCommand(), new SetHomeCommand(), new DelHomeCommand(), new NPCCommand(), new NearCommand(), new NightCommand(), new NightVisionCommand(), new RepairCommand(), new ReportCommand(), new SpawnCommand(), new StorageCommand(), new TpaCommand(), new TpcCommand(), new RtpCommand(), new ClanCommand()));
 	}
 }

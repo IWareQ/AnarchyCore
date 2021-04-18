@@ -67,15 +67,16 @@
             <systemPath>${basedir}/libs/MySQLUtils-1.0.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>cn.nukkit</groupId>
+            <artifactId>PowerNukkit</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/PowerNukkit.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.20</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powernukkit</groupId>
-            <artifactId>powernukkit</artifactId>
-            <version>1.4.0.0-PN-ALPHA.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -22,7 +22,7 @@ public class DayCommand extends Command {
 			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}
-			WorldSystemAPI.getMap().setTime(1000);
+			WorldSystemAPI.Map.setTime(0);
 			Server.getInstance().broadcastMessage("§l§6• §rИгрок §6" + player.getName() + " §fустановил§7(§fа§7) §6День");
 			CooldownAPI.addCooldown(player, this.getName(), 600);
 		}

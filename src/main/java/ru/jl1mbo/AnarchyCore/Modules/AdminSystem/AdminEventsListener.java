@@ -49,7 +49,12 @@ public class AdminEventsListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		if (AdminAPI.isBanned(player.getName())) {
-			player.setImmobile(true);
+			Map<String, String> banData = AdminAPI.getBanData(player.getName());
+			if (Long.parseLong(banData.get("Time")) <= System.currentTimeMillis() / 1000L) {
+				AdminAPI.removeBan(player.getName(), "", "buy");
+			} else {
+				player.setImmobile(true);
+			}
 		}
 		if (AdminAPI.isSpectate(player.getName())) {
 			AdminAPI.removeSpectate(player);
