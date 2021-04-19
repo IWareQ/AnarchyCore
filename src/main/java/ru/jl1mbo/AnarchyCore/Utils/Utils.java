@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,7 +20,6 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
-import ru.jl1mbo.AnarchyCore.Modules.Auth.AuthAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
@@ -161,7 +159,7 @@ public class Utils {
 		ArrayList<String> playerList = new ArrayList<>();
 		Player target = Server.getInstance().getPlayer(playerName);
 		if (target == null) {
-			List<String> names = MySQLUtils.getStringList("");
+			List<String> names = MySQLUtils.getStringList("SELECT `Name` FROM `Users`;");
 			for (String name : names) {
 				if (name.startsWith(playerName)) {
 					playerList.add(name);

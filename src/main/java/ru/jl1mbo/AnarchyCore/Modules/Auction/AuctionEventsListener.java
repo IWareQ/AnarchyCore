@@ -11,7 +11,6 @@ import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 import cn.nukkit.nbt.tag.CompoundTag;
-import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.TradeItem;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.Inventory.AuctionChest;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.Inventory.AuctionStorageChest;
@@ -27,7 +26,6 @@ public class AuctionEventsListener implements Listener {
 			if (action instanceof SlotChangeAction) {
 				SlotChangeAction slotChange = (SlotChangeAction) action;
 				if (slotChange.getInventory() instanceof AuctionChest) {
-					event.setCancelled(true);
 					AuctionChest auctionChest = (AuctionChest) slotChange.getInventory();
 					Item sourceItem = action.getSourceItem();
 					switch (sourceItem.getName()) {
@@ -50,7 +48,6 @@ public class AuctionEventsListener implements Listener {
 						break;
 					}
 					case "§r§6Обновление страницы":
-						AuctionAPI.showAuction(player, false);
 						AuctionAPI.showAuction(player, true);
 						player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 						break;
@@ -75,8 +72,8 @@ public class AuctionEventsListener implements Listener {
 						break;
 					default:
 						CompoundTag namedTag = sourceItem.getNamedTag();
-						if (namedTag != null && namedTag.getString("UUID") != null) {
-							TradeItem tradeItem = AuctionAPI.AUCTION.get(namedTag.getString("UUID"));
+						if (namedTag != null && namedTag.contains("ID")) {
+							TradeItem tradeItem = AuctionAPI.AUCTION.get(namedTag.getInt("ID"));
 							if (tradeItem != null) {
 								if (EconomyAPI.myMoney(player.getName()) < tradeItem.getPrice()) {
 									player.sendMessage(AuctionAPI.PREFIX + "Недостаточно §6монет §fдля совершения покупки§7!");
@@ -86,54 +83,50 @@ public class AuctionEventsListener implements Listener {
 								PlayerInventory playerInventory = player.getInventory();
 								if (playerInventory.canAddItem(sourceItem)) {
 									if (tradeItem.getSeller().equals(player.getName())) {
-										namedTag.remove("UUID");
+										namedTag.remove("ID");
 										namedTag.remove("display");
-										auctionChest.removeItem(sourceItem);
 										playerInventory.addItem(sourceItem.setNamedTag(namedTag));
 										player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 										player.sendMessage(AuctionAPI.PREFIX + "Предмет был §6снят с продажи §fи отправлен Вам в Инвентарь");
 									} else {
-										auctionChest.removeItem(sourceItem);
-										namedTag.remove("UUID");
+										namedTag.remove("ID");
 										namedTag.remove("display");
-										auctionChest.removeItem(sourceItem);
 										playerInventory.addItem(sourceItem.setNamedTag(namedTag));
 										player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
 										player.sendMessage(AuctionAPI.PREFIX + "Предмет успешно куплен за §6" + String.format("%.1f",
 														   tradeItem.getPrice()) + "§7, §fв колличестве §6" + sourceItem.getCount() + " §fшт§7.");
-										Player sellerPlayer = Server.getInstance().getPlayerExact(tradeItem.getSeller());
-										if (sellerPlayer != null) {
-											sellerPlayer.sendMessage(AuctionAPI.PREFIX + "Игрок §6" + player.getName() + " §fкупил Ваш товар за §6" + String.format("%.1f", tradeItem.getPrice()) + "");
-											EconomyAPI.addMoney(sellerPlayer.getName(), tradeItem.getPrice());
+										Player target = Server.getInstance().getPlayerExact(tradeItem.getSeller());
+										if (target != null) {
+											target.sendMessage(AuctionAPI.PREFIX + "Игрок §6" + player.getName() + " §fкупил Ваш товар за §6" + String.format("%.1f", tradeItem.getPrice()) + "");
+											EconomyAPI.addMoney(target.getName(), tradeItem.getPrice());
 										} else {
 											EconomyAPI.addMoney(tradeItem.getSeller(), tradeItem.getPrice());
 										}
 										EconomyAPI.reduceMoney(player.getName(), tradeItem.getPrice());
 									}
-									AuctionAPI.AUCTION.remove(tradeItem.getUUID());
+									AuctionAPI.removeItem(tradeItem.getId(), sourceItem);
 								}
 							} else {
 								auctionChest.removeItem(sourceItem);
-								FakeInventoryAPI.closeInventory(player, auctionChest);
 								player.sendMessage(AuctionAPI.PREFIX + "Предмет уже §6продан §fили его §6сняли §fс продажи§7!");
 							}
 						}
 						break;
 					}
-				} else if (slotChange.getInventory() instanceof AuctionStorageChest) {
 					event.setCancelled(true);
+				} else if (slotChange.getInventory() instanceof AuctionStorageChest) {
 					Item sourceItem = action.getSourceItem();
-					AuctionStorageChest storageChest = (AuctionStorageChest) slotChange.getInventory();
+					AuctionStorageChest auctionStorageChest = (AuctionStorageChest) slotChange.getInventory();
 					if (sourceItem.getName().equals("§r§6Обновить")) {
 						AuctionAPI.openAuctionStorageChest(player, true);
 					} else {
 						CompoundTag namedTag = sourceItem.getNamedTag();
-						if (namedTag != null && namedTag.contains("UUID")) {
+						if (namedTag != null && namedTag.contains("ID")) {
 							PlayerInventory playerInventory = player.getInventory();
 							if (playerInventory.canAddItem(sourceItem)) {
-								storageChest.removeItem(sourceItem);
-								MySQLUtils.query("DELETE FROM `AuctionStorage` WHERE (`ID`) = '" + namedTag.getInt("UUID") + "'");
-								namedTag.remove("UUID");
+								auctionStorageChest.removeItem(sourceItem);
+								MySQLUtils.query("DELETE FROM `AuctionStorage` WHERE (`ID`) = '" + namedTag.getInt("ID") + "';");
+								namedTag.remove("ID");
 								namedTag.remove("display");
 								playerInventory.addItem(sourceItem.setNamedTag(namedTag));
 								player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);
@@ -141,6 +134,7 @@ public class AuctionEventsListener implements Listener {
 							}
 						}
 					}
+					event.setCancelled(true);
 				}
 			}
 		}

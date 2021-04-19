@@ -4,17 +4,17 @@ import cn.nukkit.item.Item;
 
 public class TradeItem {
 	private String seller;
+	private Item item;
 	private double price;
 	private long time;
-	private Item item;
-	private String uuid;
+	private int id;
 
-	public TradeItem(Item item, String seller, double price, long time, String UUID) {
+	public TradeItem(String seller, Item item,  double price, long time, int id) {
 		this.seller = seller;
+		this.item = item;
 		this.price = price;
 		this.time = time;
-		this.item = item;
-		this.uuid = UUID;
+		this.id = id;
 	}
 
 	public String getSeller() {
@@ -29,8 +29,8 @@ public class TradeItem {
 		return this.item;
 	}
 
-	public String getUUID() {
-		return this.uuid;
+	public int getId() {
+		return this.id;
 	}
 
 	public boolean isOutdated() {

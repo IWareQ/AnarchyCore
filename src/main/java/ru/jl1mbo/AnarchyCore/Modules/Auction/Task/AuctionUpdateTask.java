@@ -2,6 +2,7 @@ package ru.jl1mbo.AnarchyCore.Modules.Auction.Task;
 
 import java.util.Map.Entry;
 
+import cn.nukkit.item.Item;
 import cn.nukkit.scheduler.Task;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.AuctionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.TradeItem;
@@ -12,12 +13,12 @@ public class AuctionUpdateTask extends Task {
 
 	@Override()
 	public void onRun(int currentTick) {
-		for (Entry<String, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
+		for (Entry<Integer, TradeItem> entry : AuctionAPI.AUCTION.entrySet()) {
 			TradeItem tradeItem = entry.getValue();
 			if (tradeItem.isOutdated()) {
-				MySQLUtils.query("INSERT INTO `AuctionStorage` (`Name`, `ID`, `Damage`, `Count`, `namedTag`) VALUES ('" + tradeItem.getSeller() + "', '" + tradeItem.getItem().getId() + "', '"
-								 + tradeItem.getItem().getDamage() + "', '" + tradeItem.getItem().getCount() + "', '" + Utils.convertNbtToHex(tradeItem.getItem().getNamedTag()) + "');");
-				AuctionAPI.AUCTION.remove(entry.getKey());
+				Item item = tradeItem.getItem();
+				MySQLUtils.query("INSERT INTO `AuctionStorage` (`Name`, `Id`, `Damage`, `Count`, `namedTag`) VALUES ('" + tradeItem.getSeller() + "', '" + item.getId() + "', '" + item.getDamage() + "', '" + item.getCount() + "', '" + Utils.convertNbtToHex(item.getNamedTag()) + "');");
+				AuctionAPI.removeItem(entry.getKey(), item);
 			}
 		}
 	}

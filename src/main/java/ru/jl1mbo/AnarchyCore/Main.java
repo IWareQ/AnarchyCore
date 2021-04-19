@@ -24,6 +24,7 @@ import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.TheEnd.TheEndEventsListener;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.AdminEventsListener;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.AdminPanelCommand;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.BanCommand;
+import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.CheatCheckCommand;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.MuteCommand;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.SeeInventoryCommand;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands.SpectateCommand;
@@ -35,7 +36,6 @@ import ru.jl1mbo.AnarchyCore.Modules.Auction.AuctionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.AuctionEventsListener;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Commands.AuctionCommand;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Task.AuctionUpdateTask;
-import ru.jl1mbo.AnarchyCore.Modules.Auth.AuthAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Auth.AuthEventsListener;
 import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.BlockProtectionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.BlockProtectionEventsListener;
@@ -147,7 +147,6 @@ public class Main extends PluginBase {
 	@Override()
 	public void onDisable() {
 		this.getLogger().info("§l§6AnarchyCore §cДеактивирован§7!");
-		AuctionAPI.saveAuction();
 	}
 
 	private void registerEvents() {
@@ -178,6 +177,6 @@ public class Main extends PluginBase {
 	}
 	
 	private void registerCommands() {
-		this.getServer().getCommandMap().registerAll("", Arrays.asList(new BorderBuildCommand(), new TestCommand(), new BonusCommand(), new SeeInventoryCommand(), new SpectateCommand(), new AdminPanelCommand(), new UnMuteCommand(), new MuteCommand(), new UnBanCommand(), new BanCommand(), new AuctionCommand(), new RegionCommand(), new GroupCommand(), new AddMoneyCommand(), new MoneyCommand(), new PayCommand(), new SetMoneyCommand(), new ClearChatCommand(), new CoordinateCommand(), new CraftingTableCommand(), new DayCommand(), new ListCommand(), new SayCommand(), new TellCommand(), new StopCommand(), new DonateCommand(), new EnderChestCommand(), new FoodCommand(), new HealCommand(), new HomeCommand(), new SetHomeCommand(), new DelHomeCommand(), new NPCCommand(), new NearCommand(), new NightCommand(), new NightVisionCommand(), new RepairCommand(), new ReportCommand(), new SpawnCommand(), new StorageCommand(), new TpaCommand(), new TpcCommand(), new RtpCommand(), new ClanCommand()));
+		this.getServer().getCommandMap().registerAll("", Arrays.asList(new CheatCheckCommand(), new BorderBuildCommand(), new TestCommand(), new BonusCommand(), new SeeInventoryCommand(), new SpectateCommand(), new AdminPanelCommand(), new UnMuteCommand(), new MuteCommand(), new UnBanCommand(), new BanCommand(), new AuctionCommand(), new RegionCommand(), new GroupCommand(), new AddMoneyCommand(), new MoneyCommand(), new PayCommand(), new SetMoneyCommand(), new ClearChatCommand(), new CoordinateCommand(), new CraftingTableCommand(), new DayCommand(), new ListCommand(), new SayCommand(), new TellCommand(), new StopCommand(), new DonateCommand(), new EnderChestCommand(), new FoodCommand(), new HealCommand(), new HomeCommand(), new SetHomeCommand(), new DelHomeCommand(), new NPCCommand(), new NearCommand(), new NightCommand(), new NightVisionCommand(), new RepairCommand(), new ReportCommand(), new SpawnCommand(), new StorageCommand(), new TpaCommand(), new TpcCommand(), new RtpCommand(), new ClanCommand()));
 	}
 }
