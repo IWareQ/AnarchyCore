@@ -170,17 +170,6 @@ modules.xml
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
 ### Maven ###
 target/
 pom.xml.tag
@@ -208,31 +197,6 @@ nbdist/
 # Jrebel
 rebel.xml
 rebel-remote.xml
-
-# Nukkit generated files
-banned-ips.json
-banned-players.json
-nukkit.yml
-ops.txt
-server.log
-server.properties
-white-list.txt
-worlds
-worlds/*
-plugins
-plugins/*
-players
-players/*
-logs
-logs/*
-resource_packs
-resource_packs/*
-creativeitems.json
-recipes.json
-data/
-data/*
-/src/main/resources/rebel.xml
-/run
 
 ### Add the codestyle to the repo
 !/.idea/codeStyles
