@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Manager.Forms;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
@@ -21,6 +18,9 @@ import ru.jl1mbo.AnarchyCore.Manager.Forms.Forms.CustomFormResponse;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Forms.Form;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Forms.ModalFormResponse;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Forms.SimpleFormResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FormEventsListener implements Listener {
 

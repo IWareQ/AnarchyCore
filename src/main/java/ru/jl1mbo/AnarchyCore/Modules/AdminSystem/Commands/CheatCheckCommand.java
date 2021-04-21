@@ -11,16 +11,16 @@ import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.AdminAPI;
 public class CheatCheckCommand extends Command {
 
 	public CheatCheckCommand() {
-		super("cheatcheack", "§rВызвать на проверку", "", new String[] {"cc"});
+		super("cheatcheack", "§rВызвать на проверку", "", new String[]{"cc"});
 		this.setPermission("Command.CheatCheack");
 		this.commandParameters.clear();
-		this.commandParameters.put("cheatcheack", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("cheatcheack", new CommandParameter[]{CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
-			Player player = (Player)sender;
+			Player player = (Player) sender;
 			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}

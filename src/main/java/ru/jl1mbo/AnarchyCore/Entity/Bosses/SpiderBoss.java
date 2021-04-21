@@ -1,9 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Entity.Bosses;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockID;
@@ -22,7 +18,12 @@ import nukkitcoders.mobplugin.entities.Boss;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils.CustomItemID;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class SpiderBoss extends WalkingMonster implements EntityArthropod, Boss {
+
 	private static final int NETWORK_ID = EntitySpider.NETWORK_ID;
 
 	public SpiderBoss(FullChunk chunk, CompoundTag nbt) {
@@ -56,7 +57,7 @@ public class SpiderBoss extends WalkingMonster implements EntityArthropod, Boss 
 		this.setNameTagAlwaysVisible(true);
 		this.setScale((float) 1.3);
 		this.setMaxHealth(700);
-		this.setDamage(new float[] {7, 7, 7, 7});
+		this.setDamage(new float[]{7, 7, 7, 7});
 	}
 
 	@Override()
@@ -65,7 +66,7 @@ public class SpiderBoss extends WalkingMonster implements EntityArthropod, Boss 
 			int b = level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) this.y, NukkitMath.floorDouble(this.z));
 			return b == BlockID.WATER || b == BlockID.STILL_WATER;
 		} else {
-			int b = level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int)(this.y + 0.8), NukkitMath.floorDouble(this.z));
+			int b = level.getBlockIdAt(NukkitMath.floorDouble(this.x), (int) (this.y + 0.8), NukkitMath.floorDouble(this.z));
 			if (b == BlockID.WATER || b == BlockID.STILL_WATER) {
 				this.motionY = this.getGravity() * 2;
 				return true;
@@ -119,8 +120,7 @@ public class SpiderBoss extends WalkingMonster implements EntityArthropod, Boss 
 				for (Item i : ((Player) player).getInventory().getArmorContents()) {
 					points += armorValues.getOrDefault(i.getId(), 0.0F);
 				}
-				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float)(damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE,
-						   1.0F) * points * 0.04)));
+				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1.0F) * points * 0.04)));
 				player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
 				Entity caveSpider = Entity.createEntity("HelperCaveSpider", this.getPosition());
 				if (caveSpider != null) {

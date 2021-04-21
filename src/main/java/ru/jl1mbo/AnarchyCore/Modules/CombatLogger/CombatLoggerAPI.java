@@ -1,13 +1,14 @@
 package ru.jl1mbo.AnarchyCore.Modules.CombatLogger;
 
+import cn.nukkit.Player;
+import cn.nukkit.utils.DummyBossBar;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import cn.nukkit.Player;
-import cn.nukkit.utils.DummyBossBar;
-
 public class CombatLoggerAPI {
+
 	private static final Map<String, Long> bossBarList = new HashMap<>();
 	public static ConcurrentHashMap<String, Long> combat = new ConcurrentHashMap<>();
 

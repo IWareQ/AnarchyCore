@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HelperWitherSkeleton extends WalkingMonster implements EntitySmite {
+
 	private static final int NETWORK_ID = EntityWitherSkeleton.NETWORK_ID;
 
 	public HelperWitherSkeleton(FullChunk chunk, CompoundTag nbt) {
@@ -48,7 +49,7 @@ public class HelperWitherSkeleton extends WalkingMonster implements EntitySmite 
 		this.setNameTagVisible(true);
 		this.setNameTagAlwaysVisible(true);
 		this.setMaxHealth(50);
-		this.setDamage(new float[] {4, 4, 4, 4});
+		this.setDamage(new float[]{4, 4, 4, 4});
 	}
 
 	@Override()
@@ -78,8 +79,7 @@ public class HelperWitherSkeleton extends WalkingMonster implements EntitySmite 
 				for (Item i : ((Player) player).getInventory().getArmorContents()) {
 					points += armorValues.getOrDefault(i.getId(), 0.0F);
 				}
-				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float)(damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE,
-						   1.0F) * points * 0.04)));
+				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1.0F) * points * 0.04)));
 				if (player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage))) {
 					player.addEffect(Effect.getEffect(Effect.WITHER).setDuration(10 * 20));
 				}

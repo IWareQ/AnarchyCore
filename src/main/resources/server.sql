@@ -201,6 +201,14 @@ CREATE TABLE `Users` (
   `GameTime` int(64) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `Storage` (
+  `ID` int(16) NOT NULL,
+  `Name` varchar(32) NOT NULL,
+   `Id int(16) NOT NULL,
+    `Damage` int(16) NOT NULL,
+    `Count` int(16) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Indexes for dumped tables
 --
@@ -210,6 +218,9 @@ CREATE TABLE `Users` (
 --
 ALTER TABLE `Auth`
   ADD PRIMARY KEY (`ID`);
+
+  ALTER TABLE `Storage`
+    ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `Bans`
@@ -286,6 +297,9 @@ ALTER TABLE `Users`
 --
 ALTER TABLE `Auth`
   MODIFY `ID` int(16) NOT NULL AUTO_INCREMENT;
+
+  ALTER TABLE `Storage`
+    MODIFY `ID` int(16) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `Bans`
 --

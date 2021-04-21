@@ -15,13 +15,30 @@ public class UnBanCommand extends Command {
 		super("unban", "§rСнять блокировку аккаунта");
 		this.setPermission("Command.UnBan");
 		this.commandParameters.clear();
-		this.commandParameters.put("unban", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("unban", new CommandParameter[]{CommandParameter.newType("player", CommandParamType.TARGET)});
+	}
+
+	public static void openUnBanPlayerForm(Player player, String targetName) {
+		CustomForm customForm = new CustomForm("Разблокировка аккаунта");
+		customForm.addInput("§l§6• §rВведите причину разблокировки§7:", "Причина разблокировки");
+		customForm.send(player, (targetPlayer, targetForm, data) -> {
+			if (data == null) {
+				return;
+			}
+			String reason = data.get(0).toString();
+			if (reason == null || reason.equals("")) {
+				player.sendMessage(AdminAPI.PREFIX + "Укажите §6причину §fразблокировки§7!");
+				return;
+			}
+			player.sendMessage(AdminAPI.PREFIX + "Аккаунт игрока §6" + targetName + " §fуспешно разблокирован§7!");
+			AdminAPI.removeBan(targetName, player.getName(), reason);
+		});
 	}
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
-			Player player = (Player)sender;
+			Player player = (Player) sender;
 			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}
@@ -49,20 +66,5 @@ public class UnBanCommand extends Command {
 			}
 		}
 		return false;
-	}
-
-	public static void openUnBanPlayerForm(Player player, String targetName) {
-		CustomForm customForm = new CustomForm("Разблокировка аккаунта");
-		customForm.addInput("§l§6• §rВведите причину разблокировки§7:", "Причина разблокировки");
-		customForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == null) return;
-			String reason = data.get(0).toString();
-			if (reason == null || reason.equals("")) {
-				player.sendMessage(AdminAPI.PREFIX + "Укажите §6причину §fразблокировки§7!");
-				return;
-			}
-			player.sendMessage(AdminAPI.PREFIX + "Аккаунт игрока §6" + targetName + " §fуспешно разблокирован§7!");
-			AdminAPI.removeBan(targetName, player.getName(), reason);
-		});
 	}
 }

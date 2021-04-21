@@ -1,21 +1,11 @@
 package ru.jl1mbo.AnarchyCore.Modules.Permissions;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import cn.nukkit.Player;
 import cn.nukkit.permission.PermissionAttachment;
 import ru.jl1mbo.AnarchyCore.Main;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DefaultGroup;
+import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup.*;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.PlayerGroup;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup.BogGroup;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup.GuardianGroup;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup.HeroGroup;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup.KingGroup;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup.LordGroup;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup.PrinceGroup;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup.TartarusGroup;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup.TitanGroup;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.SpecialGroup.YouTubeGroup;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.StaffGroup.AdministratorGroup;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.StaffGroup.HelperGroup;
@@ -23,7 +13,11 @@ import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.StaffGroup.ModeratorGroup
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 public class PermissionAPI {
+
 	public static final HashMap<String, DefaultGroup> GROUPS = new HashMap<>();
 	public static String PREFIX = "§7(§3Привилегии§7) §r";
 

@@ -1,13 +1,12 @@
 package ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Task;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Position;
 import cn.nukkit.scheduler.Task;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.AdminAPI;
+
+import java.util.Map;
 
 public class SpectateTask extends Task {
 

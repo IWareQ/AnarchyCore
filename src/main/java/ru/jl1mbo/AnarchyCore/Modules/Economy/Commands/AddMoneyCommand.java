@@ -16,7 +16,7 @@ public class AddMoneyCommand extends Command {
 		super("addmoney", "§rВыдача монет");
 		this.setPermission("Command.AddMoney");
 		this.commandParameters.clear();
-		this.commandParameters.put("addmoney", new CommandParameter[] {CommandParameter.newType("money", CommandParamType.INT), CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("addmoney", new CommandParameter[]{CommandParameter.newType("money", CommandParamType.INT), CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	@Override()

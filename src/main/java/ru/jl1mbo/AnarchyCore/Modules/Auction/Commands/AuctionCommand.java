@@ -1,27 +1,24 @@
 package ru.jl1mbo.AnarchyCore.Modules.Auction.Commands;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemID;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.AuctionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Auction.Utils.TradeItem;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
+import java.util.Map.Entry;
+
 public class AuctionCommand extends Command {
 
 	public AuctionCommand() {
-		super("auction", "§rОткрыть Аукцион", "", new String[] {"auc", "ah"});
+		super("auction", "§rОткрыть Аукцион", "", new String[]{"auc", "ah"});
 		this.commandParameters.clear();
-		this.commandParameters.put("auction", new CommandParameter[] {CommandParameter.newType("money", false, CommandParamType.INT)});
+		this.commandParameters.put("auction", new CommandParameter[]{CommandParameter.newType("money", false, CommandParamType.INT)});
 	}
 
 	@Override()
@@ -41,8 +38,7 @@ public class AuctionCommand extends Command {
 				}
 			}
 			if (MySQLUtils.getInteger("SELECT COUNT(*) as COUNT FROM `AuctionStorage` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "';") + count >= AuctionAPI.AUCTION_MAX_SELLS) {
-				player.sendMessage(AuctionAPI.PREFIX + "Вы уже разместили или храните максимальное колличество лотов §7(§6" + AuctionAPI.AUCTION_MAX_SELLS +
-								   "§7)");
+				player.sendMessage(AuctionAPI.PREFIX + "Вы уже разместили или храните максимальное колличество лотов §7(§6" + AuctionAPI.AUCTION_MAX_SELLS + "§7)");
 				return false;
 			}
 			if (!Utils.isDouble(args[0])) {
@@ -61,8 +57,7 @@ public class AuctionCommand extends Command {
 				player.sendMessage(AuctionAPI.PREFIX + "Максимальная цена за предмет §7- §6" + AuctionAPI.AUCTION_MAX_PRICE + "");
 				return false;
 			}
-			player.sendMessage(AuctionAPI.PREFIX + "Предмет на продажу §6успешно §fвыставлен за §6" + String.format("%.1f",
-							   price) + "§7, §fв колличестве §6" + item.getCount() + " §fшт§7.");
+			player.sendMessage(AuctionAPI.PREFIX + "Предмет на продажу §6успешно §fвыставлен за §6" + String.format("%.1f", price) + "§7, §fв колличестве §6" + item.getCount() + " §fшт§7.");
 			player.getServer().broadcastMessage(AuctionAPI.PREFIX + "Игрок §6" + player.getName() + " §fвыставил предмет на продажу§7!");
 			MySQLUtils.query("INSERT INTO `Auction` (`Seller`, `Price`, `Id`, `Damage`, `Count`, `namedTag`, `Time`) VALUES ('" + player.getName() + "', '" + price + "', '" + item.getId() + "', '" + item.getDamage() + "', '" + item.getCount() + "', '" + Utils.convertNbtToHex(item.getNamedTag()) + "', '" + System.currentTimeMillis() / 1000L + 259200 + "');");
 			AuctionAPI.register();

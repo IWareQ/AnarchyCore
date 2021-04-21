@@ -6,12 +6,7 @@ import cn.nukkit.blockentity.BlockEntityItemFrame;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
-import cn.nukkit.event.block.BlockBreakEvent;
-import cn.nukkit.event.block.BlockBurnEvent;
-import cn.nukkit.event.block.BlockIgniteEvent;
-import cn.nukkit.event.block.BlockPlaceEvent;
-import cn.nukkit.event.block.ItemFrameDropItemEvent;
-import cn.nukkit.event.block.LeavesDecayEvent;
+import cn.nukkit.event.block.*;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.event.level.WeatherChangeEvent;
@@ -20,7 +15,7 @@ import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerFoodLevelChangeEvent;
 
 public class WorldEventsListener implements Listener {
-	
+
 	@EventHandler()
 	public void onWeatherChange(WeatherChangeEvent event) {
 		if (event.getLevel().equals(WorldSystemAPI.Spawn)) {
@@ -31,7 +26,7 @@ public class WorldEventsListener implements Listener {
 	@EventHandler()
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(WorldSystemAPI.Spawn) && player.getGamemode() != 1) {
+		if (player.getLevel().equals(WorldSystemAPI.Spawn) && player.getGamemode() != Player.CREATIVE) {
 			event.setCancelled(true);
 		}
 	}
@@ -55,7 +50,7 @@ public class WorldEventsListener implements Listener {
 	@EventHandler()
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(WorldSystemAPI.Spawn) && player.getGamemode() != 1) {
+		if (player.getLevel().equals(WorldSystemAPI.Spawn) && player.getGamemode() != Player.CREATIVE) {
 			event.setCancelled(true);
 		}
 	}
@@ -87,7 +82,7 @@ public class WorldEventsListener implements Listener {
 	@EventHandler()
 	public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(WorldSystemAPI.Spawn) && player.getGamemode() != 1) {
+		if (player.getLevel().equals(WorldSystemAPI.Spawn) && player.getGamemode() != Player.CREATIVE) {
 			event.setCancelled(true);
 		}
 	}
@@ -95,7 +90,7 @@ public class WorldEventsListener implements Listener {
 	@EventHandler()
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
 		Player player = event.getPlayer();
-		if (player.getLevel().equals(WorldSystemAPI.Spawn) && player.getGamemode() != 1) {
+		if (player.getLevel().equals(WorldSystemAPI.Spawn) && player.getGamemode() != Player.CREATIVE) {
 			event.setCancelled(true);
 		}
 	}

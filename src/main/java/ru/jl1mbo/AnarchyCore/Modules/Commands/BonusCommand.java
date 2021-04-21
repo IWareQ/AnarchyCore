@@ -18,7 +18,7 @@ public class BonusCommand extends Command {
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
-			Player player = (Player)sender;
+			Player player = (Player) sender;
 			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}

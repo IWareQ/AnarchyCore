@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands;
 
-import java.util.Arrays;
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -13,17 +10,20 @@ import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.CustomForm;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.AdminAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MuteCommand extends Command {
 
 	public MuteCommand() {
 		super("mute", "§rБлокировка Чата");
 		this.setPermission("Command.Mute");
 		this.commandParameters.clear();
-		this.commandParameters.put("mute", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("mute", new CommandParameter[]{CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	public static void openMutePlayerForm(Player player, String targetName) {
-		List<String> reasonList = Arrays.asList(new String[] {"2.1 (Обсуж. действий перносала)", "2.2 (Дискриминация)", "2.3 (Пропаганда)", "2.4 (Оскорбления)", "2.5 (Спам, флуд)", "2.6 (Реклама)"});
+		List<String> reasonList = Arrays.asList("2.1 (Обсуж. действий перносала)", "2.2 (Дискриминация)", "2.3 (Пропаганда)", "2.4 (Оскорбления)", "2.5 (Спам, флуд)", "2.6 (Реклама)");
 		CustomForm customForm = new CustomForm("Блокировка Чата §6" + targetName);
 		customForm.addDropDown("§l§6• §rПричина блокировки чата§7:", reasonList);
 		customForm.addLabel("§l§6• §rВремя блокировки чата§7:");
@@ -31,7 +31,9 @@ public class MuteCommand extends Command {
 		customForm.addSlider("§6Часы§7", 0, 24, 1, 0);
 		customForm.addSlider("§6Дни§7", 0, 30, 1, 0);
 		customForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == null) return;
+			if (data == null) {
+				return;
+			}
 			if (AdminAPI.isMuted(targetName)) {
 				player.sendMessage(AdminAPI.PREFIX + "Чат игрока §6" + targetName + " §fуже заблокирован§7!");
 				return;

@@ -1,7 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.Commands;
 
-import java.util.ArrayList;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -9,6 +7,8 @@ import cn.nukkit.command.CommandSender;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.CustomForm;
 import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
+
+import java.util.ArrayList;
 
 public class ReportCommand extends Command {
 
@@ -29,7 +29,9 @@ public class ReportCommand extends Command {
 			customForm.addDropDown("§l§6• §rВыберите игрока§7:", playersList, playersList.indexOf(player.getName()));
 			customForm.addInput("§l§6• §rВведите причину§7:", "Он меня ударил :0");
 			customForm.send(player, (targetPlayer, targetForm, data) -> {
-				if (data == null) return;
+				if (data == null) {
+					return;
+				}
 				String targetName = data.get(0).toString();
 				String reason = data.get(1).toString();
 				if (reason == null || reason.equals("")) {

@@ -3,29 +3,30 @@ package ru.jl1mbo.AnarchyCore.Modules.Cooldown.Utils;
 import cn.nukkit.Player;
 
 public class Cooldown {
-	private Player player;
-	private String command;
-	private long time;
 
-	public Cooldown(Player player, String command, Integer seconds) {
+	private final Player player;
+	private final String command;
+	private final long time;
+
+	public Cooldown(Player player, String command, int seconds) {
 		this.player = player;
 		this.command = command;
 		this.time = System.currentTimeMillis() / 1000L + seconds;
 	}
 
 	public Player getPlayer() {
-		return player;
+		return this.player;
 	}
 
 	public String getCommand() {
-		return command;
+		return this.command;
 	}
 
 	public long getTime() {
-		return time;
+		return this.time;
 	}
 
 	public boolean isOutdated() {
-		return time <= System.currentTimeMillis() / 1000L;
+		return this.time <= System.currentTimeMillis() / 1000L;
 	}
 }

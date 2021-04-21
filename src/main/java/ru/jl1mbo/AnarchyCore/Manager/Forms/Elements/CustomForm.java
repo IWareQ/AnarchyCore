@@ -1,17 +1,12 @@
 package ru.jl1mbo.AnarchyCore.Manager.Forms.Elements;
 
-import java.util.List;
-
 import cn.nukkit.Player;
-import cn.nukkit.form.element.ElementDropdown;
-import cn.nukkit.form.element.ElementInput;
-import cn.nukkit.form.element.ElementLabel;
-import cn.nukkit.form.element.ElementSlider;
-import cn.nukkit.form.element.ElementStepSlider;
-import cn.nukkit.form.element.ElementToggle;
+import cn.nukkit.form.element.*;
 import cn.nukkit.form.window.FormWindowCustom;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Forms.CustomFormResponse;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Forms.Form;
+
+import java.util.List;
 
 public class CustomForm extends Form {
 

@@ -18,7 +18,7 @@ public class ListCommand extends Command {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 			stringBuilder.append("§7, §6").append(player.getName());
 		}
-		sender.sendMessage("§l§6• §fНа сервере §6" + Server.getInstance().getOnlinePlayers().size() + " §fонлайна§7!\n§fИгроки§7: §6" + stringBuilder.toString().substring(1));
+		sender.sendMessage("§l§6• §fНа сервере §6" + Server.getInstance().getOnlinePlayers().size() + " §fонлайна§7!\n§fИгроки§7: §6" + stringBuilder.substring(1));
 		return false;
 	}
 }

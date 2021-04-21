@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.AdminSystem;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -19,14 +16,7 @@ import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.ProjectileLaunchEvent;
 import cn.nukkit.event.inventory.InventoryTransactionEvent;
-import cn.nukkit.event.player.PlayerBucketEmptyEvent;
-import cn.nukkit.event.player.PlayerChatEvent;
-import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
-import cn.nukkit.event.player.PlayerDropItemEvent;
-import cn.nukkit.event.player.PlayerFoodLevelChangeEvent;
-import cn.nukkit.event.player.PlayerInteractEvent;
-import cn.nukkit.event.player.PlayerJoinEvent;
-import cn.nukkit.event.player.PlayerQuitEvent;
+import cn.nukkit.event.player.*;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
@@ -42,6 +32,8 @@ import cn.nukkit.network.protocol.InventoryTransactionPacket;
 import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryAPI;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Inventory.AdminChest;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
+
+import java.util.Map;
 
 public class AdminEventsListener implements Listener {
 
@@ -66,62 +58,62 @@ public class AdminEventsListener implements Listener {
 		DataPacket dataPacket = event.getPacket();
 		Player player = event.getPlayer();
 		if (dataPacket instanceof InventoryTransactionPacket) {
-			InventoryTransactionPacket transactionPacket = (InventoryTransactionPacket)dataPacket;
+			InventoryTransactionPacket transactionPacket = (InventoryTransactionPacket) dataPacket;
 			if (transactionPacket.transactionType == InventoryTransactionPacket.TYPE_USE_ITEM) {
-				UseItemData useItemData = (UseItemData)transactionPacket.transactionData;
+				UseItemData useItemData = (UseItemData) transactionPacket.transactionData;
 				Vector3 blockVector3 = new Vector3(useItemData.blockPos.getX(), useItemData.blockPos.getY(), useItemData.blockPos.getZ());
 				Block block = player.getLevel().getBlock(blockVector3);
 				Item item = player.getInventory().getItemInHand();
 				Map<String, String> spectateData = AdminAPI.getSpectateData(player.getName());
 				switch (item.getId()) {
-				case Item.REDSTONE_DUST:
-					if (AdminAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
-						AdminAPI.removeSpectate(player);
-					}
-					break;
-
-				case Item.CHEST:
-					if (AdminAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
-						AdminAPI.openCheckInventoryChest(player, spectateData.get("Target"));
-					}
-					break;
-
-				case Item.CLOCK:
-					if (AdminAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
-						AdminAPI.sendAdminPanelForm(player, spectateData.get("Target"));
-					}
-					break;
-
-				case Item.MOB_SPAWNER:
-					if (AdminAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
-						AdminAPI.addCheatCheacker(player, Server.getInstance().getPlayerExact(spectateData.get("Target")));
-					}
-					break;
-
-				default:
-					if (player.getGamemode() == 3) {
-						BlockEntity blockEntity = block.getLevel().getBlockEntity(blockVector3);
-						if (blockEntity instanceof BlockEntityChest) {
-							BlockEntityChest blockEntityChest = (BlockEntityChest)blockEntity;
-							Map<Integer, Item> contents = blockEntityChest.getInventory().getContents();
-							AdminChest doubleChest = new AdminChest("\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0433\u043e");
-							doubleChest.setContents(contents);
-							FakeInventoryAPI.openInventory(player, doubleChest);
-						} else if (blockEntity instanceof BlockEntityBarrel) {
-							BlockEntityBarrel entityBarrel = (BlockEntityBarrel)blockEntity;
-							Map<Integer, Item> contents = entityBarrel.getInventory().getContents();
-							AdminChest doubleChest = new AdminChest("\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0433\u043e");
-							doubleChest.setContents(contents);
-							FakeInventoryAPI.openInventory(player, doubleChest);
-						} else if (blockEntity instanceof BlockEntityShulkerBox) {
-							BlockEntityShulkerBox entityShulkerBox = (BlockEntityShulkerBox)blockEntity;
-							Map<Integer, Item> contents = entityShulkerBox.getInventory().getContents();
-							AdminChest doubleChest = new AdminChest("\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0433\u043e");
-							doubleChest.setContents(contents);
-							FakeInventoryAPI.openInventory(player, doubleChest);
+					case Item.REDSTONE_DUST:
+						if (AdminAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
+							AdminAPI.removeSpectate(player);
 						}
-					}
-					break;
+						break;
+
+					case Item.CHEST:
+						if (AdminAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
+							AdminAPI.openCheckInventoryChest(player, spectateData.get("Target"));
+						}
+						break;
+
+					case Item.CLOCK:
+						if (AdminAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
+							AdminAPI.sendAdminPanelForm(player, spectateData.get("Target"));
+						}
+						break;
+
+					case Item.MOB_SPAWNER:
+						if (AdminAPI.isSpectate(player.getName()) && player.getGamemode() == 3) {
+							AdminAPI.addCheatCheacker(player, Server.getInstance().getPlayerExact(spectateData.get("Target")));
+						}
+						break;
+
+					default:
+						if (player.getGamemode() == 3) {
+							BlockEntity blockEntity = block.getLevel().getBlockEntity(blockVector3);
+							if (blockEntity instanceof BlockEntityChest) {
+								BlockEntityChest blockEntityChest = (BlockEntityChest) blockEntity;
+								Map<Integer, Item> contents = blockEntityChest.getInventory().getContents();
+								AdminChest doubleChest = new AdminChest("\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0433\u043e");
+								doubleChest.setContents(contents);
+								FakeInventoryAPI.openInventory(player, doubleChest);
+							} else if (blockEntity instanceof BlockEntityBarrel) {
+								BlockEntityBarrel entityBarrel = (BlockEntityBarrel) blockEntity;
+								Map<Integer, Item> contents = entityBarrel.getInventory().getContents();
+								AdminChest doubleChest = new AdminChest("\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0433\u043e");
+								doubleChest.setContents(contents);
+								FakeInventoryAPI.openInventory(player, doubleChest);
+							} else if (blockEntity instanceof BlockEntityShulkerBox) {
+								BlockEntityShulkerBox entityShulkerBox = (BlockEntityShulkerBox) blockEntity;
+								Map<Integer, Item> contents = entityShulkerBox.getInventory().getContents();
+								AdminChest doubleChest = new AdminChest("\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0433\u043e");
+								doubleChest.setContents(contents);
+								FakeInventoryAPI.openInventory(player, doubleChest);
+							}
+						}
+						break;
 
 				}
 			}
@@ -175,8 +167,7 @@ public class AdminEventsListener implements Listener {
 			if (Long.parseLong(muteData.get("Time")) <= System.currentTimeMillis() / 1000L) {
 				AdminAPI.removeMute(player.getName(), "", "buy");
 			} else {
-				player.sendMessage("§l§6• §rТебя замутили§7! §fАдминистратор закрыл тебе доступ к чату на §6" + Utils.getRemainingTime(Long.parseLong(
-									   muteData.get("Time"))) + " §fпо причине §6" + muteData.get("Reason") + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
+				player.sendMessage("§l§6• §rТебя замутили§7! §fАдминистратор закрыл тебе доступ к чату на §6" + Utils.getRemainingTime(Long.parseLong(muteData.get("Time"))) + " §fпо причине §6" + muteData.get("Reason") + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
 				event.setCancelled(true);
 			}
 		}
@@ -206,7 +197,7 @@ public class AdminEventsListener implements Listener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		Entity damager = event.getDamager();
 		if (damager instanceof Player) {
-			Player player = (Player)damager;
+			Player player = (Player) damager;
 			if (AdminAPI.isBanned(player.getName()) || AdminAPI.isCheatCheck(player.getName())) {
 				event.setCancelled(true);
 				player.setImmobile(true);
@@ -218,7 +209,7 @@ public class AdminEventsListener implements Listener {
 	public void onEntityDamage(EntityDamageEvent event) {
 		Entity entity = event.getEntity();
 		if (entity instanceof Player) {
-			Player player = (Player)entity;
+			Player player = (Player) entity;
 			if (AdminAPI.isBanned(player.getName()) || AdminAPI.isCheatCheck(player.getName())) {
 				event.setCancelled(true);
 			}
@@ -270,7 +261,7 @@ public class AdminEventsListener implements Listener {
 	public void onProjectileLaunch(ProjectileLaunchEvent event) {
 		Entity entity = event.getEntity();
 		if (entity instanceof Player) {
-			Player player = (Player)entity;
+			Player player = (Player) entity;
 			if (AdminAPI.isBanned(player.getName()) || AdminAPI.isCheatCheck(player.getName())) {
 				event.setCancelled(true);
 			}

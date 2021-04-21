@@ -1,8 +1,8 @@
 package ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DonateGroup;
 
-import java.util.HashMap;
-
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DefaultGroup;
+
+import java.util.HashMap;
 
 public class PrinceGroup extends DefaultGroup {
 

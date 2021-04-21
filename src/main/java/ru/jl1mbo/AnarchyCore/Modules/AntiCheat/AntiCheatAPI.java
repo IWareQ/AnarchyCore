@@ -1,20 +1,20 @@
 package ru.jl1mbo.AnarchyCore.Modules.AntiCheat;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByChildEntityEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
-import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.level.Location;
 import cn.nukkit.utils.LoginChainData;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AntiCheatAPI {
+
 	private static final Map<String, Integer> flyDetect = new HashMap<>();
 	private static final Map<String, Integer> reachDetect = new HashMap<>();
 
@@ -32,9 +32,15 @@ public class AntiCheatAPI {
 	public static void checkReach(EntityDamageByEntityEvent event) {
 		Entity damager = event.getDamager();
 		Entity damaged = event.getEntity();
-		if (!(damager instanceof Player)) return;
-		if (event instanceof EntityDamageByChildEntityEvent) return;
-		if (((Player) damager).isCreative()) return;
+		if (!(damager instanceof Player)) {
+			return;
+		}
+		if (event instanceof EntityDamageByChildEntityEvent) {
+			return;
+		}
+		if (((Player) damager).isCreative()) {
+			return;
+		}
 		if (damager.distance(damaged) > getAllowedDistance((Player) damager)) {
 			event.setCancelled(true);
 			reachDetect.put(damager.getName(), reachDetect.get(damager.getName()) + 1);
@@ -45,6 +51,7 @@ public class AntiCheatAPI {
 			}
 		}
 	}
+
 	public static void checkFly(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		Location oldLocation = event.getFrom();

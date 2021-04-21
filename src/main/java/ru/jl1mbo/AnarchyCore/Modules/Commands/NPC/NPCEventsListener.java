@@ -1,7 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.Commands.NPC;
 
-import java.util.Arrays;
-
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
@@ -24,6 +22,8 @@ import ru.jl1mbo.AnarchyCore.Modules.Auction.AuctionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.NPC.Inventory.NPCHopper;
 import ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils.CustomItemID;
 
+import java.util.Arrays;
+
 public class NPCEventsListener implements Listener {
 
 	@EventHandler()
@@ -35,18 +35,7 @@ public class NPCEventsListener implements Listener {
 				AuctionAPI.AUCTION_PAGE.put((Player) damager, 0);
 				AuctionAPI.showAuction((Player) damager, true);
 			} else if (entity instanceof WanderingTraderNPC) {
-				NPCHopper traderHopper = new NPCHopper("§6Собиратель Артефактов");
-				traderHopper.addItem(Item.get(
-										 CustomItemID.TARANTULA_WEB).setLore("\n§rНажмите§7, §fчтобы §6обменяться§7!"));
-				traderHopper.addItem(Item.get(
-										 CustomItemID.SUN_WAND).setLore("\n§rНажмите§7, §fчтобы §6обменяться§7!"));
-				traderHopper.addItem(Item.get(
-										 CustomItemID.PIECE_ICE).setLore("\n§rНажмите§7, §fчтобы §6обменяться§7!"));
-				traderHopper.addItem(Item.get(
-										 CustomItemID.REMAINS_GUARDIAN).setLore("\n§rНажмите§7, §fчтобы §6обменяться§7!"));
-				traderHopper.addItem(Item.get(
-										 CustomItemID.GOLDEN_MONEY).setLore("\n§rЭтот §6предмет §fВы §6получите §fпосле обмена§7.\n§fИспользуйте его на §6алтаре§7!"));
-				FakeInventoryAPI.openInventory((Player) damager, traderHopper);
+				FakeInventoryAPI.openInventory((Player) damager, new NPCHopper());
 			}
 		}
 	}
@@ -62,76 +51,76 @@ public class NPCEventsListener implements Listener {
 					event.setCancelled(true);
 					Item goldenMoney = Item.get(CustomItemID.GOLDEN_MONEY, 0, 5);
 					switch (sourceItem.getId()) {
-					case CustomItemID.TARANTULA_WEB: {
-						PlayerInventory playerInventory = player.getInventory();
-						Item artifact = Item.get(CustomItemID.TARANTULA_WEB, 0, 1);
-						if (playerInventory.contains(artifact)) {
-							if (playerInventory.canAddItem(goldenMoney)) {
-								playerInventory.removeItem(artifact);
-								playerInventory.addItem(goldenMoney);
-								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-								player.sendMessage("§l§7(§3Собиратель§7) §rСпасибо за §6Артефакт§7, §fприходи еще§7!");
+						case CustomItemID.TARANTULA_WEB: {
+							PlayerInventory playerInventory = player.getInventory();
+							Item artifact = Item.get(CustomItemID.TARANTULA_WEB, 0, 1);
+							if (playerInventory.contains(artifact)) {
+								if (playerInventory.canAddItem(goldenMoney)) {
+									playerInventory.removeItem(artifact);
+									playerInventory.addItem(goldenMoney);
+									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+									player.sendMessage("§l§7(§3Собиратель§7) §rСпасибо за §6Артефакт§7, §fприходи еще§7!");
+								}
+							} else {
+								player.sendMessage("§l§7(§3Собиратель§7) §rНедостаточно §6Артефактов §fдля совершения обмена§7!");
+								player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 							}
-						} else {
-							player.sendMessage("§l§7(§3Собиратель§7) §rНедостаточно §6Артефактов §fдля совершения обмена§7!");
-							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 						}
-					}
-					break;
+						break;
 
-					case CustomItemID.SUN_WAND: {
-						PlayerInventory playerInventory = player.getInventory();
-						Item artifact = Item.get(CustomItemID.SUN_WAND, 0, 1);
-						if (playerInventory.contains(artifact)) {
-							if (playerInventory.canAddItem(goldenMoney)) {
-								playerInventory.removeItem(artifact);
-								playerInventory.addItem(goldenMoney);
-								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-								player.sendMessage("§l§7(§3Собиратель§7) §rСпасибо за §6Артефакт§7, §fприходи еще§7!");
+						case CustomItemID.SUN_WAND: {
+							PlayerInventory playerInventory = player.getInventory();
+							Item artifact = Item.get(CustomItemID.SUN_WAND, 0, 1);
+							if (playerInventory.contains(artifact)) {
+								if (playerInventory.canAddItem(goldenMoney)) {
+									playerInventory.removeItem(artifact);
+									playerInventory.addItem(goldenMoney);
+									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+									player.sendMessage("§l§7(§3Собиратель§7) §rСпасибо за §6Артефакт§7, §fприходи еще§7!");
+								}
+							} else {
+								player.sendMessage("§l§7(§3Собиратель§7) §rНедостаточно §6Артефактов §fдля совершения обмена§7!");
+								player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 							}
-						} else {
-							player.sendMessage("§l§7(§3Собиратель§7) §rНедостаточно §6Артефактов §fдля совершения обмена§7!");
-							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 						}
-					}
-					break;
-					case CustomItemID.PIECE_ICE: {
-						PlayerInventory playerInventory = player.getInventory();
-						Item artifact = Item.get(CustomItemID.PIECE_ICE, 0, 1);
-						if (playerInventory.contains(artifact)) {
-							if (playerInventory.canAddItem(goldenMoney)) {
-								playerInventory.removeItem(artifact);
-								playerInventory.addItem(goldenMoney);
-								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-								player.sendMessage("§l§7(§3Собиратель§7) §rСпасибо за §6Артефакт§7, §fприходи еще§7!");
+						break;
+						case CustomItemID.PIECE_ICE: {
+							PlayerInventory playerInventory = player.getInventory();
+							Item artifact = Item.get(CustomItemID.PIECE_ICE, 0, 1);
+							if (playerInventory.contains(artifact)) {
+								if (playerInventory.canAddItem(goldenMoney)) {
+									playerInventory.removeItem(artifact);
+									playerInventory.addItem(goldenMoney);
+									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+									player.sendMessage("§l§7(§3Собиратель§7) §rСпасибо за §6Артефакт§7, §fприходи еще§7!");
+								}
+							} else {
+								player.sendMessage("§l§7(§3Собиратель§7) §rНедостаточно §6Артефактов §fдля совершения обмена§7!");
+								player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 							}
-						} else {
-							player.sendMessage("§l§7(§3Собиратель§7) §rНедостаточно §6Артефактов §fдля совершения обмена§7!");
-							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 						}
-					}
-					break;
-					case CustomItemID.REMAINS_GUARDIAN: {
-						PlayerInventory playerInventory = player.getInventory();
-						Item artifact = Item.get(CustomItemID.REMAINS_GUARDIAN, 0, 1);
-						if (playerInventory.contains(artifact)) {
-							if (playerInventory.canAddItem(goldenMoney)) {
-								playerInventory.removeItem(artifact);
-								playerInventory.addItem(goldenMoney);
-								player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
-								player.sendMessage("§l§7(§3Собиратель§7) §rСпасибо за §6Артефакт§7, §fприходи еще§7!");
+						break;
+						case CustomItemID.REMAINS_GUARDIAN: {
+							PlayerInventory playerInventory = player.getInventory();
+							Item artifact = Item.get(CustomItemID.REMAINS_GUARDIAN, 0, 1);
+							if (playerInventory.contains(artifact)) {
+								if (playerInventory.canAddItem(goldenMoney)) {
+									playerInventory.removeItem(artifact);
+									playerInventory.addItem(goldenMoney);
+									player.getLevel().addSound(player, Sound.RANDOM_LEVELUP, 1, 1, player);
+									player.sendMessage("§l§7(§3Собиратель§7) §rСпасибо за §6Артефакт§7, §fприходи еще§7!");
+								}
+							} else {
+								player.sendMessage("§l§7(§3Собиратель§7) §rНедостаточно §6Артефактов §fдля совершения обмена§7!");
+								player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 							}
-						} else {
-							player.sendMessage("§l§7(§3Собиратель§7) §rНедостаточно §6Артефактов §fдля совершения обмена§7!");
-							player.getLevel().addSound(player, Sound.NOTE_BASS, 1, 1, player);
 						}
-					}
-					break;
+						break;
 
-					case CustomItemID.GOLDEN_MONEY: {
-						event.setCancelled(true);
-					}
-					break;
+						case CustomItemID.GOLDEN_MONEY: {
+							event.setCancelled(true);
+						}
+						break;
 					}
 				}
 			}
@@ -149,25 +138,25 @@ public class NPCEventsListener implements Listener {
 				return;
 			}
 			if (entity instanceof WanderingTraderNPC || entity instanceof VillagerNPC) {
-				double xdiff = player.x - entity.x;
-				double zdiff = player.z - entity.z;
+				double xdiff = player.getX() - entity.getX();
+				double zdiff = player.getZ() - entity.getZ();
 				double angle = Math.atan2(zdiff, xdiff);
 				double yaw = ((angle * 180) / Math.PI) - 90;
-				double ydiff = player.y - entity.y;
-				Vector2 v = new Vector2(entity.x, entity.z);
-				double dist = v.distance(player.x, player.z);
+				double ydiff = player.getY() - entity.getY();
+				Vector2 v = new Vector2(entity.getX(), entity.getZ());
+				double dist = v.distance(player.getX(), player.getZ());
 				angle = Math.atan2(dist, ydiff);
 				double pitch = ((angle * 180) / Math.PI) - 90;
-				MoveEntityAbsolutePacket absolutePacket = new MoveEntityAbsolutePacket();
-				absolutePacket.eid = entity.getId();
-				absolutePacket.x = entity.x;
-				absolutePacket.y = entity.y;
-				absolutePacket.z = entity.z;
-				absolutePacket.yaw = yaw;
-				absolutePacket.pitch = pitch;
-				absolutePacket.headYaw = yaw;
-				absolutePacket.onGround = entity.onGround;
-				player.dataPacket(absolutePacket);
+				MoveEntityAbsolutePacket moveEntityAbsolutePacket = new MoveEntityAbsolutePacket();
+				moveEntityAbsolutePacket.eid = entity.getId();
+				moveEntityAbsolutePacket.x = entity.getX();
+				moveEntityAbsolutePacket.y = entity.getY();
+				moveEntityAbsolutePacket.z = entity.getZ();
+				moveEntityAbsolutePacket.yaw = yaw;
+				moveEntityAbsolutePacket.pitch = pitch;
+				moveEntityAbsolutePacket.headYaw = yaw;
+				moveEntityAbsolutePacket.onGround = entity.isOnGround();
+				player.dataPacket(moveEntityAbsolutePacket);
 			}
 		});
 	}

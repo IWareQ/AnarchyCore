@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Manager.WorldSystem;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
-
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockID;
@@ -10,12 +7,15 @@ import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
-import ru.jl1mbo.AnarchyCore.Modules.Commands.NPC.NPC;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+
 public class WorldSystemAPI {
-	private static final Integer[] RTP_RADIUS = new Integer[] {-1500, 1500, -1500, 1500};
-	private static final String[] levels = new String[] {"map", "spawn", "test", "nether", "the_end"};
+
+	private static final Integer[] RTP_RADIUS = new Integer[]{-1500, 1500, -1500, 1500};
+	private static final String[] levels = new String[]{"map", "spawn", "test", "nether", "the_end"};
 	public static Level Map;
 	public static Level Spawn;
 	public static Level Test;
@@ -80,55 +80,13 @@ public class WorldSystemAPI {
 		int y = pos.getFloorY();
 		int z = pos.getFloorZ();
 		for (int xx = x - 2; xx < x + 3; xx++) {
-			for (int zz = z - 2; zz < z + 3; zz++)  {
+			for (int zz = z - 2; zz < z + 3; zz++) {
 				TheEnd.setBlockAt(xx, y - 1, zz, BlockID.OBSIDIAN);
 				for (int yy = y; yy < y + 4; yy++) {
 					TheEnd.setBlockAt(xx, yy, zz, BlockID.AIR);
 				}
 			}
 		}
-	}
-
-	public static void generateTheEndPortal() {
-		Position pos = new Position(0, 64, 0, TheEnd);
-		for (int x = -4; x <= 4; x ++) {
-			for (int z = -4; z <= 4; z++) {
-				TheEnd.setBlockAt(x, pos.getFloorY(), z, BlockID.BEDROCK);
-			}
-		}
-		/*for (int i = -1; i <= 100; i++) {
-			for (int x = -4; x <= 4; x++) {
-				for (int z = -4; z <= 4; z++) {
-					int dy = pos.getFloorY() + i;
-					double distance = new Vector3(0, pos.y).distance(new Vector3(x, dy, z));
-					if (distance <= 3.5) {
-						if (dy < pos.y) {
-							if (distance <= 2.5) {
-								TheEnd.setBlockAt(x, dy, z, BlockID.BEDROCK);
-							} else if (dy < pos.y) {
-								TheEnd.setBlockAt(x, dy, z, BlockID.END_STONE);
-							}
-						} else if (dy > pos.y) {
-							TheEnd.setBlockAt(x, dy, z, BlockID.AIR);
-						} else if (distance > 2.5) {
-							TheEnd.setBlockAt(x, dy, z, BlockID.BEDROCK);
-						} else {
-							TheEnd.setBlockAt(x, dy, z, BlockID.AIR);
-							TheEnd.setBlockAt(x, dy, z, BlockID.END_PORTAL);
-						}
-					}
-				}
-			}
-		}*/
-
-		for (int i = 0; i < 4; ++i) {
-			TheEnd.setBlockAt(0, pos.getFloorY() + i, 0, BlockID.BEDROCK);
-		}
-		int torch = pos.getFloorY() + 2;
-		TheEnd.setBlockAt(1, torch, 0, BlockID.TORCH, 1);
-		TheEnd.setBlockAt(-1, torch, 0, BlockID.TORCH, 2);
-		TheEnd.setBlockAt(0, torch, 1, BlockID.TORCH, 3);
-		TheEnd.setBlockAt(0, torch, -1, BlockID.TORCH, 4);
 	}
 
 	public static void randomPosition(Level level, Consumer<Position> callback) {

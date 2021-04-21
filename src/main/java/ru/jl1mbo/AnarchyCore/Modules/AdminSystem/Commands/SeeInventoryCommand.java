@@ -11,10 +11,10 @@ import ru.jl1mbo.AnarchyCore.Utils.Utils;
 public class SeeInventoryCommand extends Command {
 
 	public SeeInventoryCommand() {
-		super("seeinventory", "§rПросмотр инвентаря", "", new String[] {"seeinv"});
+		super("seeinventory", "§rПросмотр инвентаря", "", new String[]{"seeinv"});
 		this.setPermission("Command.SeeInventory");
 		this.commandParameters.clear();
-		this.commandParameters.put("seeinventory", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("seeinventory", new CommandParameter[]{CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	@Override()

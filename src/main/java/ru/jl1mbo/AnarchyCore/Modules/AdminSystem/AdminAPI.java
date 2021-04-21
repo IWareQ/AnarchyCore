@@ -1,9 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.AdminSystem;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -18,8 +14,6 @@ import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.GameRulesChangedPacket;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.scheduler.Task;
-import cn.nukkit.utils.Config;
-import ru.jl1mbo.AnarchyCore.Main;
 import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.FakeInventoryAPI;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.ModalForm;
 import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.SimpleForm;
@@ -33,11 +27,15 @@ import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class AdminAPI {
+
+	private static final HashMap<String, Integer> CHEAT_CHECK = new HashMap<>();
 	public static String PREFIX = "§l§7(§3Система§7) §r";
 	private static int seconds = 420;
-	private static HashMap<String, Integer> CHEAT_CHECK = new HashMap<>();
-	public static Map<String, Player> INVENTORY_PLAYER = new HashMap<>();
 
 	public static void sendSearchPlayerForm(Player player, String playerName) {
 		List<String> players = Utils.getPlayersList(playerName);
@@ -47,7 +45,9 @@ public class AdminAPI {
 			simpleForm.addButton("§6" + playerList + "\n§fНажмите§7, §fчтобы перейти§7!");
 		}
 		simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == -1) return;
+			if (data == -1) {
+				return;
+			}
 			sendAdminPanelForm(player, players.get(data));
 		});
 	}
@@ -73,30 +73,32 @@ public class AdminAPI {
 		}
 		simpleForm.addButton("Просмотреть инвентарь");
 		simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == -1) return;
+			if (data == -1) {
+				return;
+			}
 			switch (data) {
-			case 0: {
-				if (isBanned(targetName) && player.hasPermission("Command.UnBan")) {
-					UnBanCommand.openUnBanPlayerForm(player, targetName);
-				} else {
-					BanCommand.openBanPlayerForm(player, targetName);
+				case 0: {
+					if (isBanned(targetName) && player.hasPermission("Command.UnBan")) {
+						UnBanCommand.openUnBanPlayerForm(player, targetName);
+					} else {
+						BanCommand.openBanPlayerForm(player, targetName);
+					}
 				}
-			}
-			break;
+				break;
 
-			case 1: {
-				if (isMuted(targetName)) {
-					UnMuteCommand.openUnMutePlayerForm(player, targetName);
-				} else {
-					MuteCommand.openMutePlayerForm(player, targetName);
+				case 1: {
+					if (isMuted(targetName)) {
+						UnMuteCommand.openUnMutePlayerForm(player, targetName);
+					} else {
+						MuteCommand.openMutePlayerForm(player, targetName);
+					}
 				}
-			}
-			break;
+				break;
 
-			case 2: {
-				openCheckInventoryChest(player, targetName);
-			}
-			break;
+				case 2: {
+					openCheckInventoryChest(player, targetName);
+				}
+				break;
 			}
 		});
 	}
@@ -115,70 +117,58 @@ public class AdminAPI {
 
 	public static void addCheatCheacker(Player player, Player target) {
 		if (!isCheatCheck(target.getName())) {
-			ModalForm modalForm = new ModalForm("Проверка",
-												"Вы уверены что хотите вызвать игрока §6"
-												+ target.getName() + " §fна проверку§7?", "Да", "Нет");
-			modalForm.send(player, (targetPlayer, targetForm, data)-> {
-				if (data == -1) return;
+			ModalForm modalForm = new ModalForm("Проверка", "Вы уверены что хотите вызвать игрока §6" + target.getName() + " §fна проверку§7?", "Да", "Нет");
+			modalForm.send(player, (targetPlayer, targetForm, data) -> {
+				if (data == -1) {
+					return;
+				}
 				switch (data) {
-				case 0: {
-					int checkCode = Utils.rand(0, 10000);
-					CHEAT_CHECK.put(target.getName(), checkCode);
-					Utils.sendMessageToChat("💂CheatCheacker\n\nИгрок: " + target.getName() + "\nАдмин: " + player.getName() + "\nКод: " +
-											checkCode);
-					player.sendMessage(PREFIX + "Игрок §6" + target.getName() +
-									   " §fвызван на проверку§7!");
-					target.sendTitle("§l§6Проверка");
-					target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(3, 2, 0), "§6Проверка на читы§7!",
-												  "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6"
-												  + checkCode), target);
-					Entity.createEntity("CowNPC", target.getPosition().add(3, 0, 0)).spawnToAll();
-					target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(-3, 2, 0), "§6Проверка на читы§7!",
-												  "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6"
-												  + checkCode), target);
-					Entity.createEntity("CowNPC", target.getPosition().add(-3, 0, 0)).spawnToAll();
-					target.getLevel().addParticle(new FloatingTextParticle(player.getPosition().add(0, 2, 3), "§6Проверка на читы§7!",
-												  "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6"
-												  + checkCode), target);
-					Entity.createEntity("CowNPC", target.getPosition().add(0, 0, 3)).spawnToAll();
-					target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(0, 2, -3), "§6Проверка на читы§7!",
-												  "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6"
-												  + checkCode), target);
-					Entity.createEntity("CowNPC", target.getPosition().add(0, 0, -3)).spawnToAll();
-					target.getLevel().addSound(target, Sound.RANDOM_SCREENSHOT, 1.0F, 1.0F, target);
-					Server.getInstance().getScheduler().scheduleRepeatingTask(new Task() {
+					case 0: {
+						int checkCode = Utils.rand(0, 10000);
+						CHEAT_CHECK.put(target.getName(), checkCode);
+						Utils.sendMessageToChat("💂CheatCheacker\n\nИгрок: " + target.getName() + "\nАдмин: " + player.getName() + "\nКод: " + checkCode);
+						player.sendMessage(PREFIX + "Игрок §6" + target.getName() + " §fвызван на проверку§7!");
+						target.sendTitle("§l§6Проверка");
+						target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(3, 2, 0), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
+						Entity.createEntity("CowNPC", target.getPosition().add(3, 0, 0)).spawnToAll();
+						target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(-3, 2, 0), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
+						Entity.createEntity("CowNPC", target.getPosition().add(-3, 0, 0)).spawnToAll();
+						target.getLevel().addParticle(new FloatingTextParticle(player.getPosition().add(0, 2, 3), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
+						Entity.createEntity("CowNPC", target.getPosition().add(0, 0, 3)).spawnToAll();
+						target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(0, 2, -3), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
+						Entity.createEntity("CowNPC", target.getPosition().add(0, 0, -3)).spawnToAll();
+						target.getLevel().addSound(target, Sound.RANDOM_SCREENSHOT, 1.0F, 1.0F, target);
+						Server.getInstance().getScheduler().scheduleRepeatingTask(new Task() {
 
-						@Override()
-						public void onRun(int tick) {
-							if (seconds != 0) {
-								seconds--;
-								if (isCheatCheck(target.getName())) {
-									target.sendTip("Время§7: §6" + Utils.getSecond(seconds));
-									target.setImmobile(true);
+							@Override()
+							public void onRun(int tick) {
+								if (seconds != 0) {
+									seconds--;
+									if (isCheatCheck(target.getName())) {
+										target.sendTip("Время§7: §6" + Utils.getSecond(seconds));
+										target.setImmobile(true);
+									}
+								} else {
+									this.cancel();
+									if (isCheatCheck(target.getName())) {
+										addBan(target.getName(), "время проверки вышло", "CheatCheacker", 30 * 86400);
+									}
+									seconds = 420;
 								}
-							} else {
-								this.cancel();
-								if (isCheatCheck(target.getName())) {
-									addBan(target.getName(), "время проверки вышло", "CheatCheacker", 30 * 86400);
-								}
-								seconds = 420;
 							}
-						}
-					}, 20);
-				}
-				break;
+						}, 20);
+					}
+					break;
 
-				case 1: {
-					player.sendMessage(PREFIX + "Проверка §6отменена§7!");
-				}
-				break;
+					case 1: {
+						player.sendMessage(PREFIX + "Проверка §6отменена§7!");
+					}
+					break;
 
 				}
 			});
 		} else {
-			player.sendMessage(PREFIX + "Игрок §6" + target.getName() +
-							   " §fуже находится на проверке§7, §fпроверочный код§7: §6"
-							   + CHEAT_CHECK.get(target.getName()));
+			player.sendMessage(PREFIX + "Игрок §6" + target.getName() + " §fуже находится на проверке§7, §fпроверочный код§7: §6" + CHEAT_CHECK.get(target.getName()));
 		}
 	}
 
@@ -212,12 +202,9 @@ public class AdminAPI {
 		} else {
 			doubleChest.setContents(target.getInventory().getContents());
 		}
-		doubleChest.setItem(45, Item.get(Item.ENDER_EYE).setNamedTag(new CompoundTag().putString("Target",
-							targetName)).setCustomName("§r§6Назад").setLore("\n§rНажмите§7, §fчтобы вернуться в главное\nменю просмотра Инвентаря§7."));
-		doubleChest.setItem(49, Item.get(Item.ENDER_CHEST).setNamedTag(new CompoundTag().putString("Target",
-							targetName)).setCustomName("§r§6Открыть Сундук Края").setLore("\n§rНажмите§7, §fчтобы открыть\n§6Эндер Сундук§7!"));
-		doubleChest.setItem(53, Item.get(
-								Item.BOOK).setCustomName("§r§6Справка").setLore("\n§rПока что здесь ничего нет§7,\n§fно я уже занимаюсь этим§7!"));
+		doubleChest.setItem(45, Item.get(Item.ENDER_EYE).setNamedTag(new CompoundTag().putString("Target", targetName)).setCustomName("§r§6Назад").setLore("\n§rНажмите§7, §fчтобы вернуться в главное\nменю просмотра Инвентаря§7."));
+		doubleChest.setItem(49, Item.get(Item.ENDER_CHEST).setNamedTag(new CompoundTag().putString("Target", targetName)).setCustomName("§r§6Открыть Сундук Края").setLore("\n§rНажмите§7, §fчтобы открыть\n§6Эндер Сундук§7!"));
+		doubleChest.setItem(53, Item.get(Item.BOOK).setCustomName("§r§6Справка").setLore("\n§rПока что здесь ничего нет§7,\n§fно я уже занимаюсь этим§7!"));
 		FakeInventoryAPI.openInventory(player, doubleChest);
 	}
 
@@ -238,12 +225,9 @@ public class AdminAPI {
 		} else {
 			doubleChest.setContents(target.getEnderChestInventory().getContents());
 		}
-		doubleChest.setItem(45, Item.get(Item.ENDER_EYE).setNamedTag(new CompoundTag().putString("Target",
-							targetName)).setCustomName("§r§6Назад").setLore("\n§rНажмите§7, §fчтобы вернуться в главное\nменю просмотра Инвентаря§7."));
-		doubleChest.setItem(49, Item.get(Item.ENDER_CHEST).setNamedTag(new CompoundTag().putString("Target",
-							targetName)).setCustomName("§r§6Открыть Сундук Края").setLore("\n§rНажмите§7, §fчтобы открыть\n§6Эндер Сундук§7!"));
-		doubleChest.setItem(53, Item.get(
-								Item.BOOK).setCustomName("§r§6Справка").setLore("\n§rПока что здесь ничего нет§7,\n§fно я уже занимаюсь этим§7!"));
+		doubleChest.setItem(45, Item.get(Item.ENDER_EYE).setNamedTag(new CompoundTag().putString("Target", targetName)).setCustomName("§r§6Назад").setLore("\n§rНажмите§7, §fчтобы вернуться в главное\nменю просмотра Инвентаря§7."));
+		doubleChest.setItem(49, Item.get(Item.ENDER_CHEST).setNamedTag(new CompoundTag().putString("Target", targetName)).setCustomName("§r§6Открыть Сундук Края").setLore("\n§rНажмите§7, §fчтобы открыть\n§6Эндер Сундук§7!"));
+		doubleChest.setItem(53, Item.get(Item.BOOK).setCustomName("§r§6Справка").setLore("\n§rПока что здесь ничего нет§7,\n§fно я уже занимаюсь этим§7!"));
 		FakeInventoryAPI.openInventory(player, doubleChest);
 	}
 
@@ -257,8 +241,7 @@ public class AdminAPI {
 
 	public static void addBan(String playerName, String bannerName, String reason, Integer time) {
 		long endBan = System.currentTimeMillis() / 1000L + time;
-		Utils.sendMessageToChat("🔒Блокировка аккаунта\n\nИгрок: " + playerName + "\nАдмин: " + bannerName + "\nПричина: " + reason + "\nПериод: " +
-								Utils.getRemainingTime(endBan).replaceAll("§[0-9]", "").replaceAll("§[a-zA-Z]", ""));
+		Utils.sendMessageToChat("🔒Блокировка аккаунта\n\nИгрок: " + playerName + "\nАдмин: " + bannerName + "\nПричина: " + reason + "\nПериод: " + Utils.getRemainingTime(endBan).replaceAll("§[0-9]", "").replaceAll("§[a-zA-Z]", ""));
 		MySQLUtils.query("INSERT INTO `Bans` (`Name`, `Reason`, `Time`) VALUES ('" + playerName + "', '" + reason + "', '" + endBan + "')");
 		Player target = Server.getInstance().getPlayerExact(playerName);
 		if (target != null) {
@@ -269,13 +252,11 @@ public class AdminAPI {
 
 	public static void addMute(String playerName, String bannerName, String reason, Integer time) {
 		long endMute = System.currentTimeMillis() / 1000L + time;
-		Utils.sendMessageToChat("🙊Блокировка чата\n\nИгрок: " + playerName + "\nАдмин: " + bannerName + "\nПричина: " + reason + "\nПериод: " + Utils.getRemainingTime(
-									endMute).replaceAll("§[0-9]", "").replaceAll("§[a-zA-Z]", ""));
+		Utils.sendMessageToChat("🙊Блокировка чата\n\nИгрок: " + playerName + "\nАдмин: " + bannerName + "\nПричина: " + reason + "\nПериод: " + Utils.getRemainingTime(endMute).replaceAll("§[0-9]", "").replaceAll("§[a-zA-Z]", ""));
 		MySQLUtils.query("INSERT INTO `Mutes` (`Name`, `Reason`, `Time`) VALUES ('" + playerName + "', '" + reason + "', '" + endMute + "')");
 		Player target = Server.getInstance().getPlayerExact(playerName);
 		if (target != null) {
-			target.sendMessage("§l§6• §rТебя замутили§7! §fАдминистратор закрыл тебе доступ к чату на §6" + Utils.getRemainingTime(
-								   endMute) + " §fпо причине §6" + reason + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
+			target.sendMessage("§l§6• §rТебя замутили§7! §fАдминистратор закрыл тебе доступ к чату на §6" + Utils.getRemainingTime(endMute) + " §fпо причине §6" + reason + "§7!\n§fНо не расстраивайся§7, §fвсё наладится§7!");
 		}
 	}
 
@@ -300,9 +281,6 @@ public class AdminAPI {
 	public static Map<String, String> getMuteData(String playerName) {
 		return MySQLUtils.getStringMap("SELECT * FROM `Mutes` WHERE UPPER (`Name`) = '" + playerName.toUpperCase() + "'");
 	}
-
-
-
 
 
 	public static boolean isSpectate(String playerName) {
@@ -346,8 +324,7 @@ public class AdminAPI {
 					inventoryTag.add(NBTIO.putItemHelper(item, -106));
 				}
 			}
-			MySQLUtils.query("INSERT INTO `Spectates` (`Name`, `Target`, `World`, `X`, `Y`, `Z`, `namedTag`) VALUES ('" + player.getName() + "', '" + target.getName() + "', '" +
-							  player.getLevel().getName() + "', '" + player.getFloorX() + "', '" + player.getFloorY() + "', '" + player.getFloorZ() + "', '" + Utils.convertNbtToHex(namedTag) + "')");
+			MySQLUtils.query("INSERT INTO `Spectates` (`Name`, `Target`, `World`, `X`, `Y`, `Z`, `namedTag`) VALUES ('" + player.getName() + "', '" + target.getName() + "', '" + player.getLevel().getName() + "', '" + player.getFloorX() + "', '" + player.getFloorY() + "', '" + player.getFloorZ() + "', '" + Utils.convertNbtToHex(namedTag) + "')");
 			namedTag.remove("Inventory");
 			player.setGamemode(3);
 			player.teleport(target);
@@ -355,16 +332,11 @@ public class AdminAPI {
 			player.addEffect(Effect.getEffect(Effect.NIGHT_VISION).setAmplifier(Integer.MAX_VALUE).setDuration(Integer.MAX_VALUE).setVisible(false));
 			player.getInventory().clearAll();
 			player.getInventory().setHeldItemIndex(0);
-			player.getInventory().setItem(4, Item.get(
-											  Item.CHEST).setCustomName("§r§6Просмотреть Инвентарь"));
+			player.getInventory().setItem(4, Item.get(Item.CHEST).setCustomName("§r§6Просмотреть Инвентарь"));
 			player.getInventory().setItem(5, Item.get(Item.MOB_SPAWNER).setCustomName("§r§6Вызвать на проверку"));
-			player.getInventory().setItem(8, Item.get(
-											  Item.REDSTONE).setCustomName("§r§6Завершить Наблюдение"));
-			player.getInventory().setItem(6, Item.get(
-											  Item.CLOCK).setCustomName("§r§6Панель Администрирования"));
-			player.sendMessage(PREFIX +
-							   "Вы начали §6наблюдать §fза игроком §6" +
-							   target.getName());
+			player.getInventory().setItem(8, Item.get(Item.REDSTONE).setCustomName("§r§6Завершить Наблюдение"));
+			player.getInventory().setItem(6, Item.get(Item.CLOCK).setCustomName("§r§6Панель Администрирования"));
+			player.sendMessage(PREFIX + "Вы начали §6наблюдать §fза игроком §6" + target.getName());
 		}
 	}
 
@@ -375,7 +347,7 @@ public class AdminAPI {
 	public static void removeSpectate(Player player) {
 		Map<String, String> spectateData = getSpectateData(player.getName());
 		CompoundTag namedTag = Utils.convertHexToNBT(spectateData.get("namedTag"));
-		if (namedTag.contains("Inventory") && namedTag.get("Inventory") instanceof ListTag) {
+		if (namedTag != null && namedTag.contains("Inventory") && namedTag.get("Inventory") instanceof ListTag) {
 			ListTag<CompoundTag> inventoryList = namedTag.getList("Inventory", CompoundTag.class);
 			for (CompoundTag item : inventoryList.getAll()) {
 				int slot = item.getByte("Slot");
@@ -389,14 +361,12 @@ public class AdminAPI {
 					player.getInventory().setItem(slot - 9, NBTIO.getItemHelper(item));
 				}
 			}
-			player.teleport(new Position(Integer.parseInt(spectateData.get("X")) + 0.5, Integer.parseInt(spectateData.get("Y")), Integer.parseInt(spectateData.get("Z")) + 0.5,
-										 Server.getInstance().getLevelByName(spectateData.get("World"))));
+			player.teleport(new Position(Integer.parseInt(spectateData.get("X")) + 0.5, Integer.parseInt(spectateData.get("Y")), Integer.parseInt(spectateData.get("Z")) + 0.5, Server.getInstance().getLevelByName(spectateData.get("World"))));
 			player.extinguish();
 			player.setGamemode(0);
 			player.removeEffect(Effect.NIGHT_VISION);
 			enableCoordinate(player, true);
-			player.sendMessage(PREFIX +
-							   "Вы §6закончили §fнаблюдение за игроком §6" + spectateData.get("Target"));
+			player.sendMessage(PREFIX + "Вы §6закончили §fнаблюдение за игроком §6" + spectateData.get("Target"));
 			namedTag.remove("Inventory");
 			MySQLUtils.query("DELETE FROM `Spectates` WHERE UPPER (`Name`) = '" + player.getName().toUpperCase() + "'");
 		}

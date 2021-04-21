@@ -1,11 +1,11 @@
 package ru.jl1mbo.AnarchyCore.Modules.CustomRecipes;
 
-import java.util.Collections;
-import java.util.HashMap;
-
 import cn.nukkit.Server;
 import cn.nukkit.inventory.ShapedRecipe;
 import cn.nukkit.item.Item;
+
+import java.util.Collections;
+import java.util.HashMap;
 
 public class CustomRecipesAPI {
 
@@ -15,7 +15,7 @@ public class CustomRecipesAPI {
 
 	private static void registerElytraCraft() {
 		Item elytra = Item.get(Item.ELYTRA);
-		String[] shape =  {"ABA", "ACA", "ADA"};
+		String[] shape = {"ABA", "ACA", "ADA"};
 		HashMap<Character, Item> ingredients = new HashMap<>();
 		ingredients.put('A', Item.get(Item.PHANTOM_MEMBRANE));
 		ingredients.put('B', Item.get(Item.LEAD));

@@ -1,11 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Entity.Bosses;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.mob.EntityWitherSkeleton;
@@ -27,7 +21,13 @@ import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 import ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils.CustomItemID;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class WitherSkeletonBoss extends WalkingMonster implements Boss {
+
 	private static final int NETWORK_ID = EntityWitherSkeleton.NETWORK_ID;
 	private static int superAttack = 0;
 
@@ -44,7 +44,7 @@ public class WitherSkeletonBoss extends WalkingMonster implements Boss {
 		this.setNameTagVisible(true);
 		this.setNameTagAlwaysVisible(true);
 		this.setScale((float) 1.2);
-		this.setDamage(new float[] {7, 7, 7, 7});
+		this.setDamage(new float[]{7, 7, 7, 7});
 		this.setMaxHealth(1000);
 	}
 
@@ -92,8 +92,7 @@ public class WitherSkeletonBoss extends WalkingMonster implements Boss {
 				for (Item i : ((Player) player).getInventory().getArmorContents()) {
 					points += armorValues.getOrDefault(i.getId(), 0.0F);
 				}
-				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float)(damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE,
-						   1.0F) * points * 0.04)));
+				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1.0F) * points * 0.04)));
 				if (player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage))) {
 					player.addEffect(Effect.getEffect(Effect.WITHER).setDuration(200));
 				}
@@ -137,18 +136,7 @@ public class WitherSkeletonBoss extends WalkingMonster implements Boss {
 
 	private void strikeLighting(Position pos) {
 		FullChunk chunk = pos.getLevel().getChunk((int) pos.getX() >> 4, (int) pos.getZ() >> 4);
-		CompoundTag nbt = new CompoundTag()
-		.putList(new ListTag<DoubleTag>("Pos")
-				 .add(new DoubleTag("", pos.getX()))
-				 .add(new DoubleTag("", pos.getY()))
-				 .add(new DoubleTag("", pos.getZ())))
-		.putList(new ListTag<DoubleTag>("Motion")
-				 .add(new DoubleTag("", 0))
-				 .add(new DoubleTag("", 0))
-				 .add(new DoubleTag("", 0)))
-		.putList(new ListTag<FloatTag>("Rotation")
-				 .add(new FloatTag("", 0))
-				 .add(new FloatTag("", 0)));
+		CompoundTag nbt = new CompoundTag().putList(new ListTag<DoubleTag>("Pos").add(new DoubleTag("", pos.getX())).add(new DoubleTag("", pos.getY())).add(new DoubleTag("", pos.getZ()))).putList(new ListTag<DoubleTag>("Motion").add(new DoubleTag("", 0)).add(new DoubleTag("", 0)).add(new DoubleTag("", 0))).putList(new ListTag<FloatTag>("Rotation").add(new FloatTag("", 0)).add(new FloatTag("", 0)));
 		EntityLightning lightning = new EntityLightning(chunk, nbt);
 		lightning.spawnToAll();
 	}

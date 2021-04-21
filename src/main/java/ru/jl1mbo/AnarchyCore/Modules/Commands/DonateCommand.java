@@ -12,21 +12,23 @@ public class DonateCommand extends Command {
 		this.commandParameters.clear();
 	}
 
-	@Override()
-	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (sender instanceof Player) {
-			sendDonateListForm((Player)sender);
-		}
-		return false;
-	}
-
 	private static void sendDonateListForm(Player player) {
 		SimpleForm simpleForm = new SimpleForm("Описание Донат Услуг");
 		simpleForm.addContent("Выберите один из пунктов§7, §fчтобы увидеть описание привилегии§7.");
 		simpleForm.addContent("\n\n§fДелая любое пожертвование §7- §fВы очень сильно помогаете серверу§7!");
 		simpleForm.addContent("\n§fНаш сайт§7: §6death§7-§6mc§7.§6ru");
 		simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == -1) return;
+			if (data == -1) {
+				return;
+			}
 		});
+	}
+
+	@Override()
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		if (sender instanceof Player) {
+			sendDonateListForm((Player) sender);
+		}
+		return false;
 	}
 }

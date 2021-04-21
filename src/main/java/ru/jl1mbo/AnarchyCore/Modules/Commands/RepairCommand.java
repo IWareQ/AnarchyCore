@@ -1,7 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.Commands;
 
-import java.util.Map;
-
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -10,12 +8,30 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Sound;
 import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownAPI;
 
+import java.util.Map;
+
 public class RepairCommand extends Command {
 
 	public RepairCommand() {
 		super("repair", "§rПочинка предметов");
-		this.setPermission("Command.Repair"); 
+		this.setPermission("Command.Repair");
 		this.commandParameters.clear();
+	}
+
+	private static double convert(Player player) {
+		return convertLevelToExperience(player.getExperienceLevel()) + player.getExperience();
+	}
+
+	private static double convertLevelToExperience(double level) {
+		double experience = 0;
+		if (level <= 16) {
+			experience = (level * level) + 6 * level;
+		} else if (level >= 17 && level <= 31) {
+			experience = 2.5 * (level * level) - 40.5 * level + 360;
+		} else if (level >= 32) {
+			experience = 4.5 * (level * level) - 162.5 * level + 2220;
+		}
+		return experience;
 	}
 
 	@Override()
@@ -35,7 +51,7 @@ public class RepairCommand extends Command {
 				if (convert(player) >= item.getDamage() / 5) {
 					double xpPlayer = convert(player);
 					player.setExperience(0, 0);
-					player.addExperience((int)xpPlayer - item.getDamage() / 5);
+					player.addExperience((int) xpPlayer - item.getDamage() / 5);
 					item.setDamage(0);
 					inventory.setItemInHand(item);
 					player.sendMessage("§l§6• §rПредмет в руке починен§7!");
@@ -58,7 +74,7 @@ public class RepairCommand extends Command {
 						if (items.isTool() || items.isArmor()) {
 							double xpPlayer = convert(player);
 							player.setExperience(0, 0);
-							player.addExperience((int)xpPlayer - exp);
+							player.addExperience((int) xpPlayer - exp);
 							items.setDamage(0);
 							player.getInventory().setContents(contents);
 							exp = 0;
@@ -73,21 +89,5 @@ public class RepairCommand extends Command {
 			}
 		}
 		return false;
-	}
-
-	private static double convert(Player player) {
-		return convertLevelToExperience(player.getExperienceLevel()) + player.getExperience();
-	}
-
-	private static double convertLevelToExperience(double level) {
-		double experience = 0;
-		if (level <= 16) {
-			experience = (level * level) + 6 * level;
-		} else if (level >= 17 && level <= 31) {
-			experience = 2.5 * (level * level) - 40.5 * level + 360;
-		} else if (level >= 32) {
-			experience = 4.5 * (level * level) - 162.5 * level + 2220;
-		}
-		return experience;
 	}
 }

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class HelperCaveSpider extends WalkingMonster implements EntityArthropod, Boss {
+
 	private static final int NETWORK_ID = EntityCaveSpider.NETWORK_ID;
 
 	public HelperCaveSpider(FullChunk chunk, CompoundTag nbt) {
@@ -48,7 +49,7 @@ public class HelperCaveSpider extends WalkingMonster implements EntityArthropod,
 	public void initEntity() {
 		super.initEntity();
 		this.setMaxHealth(5);
-		this.setDamage(new float[] {2, 2, 2, 2});
+		this.setDamage(new float[]{2, 2, 2, 2});
 	}
 
 	@Override()
@@ -63,8 +64,7 @@ public class HelperCaveSpider extends WalkingMonster implements EntityArthropod,
 				for (Item i : ((Player) player).getInventory().getArmorContents()) {
 					points += armorValues.getOrDefault(i.getId(), 0.0F);
 				}
-				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float)(damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE,
-						   1.0F) * points * 0.04)));
+				damage.put(EntityDamageEvent.DamageModifier.ARMOR, (float) (damage.getOrDefault(EntityDamageEvent.DamageModifier.ARMOR, 0.0F) - Math.floor(damage.getOrDefault(EntityDamageEvent.DamageModifier.BASE, 1.0F) * points * 0.04)));
 				player.attack(new EntityDamageByEntityEvent(this, player, EntityDamageEvent.DamageCause.ENTITY_ATTACK, damage));
 			}
 		}

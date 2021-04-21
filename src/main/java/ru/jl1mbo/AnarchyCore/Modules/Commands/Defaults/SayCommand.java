@@ -13,7 +13,7 @@ public class SayCommand extends Command {
 		super("say", "§rСообщить нужную информацию на весь сервер");
 		this.setPermission("Command.Say");
 		this.commandParameters.clear();
-		this.commandParameters.put("say", new CommandParameter[] {CommandParameter.newType("message", CommandParamType.MESSAGE)});
+		this.commandParameters.put("say", new CommandParameter[]{CommandParameter.newType("message", CommandParamType.MESSAGE)});
 	}
 
 	@Override()

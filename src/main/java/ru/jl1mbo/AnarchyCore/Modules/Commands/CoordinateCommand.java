@@ -26,15 +26,15 @@ public class CoordinateCommand extends Command {
 				player.sendMessage("§l§c• §rДанная команда §6заблокирована §fв этом мире§7!");
 				return true;
 			}
-			GameRulesChangedPacket gameRulesChanged = new GameRulesChangedPacket();
-			gameRulesChanged.gameRules = WorldSystemAPI.Test.getGameRules();
-			if (gameRulesChanged.gameRules.getBoolean(GameRule.SHOW_COORDINATES)) {
-				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
-				player.dataPacket(gameRulesChanged);
+			GameRulesChangedPacket gameRulesChangedPacket = new GameRulesChangedPacket();
+			gameRulesChangedPacket.gameRules = WorldSystemAPI.Test.getGameRules();
+			if (gameRulesChangedPacket.gameRules.getBoolean(GameRule.SHOW_COORDINATES)) {
+				gameRulesChangedPacket.gameRules.setGameRule(GameRule.SHOW_COORDINATES, false);
+				player.dataPacket(gameRulesChangedPacket);
 				player.sendMessage("§l§6• §rКоординаты успешно §6выключены§7!");
 			} else {
-				gameRulesChanged.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
-				player.dataPacket(gameRulesChanged);
+				gameRulesChangedPacket.gameRules.setGameRule(GameRule.SHOW_COORDINATES, true);
+				player.dataPacket(gameRulesChangedPacket);
 				player.sendMessage("§l§6• §rКоординаты успешно §6включены§7!");
 			}
 		}

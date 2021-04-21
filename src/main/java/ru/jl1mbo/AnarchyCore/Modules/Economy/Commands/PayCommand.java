@@ -16,7 +16,7 @@ public class PayCommand extends Command {
 	public PayCommand() {
 		super("pay", "§rПеревод монет");
 		this.commandParameters.clear();
-		this.commandParameters.put("pay", new CommandParameter[] {CommandParameter.newType("money", CommandParamType.INT), CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("pay", new CommandParameter[]{CommandParameter.newType("money", CommandParamType.INT), CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	@Override()
@@ -37,8 +37,7 @@ public class PayCommand extends Command {
 				return true;
 			}
 			if (EconomyAPI.myMoney(player.getName()) < Double.parseDouble(args[0])) {
-				player.sendMessage(EconomyAPI.PREFIX + "Вам §6не хватает §fмонет для перевода§7!\n§l§6• §rВаш баланс§7: §6" + String.format("%.1f",
-								   EconomyAPI.myMoney(player.getName())) + "");
+				player.sendMessage(EconomyAPI.PREFIX + "Вам §6не хватает §fмонет для перевода§7!\n§l§6• §rВаш баланс§7: §6" + String.format("%.1f", EconomyAPI.myMoney(player.getName())) + "");
 				return true;
 			}
 			player.sendMessage(EconomyAPI.PREFIX + "Вы успешно перевели §6" + String.format("%.1f", Double.parseDouble(args[0])) + " §fигроку §6" + targetName);

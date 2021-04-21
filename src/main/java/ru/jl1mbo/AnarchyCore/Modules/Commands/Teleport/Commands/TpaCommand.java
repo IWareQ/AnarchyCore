@@ -15,7 +15,7 @@ public class TpaCommand extends Command {
 	public TpaCommand() {
 		super("tpa", "§rОтправить запрос на телепортацию");
 		this.commandParameters.clear();
-		this.commandParameters.put("tpa", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("tpa", new CommandParameter[]{CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	@Override()
@@ -38,8 +38,7 @@ public class TpaCommand extends Command {
 			TeleportUtils tpUtils = new TeleportUtils(player, target);
 			TeleportAPI.getTpaRequests().removeIf(tpUtils::equals);
 			TeleportAPI.getTpaRequests().add(tpUtils);
-			player.sendMessage(TeleportAPI.PREFIX + "Запрос на телепортицию к игроку §6" + target.getName() +
-							   " §fуспешно отправлен§7!\n§l§6• §rЗапрос действует только §630 §fсекунд§7!");
+			player.sendMessage(TeleportAPI.PREFIX + "Запрос на телепортицию к игроку §6" + target.getName() + " §fуспешно отправлен§7!\n§l§6• §rЗапрос действует только §630 §fсекунд§7!");
 			target.sendMessage(TeleportAPI.PREFIX + "Игрок §6" + player.getName() + " §fхочет телепортироваться к Вам§7!");
 			target.sendMessage("§l§6• §r§7/§atpc §7- §fпринять запрос");
 			CooldownAPI.addCooldown(player, this.getName(), 20);

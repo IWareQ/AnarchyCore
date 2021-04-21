@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Entity.Bosses;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.Entity;
@@ -21,7 +18,11 @@ import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
 import ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils.CustomItemID;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EvokerBoss extends WalkingMonster implements Boss, EntitySmite {
+
 	private static final int NETWORK_ID = EntityEvoker.NETWORK_ID;
 
 	public EvokerBoss(FullChunk chunk, CompoundTag nbt) {
@@ -56,7 +57,7 @@ public class EvokerBoss extends WalkingMonster implements Boss, EntitySmite {
 		this.setNameTagVisible(true);
 		this.setNameTagAlwaysVisible(true);
 		this.setScale((float) 1.2);
-		this.setDamage(new float[] {10, 10, 10, 10});
+		this.setDamage(new float[]{10, 10, 10, 10});
 		this.setMaxHealth(1000);
 	}
 
@@ -67,8 +68,7 @@ public class EvokerBoss extends WalkingMonster implements Boss, EntitySmite {
 				this.attackDelay = 0;
 				double yaw = this.yaw + Utils.rand(-12.0, 12.0);
 				double pitch = this.pitch + Utils.rand(-7.0, 7.0);
-				Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(),
-											this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
+				Location pos = new Location(this.x - Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, this.y + this.getEyeHeight(), this.z + Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)) * 0.5, yaw, pitch, this.level);
 				if (this.getLevel().getBlockIdAt((int) pos.getX(), (int) pos.getY(), (int) pos.getZ()) != Block.AIR) {
 					return;
 				}
@@ -81,9 +81,8 @@ public class EvokerBoss extends WalkingMonster implements Boss, EntitySmite {
 	private void strikeBlackSkull(Vector3 object) {
 		Vector3 pos = this.asBlockVector3().add(0.5, this.getEyeHeight() + 2, 0.5);
 		double pitch = this.getMyPitch(pos, object);
-		Vector3 motion = new Vector3(-Math.sin(this.yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI), -Math.sin(pitch / 180 * Math.PI),
-									 Math.cos(this.yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI));
-		CompoundTag nbt = Entity.getDefaultNBT(pos, motion, (float)this.yaw, (float)pitch);
+		Vector3 motion = new Vector3(-Math.sin(this.yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI), -Math.sin(pitch / 180 * Math.PI), Math.cos(this.yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI));
+		CompoundTag nbt = Entity.getDefaultNBT(pos, motion, (float) this.yaw, (float) pitch);
 		EntityWitherSkull skull = new EntityWitherSkull(this.getChunk(), nbt, this);
 		if (skull instanceof EntityWitherSkull) {
 			skull.spawnToAll();
@@ -104,8 +103,7 @@ public class EvokerBoss extends WalkingMonster implements Boss, EntitySmite {
 	@Override()
 	public Item[] getDrops() {
 		List<Item> drops = new ArrayList<>();
-		drops.add(Item.get(
-					  CustomItemID.PIECE_ICE).setLore("\n§r§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7."));
+		drops.add(Item.get(CustomItemID.PIECE_ICE).setLore("\n§r§fЭтот предмет §7- §6Артефакт§7, §fиспользуй его\nдля обмена с §6Обменщиком Артефактов§7,\n§fкоторый находится на спавне§7."));
 		drops.add(Item.get(Item.EMERALD, 0, Utils.rand(1, 2)));
 		return drops.toArray(new Item[0]);
 	}

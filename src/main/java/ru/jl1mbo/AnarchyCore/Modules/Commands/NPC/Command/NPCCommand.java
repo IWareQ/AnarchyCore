@@ -30,30 +30,30 @@ public class NPCCommand extends Command {
 			simpleForm.addButton("Собиратель Артефактов");
 			simpleForm.send(player, (targetPlayer, targetForm, data) -> {
 				switch (data) {
-				case 0: {
-					Entity entity = Entity.createEntity("PiglinNPC", player.getPosition());
-					if (entity != null) {
-						entity.spawnToAll();
-						player.sendMessage("§l§7(§3NPC§7) §r§f NPC §7«§6Барыга§7» §fуспешно поставлен§7!");
+					case 0: {
+						Entity entity = Entity.createEntity("PiglinNPC", player.getPosition());
+						if (entity != null) {
+							entity.spawnToAll();
+							player.sendMessage("§l§7(§3NPC§7) §r§f NPC §7«§6Барыга§7» §fуспешно поставлен§7!");
+						}
+						break;
 					}
-					break;
-				}
-				case 1: {
-					Entity entity = Entity.createEntity("VillagerNPC", player.getPosition());
-					if (entity != null) {
-						entity.spawnToAll();
-						player.sendMessage("§l§7(§3NPC§7) §r§f NPC §7«§6Аукционер§7» §fуспешно поставлен§7!");
+					case 1: {
+						Entity entity = Entity.createEntity("VillagerNPC", player.getPosition());
+						if (entity != null) {
+							entity.spawnToAll();
+							player.sendMessage("§l§7(§3NPC§7) §r§f NPC §7«§6Аукционер§7» §fуспешно поставлен§7!");
+						}
+						break;
 					}
-					break;
-				}
-				case 2: {
-					Entity entity = Entity.createEntity("WanderingTraderNPC", player.getPosition());
-					if (entity != null) {
-						entity.spawnToAll();
-						player.sendMessage("§l§7(§3NPC§7) §r§f NPC §7«§6Собиратель Артефактов§7» §fуспешно поставлен§7!");
+					case 2: {
+						Entity entity = Entity.createEntity("WanderingTraderNPC", player.getPosition());
+						if (entity != null) {
+							entity.spawnToAll();
+							player.sendMessage("§l§7(§3NPC§7) §r§f NPC §7«§6Собиратель Артефактов§7» §fуспешно поставлен§7!");
+						}
+						break;
 					}
-					break;
-				}
 				}
 			});
 		}

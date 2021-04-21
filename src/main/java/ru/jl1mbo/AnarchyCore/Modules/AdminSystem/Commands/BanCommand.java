@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.AdminSystem.Commands;
 
-import java.util.Arrays;
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -13,17 +10,20 @@ import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.CustomForm;
 import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.AdminAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class BanCommand extends Command {
 
 	public BanCommand() {
 		super("ban", "§rБлокировка Аккаунта");
 		this.setPermission("Command.Ban");
 		this.commandParameters.clear();
-		this.commandParameters.put("ban", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("ban", new CommandParameter[]{CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	public static void openBanPlayerForm(Player player, String targetName) {
-		List<String> reasonList = Arrays.asList(new String[]{"3.1 (Читы)", "3.2 (Скин)", "3.3 (Багоюз)", "3.4 (Само-признание)"});
+		List<String> reasonList = Arrays.asList("3.1 (Читы)", "3.2 (Скин)", "3.3 (Багоюз)", "3.4 (Само-признание)");
 		CustomForm customForm = new CustomForm("Блокировка Аккаунта §6" + targetName);
 		customForm.addDropDown("§l§6• §rПричина блокировки Аккаунта§7:", reasonList);
 		customForm.addLabel("§l§6• §rВремя блокировки Аккаунта§7:");
@@ -31,7 +31,9 @@ public class BanCommand extends Command {
 		customForm.addSlider("§6Часы§7", 0, 24, 1, 0);
 		customForm.addSlider("§6Дни§7", 0, 30, 1, 0);
 		customForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == null) return;
+			if (data == null) {
+				return;
+			}
 			if (AdminAPI.isBanned(targetName)) {
 				player.sendMessage(AdminAPI.PREFIX + "Игрок §6" + targetName + " §fуже заблокирован§7!");
 				return;

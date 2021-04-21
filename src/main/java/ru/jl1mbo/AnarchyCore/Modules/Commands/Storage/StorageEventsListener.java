@@ -30,12 +30,12 @@ public class StorageEventsListener implements Listener {
 						StorageCommand.openStorageChest(player, true);
 					} else {
 						CompoundTag namedTag = sourceItem.getNamedTag();
-						if (namedTag != null && namedTag.contains("UUID")) {
+						if (namedTag != null && namedTag.contains("ID")) {
 							PlayerInventory playerInventory = player.getInventory();
 							if (playerInventory.canAddItem(sourceItem)) {
 								doubleChest.removeItem(sourceItem);
-								MySQLUtils.query("DELETE FROM `Items` WHERE (`ID`) = '" + namedTag.getInt("UUID") + "'");
-								namedTag.remove("Id");
+								MySQLUtils.query("DELETE FROM `Storage` WHERE (`ID`) = '" + namedTag.getInt("ID") + "'");
+								namedTag.remove("ID");
 								namedTag.remove("display");
 								playerInventory.addItem(sourceItem.setNamedTag(namedTag));
 								player.getLevel().addSound(player, Sound.RANDOM_ORB, 1, 1, player);

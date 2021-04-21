@@ -1,11 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.EventsListener;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -42,17 +36,30 @@ import ru.jl1mbo.AnarchyCore.Modules.Economy.EconomyAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
 
+import java.util.*;
+
 public class EventsListener implements Listener {
-	private static Integer[] BORDER = new Integer[] {-2000, 2000, -2000, 2000};
-	private static final Map<Player, Long> COOLDOWN = new HashMap<>();
-	private static final int CHAT_RADIUS = 70;
+
+	private final Map<Player, Long> COOLDOWN = new HashMap<>();
+	private final Integer[] BORDER = new Integer[]{-2000, 2000, -2000, 2000};
+
+	private static Item getRandomItems() {
+		Integer[] items = new Integer[]{Item.END_CRYSTAL, Item.GOLDEN_PICKAXE, Item.TOTEM, Item.DRAGON_EGG, Item.GHAST_TEAR, Item.DIAMOND, Item.SPONGE, Item.GOLD_INGOT, Item.IRON_INGOT, Item.TNT, Item.GOLDEN_APPLE};
+		int itemId = items[new Random().nextInt(11)];
+		Item item;
+		if (itemId == Item.GOLDEN_PICKAXE || itemId == Item.TOTEM || itemId == Item.DRAGON_EGG) {
+			item = Item.get(itemId, 0, 1);
+		} else {
+			item = Item.get(itemId, 0, Utils.rand(0, 10));
+		}
+		return item;
+	}
 
 	@EventHandler()
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String message = event.getMessage();
-		String displayName = (ClanAPI.playerIsInClan(player.getName()) ? "§3" + ClanAPI.getClanName(ClanAPI.getPlayerClanId(player.getName())) + " " : "") + PermissionAPI.getPlayerGroup(
-								 player.getName()).getGroupName() + " " + player.getName();
+		String displayName = (ClanAPI.playerIsInClan(player.getName()) ? "§3" + ClanAPI.getClanName(ClanAPI.getPlayerClanId(player.getName())) + " " : "") + PermissionAPI.getPlayerGroup(player.getName()).getGroupName() + " " + player.getName();
 		Long cooldownTime = COOLDOWN.get(player);
 		long nowTime = System.currentTimeMillis() / 1000;
 		if (cooldownTime != null && cooldownTime > nowTime) {
@@ -82,7 +89,8 @@ public class EventsListener implements Listener {
 		} else {
 			Set<CommandSender> playerChat = new HashSet<>();
 			for (Player players : Server.getInstance().getOnlinePlayers().values()) {
-				if (players.getLevel() == player.getLevel() && players.distance(new Position(player.getFloorX(), player.getFloorY(), player.getFloorZ(), players.getLevel())) <= CHAT_RADIUS) {
+				int chatRadius = 70;
+				if (players.getLevel() == player.getLevel() && players.distance(new Position(player.getFloorX(), player.getFloorY(), player.getFloorZ(), players.getLevel())) <= chatRadius) {
 					playerChat.add(players);
 				}
 			}
@@ -116,9 +124,9 @@ public class EventsListener implements Listener {
 	public void onEntityDeath(EntityDeathEvent event) {
 		Entity entity = event.getEntity();
 		if (entity.getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent cause = (EntityDamageByEntityEvent)entity.getLastDamageCause();
+			EntityDamageByEntityEvent cause = (EntityDamageByEntityEvent) entity.getLastDamageCause();
 			if (cause.getDamager() instanceof Player) {
-				Player player = (Player)cause.getDamager();
+				Player player = (Player) cause.getDamager();
 				double money = Utils.rand(1.0, 3.0);
 				if ((entity instanceof Animal) || (entity instanceof Monster)) {
 					player.sendTip("§7+ §6" + String.format("%.1f", money) + "");
@@ -134,7 +142,7 @@ public class EventsListener implements Listener {
 		if (player.getLevel().equals(WorldSystemAPI.Spawn)) {
 			Block block = player.getLevel().getBlock(player.getPosition());
 			if (block.getId() == BlockID.NETHER_PORTAL) {
-				WorldSystemAPI.randomPosition(WorldSystemAPI.Map, (position)-> {
+				WorldSystemAPI.randomPosition(WorldSystemAPI.Map, (position) -> {
 					player.teleport(position);
 					player.sendTitle("Телепортация§7...");
 				});
@@ -157,22 +165,21 @@ public class EventsListener implements Listener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		Entity entity = event.getEntity();
 		if (event.getDamager() instanceof Player) {
-			Player player = (Player)event.getDamager();
+			Player player = (Player) event.getDamager();
 			PlayerInventory playerInventory = player.getInventory();
-			if ((playerInventory.getItemInHand() != null) && (playerInventory.getItemInHand().getId() == CustomItemID.GOLDEN_MONEY) && entity.getLevel().equals(WorldSystemAPI.Spawn)
-					&& (entity instanceof EntityEndCrystal)) {
+			if ((playerInventory.getItemInHand() != null) && (playerInventory.getItemInHand().getId() == CustomItemID.GOLDEN_MONEY) && entity.getLevel().equals(WorldSystemAPI.Spawn) && (entity instanceof EntityEndCrystal)) {
 				if (Utils.rand(0, 100) < 15) {
 					if (playerInventory.canAddItem(getRandomItems())) {
-						Server.getInstance().getOnlinePlayers().values().forEach((players)-> {
+						for (Player players : player.getServer().getOnlinePlayers().values()) {
 							entity.getLevel().addParticleEffect(new Vector3f(entity.getFloorX(), entity.getFloorY(), entity.getFloorZ()).add(0.5F, 1.0F, 0.5F), "minecraft:altar_win", -1L, entity.getLevel().getDimension(), players);
-						});
+						}
 						playerInventory.removeItem(Item.get(CustomItemID.GOLDEN_MONEY));
 						playerInventory.addItem(getRandomItems());
 						player.sendMessage("§l§7(§3Алтарь§7) §rСпасибо за §6монетку§7, §fдержи §6награду§7!");
 					} else {
-						Server.getInstance().getOnlinePlayers().values().forEach((players)-> {
+						for (Player players : player.getServer().getOnlinePlayers().values()) {
 							entity.getLevel().addParticleEffect(new Vector3f(entity.getFloorX(), entity.getFloorY(), entity.getFloorZ()).add(0.5F, 1.0F, 0.5F), "minecraft:altar_win", -1L, entity.getLevel().getDimension(), players);
-						});
+						}
 						player.sendMessage("§l§7(§3Алтарь§7) §rВам повезло§7, §fно Ваш инвентарь был переполнен и из§7-§fза этого Ваша награда была удалена§7!");
 						playerInventory.removeItem(Item.get(CustomItemID.GOLDEN_MONEY));
 					}
@@ -190,143 +197,138 @@ public class EventsListener implements Listener {
 		Player player = event.getEntity();
 		EntityDamageEvent cause = player.getLastDamageCause();
 		switch (cause == null ? DamageCause.CUSTOM : cause.getCause()) {
-		case ENTITY_ATTACK:
-			if (cause instanceof EntityDamageByEntityEvent) {
-				Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
-				if (damager instanceof Player) {
-					player.sendMessage("§l§6• §rВы были убиты Игроком §6" + damager.getName());
-					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
-					this.addDeath(player);
-					this.addKill(damager.getName());
-					Double money = EconomyAPI.myMoney(player.getName()) * 20 / 100;
-					if (money > 1.0) {
-						player.sendMessage("§l§6• §rПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20§7%)");
-						((Player)damager).sendMessage("§l§6• §rВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §6" + player.getName());
-						EconomyAPI.reduceMoney(player.getName(), money);
-						EconomyAPI.addMoney(((Player)damager).getName(), money);
+			case ENTITY_ATTACK:
+				if (cause instanceof EntityDamageByEntityEvent) {
+					Entity damager = ((EntityDamageByEntityEvent) cause).getDamager();
+					if (damager instanceof Player) {
+						player.sendMessage("§l§6• §rВы были убиты Игроком §6" + damager.getName());
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб от руки Игрока §6" + damager.getName());
+						this.addDeath(player);
+						this.addKill(damager.getName());
+						double money = EconomyAPI.myMoney(player.getName()) * 20 / 100;
+						if (money > 1.0) {
+							player.sendMessage("§l§6• §rПри смерти Вы потеряли §6" + String.format("%.1f", money) + " §7(§f20§7%)");
+							((Player) damager).sendMessage("§l§6• §rВо время убийства§7, §fВы украли §6" + String.format("%.1f", money) + " §fу Игрока §6" + player.getName());
+							EconomyAPI.reduceMoney(player.getName(), money);
+							EconomyAPI.addMoney(damager.getName(), money);
+						}
+						break;
+					} else if (damager instanceof EntityLiving) {
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб от моба");
+						this.addDeath(player);
+						break;
+					} else {
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб");
+						this.addDeath(player);
 					}
-					break;
-				} else if (damager instanceof EntityLiving) {
-					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб от моба");
-					this.addDeath(player);
-					break;
-				} else {
-					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб");
-					this.addDeath(player);
 				}
-			}
-			break;
+				break;
 
-		case PROJECTILE:
-			if (cause instanceof EntityDamageByEntityEvent) {
-				Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
-				if (damager instanceof Player) {
-					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл застрелен игроком §6" + damager.getName());
-					this.addDeath(player);
-					this.addKill(damager.getName());
-				} else if (damager instanceof EntityLiving) {
-					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл застрелен");
+			case PROJECTILE:
+				if (cause instanceof EntityDamageByEntityEvent) {
+					Entity damager = ((EntityDamageByEntityEvent) cause).getDamager();
+					if (damager instanceof Player) {
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл застрелен игроком §6" + damager.getName());
+						this.addDeath(player);
+						this.addKill(damager.getName());
+					} else if (damager instanceof EntityLiving) {
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл застрелен");
+						this.addDeath(player);
+						break;
+					} else {
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб");
+						this.addDeath(player);
+					}
+				}
+				break;
+
+			case VOID:
+				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fупал в бездну");
+				this.addDeath(player);
+				break;
+
+			case FALL:
+				if (cause.getFinalDamage() > 2) {
+					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fразбился");
 					this.addDeath(player);
 					break;
-				} else {
-					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб");
-					this.addDeath(player);
 				}
-			}
-			break;
-
-		case VOID:
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fупал в бездну");
-			this.addDeath(player);
-			break;
-
-		case FALL:
-			if (cause.getFinalDamage() > 2) {
 				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fразбился");
 				this.addDeath(player);
 				break;
-			}
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fразбился");
-			this.addDeath(player);
-			break;
 
-		case SUFFOCATION:
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fзадохнулся");
-			this.addDeath(player);
-			break;
+			case SUFFOCATION:
+				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fзадохнулся");
+				this.addDeath(player);
+				break;
 
-		case LAVA:
-			Block block = player.getLevel().getBlock(new Vector3(player.getX(), player.getY() - 1, player.getZ()));
-			if (block.getId() == Block.MAGMA) {
+			case LAVA:
+				Block block = player.getLevel().getBlock(new Vector3(player.getX(), player.getY() - 1, player.getZ()));
+				if (block.getId() == Block.MAGMA) {
+					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fсгорел");
+					this.addDeath(player);
+					break;
+				}
 				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fсгорел");
 				this.addDeath(player);
 				break;
-			}
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fсгорел");
-			this.addDeath(player);
-			break;
 
-		case FIRE:
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fсгорел");
-			this.addDeath(player);
-			break;
+			case FIRE:
+			case FIRE_TICK:
+				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fсгорел");
+				this.addDeath(player);
+				break;
 
-		case FIRE_TICK:
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fсгорел");
-			this.addDeath(player);
-			break;
+			case DROWNING:
+				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fутонул");
+				this.addDeath(player);
+				break;
 
-		case DROWNING:
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fутонул");
-			this.addDeath(player);
-			break;
-
-		case CONTACT:
-			if (cause instanceof EntityDamageByBlockEvent) {
-				if (((EntityDamageByBlockEvent)cause).getDamager().getId() == Block.CACTUS) {
-					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fумер от кактуса");
-					this.addDeath(player);
+			case CONTACT:
+				if (cause instanceof EntityDamageByBlockEvent) {
+					if (((EntityDamageByBlockEvent) cause).getDamager().getId() == Block.CACTUS) {
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fумер от кактуса");
+						this.addDeath(player);
+					}
 				}
-			}
-			break;
+				break;
 
-		case BLOCK_EXPLOSION:
-
-		case ENTITY_EXPLOSION:
-			if (cause instanceof EntityDamageByEntityEvent) {
-				Entity damager = ((EntityDamageByEntityEvent)cause).getDamager();
-				if (damager instanceof Player) {
-					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл взорван игроком §6" + damager.getName());
-					this.addDeath(player);
-					this.addKill(damager.getName());
-				} else if (damager instanceof EntityLiving) {
-					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл взорван");
-					this.addDeath(player);
-					break;
+			case BLOCK_EXPLOSION:
+			case ENTITY_EXPLOSION:
+				if (cause instanceof EntityDamageByEntityEvent) {
+					Entity damager = ((EntityDamageByEntityEvent) cause).getDamager();
+					if (damager instanceof Player) {
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл взорван игроком §6" + damager.getName());
+						this.addDeath(player);
+						this.addKill(damager.getName());
+					} else if (damager instanceof EntityLiving) {
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл взорван");
+						this.addDeath(player);
+						break;
+					} else {
+						event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл взорван");
+						this.addDeath(player);
+					}
 				} else {
 					event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл взорван");
 					this.addDeath(player);
 				}
-			} else {
-				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fбыл взорван");
+				break;
+
+			case MAGIC:
+				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fумер от магии");
 				this.addDeath(player);
-			}
-			break;
+				break;
 
-		case MAGIC:
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fумер от магии");
-			this.addDeath(player);
-			break;
+			case HUNGER:
+				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fумер от голода");
+				this.addDeath(player);
+				break;
 
-		case HUNGER:
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fумер от голода");
-			this.addDeath(player);
-			break;
-
-		default:
-			event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб");
-			this.addDeath(player);
-			break;
+			default:
+				event.setDeathMessage("§l§6• §rИгрок §6" + player.getName() + " §fпогиб");
+				this.addDeath(player);
+				break;
 
 		}
 	}
@@ -353,17 +355,5 @@ public class EventsListener implements Listener {
 	private int getDeaths(Player player) {
 		Config config = new Config(Main.getInstance().getDataFolder() + "/deaths.yml", Config.YAML);
 		return config.get(player.getName(), 0);
-	}
-
-	private static Item getRandomItems() {
-		Integer[] items = new Integer[] {Item.END_CRYSTAL, Item.GOLDEN_PICKAXE, Item.TOTEM, Item.DRAGON_EGG, Item.GHAST_TEAR, Item.DIAMOND, Item.SPONGE, Item.GOLD_INGOT, Item.IRON_INGOT, Item.TNT, Item.GOLDEN_APPLE};
-		int itemId = items[new Random().nextInt(11)];
-		Item item;
-		if (itemId == Item.GOLDEN_PICKAXE || itemId == Item.TOTEM || itemId == Item.DRAGON_EGG) {
-			item = Item.get(itemId, 0, 1);
-		} else {
-			item = Item.get(itemId, 0, Utils.rand(0, 10));
-		}
-		return item;
 	}
 }

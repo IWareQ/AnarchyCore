@@ -15,13 +15,30 @@ public class UnMuteCommand extends Command {
 		super("unmute", "§r§fСнять блокировку чата");
 		this.setPermission("Command.UnMute");
 		this.commandParameters.clear();
-		this.commandParameters.put("unmute", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("unmute", new CommandParameter[]{CommandParameter.newType("player", CommandParamType.TARGET)});
+	}
+
+	public static void openUnMutePlayerForm(Player player, String targetName) {
+		CustomForm customForm = new CustomForm("Разблокировка чата");
+		customForm.addInput("§l§6• §rВведите причину разблокировки§7:", "Причина разблокировки");
+		customForm.send(player, (targetPlayer, targetForm, data) -> {
+			if (data == null) {
+				return;
+			}
+			String reason = data.get(0).toString();
+			if (reason == null || reason.equals("")) {
+				player.sendMessage(AdminAPI.PREFIX + "Укажите §6причину §fразблокировки§7!");
+				return;
+			}
+			player.sendMessage(AdminAPI.PREFIX + "Чат игрока §6" + targetName + " §fуспешно разблокирован§7!");
+			AdminAPI.removeMute(targetName, player.getName(), reason);
+		});
 	}
 
 	@Override()
 	public boolean execute(CommandSender sender, String label, String[] args) {
 		if (sender instanceof Player) {
-			Player player = (Player)sender;
+			Player player = (Player) sender;
 			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}
@@ -49,20 +66,5 @@ public class UnMuteCommand extends Command {
 			}
 		}
 		return false;
-	}
-
-	public static void openUnMutePlayerForm(Player player, String targetName) {
-		CustomForm customForm = new CustomForm("Разблокировка чата");
-		customForm.addInput("§l§6• §rВведите причину разблокировки§7:", "Причина разблокировки");
-		customForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == null) return;
-			String reason = data.get(0).toString();
-			if (reason == null || reason.equals("")) {
-				player.sendMessage(AdminAPI.PREFIX + "Укажите §6причину §fразблокировки§7!");
-				return;
-			}
-			player.sendMessage(AdminAPI.PREFIX + "Чат игрока §6" + targetName + " §fуспешно разблокирован§7!");
-			AdminAPI.removeMute(targetName, player.getName(), reason);
-		});
 	}
 }

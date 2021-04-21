@@ -7,6 +7,7 @@ import cn.nukkit.command.CommandSender;
 import ru.jl1mbo.AnarchyCore.Modules.Cooldown.CooldownAPI;
 
 public class NearCommand extends Command {
+
 	private static int RADIUS = 50;
 
 	public NearCommand() {

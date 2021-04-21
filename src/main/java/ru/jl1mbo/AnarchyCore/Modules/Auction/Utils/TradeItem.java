@@ -3,13 +3,14 @@ package ru.jl1mbo.AnarchyCore.Modules.Auction.Utils;
 import cn.nukkit.item.Item;
 
 public class TradeItem {
-	private String seller;
-	private Item item;
-	private double price;
-	private long time;
-	private int id;
 
-	public TradeItem(String seller, Item item,  double price, long time, int id) {
+	private final String seller;
+	private final Item item;
+	private final double price;
+	private final long time;
+	private final int id;
+
+	public TradeItem(String seller, Item item, double price, long time, int id) {
 		this.seller = seller;
 		this.item = item;
 		this.price = price;

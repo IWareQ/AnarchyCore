@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.Commands;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -11,6 +8,9 @@ import ru.jl1mbo.AnarchyCore.Manager.Forms.Elements.SimpleForm;
 import ru.jl1mbo.AnarchyCore.Modules.CombatLogger.CombatLoggerAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.TeleportAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.Utils.TeleportUtils;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class TpcCommand extends Command {
 
@@ -29,13 +29,14 @@ public class TpcCommand extends Command {
 				player.sendMessage(TeleportAPI.PREFIX + "Вы §6не имеете §fзапросов на телепортацию§7!");
 				return true;
 			}
-			SimpleForm simpleForm = new SimpleForm("Заявки на телепортацию",
-												   "Здесь показаны §6все §fзаявки§7.\n\n§rЗапрос действует только §630 §fсекунд§7!");
+			SimpleForm simpleForm = new SimpleForm("Заявки на телепортацию", "Здесь показаны §6все §fзаявки§7.\n\n§rЗапрос действует только §630 §fсекунд§7!");
 			for (TeleportUtils tpUtils : tpList) {
 				simpleForm.addButton("§6" + tpUtils.getPlayer().getName() + "\n§fНажмите§7, §fчтобы принять§7!", ImageType.PATH, "textures/ui/Friend2");
 			}
 			simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-				if (data == -1) return;
+				if (data == -1) {
+					return;
+				}
 				TeleportUtils tpUtils = tpList.get(data);
 
 				if (tpUtils.isOutdated()) {
@@ -51,11 +52,10 @@ public class TpcCommand extends Command {
 					tpUtils.getPlayer().sendMessage(TeleportAPI.PREFIX + "Игрок §6" + tpUtils.getTarget().getName() + " §fпринял Ваш запрос§7!");
 					player.sendMessage(TeleportAPI.PREFIX + "Запрос игрока §6" + tpUtils.getPlayer().getName() + " §fпринят§7!");
 					tpUtils.getPlayer().teleport(player);
-					TeleportAPI.getTpaRequests().remove(tpUtils);
 				} else {
 					player.sendMessage(TeleportAPI.PREFIX + "Игрок §6отправивший §fВам запрос §6на телепортацию§7, §fне в сети§7!");
-					TeleportAPI.getTpaRequests().remove(tpUtils);
 				}
+				TeleportAPI.getTpaRequests().remove(tpUtils);
 			});
 		}
 		return false;

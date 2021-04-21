@@ -15,7 +15,7 @@ public class AdminPanelCommand extends Command {
 		super("adm", "§rПанель Администрирования");
 		this.setPermission("Command.AdminPanel");
 		this.commandParameters.clear();
-		this.commandParameters.put("adminpanel", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("adminpanel", new CommandParameter[]{CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	@Override()
@@ -30,7 +30,9 @@ public class AdminPanelCommand extends Command {
 				customForm.addLabel("Для начала Вам надо §6ввести никнейм игрока §fс которым хотите §6работать§7.\n\n§fДостаточно ввести §6первые 3 §fбуквы никнейма§7.");
 				customForm.addInput("", "Steve");
 				customForm.send(player, (targetPlayer, targetForm, data) -> {
-					if (data == null) return;
+					if (data == null) {
+						return;
+					}
 					String targetName = data.get(0).toString();
 					if (targetName == null || targetName.equals("")) {
 						player.sendMessage(AdminAPI.PREFIX + "Введите §6никнейм игрока §fс которым хотите работать§7!");

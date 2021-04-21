@@ -9,7 +9,7 @@ import ru.jl1mbo.AnarchyCore.Modules.Commands.EnderChest.Inventory.EnderChest;
 public class EnderChestCommand extends Command {
 
 	public EnderChestCommand() {
-		super("enderchest", "§rОткрыть Сундук края", "", new String[] {"ec"});
+		super("enderchest", "§rОткрыть Сундук края", "", new String[]{"ec"});
 		this.setPermission("Command.EnderChest");
 		this.commandParameters.clear();
 	}
@@ -22,9 +22,7 @@ public class EnderChestCommand extends Command {
 				return false;
 			}
 			if (player.getFloorY() <= 256) {
-				EnderChest enderChest = new EnderChest();
-				enderChest.setContents(player.getEnderChestInventory().getContents());
-				FakeInventoryAPI.openInventory(player, enderChest);
+				FakeInventoryAPI.openInventory(player, new EnderChest());
 			}
 		}
 		return false;

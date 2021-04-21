@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.Permissions.Commands;
 
-import java.util.ArrayList;
-import java.util.Map.Entry;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
@@ -11,9 +8,12 @@ import cn.nukkit.command.data.CommandEnum;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import ru.jl1mbo.AnarchyCore.Modules.Auth.AuthAPI;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DefaultGroup;
+import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.Utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Map.Entry;
 
 public class GroupCommand extends Command {
 
@@ -25,7 +25,7 @@ public class GroupCommand extends Command {
 		for (Entry<String, DefaultGroup> entry : PermissionAPI.GROUPS.entrySet()) {
 			groupsName.add(entry.getKey());
 		}
-		this.commandParameters.put("group", new CommandParameter[] {CommandParameter.newEnum("groupId", new CommandEnum("groups", groupsName)), CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("group", new CommandParameter[]{CommandParameter.newEnum("groupId", new CommandEnum("groups", groupsName)), CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	@Override()
@@ -46,12 +46,10 @@ public class GroupCommand extends Command {
 			sender.sendMessage(PermissionAPI.PREFIX + "Игрок §6" + targetName + " §fне зарегистрирован§7!");
 			return true;
 		}
-		sender.sendMessage(PermissionAPI.PREFIX + "Игрок §6" + targetName + " §fполучил группу " + PermissionAPI.getGroup(args[0]).getGroupName() + " §7(" + Utils.getOnlineString(
-							   targetName) + "§7)");
+		sender.sendMessage(PermissionAPI.PREFIX + "Игрок §6" + targetName + " §fполучил группу " + PermissionAPI.getGroup(args[0]).getGroupName() + " §7(" + Utils.getOnlineString(targetName) + "§7)");
 		Player target = Server.getInstance().getPlayerExact(targetName);
 		if (target != null) {
-			target.sendMessage(PermissionAPI.PREFIX + "Вы получили привилегию " + PermissionAPI.getGroup(args[0]).getGroupName() +
-							   "§7!\n§l§6• §rПодробнее со списком возможностей можно познакомиться с помощью команды §7/§6donate");
+			target.sendMessage(PermissionAPI.PREFIX + "Вы получили привилегию " + PermissionAPI.getGroup(args[0]).getGroupName() + "§7!\n§l§6• §rПодробнее со списком возможностей можно познакомиться с помощью команды §7/§6donate");
 			PermissionAPI.setGroup(target.getName(), args[0]);
 			PermissionAPI.updatePermissions(target);
 			PermissionAPI.updateNamedTag(target);

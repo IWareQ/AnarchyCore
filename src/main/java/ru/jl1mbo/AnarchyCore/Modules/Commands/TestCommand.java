@@ -1,18 +1,11 @@
 package ru.jl1mbo.AnarchyCore.Modules.Commands;
 
-import java.util.Map.Entry;
-import java.util.concurrent.CompletableFuture;
-
-import cn.nukkit.Player;
 import cn.nukkit.block.BlockID;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.level.Level;
-import cn.nukkit.utils.Config;
-import ru.jl1mbo.AnarchyCore.Main;
 import ru.jl1mbo.AnarchyCore.Manager.WorldSystem.WorldSystemAPI;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
-import ru.jl1mbo.MySQLUtils.MySQLUtils;
+
+import java.util.concurrent.CompletableFuture;
 
 public class TestCommand extends Command {
 

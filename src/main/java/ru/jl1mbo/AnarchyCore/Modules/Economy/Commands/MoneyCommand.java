@@ -8,7 +8,7 @@ import ru.jl1mbo.AnarchyCore.Modules.Economy.EconomyAPI;
 public class MoneyCommand extends Command {
 
 	public MoneyCommand() {
-		super("money", "§rИгровой баланс", "", new String[] {"mymoney"});
+		super("money", "§rИгровой баланс", "", new String[]{"mymoney"});
 		this.commandParameters.clear();
 	}
 

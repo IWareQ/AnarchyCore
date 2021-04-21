@@ -1,7 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Manager.FakeInventory;
 
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.event.EventHandler;
@@ -12,10 +10,13 @@ import cn.nukkit.math.BlockVector3;
 import lombok.RequiredArgsConstructor;
 import ru.jl1mbo.AnarchyCore.Manager.FakeInventory.Utils.FakeChests;
 
+import java.util.List;
+
 @RequiredArgsConstructor()
 public class FakeInventoryEventsListener implements Listener {
+
 	private static final FakeChests fakeChests = new FakeChests();
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();

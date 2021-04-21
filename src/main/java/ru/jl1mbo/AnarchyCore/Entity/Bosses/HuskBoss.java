@@ -1,10 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Entity.Bosses;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -25,7 +20,12 @@ import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
 import ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils.CustomItemID;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class HuskBoss extends WalkingMonster implements EntityAgeable, EntitySmite, Boss {
+
 	private static final int NETWORK_ID = EntityHusk.NETWORK_ID;
 
 	public HuskBoss(FullChunk chunk, CompoundTag nbt) {
@@ -66,7 +66,7 @@ public class HuskBoss extends WalkingMonster implements EntityAgeable, EntitySmi
 		this.setNameTagVisible(true);
 		this.setNameTagAlwaysVisible(true);
 		this.setScale((float) 1.2);
-		this.setDamage(new float[] {10, 10, 10, 10});
+		this.setDamage(new float[]{10, 10, 10, 10});
 		this.setMaxHealth(1000);
 	}
 

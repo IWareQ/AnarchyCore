@@ -3,9 +3,10 @@ package ru.jl1mbo.AnarchyCore.Modules.Commands.Teleport.Utils;
 import cn.nukkit.Player;
 
 public class TeleportUtils {
-	private Player player;
-	private Player target;
-	private Long time;
+
+	private final Player player;
+	private final Player target;
+	private final Long time;
 
 	public TeleportUtils(Player player, Player target) {
 		this.player = player;
@@ -28,8 +29,8 @@ public class TeleportUtils {
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof TeleportUtils) {
-			TeleportUtils tpUtils = (TeleportUtils) object;
-			return tpUtils.getPlayer().equals(this.getPlayer()) && tpUtils.getTarget().equals(this.getTarget());
+			TeleportUtils teleportUtils = (TeleportUtils) object;
+			return teleportUtils.getPlayer().equals(this.getPlayer()) && teleportUtils.getTarget().equals(this.getTarget());
 		}
 		return false;
 	}

@@ -9,7 +9,7 @@ import ru.jl1mbo.AnarchyCore.Modules.Commands.CraftingTable.Inventory.CraftingTa
 public class CraftingTableCommand extends Command {
 
 	public CraftingTableCommand() {
-		super("craftingtable", "§rОткрыть верстак", "", new String[] {"craft"});
+		super("craftingtable", "§rОткрыть верстак", "", new String[]{"craft"});
 		this.setPermission("Command.CraftingTable");
 		this.commandParameters.clear();
 	}

@@ -21,8 +21,7 @@ public class PlayerGroup extends DefaultGroup {
 
 	@Override
 	public HashMap<String, Boolean> getPermissionAttachment() {
-		HashMap<String, Boolean> permissionAllows = new HashMap<>();
-		return permissionAllows;
+		return new HashMap<>();
 	}
 
 	@Override

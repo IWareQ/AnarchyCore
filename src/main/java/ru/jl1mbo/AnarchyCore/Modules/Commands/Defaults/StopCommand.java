@@ -1,8 +1,10 @@
 package ru.jl1mbo.AnarchyCore.Modules.Commands.Defaults;
 
+import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import ru.jl1mbo.AnarchyCore.Task.RestartTask;
+import ru.jl1mbo.AnarchyCore.Modules.CombatLogger.CombatLoggerAPI;
 
 public class StopCommand extends Command {
 
@@ -17,8 +19,11 @@ public class StopCommand extends Command {
 		if (!sender.hasPermission(this.getPermission())) {
 			return false;
 		}
-		sender.sendMessage("§l§7(§3Перезагрузка§7) §rНачинается принудительная §6Перезагрузка§7!");
-		RestartTask.seconds = 11;
+		for (Player player : sender.getServer().getOnlinePlayers().values()) {
+			CombatLoggerAPI.removeCombat(player);
+			player.close(player.getLeaveMessage(), "§l§6Перезагрузка");
+		}
+		Server.getInstance().shutdown();
 		return false;
 	}
 }

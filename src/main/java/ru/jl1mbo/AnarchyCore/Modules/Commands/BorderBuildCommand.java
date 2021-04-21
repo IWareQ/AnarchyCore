@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.Commands;
 
-import java.util.concurrent.CompletableFuture;
-
-import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.BlockID;
 import cn.nukkit.command.Command;
@@ -13,34 +10,17 @@ import cn.nukkit.level.Level;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.scheduler.Task;
 
+import java.util.concurrent.CompletableFuture;
+
 public class BorderBuildCommand extends Command {
-	private static Integer[] BORDER = new Integer[] {-2000, 2000};
+
+	private static final Integer[] BORDER = new Integer[]{-2000, 2000};
 
 	public BorderBuildCommand() {
 		super("borderbuild", "§rПостроить границу мира");
 		this.setPermission("Command.BorderBuild");
 		this.commandParameters.clear();
-		this.commandParameters.put("borderbuild", new CommandParameter[] {CommandParameter.newEnum("world", new CommandEnum("worlds", "map", "nether", "the_end"))});
-	}
-
-	@Override()
-	public boolean execute(CommandSender sender, String label, String[] args) {
-		if (!sender.hasPermission(this.getPermission())) {
-			return false;
-		}
-		if (args.length != 1) {
-			sender.sendMessage("§l§6• §rВведите §6название §fмира§7!");
-			return false;
-		}
-		String levelName = args[0];
-		Server.getInstance().getScheduler().scheduleRepeatingTask(new Task() {
-
-			@Override
-			public void onRun(int arg0) {
-				generateBorder(Server.getInstance().getLevelByName(levelName));
-			}
-		}, 20);
-		return false;
+		this.commandParameters.put("borderbuild", new CommandParameter[]{CommandParameter.newEnum("world", new CommandEnum("worlds", "map", "nether", "the_end"))});
 	}
 
 	private static void generateBorder(Level level) {
@@ -71,9 +51,6 @@ public class BorderBuildCommand extends Command {
 			}
 
 
-
-
-
 			for (int z = BORDER[0]; z <= BORDER[1]; z++) {
 				level.loadChunk(BORDER[0], z, false);
 			}
@@ -92,5 +69,25 @@ public class BorderBuildCommand extends Command {
 				}
 			}
 		});
+	}
+
+	@Override()
+	public boolean execute(CommandSender sender, String label, String[] args) {
+		if (!sender.hasPermission(this.getPermission())) {
+			return false;
+		}
+		if (args.length != 1) {
+			sender.sendMessage("§l§6• §rВведите §6название §fмира§7!");
+			return false;
+		}
+		String levelName = args[0];
+		Server.getInstance().getScheduler().scheduleRepeatingTask(new Task() {
+
+			@Override
+			public void onRun(int currentTick) {
+				generateBorder(Server.getInstance().getLevelByName(levelName));
+			}
+		}, 20);
+		return false;
 	}
 }

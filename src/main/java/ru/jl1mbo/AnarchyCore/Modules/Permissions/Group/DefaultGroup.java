@@ -11,6 +11,6 @@ public abstract class DefaultGroup {
 	public abstract Integer getMaxRegions();
 
 	public abstract HashMap<String, Boolean> getPermissionAttachment();
-	
+
 	public abstract boolean isAdmin();
 }

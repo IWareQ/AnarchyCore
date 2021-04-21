@@ -1,11 +1,12 @@
 package ru.jl1mbo.AnarchyCore.Modules.Clans;
 
-import java.util.List;
-
 import cn.nukkit.Player;
 import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
+import java.util.List;
+
 public class ClanAPI {
+
 	public static String PREFIX = "§l§7(§3Кланы§7) §r";
 
 	public static void createClan(Player player, String clanName) {
@@ -73,7 +74,7 @@ public class ClanAPI {
 		return MySQLUtils.getInteger("SELECT `ID` FROM `Clans` WHERE UPPER (`ClanName`) = '" + clanName.toUpperCase() + "'");
 	}
 
-	public static boolean isTeam(String playerName, String  targetName) {
+	public static boolean isTeam(String playerName, String targetName) {
 		if (playerIsInClan(playerName)) {
 			return getPlayerClanId(playerName) == getPlayerClanId(targetName);
 		}

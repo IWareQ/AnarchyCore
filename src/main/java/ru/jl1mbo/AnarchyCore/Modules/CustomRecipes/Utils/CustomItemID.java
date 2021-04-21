@@ -1,6 +1,7 @@
 package ru.jl1mbo.AnarchyCore.Modules.CustomRecipes.Utils;
 
 public interface CustomItemID {
+
 	int SUN_WAND = 1000;
 	int PIECE_ICE = 1001;
 	int REMAINS_GUARDIAN = 1002;

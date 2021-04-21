@@ -11,10 +11,10 @@ import ru.jl1mbo.AnarchyCore.Modules.AdminSystem.AdminAPI;
 public class SpectateCommand extends Command {
 
 	public SpectateCommand() {
-		super("spectate", "§rНаблюдение за Игроками", "", new String[] {"sp"});
+		super("spectate", "§rНаблюдение за Игроками", "", new String[]{"sp"});
 		this.setPermission("Command.Spectate");
 		this.commandParameters.clear();
-		this.commandParameters.put("spectate", new CommandParameter[] {CommandParameter.newType("player", CommandParamType.TARGET)});
+		this.commandParameters.put("spectate", new CommandParameter[]{CommandParameter.newType("player", CommandParamType.TARGET)});
 	}
 
 	@Override()

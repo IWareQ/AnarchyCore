@@ -1,8 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.BlockProtection;
 
-import java.util.HashMap;
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Location;
@@ -13,13 +10,17 @@ import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.Blocks.Protect.DiamondOrePr
 import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.Blocks.Protect.EmeraldBlockProtection;
 import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.Blocks.Protect.EmeraldOreProtection;
 import ru.jl1mbo.AnarchyCore.Modules.BlockProtection.Blocks.Protect.IronBlockProtection;
-import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 import ru.jl1mbo.AnarchyCore.Modules.Permissions.Group.DefaultGroup;
+import ru.jl1mbo.AnarchyCore.Modules.Permissions.PermissionAPI;
 import ru.jl1mbo.MySQLUtils.MySQLUtils;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class BlockProtectionAPI {
-	private static HashMap<Integer, DefaultBlockProtection> BLOCK_PROTECTION = new HashMap<>();
+
 	public static String PREFIX = "§l§7(§6Регионы§7) §r";
+	private static final HashMap<Integer, DefaultBlockProtection> BLOCK_PROTECTION = new HashMap<>();
 
 	public static void register() {
 		registerBlockProtection(new IronBlockProtection());
@@ -62,11 +63,8 @@ public class BlockProtectionAPI {
 			player.sendTitle("§l§cОшибка");
 			return;
 		}
-		player.sendMessage(PREFIX +
-						   "Вы успешно создали новый " + BLOCK_PROTECTION.get(block.getId()).getBlockName() + "§7!");
-		MySQLUtils.query("INSERT INTO `Regions` (`Name`, `Main_X`, `Main_Y`, `Main_Z`, `Pos1_X`, `Pos1_Y`, `Pos1_Z`, `Pos2_X`, `Pos2_Y`, `Pos2_Z`) VALUES ('" +
-						  player.getName() + "', '" + x
-						  + "', '" + y + "', '" + z + "', '" + pos1[0] + "', '" + pos1[1] + "', '" + pos1[2] + "', '" + pos2[0] + "', '" + pos2[1] + "', '" + pos2[2] + "')");
+		player.sendMessage(PREFIX + "Вы успешно создали новый " + BLOCK_PROTECTION.get(block.getId()).getBlockName() + "§7!");
+		MySQLUtils.query("INSERT INTO `Regions` (`Name`, `Main_X`, `Main_Y`, `Main_Z`, `Pos1_X`, `Pos1_Y`, `Pos1_Z`, `Pos2_X`, `Pos2_Y`, `Pos2_Z`) VALUES ('" + player.getName() + "', '" + x + "', '" + y + "', '" + z + "', '" + pos1[0] + "', '" + pos1[1] + "', '" + pos1[2] + "', '" + pos2[0] + "', '" + pos2[1] + "', '" + pos2[2] + "')");
 	}
 
 	public static boolean canInteractHere(Player player, Location location) {
@@ -90,18 +88,15 @@ public class BlockProtectionAPI {
 	}
 
 	public static Integer getRegionIDByPosition(Position position) {
-		return MySQLUtils.getInteger("SELECT `ID` FROM `Regions` WHERE (`Pos1_X` <= " + position.getFloorX() + " AND " + position.getFloorX() + " <= `Pos2_X`) AND (`Pos1_Y` <= " +
-									  position.getFloorY() + " AND " + position.getFloorY() + " <= `Pos2_Y`) AND (`Pos1_Z` <= " + position.getFloorZ() + " AND " + position.getFloorZ() + " <= `Pos2_Z`);");
+		return MySQLUtils.getInteger("SELECT `ID` FROM `Regions` WHERE (`Pos1_X` <= " + position.getFloorX() + " AND " + position.getFloorX() + " <= `Pos2_X`) AND (`Pos1_Y` <= " + position.getFloorY() + " AND " + position.getFloorY() + " <= `Pos2_Y`) AND (`Pos1_Z` <= " + position.getFloorZ() + " AND " + position.getFloorZ() + " <= `Pos2_Z`);");
 	}
 
 	public static Integer getRegionIDByLocation(Location location) {
-		return MySQLUtils.getInteger("SELECT `ID` FROM `Regions` WHERE (`Pos1_X` <= " + location.getFloorX() + " AND " + location.getFloorX() + " <= `Pos2_X`) AND (`Pos1_Y` <= " +
-									  location.getFloorY() + " AND " + location.getFloorY() + " <= `Pos2_Y`) AND (`Pos1_Z` <= " + location.getFloorZ() + " AND " + location.getFloorZ() + " <= `Pos2_Z`);");
+		return MySQLUtils.getInteger("SELECT `ID` FROM `Regions` WHERE (`Pos1_X` <= " + location.getFloorX() + " AND " + location.getFloorX() + " <= `Pos2_X`) AND (`Pos1_Y` <= " + location.getFloorY() + " AND " + location.getFloorY() + " <= `Pos2_Y`) AND (`Pos1_Z` <= " + location.getFloorZ() + " AND " + location.getFloorZ() + " <= `Pos2_Z`);");
 	}
 
 	public static boolean canCreateRegion(int minX, int maxX, int minY, int maxY, int minZ, int maxZ) {
-		return MySQLUtils.getInteger("SELECT `ID` FROM `Regions` WHERE `Pos2_X` >= " + minX + " AND `Pos1_X` <= " + maxX + " AND `Pos2_Y` >= " + minY + " AND `Pos1_Y` <= " + maxY +
-									  " AND `Pos2_Z` >= " + minZ + " AND `Pos1_Z` <= " + maxZ + "") == -1;
+		return MySQLUtils.getInteger("SELECT `ID` FROM `Regions` WHERE `Pos2_X` >= " + minX + " AND `Pos1_X` <= " + maxX + " AND `Pos2_Y` >= " + minY + " AND `Pos1_Y` <= " + maxY + " AND `Pos2_Z` >= " + minZ + " AND `Pos1_Z` <= " + maxZ + "") == -1;
 	}
 
 	public static Location getRegionBlockLocation(int regionId) {

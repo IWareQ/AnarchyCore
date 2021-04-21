@@ -1,7 +1,5 @@
 package ru.jl1mbo.AnarchyCore.Modules.BlockProtection;
 
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.event.EventHandler;
@@ -12,6 +10,8 @@ import cn.nukkit.event.block.ItemFrameDropItemEvent;
 import cn.nukkit.event.entity.EntityExplodeEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import ru.jl1mbo.MySQLUtils.MySQLUtils;
+
+import java.util.List;
 
 public class BlockProtectionEventsListener implements Listener {
 
@@ -57,9 +57,7 @@ public class BlockProtectionEventsListener implements Listener {
 		blocks.removeIf(block -> {
 			int regionId = BlockProtectionAPI.getRegionIDByLocation(block.getLocation());
 			if (regionId != -1) {
-				if (block.getLocation().equals(BlockProtectionAPI.getRegionBlockLocation(regionId))) {
-					return true;
-				}
+				return block.getLocation().equals(BlockProtectionAPI.getRegionBlockLocation(regionId));
 			}
 			return false;
 		});
