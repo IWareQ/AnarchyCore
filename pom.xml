@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ru.Jl1mbo.AnarchyCore</groupId>
+
+	<groupId>ru.iwareq.anarchycore</groupId>
 	<artifactId>AnarchyCore</artifactId>
-	<version>1.3</version>
+	<version>1.4</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<build>
-		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-		<defaultGoal>install</defaultGoal>
+		<defaultGoal>clean install</defaultGoal>
 		<resources>
 			<resource>
 				<targetPath>.</targetPath>
 				<filtering>true</filtering>
 				<directory>${basedir}/src/main/resources/</directory>
 				<includes>
-					<include>*</include>
+					<include>plugin.yml</include>
 				</includes>
 			</resource>
 		</resources>
-		<finalName>AnarchyCore-${pom.version}</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.10.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -30,7 +35,10 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.2</version>
+				<version>3.3.0</version>
+				<configuration>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+				</configuration>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -40,54 +48,52 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>1</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>opencollab-repo-snapshot</id>
+			<url>https://repo.opencollab.dev/maven-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<dependencies>
+		<dependency>
+			<groupId>org.powernukkit</groupId>
+			<artifactId>powernukkit</artifactId>
+			<version>1.6.0.1-PN</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
 			<version>2.3.2</version>
 		</dependency>
 		<dependency>
-			<groupId>ru.jl1mbo.MySQLUtils</groupId>
-			<artifactId>SQLiteUtils</artifactId>
-			<version>1.0</version>
+			<groupId>me.hteppl.data</groupId>
+			<artifactId>DataManager</artifactId>
+			<version>2.0.3</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/MySQLUtils-1.0.jar</systemPath>
+			<systemPath>${basedir}/libs/DataManager-2.0.3.jar</systemPath>
 		</dependency>
-		<dependency>
-			<groupId>cn.nukkit</groupId>
-			<artifactId>PowerNukkit</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/PowerNukkit.jar</systemPath>
-		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.20</version>
+			<version>1.18.24</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>nukkitcoders.mobplugin.MobPlugin</groupId>
 			<artifactId>MobPlugin</artifactId>
-			<version>1.18.3.1</version>
+			<version>1.22.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/MobPlugin-1.18.3.1.jar</systemPath>
+			<systemPath>${basedir}/libs/MobPlugin-1.22.0.jar</systemPath>
 		</dependency>
 	</dependencies>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 </project>
