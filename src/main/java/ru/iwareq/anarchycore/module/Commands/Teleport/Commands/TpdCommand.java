@@ -5,7 +5,6 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import ru.iwareq.anarchycore.manager.Forms.Elements.ImageType;
 import ru.iwareq.anarchycore.manager.Forms.Elements.SimpleForm;
-import ru.iwareq.anarchycore.module.CombatLogger.CombatLoggerAPI;
 import ru.iwareq.anarchycore.module.Commands.Teleport.TeleportAPI;
 import ru.iwareq.anarchycore.module.Commands.Teleport.Utils.TeleportUtils;
 
@@ -51,8 +50,7 @@ public class TpdCommand extends Command {
 
 					tpList.forEach(tp -> {
 						if (!tp.isOutdated() && tp.getPlayer() != null) {
-							tp.getPlayer().sendMessage(TeleportAPI.PREFIX + "Игрок §6" + tp.getTarget().getName() + " " +
-									"§fотклонил Ваш запрос§7!");
+							tp.getPlayer().sendMessage(TeleportAPI.PREFIX + "Игрок §6" + tp.getTarget().getName() + " " + "§fотклонил Ваш запрос§7!");
 						}
 					});
 
