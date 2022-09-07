@@ -123,6 +123,6 @@ public class WorldSystemAPI {
 			return findRandomPosition(position);
 		}
 
-		return position.setComponents(x + 0.5, y + 1, z + 0.5);
+		return position.setComponents(x + 0.5, y + 1.5, z + 0.5);
 	}
 }

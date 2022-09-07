@@ -38,6 +38,16 @@
 				<version>3.3.0</version>
 				<configuration>
 					<createDependencyReducedPom>false</createDependencyReducedPom>
+
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.MF</exclude>
+								<exclude>META-INF/*.md</exclude>
+							</excludes>
+						</filter>
+					</filters>
 				</configuration>
 				<executions>
 					<execution>
@@ -59,6 +69,11 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+
+		<repository>
+			<id>local-repository</id>
+			<url>file://${project.basedir}/libs</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -79,7 +94,7 @@
 			<artifactId>DataManager</artifactId>
 			<version>2.0.3</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/DataManager-2.0.3.jar</systemPath>
+			<systemPath>${pom.basedir}/libs/DataManager-2.0.3.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -93,7 +108,7 @@
 			<artifactId>MobPlugin</artifactId>
 			<version>1.22.0</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/MobPlugin-1.22.0.jar</systemPath>
+			<systemPath>${pom.basedir}/libs/MobPlugin-1.22.0.jar</systemPath>
 		</dependency>
 	</dependencies>
 </project>

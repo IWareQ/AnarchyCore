@@ -10,6 +10,7 @@ import ru.iwareq.anarchycore.manager.Scoreboard.ScoreboardAPI;
 import ru.iwareq.anarchycore.module.AdminSystem.AdminAPI;
 import ru.iwareq.anarchycore.module.Auth.AuthAPI;
 import ru.iwareq.anarchycore.module.Clans.ClanAPI;
+import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
 import ru.iwareq.anarchycore.module.EventsListener.EventsListener;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
 import ru.iwareq.anarchycore.util.Utils;
@@ -46,7 +47,7 @@ public class ScoreboardTask extends Task {
 			scoreboardDisplay.addLine("§rКлан§7: " + (ClanAPI.playerIsInClan(player.getName()) ?
 			                                          ClanAPI.getClanName(ClanAPI.getPlayerClanId(player.getName())) : "нету"), 2);
 			scoreboardDisplay.addLine("§rПинг§7: " + player.getPing(), 3);
-			scoreboardDisplay.addLine("§rБаланс§7: §6" + String.format("%.2f", AuthAPI.getMoney(player.getName())), 4);
+			scoreboardDisplay.addLine("§rБаланс§7: §6" + EconomyAPI.format(AuthAPI.getMoney(player.getName())), 4);
 			scoreboardDisplay.addLine("§rОнлайн§7: §6" + Server.getInstance().getOnlinePlayers().size(), 5);
 			scoreboardDisplay.addLine("§6", 6);
 			scoreboardDisplay.addLine("У: " + EventsListener.getKills(player.getName()) + " | С: " + EventsListener.getDeaths(player),

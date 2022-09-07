@@ -6,7 +6,6 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import ru.iwareq.anarchycore.Main;
 import ru.iwareq.anarchycore.module.Auth.AuthAPI;
 import ru.iwareq.anarchycore.module.Cooldown.CooldownAPI;
 import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
@@ -41,14 +40,14 @@ public class PayCommand extends Command {
 				return true;
 			}
 			if (AuthAPI.getMoney(player.getName()) < Integer.parseInt(args[0])) {
-				player.sendMessage(EconomyAPI.PREFIX + "Вам §6не хватает §fмонет для перевода§7!\n§l§6• §rВаш баланс§7: §6" + String.format("%.2f", AuthAPI.getMoney(player.getName())) + "");
+				player.sendMessage(EconomyAPI.PREFIX + "Вам §6не хватает §fмонет для перевода§7!\n§l§6• §rВаш баланс§7: §6" + EconomyAPI.format(AuthAPI.getMoney(player.getName())) + "");
 				return true;
 			}
 			player.sendMessage(EconomyAPI.PREFIX + "Вы успешно перевели §6" + String.format("%.2f",
 					Double.parseDouble(args[0])) + " §fигроку §6" + targetName);
 			Player target = Server.getInstance().getPlayer(targetName);
 			if (target != null) {
-				target.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + player.getName() + " §fперевел Вам §6" + String.format("%.2f", Double.parseDouble(args[0])) + "");
+				target.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + player.getName() + " §fперевел Вам §6" + EconomyAPI.format(Double.parseDouble(args[0])) + "");
 			}
 			EconomyAPI.reduceMoney(player.getName(), Double.parseDouble(args[0]));
 			EconomyAPI.addMoney(targetName, Double.parseDouble(args[0]));

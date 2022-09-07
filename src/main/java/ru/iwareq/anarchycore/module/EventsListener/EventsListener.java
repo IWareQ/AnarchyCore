@@ -168,7 +168,7 @@ public class EventsListener implements Listener {
 				Player player = (Player) cause.getDamager();
 				double money = Utils.rand(0.5D, 3D);
 				if ((entity instanceof Animal) || (entity instanceof Monster)) {
-					player.sendTip("§7+ §6" + String.format("%.2f", money) + "");
+					player.sendTip("§7+ §6" + EconomyAPI.format(money) + "");
 					EconomyAPI.addMoney(player.getName(), money);
 				}
 			}
@@ -187,6 +187,7 @@ public class EventsListener implements Listener {
 				});
 			}
 		}
+
 		if (player.getGamemode() < Player.CREATIVE) {
 			if ((player.getFloorX() < BORDER[0]) || (player.getFloorX() > BORDER[1]) || (player.getFloorZ() < BORDER[2]) || (player.getFloorZ() > BORDER[3])) {
 				player.sendTip("Вы пытаетесь §6выйти §fза границу мира");
@@ -194,15 +195,20 @@ public class EventsListener implements Listener {
 				event.setCancelled(true);
 			}
 		}
+
 		if ((player.getFloorY() <= -15) && (player.getLevel() != WorldSystemAPI.TheEnd)) {
 			player.teleport(WorldSystemAPI.Spawn.getSafeSpawn());
 			player.sendMessage("§l§6• §rВы упали за границу мира§7. §fЧтобы Вы не потеряли свои вещи§7, §fмы решили телепортировать Вас на спавн§7!");
 		}
 
-		Location from = event.getFrom();
-		Location to = event.getTo();
-		if (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()) {
-			if (CooldownAPI.canTask(player)) {
+		if (CooldownAPI.canTask(player)) {
+			Location from = event.getFrom();
+			Location to = event.getTo();
+
+			// player.sendMessage("From length: " + from.length());
+			// player.sendMessage("To length: " + to.length());
+			player.sendMessage("XYZ different: X: " + (from.getX() - to.getX()) + " Y: " + (from.getY() - to.getY()) + " Z: " + (from.getZ() - to.getZ()));
+			if (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()) {
 				CooldownAPI.removeTask(player);
 				player.sendMessage("Выполнение телепортации отменено");
 			}
@@ -224,8 +230,8 @@ public class EventsListener implements Listener {
 						this.addKill(damager.getName());
 						double money = AuthAPI.getMoney(player.getName()) * 20 / 100;
 						if (money > 1) {
-							player.sendMessage("§l§6• §rПри смерти Вы потеряли §6" + String.format("%.2f", money) + " §7(§f20§7%)");
-							((Player) damager).sendMessage("§l§6• §rВо время убийства§7, §fВы украли §6" + String.format("%.2f", money) + " §fу Игрока §6" + player.getName());
+							player.sendMessage("§l§6• §rПри смерти Вы потеряли §6" + EconomyAPI.format(money) + " §7(§f20§7%)");
+							((Player) damager).sendMessage("§l§6• §rВо время убийства§7, §fВы украли §6" + EconomyAPI.format(money) + " §fу Игрока §6" + player.getName());
 							EconomyAPI.reduceMoney(player.getName(), money);
 							EconomyAPI.addMoney(damager.getName(), money);
 						}

@@ -13,6 +13,7 @@ import ru.iwareq.anarchycore.Main;
 import ru.iwareq.anarchycore.manager.WorldSystem.WorldSystemAPI;
 import ru.iwareq.anarchycore.module.Commands.HideGlobalChatCommand;
 import ru.iwareq.anarchycore.module.Commands.Teleport.Commands.TpdeclineCommand;
+import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
 import ru.iwareq.anarchycore.task.ScoreboardTask;
 import ru.iwareq.anarchycore.util.Utils;
@@ -52,7 +53,7 @@ public class AuthEventsListener implements Listener {
 		for (Map.Entry<Double, String> entry : AuthAPI.getMoneys().entrySet()) {
 			Double money = entry.getKey();
 			String user = entry.getValue();
-			stringBuilder.append("§l").append(i + ". " + user).append(" §7- §6").append(String.format("%.2f", money)).append(" §f$\n");
+			stringBuilder.append("§l").append(i + ". " + user).append(" §7- §6").append(EconomyAPI.format(money)).append(" §f$\n");
 			i++;
 			floatingTexts.setText(stringBuilder + "§l§6Статистика обновляется каждый перезаход§7!");
 		}

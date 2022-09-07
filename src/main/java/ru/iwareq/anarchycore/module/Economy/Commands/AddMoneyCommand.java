@@ -36,10 +36,10 @@ public class AddMoneyCommand extends Command {
 			sender.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + targetName + " §fне зарегистрирован§7!");
 			return true;
 		}
-		sender.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + targetName + " §fполучил §6" + String.format("%.2f", Double.parseDouble(args[0])) + "");
+		sender.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + targetName + " §fполучил §6" + EconomyAPI.format(Double.parseDouble(args[0])) + "");
 		Player target = Server.getInstance().getPlayer(targetName);
 		if (target != null) {
-			target.sendMessage(EconomyAPI.PREFIX + "Ваш баланс пополнен на §6" + String.format("%.2f", Double.parseDouble(args[0])) + "");
+			target.sendMessage(EconomyAPI.PREFIX + "Ваш баланс пополнен на §6" + EconomyAPI.format(Double.parseDouble(args[0])) + "");
 		}
 		EconomyAPI.addMoney(targetName, Double.parseDouble(args[0]));
 		return false;

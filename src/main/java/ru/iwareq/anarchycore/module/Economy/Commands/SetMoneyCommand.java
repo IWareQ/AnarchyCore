@@ -34,7 +34,7 @@ public class SetMoneyCommand extends Command {
 			sender.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + targetName + " §fне зарегистрирован§7!");
 			return true;
 		}
-		sender.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + targetName + " §fтеперь имеет §6" + String.format("%.2f", Double.parseDouble(args[0])) + "");
+		sender.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + targetName + " §fтеперь имеет §6" + EconomyAPI.format(Double.parseDouble(args[0])) + "");
 		AuthAPI.setMoney(targetName, Double.parseDouble(args[0]));
 		return false;
 	}
