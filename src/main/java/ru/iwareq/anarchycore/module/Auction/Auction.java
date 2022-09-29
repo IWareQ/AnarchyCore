@@ -21,7 +21,8 @@ public class Auction {
 
 	public static final String PREFIX = "§l§7(§3Аукцион§7) §r";
 
-	public static final double MAX_PRICE = 10000D;
+	public static final double MAX_PRICE = 25_000D;
+	public static final double MIN_PRICE = 1D;
 	public static final int MAX_SELLS = 10;
 	public static final Map<Player, AuctionChest> PLAYER_AUCTION = new HashMap<>();
 	private static final int CHEST_SIZE = 36;

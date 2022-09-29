@@ -48,8 +48,9 @@ public class AuctionCommand extends Command {
 			}
 
 			double price = Double.parseDouble(args[0]);
-			if (price <= 0 || price > Auction.MAX_PRICE) {
+			if (price < Auction.MIN_PRICE || price > Auction.MAX_PRICE) {
 				player.sendMessage(Auction.PREFIX + "Максимальная цена за предмет §7- §6" + Auction.MAX_PRICE + "");
+				player.sendMessage(Auction.PREFIX + "Минимальная цена за предмет §7- §6" + Auction.MAX_PRICE + "");
 				return false;
 			}
 

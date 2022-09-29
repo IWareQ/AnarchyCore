@@ -60,6 +60,7 @@ import ru.iwareq.anarchycore.module.Commands.DisenchantCommand;
 import ru.iwareq.anarchycore.module.Commands.DonateCommand;
 import ru.iwareq.anarchycore.module.Commands.EnderChest.EnderChestCommand;
 import ru.iwareq.anarchycore.module.Commands.FoodCommand;
+import ru.iwareq.anarchycore.module.Commands.GarbageCommand;
 import ru.iwareq.anarchycore.module.Commands.HealCommand;
 import ru.iwareq.anarchycore.module.Commands.HelpCommand;
 import ru.iwareq.anarchycore.module.Commands.HideGlobalChatCommand;
@@ -193,6 +194,7 @@ public class Main extends PluginBase {
 				new SunnyCommand(),
 				new HelpCommand(),
 				new RulesCommand(),
+				new GarbageCommand(),
 				new HideGlobalChatCommand(),
 				new TpdeclineCommand(),
 				new DisenchantCommand(),
