@@ -6,6 +6,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import me.hteppl.data.database.SQLiteDatabase;
 import org.jdbi.v3.core.Handle;
 import ru.iwareq.anarchycore.module.Auction.Utils.TradeItem;
+import ru.iwareq.anarchycore.util.NbtConverter;
 import ru.iwareq.anarchycore.util.Utils;
 
 import java.util.HashMap;
@@ -50,7 +51,7 @@ public class AuctionDB extends SQLiteDatabase {
 					.bind("itemId", item.getItem().getId())
 					.bind("itemDamage", item.getItem().getDamage())
 					.bind("itemCount", item.getItem().getCount())
-					.bind("nbtHex", Utils.convertNbtToHex(item.getItem().getNamedTag()))
+					.bind("nbtHex", NbtConverter.toHex(item.getItem().getNamedTag()))
 					.bind("expiredTime", item.getTime())
 					.execute();
 		}
@@ -92,7 +93,7 @@ public class AuctionDB extends SQLiteDatabase {
 							CompoundTag namedTag = null;
 							String hex = rowView.getColumn("NbtHex", String.class);
 							if (hex != null) {
-								namedTag = Utils.convertHexToNBT(hex);
+								namedTag = NbtConverter.toNbt(hex);
 							}
 
 							if (namedTag == null) {
@@ -131,7 +132,7 @@ public class AuctionDB extends SQLiteDatabase {
 							CompoundTag namedTag = null;
 							String hex = rowView.getColumn("NbtHex", String.class);
 							if (hex != null) {
-								namedTag = Utils.convertHexToNBT(hex);
+								namedTag = NbtConverter.toNbt(hex);
 							}
 
 							if (namedTag == null) {
@@ -164,7 +165,7 @@ public class AuctionDB extends SQLiteDatabase {
 					.bind("itemId", item.getItem().getId())
 					.bind("itemDamage", item.getItem().getDamage())
 					.bind("itemCount", item.getItem().getCount())
-					.bind("nbtHex", Utils.convertNbtToHex(item.getItem().getNamedTag()))
+					.bind("nbtHex", NbtConverter.toHex(item.getItem().getNamedTag()))
 					.execute();
 		}
 	}

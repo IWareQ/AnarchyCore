@@ -24,6 +24,7 @@ import ru.iwareq.anarchycore.module.AdminSystem.Commands.UnBanCommand;
 import ru.iwareq.anarchycore.module.AdminSystem.Commands.UnMuteCommand;
 import ru.iwareq.anarchycore.module.AdminSystem.Inventory.AdminChest;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
+import ru.iwareq.anarchycore.util.NbtConverter;
 import ru.iwareq.anarchycore.util.Utils;
 
 import java.util.HashMap;
@@ -334,7 +335,7 @@ public class AdminAPI {
 			}
 
 			DB.spectate(player.getName(), target.getName(), player.getLevel().getName(), player.getFloorX(),
-					player.getFloorY(), player.getFloorZ(), Utils.convertNbtToHex(namedTag));
+					player.getFloorY(), player.getFloorZ(), NbtConverter.toHex(namedTag));
 			namedTag.remove("Inventory");
 			player.setGamemode(3);
 			player.teleport(target);
@@ -356,7 +357,7 @@ public class AdminAPI {
 
 	public static void removeSpectate(Player player) {
 		String playerName = player.getName();
-		CompoundTag namedTag = Utils.convertHexToNBT(DB.getSpectateNbtHex(playerName));
+		CompoundTag namedTag = NbtConverter.toNbt(DB.getSpectateNbtHex(playerName));
 		if (namedTag != null && namedTag.contains("Inventory") && namedTag.get("Inventory") instanceof ListTag) {
 			ListTag<CompoundTag> inventoryList = namedTag.getList("Inventory", CompoundTag.class);
 			for (CompoundTag item : inventoryList.getAll()) {

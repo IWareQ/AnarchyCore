@@ -2,13 +2,9 @@ package ru.iwareq.anarchycore.util;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.nbt.NBTIO;
-import cn.nukkit.nbt.tag.CompoundTag;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -54,11 +50,7 @@ public class Utils {
 
 	public static void sendMessageToChat(String message) {
 		try {
-			String url = "https://api.vk.com/method/messages.send?peer_id=2000000002"
-					+ "&random_id=" + new Random().nextInt(Integer.MAX_VALUE)
-					+ "&access_token=" + accessToken
-					+ "&message=" + URLEncoder.encode(message, "UTF-8")
-					+ "&v=5.124";
+			String url = "https://api.vk.com/method/messages.send?peer_id=2000000002" + "&random_id=" + new Random().nextInt(Integer.MAX_VALUE) + "&access_token=" + accessToken + "&message=" + URLEncoder.encode(message, "UTF-8") + "&v=5.124";
 			request(url);
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -91,32 +83,6 @@ public class Utils {
 		return preg_match(text, "\\b.*([a-zA-Zа-яА-Я]).*\\b*");
 	}
 
-	public static String convertNbtToHex(CompoundTag namedTag) {
-		if (namedTag == null) {
-			return "";
-		}
-
-		try {
-			return DatatypeConverter.printHexBinary(NBTIO.write(namedTag));
-		} catch (IOException exception) {
-			exception.printStackTrace();
-		}
-
-		return null;
-	}
-
-	public static CompoundTag convertHexToNBT(String hex) {
-		if (hex.isEmpty()) {
-			return new CompoundTag();
-		}
-		try {
-			return NBTIO.read(DatatypeConverter.parseHexBinary(hex));
-		} catch (IOException exception) {
-			exception.printStackTrace();
-		}
-		return null;
-	}
-
 	public static void sendMessageAdmins(String message, int type) {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 			if (PermissionAPI.getPlayerGroup(player.getName()).isAdmin()) {
@@ -143,8 +109,7 @@ public class Utils {
 		} else if (hours == 0 && days == 0) {
 			return minutes + " мин. ";
 		} else {
-			return days == 0 ? hours + " ч. " + minutes + " мин."
-			                 : days + " д. " + hours + " ч. " + minutes + " мин.";
+			return days == 0 ? hours + " ч. " + minutes + " мин." : days + " д. " + hours + " ч. " + minutes + " мин.";
 		}
 	}
 
@@ -162,19 +127,7 @@ public class Utils {
 	}
 
 	public static String getDeviceOS(Player player) {
-		return String.valueOf(player.getLoginChainData().getDeviceOS())
-				.replace("0", "Неизвестно")
-				.replace("1", "Android")
-				.replace("2", "iOS")
-				.replace("3", "MacOS")
-				.replace("4", "FireOS")
-				.replace("5", "GearVR")
-				.replace("6", "HoloLens")
-				.replace("7", "Win 10")
-				.replace("8", "Win")
-				.replace("9", "Dedicated")
-				.replace("10", "PS 4")
-				.replace("11", "Switch");
+		return String.valueOf(player.getLoginChainData().getDeviceOS()).replace("0", "Неизвестно").replace("1", "Android").replace("2", "iOS").replace("3", "MacOS").replace("4", "FireOS").replace("5", "GearVR").replace("6", "HoloLens").replace("7", "Win 10").replace("8", "Win").replace("9", "Dedicated").replace("10", "PS 4").replace("11", "Switch");
 	}
 
 	public static List<String> getPlayersList(String playerName) {

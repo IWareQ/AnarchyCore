@@ -30,29 +30,41 @@ public class PayCommand extends Command {
 				player.sendMessage("§l§6• §rИспользование §7- /§6pay §7(§6сумма§7) (§6игрок§7)");
 				return true;
 			}
+
 			String targetName = Utils.implode(args, 1);
 			if (!AuthAPI.isRegister(targetName)) {
 				player.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + targetName + " §fне зарегистрирован§7!");
 				return true;
 			}
-			if (!Utils.isDouble(args[0]) || Double.parseDouble(args[0]) <= 0) {
-				player.sendMessage(EconomyAPI.PREFIX + "Сумма может быть только §6положительным §fчислом§7!");
-				return true;
-			}
-			if (AuthAPI.getMoney(player.getName()) < Integer.parseInt(args[0])) {
-				player.sendMessage(EconomyAPI.PREFIX + "Вам §6не хватает §fмонет для перевода§7!\n§l§6• §rВаш баланс§7: §6" + EconomyAPI.format(AuthAPI.getMoney(player.getName())) + "");
-				return true;
-			}
-			player.sendMessage(EconomyAPI.PREFIX + "Вы успешно перевели §6" + String.format("%.2f",
-					Double.parseDouble(args[0])) + " §fигроку §6" + targetName);
-			Player target = Server.getInstance().getPlayer(targetName);
+
+			Player target = Server.getInstance().getPlayerExact(targetName);
 			if (target != null) {
-				target.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + player.getName() + " §fперевел Вам §6" + EconomyAPI.format(Double.parseDouble(args[0])) + "");
+				if (player.getName().equalsIgnoreCase(target.getName())) {
+					player.sendMessage(EconomyAPI.PREFIX + "Вы не можете §6перевести себе же§7!");
+					return true;
+				}
+
+				double count = Double.parseDouble(args[0]);
+				if (!Utils.isDouble(args[0]) || count <= 0D) {
+					player.sendMessage(EconomyAPI.PREFIX + "Сумма может быть только §6положительным §fчислом§7!");
+					return true;
+				}
+
+				if (AuthAPI.getMoney(player.getName()) < count) {
+					player.sendMessage(EconomyAPI.PREFIX + "Вам §6не хватает §fмонет для перевода§7!\n§l§6• §rВаш баланс§7: §6" + EconomyAPI.format(AuthAPI.getMoney(player.getName())) + "");
+					return true;
+				}
+
+				player.sendMessage(EconomyAPI.PREFIX + "Вы успешно перевели §6" + String.format("%.2f",
+						count) + " §fигроку §6" + targetName);
+				target.sendMessage(EconomyAPI.PREFIX + "Игрок §6" + player.getName() + " §fперевел Вам §6" + EconomyAPI.format(count) + "");
+
+				EconomyAPI.reduceMoney(player.getName(), count);
+				EconomyAPI.addMoney(targetName, count);
+				CooldownAPI.addCooldown(player, this.getName(), 10);
 			}
-			EconomyAPI.reduceMoney(player.getName(), Double.parseDouble(args[0]));
-			EconomyAPI.addMoney(targetName, Double.parseDouble(args[0]));
-			CooldownAPI.addCooldown(player, this.getName(), 10);
 		}
+
 		return false;
 	}
 }
