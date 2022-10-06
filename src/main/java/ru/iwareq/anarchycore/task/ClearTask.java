@@ -23,13 +23,8 @@ public class ClearTask extends Task {
 				Server.getInstance().broadcastMessage("§l§7(§3Очистка§7) §rОчистка произойдет через §61 §fминуту§7!");
 			}
 			if (this.seconds <= 10) {
-				String text = "Очистка через §6" + Utils.getSecond(this.seconds) + "§7!";
-				if (this.seconds == 0) {
-					text = "Успешная очистка";
-				}
-
 				for (Player players : Server.getInstance().getOnlinePlayers().values()) {
-					players.sendTip(text);
+					players.sendTip("Очистка через §6" + Utils.getSecond(this.seconds) + "§7!");
 				}
 			}
 		} else {
@@ -44,6 +39,11 @@ public class ClearTask extends Task {
 			});
 
 			System.gc();
+
+			for (Player players : Server.getInstance().getOnlinePlayers().values()) {
+				players.sendTip("Успешная очистка");
+			}
+
 			Server.getInstance().broadcastMessage("§l§7(§3Очистка§7) §rОчистка успешно завершена§7!");
 			this.seconds = 800;
 		}

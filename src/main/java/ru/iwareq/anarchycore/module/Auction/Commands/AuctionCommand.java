@@ -3,6 +3,7 @@ package ru.iwareq.anarchycore.module.Auction.Commands;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.data.CommandEnum;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.item.Item;
@@ -16,7 +17,8 @@ public class AuctionCommand extends Command {
 		super("auction", "§rОткрыть Аукцион", "", new String[]{"auc", "ah"});
 		this.commandParameters.clear();
 		this.commandParameters.put("auction", new CommandParameter[]{
-				CommandParameter.newType("money", false, CommandParamType.INT)
+				CommandParameter.newEnum("action", new CommandEnum("AuctionAction", "sell")),
+				CommandParameter.newType("money", true, CommandParamType.FLOAT)
 		});
 	}
 
@@ -33,9 +35,10 @@ public class AuctionCommand extends Command {
 				player.sendMessage(Auction.PREFIX + "Вы уже разместили или храните максимальное колличество лотов §7(§6" + Auction.MAX_SELLS + "§7)");
 				return false;
 			}
-			if (!Utils.isDouble(args[0])) {
-				if (args.length != 1) {
-					player.sendMessage("§l§6• §rИспользование §7- /§6auc §7(§6цена§7)");
+
+			if (!Utils.isDouble(args[1])) {
+				if (args.length != 2) {
+					player.sendMessage("§l§6• §rИспользование §7- /§6ah sell §7(§6цена§7)");
 				}
 
 				return false;
@@ -47,10 +50,10 @@ public class AuctionCommand extends Command {
 				return false;
 			}
 
-			double price = Double.parseDouble(args[0]);
+			double price = Double.parseDouble(args[1]);
 			if (price < Auction.MIN_PRICE || price > Auction.MAX_PRICE) {
 				player.sendMessage(Auction.PREFIX + "Максимальная цена за предмет §7- §6" + Auction.MAX_PRICE + "");
-				player.sendMessage(Auction.PREFIX + "Минимальная цена за предмет §7- §6" + Auction.MAX_PRICE + "");
+				player.sendMessage(Auction.PREFIX + "Минимальная цена за предмет §7- §6" + Auction.MIN_PRICE + "");
 				return false;
 			}
 
