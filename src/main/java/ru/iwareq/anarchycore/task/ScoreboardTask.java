@@ -35,7 +35,7 @@ public class ScoreboardTask extends Task {
 				scoreboardDisplay.addLine("§3", 3);
 				scoreboardDisplay.addLine("§6" + Utils.getRemainingTime(AdminAPI.getBanTime(player.getName())), 4);
 				scoreboardDisplay.addLine("§5", 5);
-				scoreboardDisplay.addLine("§6death§7-§6mc§7.§6online", 6);
+				scoreboardDisplay.addLine("§6test", 6);
 				ScoreboardAPI.setScoreboard(player, scoreboard);
 				SCOREBOARDS.put(player.getName().toLowerCase(), scoreboard);
 				return;
