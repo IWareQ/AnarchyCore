@@ -14,7 +14,7 @@ import ru.iwareq.anarchycore.util.Utils;
 public class AuctionCommand extends Command {
 
 	public AuctionCommand() {
-		super("auction", "§rОткрыть Аукцион", "", new String[]{"auc", "ah"});
+		super("auction", "§rаукцион §7(§rпродажа §7— /§rah sell §7<§rцена§7>)", "", new String[]{"auc", "ah"});
 		this.commandParameters.clear();
 		this.commandParameters.put("auction", new CommandParameter[]{
 				CommandParameter.newEnum("action", new CommandEnum("AuctionAction", "sell")),
