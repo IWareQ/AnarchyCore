@@ -3,11 +3,9 @@ package ru.iwareq.anarchycore.module.Auth;
 import me.hteppl.data.database.SQLiteDatabase;
 import org.jdbi.v3.core.Handle;
 
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class AuthDB extends SQLiteDatabase {
 
@@ -26,12 +24,13 @@ public class AuthDB extends SQLiteDatabase {
 
 		this.executeScheme("CREATE TABLE IF NOT EXISTS Users\n" +
 				"(\n" +
-				"    ID         INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-				"    Name       varchar(32) NOT NULL COLLATE NOCASE,\n" +
-				"    Xuid       varchar(32) NOT NULL,\n" +
-				"    Permission varchar(16) NOT NULL DEFAULT 'player',\n" +
-				"    Money      REAL        NOT NULL DEFAULT '0.0',\n" +
-				"    GameTime   int(64)     NOT NULL DEFAULT '0'\n" +
+				"    ID             INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+				"    Name           varchar(32) NOT NULL COLLATE NOCASE,\n" +
+				"    Xuid           varchar(32) NOT NULL,\n" +
+				"    Permission     varchar(16) NOT NULL DEFAULT 'player',\n" +
+				"    PermissionTime int(64)     NOT NULL DEFAULT '-1',\n" +
+				"    Money          REAL        NOT NULL DEFAULT '0.0',\n" +
+				"    GameTime       int(64)     NOT NULL DEFAULT '0'\n" +
 				");");
 	}
 
@@ -49,10 +48,11 @@ public class AuthDB extends SQLiteDatabase {
 		}
 	}
 
-	public void setGroup(String playerName, String groupId) {
+	public void setGroup(String playerName, String groupId, long expiredTime) {
 		try (Handle handle = this.connect()) {
-			handle.createUpdate("UPDATE Users SET Permission = :group WHERE Name = :name;")
+			handle.createUpdate("UPDATE Users SET Permission = :group, PermissionTime = :expiredTime WHERE Name = :name;")
 					.bind("group", groupId.toLowerCase())
+					.bind("expiredTime", expiredTime)
 					.bind("name", playerName.toLowerCase()).execute();
 		}
 	}
@@ -67,11 +67,10 @@ public class AuthDB extends SQLiteDatabase {
 	public LinkedHashMap<Double, String> getMoneys() {
 		try (Handle handle = this.connect()) {
 			LinkedHashMap<Double, String> result = new LinkedHashMap<>();
-			List<Integer> d =
-					handle.createQuery("SELECT Money, Name FROM Users ORDER BY Money DESC LIMIT 10;").map(rowView -> {
+			handle.createQuery("SELECT Money, Name FROM Users ORDER BY Money DESC LIMIT 10;").map(rowView -> {
 				result.put(rowView.getColumn("Money", Double.class), rowView.getColumn("Name", String.class));
 				return 1;
-			}).list();
+			}).one();
 			return result;
 		}
 	}
@@ -79,11 +78,10 @@ public class AuthDB extends SQLiteDatabase {
 	public LinkedHashMap<Long, String> getTimes() {
 		try (Handle handle = this.connect()) {
 			LinkedHashMap<Long, String> result = new LinkedHashMap<>();
-			List<Long> d =
-					handle.createQuery("SELECT GameTime, Name FROM Users ORDER BY GameTime DESC LIMIT 10;").map(rowView -> {
+			handle.createQuery("SELECT GameTime, Name FROM Users ORDER BY GameTime DESC LIMIT 10;").map(rowView -> {
 				result.put(rowView.getColumn("GameTime", Long.class), rowView.getColumn("Name", String.class));
 				return 1L;
-			}).list();
+			}).one();
 			return result;
 		}
 	}
@@ -130,6 +128,33 @@ public class AuthDB extends SQLiteDatabase {
 			handle.createUpdate("INSERT INTO Users (Name, Xuid) VALUES (:name, :xuid)")
 					.bind("name", name.toLowerCase())
 					.bind("xuid", xuid).execute();
+		}
+	}
+
+	public long getTimeGroup(String playerName) {
+		try (Handle handle = this.connect()) {
+			return handle.select("SELECT PermissionTime FROM Users WHERE Name = ?;", playerName.toLowerCase())
+					.mapTo(Long.class).one();
+		}
+	}
+
+	public Map<String, Long> getAllTimeGroup() {
+		try (Handle handle = this.connect()) {
+			Map<String, Long> result = new HashMap<>();
+			handle.createQuery("SELECT Name, PermissionTime FROM Users;").map(rowView -> {
+				result.put(rowView.getColumn("Name", String.class), rowView.getColumn("PermissionTime", Long.class));
+				return 1L;
+			}).one();
+
+			return result;
+		}
+	}
+
+	public void updateTimeGroup(String user, long time) {
+		try (Handle handle = this.connect()) {
+			handle.createUpdate("UPDATE Users SET PermissionTime = :time WHERE Name = :name;")
+					.bind("time", time)
+					.bind("name", user).execute();
 		}
 	}
 }

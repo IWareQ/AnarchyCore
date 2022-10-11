@@ -51,6 +51,10 @@ public class PermissionAPI {
 		return GROUPS.containsKey(groupId);
 	}
 
+	public static long getTimeGroup(String playerName) {
+		return AuthAPI.getTimeGroup(playerName);
+	}
+
 	public static DefaultGroup getGroup(String groupId) {
 		return GROUPS.get(groupId);
 	}
@@ -59,8 +63,8 @@ public class PermissionAPI {
 		return GROUPS.get(AuthAPI.getGroup(playerName));
 	}
 
-	public static void setGroup(String playerName, String groupId) {
-		AuthAPI.setGroup(playerName, groupId);
+	public static void setGroup(String playerName, String groupId, long expiredTime) {
+		AuthAPI.setGroup(playerName, groupId, expiredTime);
 	}
 
 	public static void updateNamedTag(Player player) {

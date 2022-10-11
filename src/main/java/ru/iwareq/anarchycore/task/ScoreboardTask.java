@@ -19,11 +19,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class ScoreboardTask extends PluginTask<AnarchyCore> {
 
 	public static final Map<String, Scoreboard> SCOREBOARDS = new HashMap<>();
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
 	@Getter
 	private static ScoreboardTask instance;
 
@@ -39,7 +40,13 @@ public class ScoreboardTask extends PluginTask<AnarchyCore> {
 
 		ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "  LITENEX");
 		scoreboardDisplay.addLine("§rНик: " + player.getName(), 0);
-		scoreboardDisplay.addLine("§rРанг: " + PermissionAPI.getPlayerGroup(player.getName()).getGroupName(), 1);
+
+		String time = "";
+		if (PermissionAPI.getTimeGroup(player.getName()) > 0) {
+			time = " (" + PermissionAPI.getTimeGroup(player.getName()) / 86400 + " дн)";
+		}
+
+		scoreboardDisplay.addLine("§rРанг: " + PermissionAPI.getPlayerGroup(player.getName()).getGroupName() + time, 1);
 		scoreboardDisplay.addLine("§rТитул: нету", 2);
 		scoreboardDisplay.addLine("§3", 3);
 		scoreboardDisplay.addLine("§rБаланс: " + EconomyAPI.format(AuthAPI.getMoney(player.getName())), 4);

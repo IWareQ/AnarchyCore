@@ -96,9 +96,11 @@ import ru.iwareq.anarchycore.module.Economy.Commands.SetMoneyCommand;
 import ru.iwareq.anarchycore.module.EventsListener.EventsListener;
 import ru.iwareq.anarchycore.module.Permissions.Commands.GroupCommand;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
+import ru.iwareq.anarchycore.module.Permissions.RemoveGroup;
 import ru.iwareq.anarchycore.task.BossSpawnTask;
 import ru.iwareq.anarchycore.task.BroadcastTask;
 import ru.iwareq.anarchycore.task.ClearTask;
+import ru.iwareq.anarchycore.task.GroupRemoveTask;
 import ru.iwareq.anarchycore.task.RestartTask;
 import ru.iwareq.anarchycore.task.ScoreboardTask;
 
@@ -122,6 +124,11 @@ public class AnarchyCore extends PluginBase {
 		this.registerAll();
 	}
 
+	@Override
+	public void onDisable() {
+		RemoveGroup.save();
+	}
+
 	@SuppressWarnings("InstantiationOfUtilityClass")
 	private void registerAll() {
 		new AuthAPI();
@@ -133,6 +140,7 @@ public class AnarchyCore extends PluginBase {
 		BlockProtectionAPI.register();
 		WorldSystemAPI.register();
 		BroadcastTask.register();
+		RemoveGroup.init();
 		this.registerTask();
 		this.registerEntity();
 		this.registerEvents();
@@ -152,6 +160,7 @@ public class AnarchyCore extends PluginBase {
 		scheduler.scheduleRepeatingTask(new BroadcastTask(), 60 * 20);
 		scheduler.scheduleRepeatingTask(new RestartTask(), 20);
 		scheduler.scheduleRepeatingTask(new ScoreboardTask(this), 20);
+		scheduler.scheduleRepeatingTask(new GroupRemoveTask(), 20, true);
 	}
 
 	private void registerEntity() {

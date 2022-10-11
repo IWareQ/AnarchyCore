@@ -1,6 +1,9 @@
 package ru.iwareq.anarchycore.module.Auth;
 
+import cn.nukkit.Player;
+
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class AuthAPI {
@@ -15,8 +18,8 @@ public class AuthAPI {
 		return DB.getGroup(playerName);
 	}
 
-	public static void setGroup(String playerName, String groupId) {
-		DB.setGroup(playerName, groupId);
+	public static void setGroup(String playerName, String groupId, long expiredTime) {
+		DB.setGroup(playerName, groupId, expiredTime);
 	}
 
 	public static double getMoney(String playerName) {
@@ -49,5 +52,17 @@ public class AuthAPI {
 
 	public static void registerPlayer(String name, String xuid, String date, String ip) {
 		DB.registerPlayer(name, xuid, date, ip);
+	}
+
+	public static long getTimeGroup(String playerName) {
+		return DB.getTimeGroup(playerName);
+	}
+
+	public static Map<String, Long> getAllTimeGroup() {
+		return DB.getAllTimeGroup();
+	}
+
+	public static void updateTimeGroup(String user, long time) {
+		DB.updateTimeGroup(user, time);
 	}
 }
