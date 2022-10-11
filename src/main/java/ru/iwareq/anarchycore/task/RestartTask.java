@@ -8,7 +8,7 @@ import ru.iwareq.anarchycore.util.Utils;
 
 public class RestartTask extends Task {
 
-	private int seconds = 3600;
+	private int seconds = 3 * 60 * 60;
 
 	@Override()
 	public void onRun(int currentTick) {
@@ -19,6 +19,7 @@ public class RestartTask extends Task {
 			} else if (this.seconds == 10) {
 				Server.getInstance().broadcastMessage("§l§7(§3Перезагрузка§7) §rСервер перезагрузится через §610 §fсекунд!");
 			}
+
 			if (this.seconds <= 9) {
 				for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 					player.sendTitle("§lПерезагрузка", "§lСервер перезагрузится через §6" + Utils.getSecond(this.seconds), 0, 20, 0);
@@ -29,6 +30,7 @@ public class RestartTask extends Task {
 				CombatLoggerAPI.removeCombat(player);
 				player.close(player.getLeaveMessage(), "§l§6Перезагрузка");
 			}
+
 			Server.getInstance().shutdown();
 		}
 	}

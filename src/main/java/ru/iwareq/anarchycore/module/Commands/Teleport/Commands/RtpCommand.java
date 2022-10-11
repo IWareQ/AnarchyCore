@@ -24,10 +24,10 @@ public class RtpCommand extends Command {
 				player.sendMessage("Запускаем рандомное перемещение...\nПрибытие через 5 сек");
 				CooldownAPI.addTask(player, () -> {
 					CooldownAPI.addCooldown(player, this.getName(), 20);
-					WorldSystemAPI.randomPosition(WorldSystemAPI.Map, pos -> {
+					WorldSystemAPI.findRandomPositionAndTp(WorldSystemAPI.Map, pos -> {
+						player.teleport(pos);
 						player.sendTitle("Телепортация§7...");
 						player.getFoodData().setLevel(player.getFoodData().getLevel() - 3, 0F);
-						player.teleport(pos);
 					});
 				}, 5);
 			} else {

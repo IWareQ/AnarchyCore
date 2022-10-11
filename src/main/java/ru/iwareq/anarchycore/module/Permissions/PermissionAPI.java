@@ -2,9 +2,8 @@ package ru.iwareq.anarchycore.module.Permissions;
 
 import cn.nukkit.Player;
 import cn.nukkit.permission.PermissionAttachment;
-import ru.iwareq.anarchycore.Main;
+import ru.iwareq.anarchycore.AnarchyCore;
 import ru.iwareq.anarchycore.module.Auth.AuthAPI;
-import ru.iwareq.anarchycore.module.Auth.AuthDB;
 import ru.iwareq.anarchycore.module.Permissions.Group.DefaultGroup;
 import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.BogGroup;
 import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.GuardianGroup;
@@ -69,7 +68,7 @@ public class PermissionAPI {
 	}
 
 	public static void updatePermissions(Player player) {
-		PermissionAttachment attachment = player.addAttachment(Main.getInstance(), player.getName());
+		PermissionAttachment attachment = player.addAttachment(AnarchyCore.getInstance(), player.getName());
 		attachment.clearPermissions();
 		DefaultGroup defaultGroup = getPlayerGroup(player.getName());
 		defaultGroup.getPermissionAttachment().forEach(attachment::setPermission);

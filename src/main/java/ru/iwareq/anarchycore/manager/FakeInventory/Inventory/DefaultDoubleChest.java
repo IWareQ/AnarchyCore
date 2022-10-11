@@ -8,7 +8,7 @@ import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.BlockEntityDataPacket;
 import cn.nukkit.scheduler.NukkitRunnable;
-import ru.iwareq.anarchycore.Main;
+import ru.iwareq.anarchycore.AnarchyCore;
 
 import java.io.IOException;
 import java.nio.ByteOrder;
@@ -41,7 +41,7 @@ public class DefaultDoubleChest extends DefaultChest {
 			public void run() {
 				onFakeOpen(player, blocks);
 			}
-		}.runTaskLater(Main.getInstance(), 10);
+		}.runTaskLater(AnarchyCore.getInstance(), 10);
 	}
 
 	@Override()

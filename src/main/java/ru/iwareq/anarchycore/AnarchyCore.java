@@ -107,14 +107,17 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Getter
-public class Main extends PluginBase {
+public class AnarchyCore extends PluginBase {
 
 	@Getter
-	private static Main instance;
+	private static AnarchyCore instance;
+
+	@Getter
+	private ClearTask clearTask;
 
 	@Override()
 	public void onEnable() {
-		Main.instance = this;
+		AnarchyCore.instance = this;
 
 		this.registerAll();
 	}
@@ -143,12 +146,12 @@ public class Main extends PluginBase {
 		scheduler.scheduleRepeatingTask(new BossSpawnTask(), 60 * 20);
 		scheduler.scheduleRepeatingTask(new SpectateTask(), 20);
 		scheduler.scheduleRepeatingTask(new AuctionUpdateTask(), 20);
-		scheduler.scheduleRepeatingTask(new ClearTask(), 20);
+		scheduler.scheduleRepeatingTask(this.clearTask = new ClearTask(), 20);
 		scheduler.scheduleRepeatingTask(new TpaRequestTask(), 20);
 		scheduler.scheduleRepeatingTask(new CooldownRemoveTask(), 20);
 		scheduler.scheduleRepeatingTask(new BroadcastTask(), 60 * 20);
 		scheduler.scheduleRepeatingTask(new RestartTask(), 20);
-		scheduler.scheduleRepeatingTask(new ScoreboardTask(), 20 * 3);
+		scheduler.scheduleRepeatingTask(new ScoreboardTask(this), 20);
 	}
 
 	private void registerEntity() {

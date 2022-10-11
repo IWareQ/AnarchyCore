@@ -26,7 +26,7 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.Config;
 import nukkitcoders.mobplugin.entities.animal.Animal;
 import nukkitcoders.mobplugin.entities.monster.Monster;
-import ru.iwareq.anarchycore.Main;
+import ru.iwareq.anarchycore.AnarchyCore;
 import ru.iwareq.anarchycore.manager.WorldSystem.WorldSystemAPI;
 import ru.iwareq.anarchycore.module.Auth.AuthAPI;
 import ru.iwareq.anarchycore.module.Clans.ClanAPI;
@@ -64,12 +64,12 @@ public class EventsListener implements Listener {
 	}
 
 	public static int getKills(String playerName) {
-		Config config = new Config(Main.getInstance().getDataFolder() + "/kills.yml", Config.YAML);
+		Config config = new Config(AnarchyCore.getInstance().getDataFolder() + "/kills.yml", Config.YAML);
 		return config.get(playerName, 0);
 	}
 
 	public static int getDeaths(Player player) {
-		Config config = new Config(Main.getInstance().getDataFolder() + "/deaths.yml", Config.YAML);
+		Config config = new Config(AnarchyCore.getInstance().getDataFolder() + "/deaths.yml", Config.YAML);
 		return config.get(player.getName(), 0);
 	}
 
@@ -181,8 +181,8 @@ public class EventsListener implements Listener {
 		if (player.getLevel().equals(WorldSystemAPI.Spawn)) {
 			Block block = player.getLevel().getBlock(player.getPosition());
 			if (block.getId() == BlockID.NETHER_PORTAL) {
-				WorldSystemAPI.randomPosition(WorldSystemAPI.Map, (position) -> {
-					player.teleport(position);
+				WorldSystemAPI.findRandomPositionAndTp(WorldSystemAPI.Map, pos -> {
+					player.teleport(pos);
 					player.sendTitle("Телепортация§7...");
 				});
 			}
@@ -357,14 +357,14 @@ public class EventsListener implements Listener {
 	}
 
 	private void addKill(String playerName) {
-		Config config = new Config(Main.getInstance().getDataFolder() + "/kills.yml", Config.YAML);
+		Config config = new Config(AnarchyCore.getInstance().getDataFolder() + "/kills.yml", Config.YAML);
 		config.set(playerName, getKills(playerName) + 1);
 		config.save();
 		config.reload();
 	}
 
 	private void addDeath(Player player) {
-		Config config = new Config(Main.getInstance().getDataFolder() + "/deaths.yml", Config.YAML);
+		Config config = new Config(AnarchyCore.getInstance().getDataFolder() + "/deaths.yml", Config.YAML);
 		config.set(player.getName(), getDeaths(player) + 1);
 		config.save();
 		config.reload();

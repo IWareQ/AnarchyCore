@@ -11,6 +11,7 @@ import cn.nukkit.math.Vector3;
 import ru.iwareq.anarchycore.util.Utils;
 
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class WorldSystemAPI {
@@ -95,34 +96,30 @@ public class WorldSystemAPI {
 		}
 	}
 
-	public static void randomPosition(Level level, Consumer<Position> callback) {
-		callback.accept(findRandomPosition(new Position(0, 60, 0, level)));
-	}
-
-	private static Position findRandomPosition(Position position) {
+	public static void findRandomPositionAndTp(Level toWorld, Consumer<Position> callback) {
 		int x = Utils.rand(RTP_RADIUS[0], RTP_RADIUS[1]);
 		int z = Utils.rand(RTP_RADIUS[2], RTP_RADIUS[3]);
 
-		int chunkX = position.getChunkX();
-		int chunkZ = position.getChunkZ();
+		CompletableFuture.runAsync(() -> {
+			Position position = new Position(x, 0, z, toWorld);
 
-		Level level = position.getLevel();
+			toWorld.generateChunk(position.getChunkX(), position.getChunkZ(), true);
 
-		// generate and load chunk
-		level.getChunk(chunkX, chunkZ, true);
+			int y = toWorld.getHighestBlockAt(x, z);
 
-		int y = level.getHeightMap(x, z);
+			int blockId = toWorld.getBlockIdAt(x, y, z);
+			if (y == 0 || blockId == BlockID.AIR) {
+				findRandomPositionAndTp(toWorld, callback);
+				return;
+			}
 
-		int blockId = level.getBlockIdAt(x, y, z);
-		if (y == 0 || blockId == 0) {
-			return findRandomPosition(position);
-		}
+			if (blockId == BlockID.WATER || blockId == BlockID.STILL_WATER ||
+					blockId == BlockID.LAVA || blockId == BlockID.STILL_LAVA) {
+				findRandomPositionAndTp(toWorld, callback);
+				return;
+			}
 
-		if (blockId == BlockID.WATER || blockId == BlockID.STILL_WATER ||
-				blockId == BlockID.LAVA || blockId == BlockID.STILL_LAVA) {
-			return findRandomPosition(position);
-		}
-
-		return position.setComponents(x + 0.5, y + 1.5, z + 0.5);
+			callback.accept(position.setComponents(x + 0.5, y + 1.5, z + 0.5));
+		});
 	}
 }

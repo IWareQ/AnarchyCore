@@ -5,6 +5,7 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandEnum;
 import cn.nukkit.command.data.CommandParameter;
+import ru.iwareq.anarchycore.AnarchyCore;
 import ru.iwareq.anarchycore.task.ScoreboardTask;
 
 public class BarCommand extends Command {
@@ -28,14 +29,14 @@ public class BarCommand extends Command {
 
 			switch (args[0]) {
 				case "on": {
-					ScoreboardTask.showScoreboard(player, true);
-					player.sendMessage("§l§6• §rСкорбоард успешно §6включены§7!");
+					ScoreboardTask.getInstance().showScoreboard(player);
+					player.sendMessage("§l§6• §rСкорбоард успешно §6включен§7!");
 				}
 				break;
 
 				case "off": {
-					ScoreboardTask.showScoreboard(player, false);
-					player.sendMessage("§l§6• §rСкорбоард успешно §6выключены§7!");
+					ScoreboardTask.getInstance().hideScoreboard(player);
+					player.sendMessage("§l§6• §rСкорбоард успешно §6выключен§7!");
 				}
 				break;
 			}

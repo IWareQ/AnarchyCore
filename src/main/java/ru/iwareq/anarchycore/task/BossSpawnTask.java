@@ -25,13 +25,14 @@ public class BossSpawnTask extends Task {
 			minutes--;
 		} else {
 			if (Server.getInstance().getOnlinePlayers().size() >= 7) {
-				WorldSystemAPI.randomPosition(WorldSystemAPI.Map, pos -> {
+				WorldSystemAPI.findRandomPositionAndTp(WorldSystemAPI.Map, pos -> {
 					Entity entity = Entity.createEntity(getBossName(), pos);
 					if (entity != null) {
 						entity.spawnToAll();
 						Server.getInstance().broadcastMessage("§l§7(§3Боссы§7) §rНа карте появился Босс§7!\n§l§6• §rКоординаты§7: §6" + entity.getFloorX() + "§7, §6 " + entity.getFloorY() + "§7, §6" + entity.getFloorZ());
 					}
 				});
+
 				minutes = 24;
 			}
 		}

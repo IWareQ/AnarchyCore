@@ -11,7 +11,7 @@ import cn.nukkit.network.protocol.ContainerOpenPacket;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
 import cn.nukkit.scheduler.NukkitRunnable;
 import com.google.common.base.Preconditions;
-import ru.iwareq.anarchycore.Main;
+import ru.iwareq.anarchycore.AnarchyCore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +85,7 @@ public abstract class FakeChest extends ContainerInventory {
 					updateBlock.z = blockPosition.getFloorZ();
 					player.dataPacket(updateBlock);
 				}
-			}.runTaskLater(Main.getInstance(), 2 + i);
+			}.runTaskLater(AnarchyCore.getInstance(), 2 + i);
 		}
 	}
 

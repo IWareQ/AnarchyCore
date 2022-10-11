@@ -2,87 +2,85 @@ package ru.iwareq.anarchycore.task;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.scheduler.Task;
+import cn.nukkit.scheduler.PluginTask;
+import lombok.Getter;
+import ru.iwareq.anarchycore.AnarchyCore;
 import ru.iwareq.anarchycore.manager.Scoreboard.Network.DisplaySlot;
 import ru.iwareq.anarchycore.manager.Scoreboard.Network.Scoreboard;
 import ru.iwareq.anarchycore.manager.Scoreboard.Network.ScoreboardDisplay;
 import ru.iwareq.anarchycore.manager.Scoreboard.ScoreboardAPI;
-import ru.iwareq.anarchycore.module.AdminSystem.AdminAPI;
 import ru.iwareq.anarchycore.module.Auth.AuthAPI;
-import ru.iwareq.anarchycore.module.Clans.ClanAPI;
 import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
 import ru.iwareq.anarchycore.module.EventsListener.EventsListener;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
-import ru.iwareq.anarchycore.util.Utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
-public class ScoreboardTask extends Task {
+public class ScoreboardTask extends PluginTask<AnarchyCore> {
 
 	public static final Map<String, Scoreboard> SCOREBOARDS = new HashMap<>();
-	private static final String[] texts = new String[]{"test1", "test2", "test3"};
-	private static int sec = 0;
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	@Getter
+	private static ScoreboardTask instance;
 
-	public static void showScoreboard(Player player, boolean show) {
+	public ScoreboardTask(AnarchyCore owner) {
+		super(owner);
+		instance = this;
+
+		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
+	}
+
+	public static void showScoreboard(Player player) {
 		Scoreboard scoreboard = ScoreboardAPI.createScoreboard();
-		if (show) {
-			if (AdminAPI.isBanned(player.getName())) {
-				ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "§6Аккаунт заблокирован");
-				scoreboardDisplay.addLine(PermissionAPI.getPlayerGroup(player.getName()).getGroupName() + " " + player.getName(), 0);
-				scoreboardDisplay.addLine("§1", 1);
-				scoreboardDisplay.addLine("Причина§7: §6" + AdminAPI.getBanReason(player.getName()), 2);
-				scoreboardDisplay.addLine("§3", 3);
-				scoreboardDisplay.addLine("§6" + Utils.getRemainingTime(AdminAPI.getBanTime(player.getName())), 4);
-				scoreboardDisplay.addLine("§5", 5);
-				scoreboardDisplay.addLine("§6test", 6);
-				ScoreboardAPI.setScoreboard(player, scoreboard);
-				SCOREBOARDS.put(player.getName().toLowerCase(), scoreboard);
-				return;
-			}
 
-			ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "§3DEATH §fMC");
-			scoreboardDisplay.addLine(PermissionAPI.getPlayerGroup(player.getName()).getGroupName() + " " + player.getName(), 0);
-			scoreboardDisplay.addLine("§1", 1);
-			scoreboardDisplay.addLine("§rКлан§7: " + (ClanAPI.playerIsInClan(player.getName()) ?
-			                                          ClanAPI.getClanName(ClanAPI.getPlayerClanId(player.getName())) : "нету"), 2);
-			scoreboardDisplay.addLine("§rПинг§7: " + player.getPing(), 3);
-			scoreboardDisplay.addLine("§rБаланс§7: §6" + EconomyAPI.format(AuthAPI.getMoney(player.getName())), 4);
-			scoreboardDisplay.addLine("§rОнлайн§7: §6" + Server.getInstance().getOnlinePlayers().size(), 5);
-			scoreboardDisplay.addLine("§6", 6);
-			scoreboardDisplay.addLine("У: " + EventsListener.getKills(player.getName()) + " | С: " + EventsListener.getDeaths(player),
-					7);
+		ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "  LITENEX");
+		scoreboardDisplay.addLine("§rНик: " + player.getName(), 0);
+		scoreboardDisplay.addLine("§rРанг: " + PermissionAPI.getPlayerGroup(player.getName()).getGroupName(), 1);
+		scoreboardDisplay.addLine("§rТитул: нету", 2);
+		scoreboardDisplay.addLine("§3", 3);
+		scoreboardDisplay.addLine("§rБаланс: " + EconomyAPI.format(AuthAPI.getMoney(player.getName())), 4);
+		scoreboardDisplay.addLine("§rПинг: " + player.getPing(), 4);
+		scoreboardDisplay.addLine("§rУ: " + EventsListener.getKills(player.getName()) + " | С: " + EventsListener.getDeaths(player), 5);
+		scoreboardDisplay.addLine("§6", 6);
 
-			long time = AuthAPI.getGameTime(player.getName());
-			scoreboardDisplay.addLine("§rНаигранно§7: §6" + (time / 86400 % 24) + "§7/§6" + (time / 3600 % 24) + "§7" +
-					"/§6" + (time / 60 % 60), 8);
-
-			scoreboardDisplay.addLine(texts[sec], 9);
-
-
-			ScoreboardAPI.setScoreboard(player, scoreboard);
-			SCOREBOARDS.put(player.getName().toLowerCase(), scoreboard);
+		int seconds = AnarchyCore.getInstance().getClearTask().getSeconds();
+		if (seconds <= 5 * 60 && seconds > 0) {
+			scoreboardDisplay.addLine("§rДо очистки: " + (seconds / 60) + "м " + (seconds % 60) + "с", 7);
+			scoreboardDisplay.addLine("§8", 8);
+			scoreboardDisplay.addLine("§rОнлайн: " + Server.getInstance().getOnlinePlayers().size(), 9);
+			scoreboardDisplay.addLine("§r" + getCurrentDate() + " | #1", 10);
 		} else {
-			if (SCOREBOARDS.containsKey(player.getName().toLowerCase())) {
-				ScoreboardAPI.removeScorebaord(player, SCOREBOARDS.get(player.getName().toLowerCase()));
-				SCOREBOARDS.remove(player.getName());
-			}
+			scoreboardDisplay.addLine("§rОнлайн: " + Server.getInstance().getOnlinePlayers().size(), 7);
+			scoreboardDisplay.addLine("§8", 8);
+			scoreboardDisplay.addLine("§r" + getCurrentDate() + " | #1", 9);
 		}
+
+
+		ScoreboardAPI.setScoreboard(player, scoreboard);
+		SCOREBOARDS.put(player.getName().toLowerCase(), scoreboard);
+	}
+
+	public static void hideScoreboard(Player player) {
+		if (SCOREBOARDS.containsKey(player.getName().toLowerCase())) {
+			ScoreboardAPI.removeScorebaord(player, SCOREBOARDS.get(player.getName().toLowerCase()));
+			SCOREBOARDS.remove(player.getName());
+		}
+	}
+
+	public static String getCurrentDate() {
+		return DATE_FORMAT.format(new Date());
 	}
 
 	@Override()
 	public void onRun(int currentTick) {
 		for (Player player : Server.getInstance().getOnlinePlayers().values()) {
 			if (player.isOnline() && player.spawned && SCOREBOARDS.containsKey(player.getName().toLowerCase())) {
-				sec++;
-
-				showScoreboard(player, false);
-				showScoreboard(player, true);
-
-
-				if (sec + 1 >= texts.length) {
-					sec = 0;
-				}
+				hideScoreboard(player);
+				showScoreboard(player);
 			}
 		}
 	}

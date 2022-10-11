@@ -4,7 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.scheduler.NukkitRunnable;
 import ru.iwareq.anarchycore.manager.FakeInventory.Utils.FakeChests;
-import ru.iwareq.anarchycore.Main;
+import ru.iwareq.anarchycore.AnarchyCore;
 
 public class FakeInventoryAPI {
 
@@ -19,7 +19,7 @@ public class FakeInventoryAPI {
 					player.addWindow(inventory);
 				}
 			}
-		}.runTaskLater(Main.getInstance(), 10);
+		}.runTaskLater(AnarchyCore.getInstance(), 10);
 	}
 
 	public static void openDoubleChestInventory(Player player, Inventory inventory) {
@@ -31,7 +31,7 @@ public class FakeInventoryAPI {
 					player.addWindow(inventory);
 				}
 			}
-		}.runTaskLater(Main.getInstance(), 12);
+		}.runTaskLater(AnarchyCore.getInstance(), 12);
 	}
 
 	public static void closeDoubleChestInventory(Player player, Inventory inventory) {
@@ -43,7 +43,7 @@ public class FakeInventoryAPI {
 					player.removeWindow(inventory);
 				}
 			}
-		}.runTaskLater(Main.getInstance(), 10);
+		}.runTaskLater(AnarchyCore.getInstance(), 10);
 	}
 
 	public static void closeInventory(Player player, Inventory inventory) {

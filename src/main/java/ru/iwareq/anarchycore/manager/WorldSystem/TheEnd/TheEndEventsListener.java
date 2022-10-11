@@ -116,9 +116,7 @@ public class TheEndEventsListener implements Listener {
 						}
 					}, 20);
 				} else {
-					WorldSystemAPI.randomPosition(WorldSystemAPI.Map, (position) -> {
-						player.teleport(position);
-					});
+					WorldSystemAPI.findRandomPositionAndTp(WorldSystemAPI.Map, player::teleport);
 				}
 			}
 		}

@@ -1,5 +1,5 @@
 name: AnarchyCore
-main: ru.iwareq.anarchycore.Main
+main: ru.iwareq.anarchycore.AnarchyCore
 version: "${pom.version}"
 api: "1.0.13"
 author: IWareQ

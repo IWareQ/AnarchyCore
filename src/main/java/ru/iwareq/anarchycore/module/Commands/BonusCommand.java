@@ -5,7 +5,7 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
-import ru.iwareq.anarchycore.Main;
+import ru.iwareq.anarchycore.AnarchyCore;
 
 public class BonusCommand extends Command {
 
@@ -22,7 +22,7 @@ public class BonusCommand extends Command {
 			if (!player.hasPermission(this.getPermission())) {
 				return false;
 			}
-			Config config = new Config(Main.getInstance().getDataFolder() + "/Other/Bonus.yml", Config.YAML);
+			Config config = new Config(AnarchyCore.getInstance().getDataFolder() + "/Other/Bonus.yml", Config.YAML);
 			if (!config.exists(player.getName())) {
 				config.set(player.getName(), true);
 				player.getInventory().addItem(Item.get(Item.MONSTER_SPAWNER));

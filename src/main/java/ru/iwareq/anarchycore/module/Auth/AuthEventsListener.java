@@ -2,6 +2,7 @@ package ru.iwareq.anarchycore.module.Auth;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerLocallyInitializedEvent;
@@ -9,7 +10,7 @@ import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.particle.FloatingTextParticle;
 import cn.nukkit.utils.Config;
-import ru.iwareq.anarchycore.Main;
+import ru.iwareq.anarchycore.AnarchyCore;
 import ru.iwareq.anarchycore.manager.WorldSystem.WorldSystemAPI;
 import ru.iwareq.anarchycore.module.Commands.HideGlobalChatCommand;
 import ru.iwareq.anarchycore.module.Commands.Teleport.Commands.TpdeclineCommand;
@@ -64,7 +65,7 @@ public class AuthEventsListener implements Listener {
 	private static void addFloatingKillsTops(Position pos, Player player) {
 		FloatingTextParticle floatingTexts = new FloatingTextParticle(pos, "§l§6Самые опасные игроки сервера");
 		StringBuilder stringBuilder = new StringBuilder();
-		Config config = new Config(Main.getInstance().getDataFolder() + "/kills.yml", Config.YAML);
+		Config config = new Config(AnarchyCore.getInstance().getDataFolder() + "/kills.yml", Config.YAML);
 		int i = 1;
 		for (Map.Entry<String, Integer> entry : calculateScore(config).entrySet()) {
 			stringBuilder.append("§l").append(i + ". " + entry.getKey()).append(" §7- §6").append(entry.getValue()).append(
@@ -78,7 +79,7 @@ public class AuthEventsListener implements Listener {
 	private static void addFloatingDeathsTops(Position pos, Player player) {
 		FloatingTextParticle floatingTexts = new FloatingTextParticle(pos, "§l§6Press F to pay respects");
 		StringBuilder stringBuilder = new StringBuilder();
-		Config config = new Config(Main.getInstance().getDataFolder() + "/deaths.yml", Config.YAML);
+		Config config = new Config(AnarchyCore.getInstance().getDataFolder() + "/deaths.yml", Config.YAML);
 		int i = 1;
 		for (Map.Entry<String, Integer> entry : calculateScore(config).entrySet()) {
 			stringBuilder.append("§l").append(i + ". " + entry.getKey()).append(" §7- §6").append(entry.getValue()).append(" §f☠\n");
@@ -106,7 +107,7 @@ public class AuthEventsListener implements Listener {
 		}
 	}
 
-	@EventHandler()
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		String name = player.getName();
@@ -117,11 +118,12 @@ public class AuthEventsListener implements Listener {
 			AuthAPI.setGameTime(name, AuthAPI.getGameTime(name) + (System.currentTimeMillis() / 1000L - playerTime.get(player)));
 		}
 
-		ScoreboardTask.showScoreboard(player, false);
+		ScoreboardTask.hideScoreboard(player);
+
 		event.setQuitMessage("");
 	}
 
-	@EventHandler()
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		String date = Utils.getDate();
@@ -129,12 +131,12 @@ public class AuthEventsListener implements Listener {
 		if (!AuthAPI.isRegister(player.getName())) {
 			AuthAPI.registerPlayer(player.getName(), player.getLoginChainData().getXUID(), date, ip);
 		}
-		ScoreboardTask.showScoreboard(player, true);
 		PermissionAPI.updatePermissions(event.getPlayer());
 		PermissionAPI.updateNamedTag(event.getPlayer());
 		player.sendMessage("§l§6• §rДобро пожаловать на §3DEATH §fMC §7(§cАнархия§7)\n§l§6• §rМы в §9ВК §7- §fvk§7.§fcom§7/§6deathmc§7.§6club §l§6| §rНаш сайт §7- §6death§7-§6mc§7.§6online");
 		playerTime.put(player, System.currentTimeMillis() / 1000L);
 		player.setCheckMovement(false);
+		ScoreboardTask.showScoreboard(player);
 		event.setJoinMessage("");
 		WorldSystemAPI.Spawn.addParticle(new FloatingTextParticle(new Position(90.5, 93.5, 26.5), "§l§6Алтарь", "§lСтранная штука§7)"), player);
 		WorldSystemAPI.Spawn.addParticle(new FloatingTextParticle(new Position(118.5, 95.5, 106.5), "§l§6Железный Приват", "§l2 §7× §f2"), player);
