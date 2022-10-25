@@ -9,8 +9,6 @@ public class GroupRemoveTask extends Task {
 
 	@Override
 	public void onRun(int i) {
-		RemoveGroup.USERS.forEach((user, time) -> {
-			RemoveGroup.USERS.put(user, --time);
-		});
+		RemoveGroup.USERS.forEach((user, time) -> RemoveGroup.USERS.put(user, --time));
 	}
 }

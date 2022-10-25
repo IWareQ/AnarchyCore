@@ -69,11 +69,6 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-
-		<repository>
-			<id>local-repository</id>
-			<url>file://${project.basedir}/libs</url>
-		</repository>
 	</repositories>
 
 	<dependencies>
