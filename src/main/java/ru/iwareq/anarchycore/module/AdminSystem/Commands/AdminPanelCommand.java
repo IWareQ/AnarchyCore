@@ -6,7 +6,9 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import ru.iwareq.anarchycore.manager.Forms.Elements.CustomForm;
+import ru.contentforge.formconstructor.form.CustomForm;
+import ru.contentforge.formconstructor.form.element.Input;
+import ru.contentforge.formconstructor.form.element.Label;
 import ru.iwareq.anarchycore.module.AdminSystem.AdminAPI;
 
 public class AdminPanelCommand extends Command {
@@ -27,13 +29,12 @@ public class AdminPanelCommand extends Command {
 			}
 			if (args.length == 0) {
 				CustomForm customForm = new CustomForm("Панель Администрирования");
-				customForm.addLabel("Для начала Вам надо §6ввести никнейм игрока §fс которым хотите §6работать§7.\n\n§fДостаточно ввести §6первые 3 §fбуквы никнейма§7.");
-				customForm.addInput("", "Steve");
-				customForm.send(player, (targetPlayer, targetForm, data) -> {
-					if (data == null) {
-						return;
-					}
-					String targetName = data.get(0).toString();
+				customForm.addElement(new Label("Для начала Вам надо §6ввести никнейм игрока §fс которым хотите " +
+						"§6работать§7" +
+						".\n\n§fДостаточно ввести §6первые 3 §fбуквы никнейма§7."));
+				customForm.addElement("target", new Input("", "Steve"));
+				customForm.send(player, (p, response) -> {
+					String targetName = response.getInput("target").getValue();
 					if (targetName == null || targetName.equals("")) {
 						player.sendMessage(AdminAPI.PREFIX + "Введите §6никнейм игрока §fс которым хотите работать§7!");
 						return;

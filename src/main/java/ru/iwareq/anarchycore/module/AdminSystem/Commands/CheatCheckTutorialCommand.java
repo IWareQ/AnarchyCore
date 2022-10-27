@@ -3,7 +3,7 @@ package ru.iwareq.anarchycore.module.AdminSystem.Commands;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import ru.iwareq.anarchycore.manager.Forms.Elements.SimpleForm;
+import ru.contentforge.formconstructor.form.SimpleForm;
 
 public class CheatCheckTutorialCommand extends Command {
 

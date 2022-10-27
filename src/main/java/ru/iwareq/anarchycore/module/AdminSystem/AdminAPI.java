@@ -14,9 +14,10 @@ import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.GameRulesChangedPacket;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.scheduler.Task;
+import ru.contentforge.formconstructor.form.ModalForm;
+import ru.contentforge.formconstructor.form.SimpleForm;
+import ru.contentforge.formconstructor.form.handler.SimpleFormHandler;
 import ru.iwareq.anarchycore.manager.FakeInventory.FakeInventoryAPI;
-import ru.iwareq.anarchycore.manager.Forms.Elements.ModalForm;
-import ru.iwareq.anarchycore.manager.Forms.Elements.SimpleForm;
 import ru.iwareq.anarchycore.manager.WorldSystem.WorldSystemAPI;
 import ru.iwareq.anarchycore.module.AdminSystem.Commands.BanCommand;
 import ru.iwareq.anarchycore.module.AdminSystem.Commands.MuteCommand;
@@ -29,7 +30,6 @@ import ru.iwareq.anarchycore.util.Utils;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AdminAPI {
 
@@ -42,15 +42,13 @@ public class AdminAPI {
 		List<String> players = Utils.getPlayersList(playerName);
 		SimpleForm simpleForm = new SimpleForm("Панель Администрирования");
 		simpleForm.addContent("Выберите §6игрока§7, §fс которым хотите §6взаимодействовать§7!");
+		SimpleFormHandler handler = (p, button) -> {
+			sendAdminPanelForm(player, players.get(button.index));
+		};
 		for (String playerList : players) {
-			simpleForm.addButton("§6" + playerList + "\n§fНажмите§7, §fчтобы перейти§7!");
+			simpleForm.addButton("§6" + playerList + "\n§fНажмите§7, §fчтобы перейти§7!", handler);
 		}
-		simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == -1) {
-				return;
-			}
-			sendAdminPanelForm(player, players.get(data));
-		});
+		simpleForm.send(player);
 	}
 
 	public static void sendAdminPanelForm(Player player, String targetName) {
@@ -63,45 +61,27 @@ public class AdminAPI {
 		}
 		simpleForm.addContent("\n\nВыберите §6нужный пункт §fМеню§7:");
 		if (isBanned(targetName) && player.hasPermission("Command.UnBan")) {
-			simpleForm.addButton("Разблокировать аккаунт");
+			simpleForm.addButton("Разблокировать аккаунт", (p, button) -> {
+				UnBanCommand.openUnBanPlayerForm(player, targetName);
+			});
 		} else {
-			simpleForm.addButton("Заблокировать аккаунт");
+			simpleForm.addButton("Заблокировать аккаунт", (p, button) -> {
+				BanCommand.openBanPlayerForm(player, targetName);
+			});
 		}
 		if (isMuted(targetName)) {
-			simpleForm.addButton("Разблокировать чат");
+			simpleForm.addButton("Разблокировать чат", (p, button) -> {
+				UnMuteCommand.openUnMutePlayerForm(player, targetName);
+			});
 		} else {
-			simpleForm.addButton("Заблокировать чат");
+			simpleForm.addButton("Заблокировать чат", (p, button) -> {
+				MuteCommand.openMutePlayerForm(player, targetName);
+			});
 		}
-		simpleForm.addButton("Просмотреть инвентарь");
-		simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == -1) {
-				return;
-			}
-			switch (data) {
-				case 0: {
-					if (isBanned(targetName) && player.hasPermission("Command.UnBan")) {
-						UnBanCommand.openUnBanPlayerForm(player, targetName);
-					} else {
-						BanCommand.openBanPlayerForm(player, targetName);
-					}
-				}
-				break;
-
-				case 1: {
-					if (isMuted(targetName)) {
-						UnMuteCommand.openUnMutePlayerForm(player, targetName);
-					} else {
-						MuteCommand.openMutePlayerForm(player, targetName);
-					}
-				}
-				break;
-
-				case 2: {
-					openCheckInventoryChest(player, targetName);
-				}
-				break;
-			}
+		simpleForm.addButton("Просмотреть инвентарь", (p, button) -> {
+			openCheckInventoryChest(player, targetName);
 		});
+		simpleForm.send(player);
 	}
 
 
@@ -119,53 +99,43 @@ public class AdminAPI {
 	public static void addCheatCheacker(Player player, Player target) {
 		if (!isCheatCheck(target.getName())) {
 			ModalForm modalForm = new ModalForm("Проверка", "Вы уверены что хотите вызвать игрока §6" + target.getName() + " §fна проверку§7?", "Да", "Нет");
-			modalForm.send(player, (targetPlayer, targetForm, data) -> {
-				if (data == -1) {
-					return;
-				}
-				switch (data) {
-					case 0: {
-						int checkCode = Utils.rand(0, 10000);
-						CHEAT_CHECK.put(target.getName(), checkCode);
-						Utils.sendMessageToChat("💂CheatCheacker\n\nИгрок: " + target.getName() + "\nАдмин: " + player.getName() + "\nКод: " + checkCode);
-						player.sendMessage(PREFIX + "Игрок §6" + target.getName() + " §fвызван на проверку§7!");
-						target.sendTitle("§l§6Проверка");
-						target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(3, 2, 0), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
-						Entity.createEntity("CowNPC", target.getPosition().add(3, 0, 0)).spawnToAll();
-						target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(-3, 2, 0), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
-						Entity.createEntity("CowNPC", target.getPosition().add(-3, 0, 0)).spawnToAll();
-						target.getLevel().addParticle(new FloatingTextParticle(player.getPosition().add(0, 2, 3), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
-						Entity.createEntity("CowNPC", target.getPosition().add(0, 0, 3)).spawnToAll();
-						target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(0, 2, -3), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
-						Entity.createEntity("CowNPC", target.getPosition().add(0, 0, -3)).spawnToAll();
-						target.getLevel().addSound(target, Sound.RANDOM_SCREENSHOT, 1.0F, 1.0F, target);
-						Server.getInstance().getScheduler().scheduleRepeatingTask(new Task() {
+			modalForm.send(player, (p, yes) -> {
+				if (yes) {
+					int checkCode = Utils.rand(0, 10000);
+					CHEAT_CHECK.put(target.getName(), checkCode);
+					Utils.sendMessageToChat("💂CheatCheacker\n\nИгрок: " + target.getName() + "\nАдмин: " + player.getName() + "\nКод: " + checkCode);
+					player.sendMessage(PREFIX + "Игрок §6" + target.getName() + " §fвызван на проверку§7!");
+					target.sendTitle("§l§6Проверка");
+					target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(3, 2, 0), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
+					Entity.createEntity("CowNPC", target.getPosition().add(3, 0, 0)).spawnToAll();
+					target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(-3, 2, 0), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
+					Entity.createEntity("CowNPC", target.getPosition().add(-3, 0, 0)).spawnToAll();
+					target.getLevel().addParticle(new FloatingTextParticle(player.getPosition().add(0, 2, 3), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
+					Entity.createEntity("CowNPC", target.getPosition().add(0, 0, 3)).spawnToAll();
+					target.getLevel().addParticle(new FloatingTextParticle(target.getPosition().add(0, 2, -3), "§6Проверка на читы§7!", "§fУ Вас есть §610 §fминут §fчтобы пройти проверку§7!\n\n§fВведите §7/§6cct §fчтобы узнать\nкак пройти проверку\n§fПроверочный код§7: §6" + checkCode), target);
+					Entity.createEntity("CowNPC", target.getPosition().add(0, 0, -3)).spawnToAll();
+					target.getLevel().addSound(target, Sound.RANDOM_SCREENSHOT, 1.0F, 1.0F, target);
+					Server.getInstance().getScheduler().scheduleRepeatingTask(new Task() {
 
-							@Override()
-							public void onRun(int tick) {
-								if (seconds != 0) {
-									seconds--;
-									if (isCheatCheck(target.getName())) {
-										target.sendTip("Время§7: §6" + Utils.getSecond(seconds));
-										target.setImmobile(true);
-									}
-								} else {
-									this.cancel();
-									if (isCheatCheck(target.getName())) {
-										addBan(target.getName(), "время проверки вышло", "CheatCheacker", 30 * 86400);
-									}
-									seconds = 420;
+						@Override()
+						public void onRun(int tick) {
+							if (seconds != 0) {
+								seconds--;
+								if (isCheatCheck(target.getName())) {
+									target.sendTip("Время§7: §6" + Utils.getSecond(seconds));
+									target.setImmobile(true);
 								}
+							} else {
+								this.cancel();
+								if (isCheatCheck(target.getName())) {
+									addBan(target.getName(), "время проверки вышло", "CheatCheacker", 30 * 86400);
+								}
+								seconds = 420;
 							}
-						}, 20);
-					}
-					break;
-
-					case 1: {
-						player.sendMessage(PREFIX + "Проверка §6отменена§7!");
-					}
-					break;
-
+						}
+					}, 20);
+				} else {
+					player.sendMessage(PREFIX + "Проверка §6отменена§7!");
 				}
 			});
 		} else {

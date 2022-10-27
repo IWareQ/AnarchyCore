@@ -3,7 +3,7 @@ package ru.iwareq.anarchycore.module.Commands;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import ru.iwareq.anarchycore.manager.Forms.Elements.SimpleForm;
+import ru.contentforge.formconstructor.form.SimpleForm;
 
 public class RulesCommand extends Command {
 
@@ -17,7 +17,7 @@ public class RulesCommand extends Command {
 		if (sender instanceof Player) {
 			SimpleForm simpleForm = new SimpleForm("Правила сервера");
 			simpleForm.addContent("Твой текст");
-			simpleForm.send((Player) sender, (targetPlayer, targetForm, data) -> {});
+			simpleForm.send((Player) sender);
 		}
 
 		return false;

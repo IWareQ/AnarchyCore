@@ -1,10 +1,7 @@
 package ru.iwareq.anarchycore.module.Auth;
 
-import cn.nukkit.Player;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class AuthAPI {
 
@@ -44,6 +41,14 @@ public class AuthAPI {
 
 	public static void setGameTime(String playerName, long gameTime) {
 		DB.setGameTime(playerName, gameTime);
+	}
+
+	public static int getCases(String playerName) {
+		return DB.getCases(playerName);
+	}
+
+	public static void setGameTime(String playerName, int cases) {
+		DB.setCases(playerName, cases);
 	}
 
 	public static void setDateAndIpLast(String playerName, String date, String ip) {

@@ -30,7 +30,8 @@ public class AuthDB extends SQLiteDatabase {
 				"    Permission     varchar(16) NOT NULL DEFAULT 'player',\n" +
 				"    PermissionTime int(64)     NOT NULL DEFAULT '-1',\n" +
 				"    Money          REAL        NOT NULL DEFAULT '0.0',\n" +
-				"    GameTime       int(64)     NOT NULL DEFAULT '0'\n" +
+				"    GameTime       int(64)     NOT NULL DEFAULT '0',\n" +
+				"    Cases          int(64)     NOT NULL DEFAULT '0'\n" +
 				");");
 	}
 
@@ -64,6 +65,13 @@ public class AuthDB extends SQLiteDatabase {
 		}
 	}
 
+	public int getCases(String playerName) {
+		try (Handle handle = this.connect()) {
+			return handle.select("SELECT Cases FROM Users WHERE Name = ?;", playerName.toLowerCase())
+					.mapTo(Integer.class).one();
+		}
+	}
+
 	public LinkedHashMap<Double, String> getMoneys() {
 		try (Handle handle = this.connect()) {
 			LinkedHashMap<Double, String> result = new LinkedHashMap<>();
@@ -90,6 +98,14 @@ public class AuthDB extends SQLiteDatabase {
 		try (Handle handle = this.connect()) {
 			handle.createUpdate("UPDATE Users SET Money = :money WHERE Name = :name;")
 					.bind("money", count)
+					.bind("name", playerName.toLowerCase()).execute();
+		}
+	}
+
+	public void setCases(String playerName, int count) {
+		try (Handle handle = this.connect()) {
+			handle.createUpdate("UPDATE Users SET Cases = :cases WHERE Name = :name;")
+					.bind("cases", count)
 					.bind("name", playerName.toLowerCase()).execute();
 		}
 	}
@@ -144,7 +160,7 @@ public class AuthDB extends SQLiteDatabase {
 			handle.createQuery("SELECT Name, PermissionTime FROM Users;").map(rowView -> {
 				result.put(rowView.getColumn("Name", String.class), rowView.getColumn("PermissionTime", Long.class));
 				return 1L;
-			}).one();
+			}).list();
 
 			return result;
 		}

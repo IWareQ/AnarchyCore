@@ -16,7 +16,6 @@ import ru.iwareq.anarchycore.entity.NPC.PiglinNPC;
 import ru.iwareq.anarchycore.entity.NPC.VillagerNPC;
 import ru.iwareq.anarchycore.entity.NPC.WanderingTraderNPC;
 import ru.iwareq.anarchycore.manager.FakeInventory.FakeInventoryEventsListener;
-import ru.iwareq.anarchycore.manager.Forms.FormEventsListener;
 import ru.iwareq.anarchycore.manager.WorldSystem.TheEnd.TheEndEventsListener;
 import ru.iwareq.anarchycore.manager.WorldSystem.WorldEventsListener;
 import ru.iwareq.anarchycore.manager.WorldSystem.WorldSystemAPI;
@@ -97,6 +96,8 @@ import ru.iwareq.anarchycore.module.EventsListener.EventsListener;
 import ru.iwareq.anarchycore.module.Permissions.Commands.GroupCommand;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
 import ru.iwareq.anarchycore.module.Permissions.RemoveGroup;
+import ru.iwareq.anarchycore.module.title.TitleAPI;
+import ru.iwareq.anarchycore.module.title.command.TitlesCommand;
 import ru.iwareq.anarchycore.task.BossSpawnTask;
 import ru.iwareq.anarchycore.task.BroadcastTask;
 import ru.iwareq.anarchycore.task.ClearTask;
@@ -141,6 +142,7 @@ public class AnarchyCore extends PluginBase {
 		WorldSystemAPI.register();
 		BroadcastTask.register();
 		RemoveGroup.init();
+		TitleAPI.register();
 		this.registerTask();
 		this.registerEntity();
 		this.registerEvents();
@@ -188,7 +190,6 @@ public class AnarchyCore extends PluginBase {
 		pluginManager.registerEvents(new AuctionEventsListener(), this);
 		pluginManager.registerEvents(new AntiCheatEventsListener(), this);
 		pluginManager.registerEvents(new AdminEventsListener(), this);
-		pluginManager.registerEvents(new FormEventsListener(), this);
 		pluginManager.registerEvents(new FakeInventoryEventsListener(), this);
 		pluginManager.registerEvents(new WorldEventsListener(), this);
 		pluginManager.registerEvents(new CooldownEventsListener(), this);
@@ -209,6 +210,7 @@ public class AnarchyCore extends PluginBase {
 				new GarbageCommand(),
 				new HideGlobalChatCommand(),
 				new TpdeclineCommand(),
+				new TitlesCommand(),
 				new DisenchantCommand(),
 				new BarCommand(), new CheatCheckCommand(),
 				new BorderBuildCommand(), new TestCommand(), new BonusCommand(), new SeeInventoryCommand(),

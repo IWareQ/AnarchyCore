@@ -16,6 +16,7 @@ import ru.iwareq.anarchycore.module.Commands.HideGlobalChatCommand;
 import ru.iwareq.anarchycore.module.Commands.Teleport.Commands.TpdeclineCommand;
 import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
+import ru.iwareq.anarchycore.module.title.TitleAPI;
 import ru.iwareq.anarchycore.task.ScoreboardTask;
 import ru.iwareq.anarchycore.util.Utils;
 
@@ -111,6 +112,7 @@ public class AuthEventsListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		String name = player.getName();
+		TitleAPI.saveAndRemove(player);
 		HideGlobalChatCommand.PLAYERS.remove(name);
 		TpdeclineCommand.PLAYERS.remove(name.toLowerCase());
 		AuthAPI.setDateAndIpLast(name, Utils.getDate(), player.getAddress());

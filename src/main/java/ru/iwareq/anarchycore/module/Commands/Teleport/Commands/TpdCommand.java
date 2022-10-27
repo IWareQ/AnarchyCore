@@ -3,8 +3,8 @@ package ru.iwareq.anarchycore.module.Commands.Teleport.Commands;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import ru.iwareq.anarchycore.manager.Forms.Elements.ImageType;
-import ru.iwareq.anarchycore.manager.Forms.Elements.SimpleForm;
+import ru.contentforge.formconstructor.form.SimpleForm;
+import ru.contentforge.formconstructor.form.element.ImageType;
 import ru.iwareq.anarchycore.module.Commands.Teleport.TeleportAPI;
 import ru.iwareq.anarchycore.module.Commands.Teleport.Utils.TeleportUtils;
 
@@ -29,23 +29,8 @@ public class TpdCommand extends Command {
 				return true;
 			}
 			SimpleForm simpleForm = new SimpleForm("Заявки на телепортацию", "Здесь показаны §6все §fзаявки§7.\n\n§rЗапрос действует только §630 §fсекунд§7!");
-			boolean allDeclineEnabled = false;
 			if (tpList.size() >= 2) {
-				allDeclineEnabled = true;
-				simpleForm.addButton("§fНажмите§7, §fчтобы отклонить всех§7!");
-			}
-
-			for (TeleportUtils tpUtils : tpList) {
-				simpleForm.addButton("§6" + tpUtils.getPlayer().getName() + "\n§fНажмите§7, §fчтобы отклонить§7!", ImageType.PATH, "textures/ui/Friend2");
-			}
-
-			boolean finalallDeclineEnabled = allDeclineEnabled;
-			simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-				if (data == -1) {
-					return;
-				}
-
-				if (finalallDeclineEnabled) {
+				simpleForm.addButton("§fНажмите§7, §fчтобы отклонить всех§7!", (p, button) -> {
 					TeleportAPI.getTpaRequests().removeIf(tpList::contains);
 
 					tpList.forEach(tp -> {
@@ -55,21 +40,27 @@ public class TpdCommand extends Command {
 					});
 
 					player.sendMessage(TeleportAPI.PREFIX + "Все запросы отклонены§7!");
-					return;
-				}
+				});
+			}
 
-				TeleportUtils tpUtils = tpList.get(data);
+			for (TeleportUtils tpUtils : tpList) {
+				simpleForm.addButton("§6" + tpUtils.getPlayer().getName() + "\n§fНажмите§7, §fчтобы отклонить§7!",
+						ImageType.PATH, "textures/ui/Friend2", (p, button) -> {
+							// TeleportUtils tpUtils = tpList.get(button.index);
 
-				if (tpUtils.isOutdated()) {
-					player.sendMessage(TeleportAPI.PREFIX + "Запрос на телепортацию §6истек§7!");
-					return;
-				}
-				if (tpUtils.getPlayer() != null) {
-					player.sendMessage(TeleportAPI.PREFIX + "Запрос игрока §6" + tpUtils.getPlayer().getName() + " " + "§fотклонен§7!");
-					tpUtils.getPlayer().sendMessage(TeleportAPI.PREFIX + "Игрок §6" + tpUtils.getTarget().getName() + " §fотклонил Ваш запрос§7!");
-					TeleportAPI.getTpaRequests().remove(tpUtils);
-				}
-			});
+							if (tpUtils.isOutdated()) {
+								player.sendMessage(TeleportAPI.PREFIX + "Запрос на телепортацию §6истек§7!");
+								return;
+							}
+							if (tpUtils.getPlayer() != null) {
+								player.sendMessage(TeleportAPI.PREFIX + "Запрос игрока §6" + tpUtils.getPlayer().getName() + " " + "§fотклонен§7!");
+								tpUtils.getPlayer().sendMessage(TeleportAPI.PREFIX + "Игрок §6" + tpUtils.getTarget().getName() + " §fотклонил Ваш запрос§7!");
+								TeleportAPI.getTpaRequests().remove(tpUtils);
+							}
+						});
+			}
+
+			simpleForm.send(player);
 		}
 		return false;
 	}

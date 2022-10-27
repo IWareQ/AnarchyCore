@@ -16,5 +16,6 @@ CREATE TABLE IF NOT EXISTS Users
     Permission     varchar(16) NOT NULL DEFAULT 'player',
     PermissionTime int(64)     NOT NULL DEFAULT '-1',
     Money          REAL        NOT NULL DEFAULT '0.0',
-    GameTime       int(64)     NOT NULL DEFAULT '0'
+    GameTime       int(64)     NOT NULL DEFAULT '0',
+    Cases          int(64)     NOT NULL DEFAULT '0'
 );

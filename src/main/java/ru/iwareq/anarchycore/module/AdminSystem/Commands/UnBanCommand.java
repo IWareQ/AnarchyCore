@@ -5,7 +5,8 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import ru.iwareq.anarchycore.manager.Forms.Elements.CustomForm;
+import ru.contentforge.formconstructor.form.CustomForm;
+import ru.contentforge.formconstructor.form.element.Input;
 import ru.iwareq.anarchycore.module.AdminSystem.AdminAPI;
 import ru.iwareq.anarchycore.util.Utils;
 
@@ -20,12 +21,9 @@ public class UnBanCommand extends Command {
 
 	public static void openUnBanPlayerForm(Player player, String targetName) {
 		CustomForm customForm = new CustomForm("Разблокировка аккаунта");
-		customForm.addInput("§l§6• §rВведите причину разблокировки§7:", "Причина разблокировки");
-		customForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == null) {
-				return;
-			}
-			String reason = data.get(0).toString();
+		customForm.addElement("reason", new Input("§l§6• §rВведите причину разблокировки§7:", "Причина разблокировки"));
+		customForm.send(player, (p, response) -> {
+			String reason = response.getInput("reason").getValue();
 			if (reason == null || reason.equals("")) {
 				player.sendMessage(AdminAPI.PREFIX + "Укажите §6причину §fразблокировки§7!");
 				return;

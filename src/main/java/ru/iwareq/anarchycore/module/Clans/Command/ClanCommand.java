@@ -7,10 +7,12 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandEnum;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import ru.iwareq.anarchycore.manager.Forms.Elements.CustomForm;
-import ru.iwareq.anarchycore.manager.Forms.Elements.ImageType;
-import ru.iwareq.anarchycore.manager.Forms.Elements.ModalForm;
-import ru.iwareq.anarchycore.manager.Forms.Elements.SimpleForm;
+import ru.contentforge.formconstructor.form.CustomForm;
+import ru.contentforge.formconstructor.form.ModalForm;
+import ru.contentforge.formconstructor.form.SimpleForm;
+import ru.contentforge.formconstructor.form.element.ImageType;
+import ru.contentforge.formconstructor.form.element.Input;
+import ru.contentforge.formconstructor.form.element.Label;
 import ru.iwareq.anarchycore.module.Auth.AuthAPI;
 import ru.iwareq.anarchycore.module.Clans.ClanAPI;
 import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
@@ -37,87 +39,39 @@ public class ClanCommand extends Command {
 		simpleForm.addContent("\n\n§fВыберите §6нужный §fВам пункт§7:");
 		switch (ClanAPI.getPlayerRole(player.getName())) {
 			case "Участник":
-				simpleForm.addButton("Выйти с клана");
-				simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-					if (data == -1) {
-						return;
-					}
+				simpleForm.addButton("Выйти с клана", (p, button) -> {
 					this.openLeaveClanForm(player);
 				});
-				break;
 			case "Старейшина":
-				simpleForm.addButton("Список приглашений");
-				simpleForm.addButton("Выйти с клана");
-				simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-					if (data == -1) {
-						return;
-					}
-					switch (data) {
-						case 0: {
-							this.openRequestsListForm(player, ClanAPI.getPlayerClanId(player.getName()));
-						}
-						break;
-
-						case 1: {
-							this.openLeaveClanForm(player);
-						}
-						break;
-					}
+				simpleForm.addButton("Список приглашений", (p, button) -> {
+					this.openRequestsListForm(player, ClanAPI.getPlayerClanId(player.getName()));
 				});
-				break;
+				simpleForm.addButton("Выйти с клана", (p, button) -> {
+					this.openLeaveClanForm(player);
+				});
 			case "Соруководитель":
-				simpleForm.addButton("Список приглашений");
-				simpleForm.addButton("Участники");
-				simpleForm.addButton("Выйти с клана");
-				simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-					if (data == -1) {
-						return;
-					}
-					switch (data) {
-						case 0: {
-							this.openRequestsListForm(player, ClanAPI.getPlayerClanId(player.getName()));
-						}
-						break;
-
-						case 1: {
-							this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
-						}
-						break;
-
-						case 2: {
-							this.openLeaveClanForm(player);
-						}
-						break;
-					}
+				simpleForm.addButton("Список приглашений", (p, button) -> {
+					this.openRequestsListForm(player, ClanAPI.getPlayerClanId(player.getName()));
 				});
-				break;
+				simpleForm.addButton("Участники", (p, button) -> {
+					this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
+				});
+				simpleForm.addButton("Выйти с клана", (p, button) -> {
+					this.openLeaveClanForm(player);
+				});
 			default:
-				simpleForm.addButton("Список приглашений");
-				simpleForm.addButton("Участники");
-				simpleForm.addButton("Удалить клан");
-				simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-					if (data == -1) {
-						return;
-					}
-					switch (data) {
-						case 0: {
-							this.openRequestsListForm(player, ClanAPI.getPlayerClanId(player.getName()));
-						}
-						break;
-
-						case 1: {
-							this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
-						}
-						break;
-
-						case 2: {
-							this.openDeleteClanForm(player, ClanAPI.getPlayerClanId(player.getName()));
-						}
-						break;
-					}
+				simpleForm.addButton("Список приглашений", (p, button) -> {
+					this.openRequestsListForm(player, ClanAPI.getPlayerClanId(player.getName()));
 				});
-				break;
+				simpleForm.addButton("Участники", (p, button) -> {
+					this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
+				});
+				simpleForm.addButton("Удалить клан", (p, button) -> {
+					this.openDeleteClanForm(player, ClanAPI.getPlayerClanId(player.getName()));
+				});
 		}
+
+		simpleForm.send(player);
 	}
 
 	private void openRequestsListForm(Player player, Integer clanId) {
@@ -126,32 +80,24 @@ public class ClanCommand extends Command {
 		simpleForm.addContent("\n\n§fПриглашения§7:");
 		List<String> clanRequests = ClanAPI.getClanRequests(clanId);
 		for (String playersName : clanRequests) {
-			simpleForm.addButton("§6" + playersName + "\n§fНажмите§7, §fчтобы удалить§7!");
+			simpleForm.addButton("§6" + playersName + "\n§fНажмите§7, §fчтобы удалить§7!", (p, button) -> {
+				ClanAPI.removeRequestClan(playersName, ClanAPI.getPlayerClanId(player.getName()));
+				player.sendMessage(ClanAPI.PREFIX + "Заявка на приглашение игрока §6" + playersName + " §fудалена§7!");
+			});
 		}
-		simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default");
-		simpleForm.send(player, (targetPlayer, form, data) -> {
-			if (data == -1) {
-				return;
-			}
-			if (clanRequests.size() == data) {
-				this.openMenuForm(player);
-				return;
-			}
-			ClanAPI.removeRequestClan(clanRequests.get(data), ClanAPI.getPlayerClanId(player.getName()));
-			player.sendMessage(ClanAPI.PREFIX + "Заявка на приглашение игрока §6" + clanRequests.get(data) + " §fудалена§7!");
+		simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default", (p, button) -> {
+			this.openMenuForm(player);
 		});
+		simpleForm.send(player);
 	}
 
 	private void openLeaveClanForm(Player player) {
 		ModalForm modalForm = new ModalForm("Выход с клана");
 		modalForm.setContent("Вы действительно хотите §6покинуть §fклан§7?");
-		modalForm.setButton1("Да");
-		modalForm.setButton2("Нет");
-		modalForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == -1) {
-				return;
-			}
-			if (data == 0) {
+		modalForm.setPositiveButton("Да");
+		modalForm.setNegativeButton("Нет");
+		modalForm.send(player, (p, yes) -> {
+			if (yes) {
 				player.sendMessage(ClanAPI.PREFIX + "Вы успешно §6покинули §fклан!");
 				ClanAPI.leaveClan(player.getName());
 			}
@@ -161,13 +107,10 @@ public class ClanCommand extends Command {
 	private void openDeleteClanForm(Player player, Integer clanId) {
 		ModalForm modalForm = new ModalForm("Удаление клана");
 		modalForm.setContent("Вы действительно хотите §6удалить §fсвой клан§7?");
-		modalForm.setButton1("Да");
-		modalForm.setButton2("Нет");
-		modalForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == -1) {
-				return;
-			}
-			if (data == 0) {
+		modalForm.setPositiveButton("Да");
+		modalForm.setNegativeButton("Нет");
+		modalForm.send(player, (p, yes) -> {
+			if (yes) {
 				player.sendMessage(ClanAPI.PREFIX + "Клан успешно §6удален!");
 				ClanAPI.deleteClan(clanId);
 			}
@@ -180,19 +123,14 @@ public class ClanCommand extends Command {
 		simpleForm.addContent("\n\n§fУчастники§7:");
 		List<String> clanMembers = ClanAPI.getClanMembers(clanId);
 		for (String memberName : clanMembers) {
-			simpleForm.addButton(memberName + "\n§6" + ClanAPI.getPlayerRole(memberName));
+			simpleForm.addButton(memberName + "\n§6" + ClanAPI.getPlayerRole(memberName), (p, button) -> {
+				this.openEditPlayerForm(player, memberName);
+			});
 		}
-		simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default");
-		simpleForm.send(player, (targetPlayer, form, data) -> {
-			if (data == -1) {
-				return;
-			}
-			if (clanMembers.size() == data) {
-				this.openMenuForm(player);
-				return;
-			}
-			this.openEditPlayerForm(player, clanMembers.get(data));
+		simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default", (p, button) -> {
+			this.openMenuForm(player);
 		});
+		simpleForm.send(player);
 	}
 
 	private void openEditPlayerForm(Player player, String targetName) {
@@ -201,122 +139,67 @@ public class ClanCommand extends Command {
 			simpleForm.addContent("§l§6• §rЗвание§7: §6" + ClanAPI.getPlayerRole(targetName));
 			switch (ClanAPI.getPlayerRole(targetName)) {
 				case "Соруководитель":
-					simpleForm.addButton("Понизить");
-					simpleForm.addButton("Исключить");
-					simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default");
-					simpleForm.send(player, (targetPlayer, form, data) -> {
-						if (data == -1) {
-							return;
-						}
-						switch (data) {
-							case 0: {
-								ClanAPI.changePlayerRole(targetName, "Старейшина");
-								this.openEditPlayerForm(player, targetName);
-							}
-							break;
-
-							case 1: {
-								ClanAPI.leaveClan(targetName);
-								player.sendMessage(ClanAPI.PREFIX + "Игрок §6" + targetName + " §fбыл успешно исключен§7!");
-							}
-							break;
-
-							case 2: {
-								this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
-							}
-							break;
-						}
+					simpleForm.addButton("Понизить", (p, button) -> {
+						ClanAPI.changePlayerRole(targetName, "Старейшина");
+						this.openEditPlayerForm(player, targetName);
 					});
-					break;
-				case "Старейшина":
-					simpleForm.addButton("Повысить");
-					simpleForm.addButton("Понизить");
-					simpleForm.addButton("Исключить");
-					simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default");
-					simpleForm.send(player, (targetPlayer, form, data) -> {
-						if (data == -1) {
-							return;
-						}
-						switch (data) {
-							case 0: {
-								ClanAPI.changePlayerRole(targetName, "Соруководитель");
-								this.openEditPlayerForm(player, targetName);
-							}
-							break;
-
-							case 1: {
-								ClanAPI.changePlayerRole(targetName, "Участник");
-								this.openEditPlayerForm(player, targetName);
-							}
-							break;
-
-							case 2: {
-								ClanAPI.leaveClan(targetName);
-								player.sendMessage(ClanAPI.PREFIX + "Игрок §6" + targetName + " §fбыл успешно исключен§7!");
-							}
-							break;
-
-							case 3: {
-								this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
-							}
-							break;
-						}
+					simpleForm.addButton("Исключить", (p, button) -> {
+						ClanAPI.leaveClan(targetName);
+						player.sendMessage(ClanAPI.PREFIX + "Игрок §6" + targetName + " §fбыл успешно исключен§7!");
 					});
-					break;
-				case "Участник":
-					simpleForm.addButton("Повысить");
-					simpleForm.addButton("Исключить");
-					simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default");
-					simpleForm.send(player, (targetPlayer, form, data) -> {
-						if (data == -1) {
-							return;
-						}
-						switch (data) {
-							case 0: {
-								ClanAPI.changePlayerRole(targetName, "Старейшина");
-								this.openEditPlayerForm(player, targetName);
-							}
-							break;
-
-							case 2: {
-								ClanAPI.leaveClan(targetName);
-								player.sendMessage(ClanAPI.PREFIX + "Игрок §6" + targetName + " §fбыл успешно исключен§7!");
-							}
-							break;
-
-							case 3: {
-								this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
-							}
-							break;
-						}
-					});
-					break;
-				default:
-					simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default");
-					simpleForm.send(player, (targetPlayer, form, data) -> {
-						if (data == -1) {
-							return;
-						}
+					simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default", (p, button) -> {
 						this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
 					});
-					break;
+				case "Старейшина":
+					simpleForm.addButton("Повысить", (p, button) -> {
+						ClanAPI.changePlayerRole(targetName, "Соруководитель");
+						this.openEditPlayerForm(player, targetName);
+					});
+					simpleForm.addButton("Понизить", (p, button) -> {
+						ClanAPI.changePlayerRole(targetName, "Участник");
+						this.openEditPlayerForm(player, targetName);
+					});
+					simpleForm.addButton("Исключить", (p, button) -> {
+						ClanAPI.leaveClan(targetName);
+						player.sendMessage(ClanAPI.PREFIX + "Игрок §6" + targetName + " §fбыл успешно исключен§7!");
+					});
+					simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default", (p, button) -> {
+						this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
+					});
+				case "Участник":
+					simpleForm.addButton("Повысить", (p, button) -> {
+						ClanAPI.changePlayerRole(targetName, "Старейшина");
+						this.openEditPlayerForm(player, targetName);
+					});
+					simpleForm.addButton("Исключить", (p, button) -> {
+						ClanAPI.leaveClan(targetName);
+						player.sendMessage(ClanAPI.PREFIX + "Игрок §6" + targetName + " §fбыл успешно исключен§7!");
+					});
+					simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default", (p, button) -> {
+						this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
+					});
+				default:
+					simpleForm.addButton("Назад", ImageType.PATH, "textures/ui/back_button_default", (p, button) -> {
+						this.openMembersForm(player, ClanAPI.getPlayerClanId(player.getName()));
+					});
 			}
+
+			simpleForm.send(player);
 		}
 	}
 
 	private void openCreateClanForm(Player player) {
 		CustomForm customForm = new CustomForm("Создание клана");
-		customForm.addLabel("Для §6создания клана §fВам потребуется §62000§7. §fУбедитесь§7, §fчто у Вас имеются §6все нужны §fкомпоненты§7!");
-		customForm.addLabel("\n§fНиже §6введите §fназвание Клана§7.");
-		customForm.addLabel("\n§l§6• §rОтсутсвие спец§7. §fсимволов");
-		customForm.addLabel("§l§6• §rОт §64 §fдо §610 §fсимволов");
-		customForm.addInput("Название клана", "название клана");
-		customForm.send(player, (targetPlayer, form, data) -> {
-			if (data == null) {
-				return;
-			}
+		customForm.addElement(new Label("Для §6создания клана §fВам потребуется §62000§7. §fУбедитесь§7, §fчто у Вас " +
+				"имеются §6все " +
+				"нужны §fкомпоненты§7!"));
+		customForm.addElement(new Label("\n§fНиже §6введите §fназвание Клана§7."));
+		customForm.addElement(new Label("\n§l§6• §rОтсутсвие спец§7. §fсимволов"));
+		customForm.addElement(new Label("§l§6• §rОт §64 §fдо §610 §fсимволов"));
+		customForm.addElement("clanName", new Input("Название клана", "название клана"));
+		customForm.send(player, (p, response) -> {
 			if (AuthAPI.getMoney(player.getName()) >= 2000) {
-				String clanName = data.get(4).toString();
+				String clanName = response.getInput("clanName").getValue();
 				if (clanName.length() > 10 || clanName.length() < 4) {
 					player.sendMessage(ClanAPI.PREFIX + "Название клана слишком §6длинное§7/§6короткое§7!");
 					return;
@@ -344,14 +227,11 @@ public class ClanCommand extends Command {
 		simpleForm.addContent("\n\nСписок §6заявок §fв клан§7:");
 		List<Integer> requests = ClanAPI.getPlayerRequests(player.getName());
 		for (Integer clanId : requests) {
-			simpleForm.addButton("§6" + ClanAPI.getClanName(clanId) + "\n§fНажмите§7, §fчтобы принять§7!");
+			simpleForm.addButton("§6" + ClanAPI.getClanName(clanId) + "\n§fНажмите§7, §fчтобы принять§7!", (p, button) -> {
+				ClanAPI.acceptRequestsClan(player, clanId);
+			});
 		}
-		simpleForm.send(player, (targetPlayer, targetForm, data) -> {
-			if (data == -1) {
-				return;
-			}
-			ClanAPI.acceptRequestsClan(player, requests.get(data));
-		});
+		simpleForm.send(player);
 	}
 
 	public boolean execute(CommandSender sender, String label, String[] args) {
