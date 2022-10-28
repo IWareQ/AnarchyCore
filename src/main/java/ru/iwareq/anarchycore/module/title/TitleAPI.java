@@ -5,6 +5,8 @@ import cn.nukkit.Server;
 import cn.nukkit.scheduler.Task;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import ru.iwareq.anarchycore.AnarchyCore;
+import ru.iwareq.anarchycore.module.title.cases.CasesListener;
 import ru.iwareq.anarchycore.module.title.manager.TitleManager;
 
 import java.util.Map;
@@ -24,6 +26,8 @@ public class TitleAPI {
 				MANAGERS.values().forEach(manager -> manager.save(DB));
 			}
 		}, 20 * 60, true);
+
+		Server.getInstance().getPluginManager().registerEvents(new CasesListener(), AnarchyCore.getInstance());
 	}
 
 	public static Map<Player, TitleManager> getManagers() {

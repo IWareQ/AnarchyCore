@@ -8,8 +8,10 @@ import ru.iwareq.anarchycore.module.title.TitleDB;
 import ru.iwareq.anarchycore.module.title.Titles;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 public class TitleManager {
@@ -43,5 +45,24 @@ public class TitleManager {
 		if (this.currentTitle != null) {
 			db.setPlayerCurrentTitle(this.player, this.currentTitle);
 		}
+	}
+
+	public Set<Titles> getLockedTitles() {
+		Set<Titles> all = new HashSet<>();
+		Titles.getAll().values().forEach(all::addAll);
+
+		all.removeIf(titles -> unlockedTitles.get(titles.getType()).contains(titles));
+
+		return all;
+	}
+
+	public int getAllCount() {
+		AtomicInteger result = new AtomicInteger();
+
+		unlockedTitles.keySet().forEach(type -> {
+			result.addAndGet(unlockedTitles.get(type).size());
+		});
+
+		return result.get();
 	}
 }

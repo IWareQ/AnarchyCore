@@ -15,6 +15,10 @@ public enum Titles {
 	FINES(TitleAPI.Type.DISNEY, "Финес"),
 	FERB(TitleAPI.Type.DISNEY, "Ферб"),
 	EREN(TitleAPI.Type.ANIME, "Эрен"),
+	DINE(TitleAPI.Type.ANIME, "dine"),
+	PROTECT(TitleAPI.Type.DISNEY, "protect"),
+	STUFF(TitleAPI.Type.DISNEY, "stuff"),
+	MIXTURE(TitleAPI.Type.ANIME, "mixture"),
 	MIKASSA(TitleAPI.Type.ANIME, "Микасса");
 
 	private static final Map<TitleAPI.Type, Set<Titles>> ALL_BY_TYPE = new HashMap<>();
@@ -34,6 +38,10 @@ public enum Titles {
 
 	public static Map<TitleAPI.Type, Set<Titles>> getAll() {
 		return ALL_BY_TYPE;
+	}
+
+	public static int getAllCount() {
+		return Titles.values().length;
 	}
 
 	public static Set<Titles> getAllByType(TitleAPI.Type type) {

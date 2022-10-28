@@ -47,10 +47,6 @@ public class AuthAPI {
 		return DB.getCases(playerName);
 	}
 
-	public static void setGameTime(String playerName, int cases) {
-		DB.setCases(playerName, cases);
-	}
-
 	public static void setDateAndIpLast(String playerName, String date, String ip) {
 		DB.setDateAndIpLast(playerName, date, ip);
 	}
@@ -69,5 +65,9 @@ public class AuthAPI {
 
 	public static void updateTimeGroup(String user, long time) {
 		DB.updateTimeGroup(user, time);
+	}
+
+	public static void setCases(String name, int count) {
+		DB.setCases(name, count);
 	}
 }

@@ -13,6 +13,8 @@ import ru.iwareq.anarchycore.module.Auth.AuthAPI;
 import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
 import ru.iwareq.anarchycore.module.EventsListener.EventsListener;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
+import ru.iwareq.anarchycore.module.title.TitleAPI;
+import ru.iwareq.anarchycore.module.title.Titles;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,7 +49,8 @@ public class ScoreboardTask extends PluginTask<AnarchyCore> {
 		}
 
 		scoreboardDisplay.addLine("§rРанг: " + PermissionAPI.getPlayerGroup(player.getName()).getGroupName() + time, 1);
-		scoreboardDisplay.addLine("§rТитул: нету", 2);
+		Titles currentTitle = TitleAPI.getManager(player).getCurrentTitle();
+		scoreboardDisplay.addLine("§rТитул: " + (currentTitle == null ? "нету" : currentTitle.getName()), 2);
 		scoreboardDisplay.addLine("§3", 3);
 		scoreboardDisplay.addLine("§rБаланс: " + EconomyAPI.format(AuthAPI.getMoney(player.getName())), 4);
 		scoreboardDisplay.addLine("§rПинг: " + player.getPing(), 4);

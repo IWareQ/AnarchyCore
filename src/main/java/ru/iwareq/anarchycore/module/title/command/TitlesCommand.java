@@ -36,8 +36,6 @@ public class TitlesCommand extends Command {
 		simpleForm.addButton("Скрыть титул", (p, button) -> manager.setCurrentTitle(null));
 
 		simpleForm.send(player);
-		manager.addTitle(Titles.EREN);
-		manager.addTitle(Titles.FERB);
 	}
 
 	private void sendUnlockedListPrefixes(Player player, TitleAPI.Type type, TitleManager manager) {

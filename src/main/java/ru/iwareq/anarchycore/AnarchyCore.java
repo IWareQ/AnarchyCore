@@ -97,6 +97,7 @@ import ru.iwareq.anarchycore.module.Permissions.Commands.GroupCommand;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
 import ru.iwareq.anarchycore.module.Permissions.RemoveGroup;
 import ru.iwareq.anarchycore.module.title.TitleAPI;
+import ru.iwareq.anarchycore.module.title.command.AddCasesCommand;
 import ru.iwareq.anarchycore.module.title.command.TitlesCommand;
 import ru.iwareq.anarchycore.task.BossSpawnTask;
 import ru.iwareq.anarchycore.task.BroadcastTask;
@@ -211,6 +212,7 @@ public class AnarchyCore extends PluginBase {
 				new HideGlobalChatCommand(),
 				new TpdeclineCommand(),
 				new TitlesCommand(),
+				new AddCasesCommand(),
 				new DisenchantCommand(),
 				new BarCommand(), new CheatCheckCommand(),
 				new BorderBuildCommand(), new TestCommand(), new BonusCommand(), new SeeInventoryCommand(),

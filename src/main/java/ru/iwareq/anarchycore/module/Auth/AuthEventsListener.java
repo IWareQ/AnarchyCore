@@ -17,6 +17,7 @@ import ru.iwareq.anarchycore.module.Commands.Teleport.Commands.TpdeclineCommand;
 import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
 import ru.iwareq.anarchycore.module.title.TitleAPI;
+import ru.iwareq.anarchycore.module.title.cases.CasesListener;
 import ru.iwareq.anarchycore.task.ScoreboardTask;
 import ru.iwareq.anarchycore.util.Utils;
 
@@ -27,6 +28,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AuthEventsListener implements Listener {
+
+	public static Map<Player, FloatingTextParticle> titlesMap = new HashMap<>();
 
 	private static final HashMap<Player, Long> playerTime = new HashMap<>();
 
@@ -122,6 +125,8 @@ public class AuthEventsListener implements Listener {
 
 		ScoreboardTask.hideScoreboard(player);
 
+		titlesMap.remove(player);
+
 		event.setQuitMessage("");
 	}
 
@@ -147,6 +152,13 @@ public class AuthEventsListener implements Listener {
 		WorldSystemAPI.Spawn.addParticle(new FloatingTextParticle(new Position(124.5, 95.5, 106.5), "§l§6Изумрудный Приват", "§l10 §7× §f10"), player);
 		WorldSystemAPI.Spawn.addParticle(new FloatingTextParticle(new Position(79.5, 92, 20.5), "§l§6Прыгай в портал§7!", "§lПросто прыгай и начинай выживать"), player);
 		WorldSystemAPI.Spawn.addParticle(new FloatingTextParticle(new Position(121.5, 94.5, 107.5), "§l§6Как приватить§7?", "§lЧтобы запривать регион§7,\n§fпросто установи один из блоков\n§fкоторые стоят рядом§7. §fКаждый блок имеет\n§fограниченный радиус привата§7,\n§fкоторый создается вокруг блока§7!"), player);
+
+		FloatingTextParticle textParticle = new FloatingTextParticle(CasesListener.CURRENT_CASE_LOCATION.add(0.5D, 1, 0.5D), "Кейс с титулами",
+				"В наличии §6" + AuthAPI.getCases(player.getName()) + " §fнажмите чтобы открыть");
+		titlesMap.put(player, textParticle);
+		WorldSystemAPI.Spawn.addParticle(
+				textParticle,
+				player);
 		addFloatingKillsTops(new Position(115.5, 96, 97.5), player);
 		addFloatingDeathsTops(new Position(127.5, 96, 97.5), player);
 
