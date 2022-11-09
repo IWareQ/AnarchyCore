@@ -14,7 +14,6 @@ import ru.iwareq.anarchycore.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
 
 public class GroupCommand extends Command {
 
@@ -59,21 +58,18 @@ public class GroupCommand extends Command {
 				return true;
 			}
 
-			sender.sendMessage(PermissionAPI.PREFIX + "Игрок §6" + targetName + " §fполучил группу " + PermissionAPI.getGroup(groupId).getGroupName() + " §7(" + Utils.getOnlineString(targetName) + "§7)");
 			Player target = Server.getInstance().getPlayerExact(targetName);
 			long seconds = Long.parseLong(args[3]);
+			sender.sendMessage(PermissionAPI.PREFIX + "Игрок §6" + targetName + " §fполучил группу " + PermissionAPI.getGroup(groupId).getGroupName() + " на " + Utils.getRemainingTime(seconds) + " §7(" + Utils.getOnlineString(targetName) + "§7)");
 			if (target != null) {
 				if (!alias.equalsIgnoreCase("groups")) {
 					Server.getInstance().broadcastMessage("Игрок " + target.getName() + "выграл донат " + PermissionAPI.getGroup(groupId).getGroupName() +
-							"на " + Utils.getRemainingTime(seconds) + " дн. из донат кейса, хочешь " +
+							"на " + Utils.getRemainingTime(seconds) + " из донат кейса, хочешь " +
 							"так-же " +
 							"заходи на " +
 							"наш сайт litenex.ru");
 					target.sendMessage("Вам выдан донат  " + PermissionAPI.getGroup(groupId).getGroupName() + " " +
-							"на " + Utils.getRemainingTime(seconds) +
-							" дн." +
-							" удачной игры");
-					target.sendMessage(PermissionAPI.PREFIX + "Вы получили привилегию " + PermissionAPI.getGroup(groupId).getGroupName() + "§7!\n§l§6• §rПодробнее со списком возможностей можно познакомиться с помощью команды §7/§6donate");
+							"на " + Utils.getRemainingTime(seconds) + " удачной игры");
 				}
 
 				PermissionAPI.setGroup(target.getName(), groupId, seconds);
@@ -103,11 +99,12 @@ public class GroupCommand extends Command {
 			return true;
 		}
 
-		sender.sendMessage(PermissionAPI.PREFIX + "Игрок §6" + targetName + " §fполучил группу " + PermissionAPI.getGroup(args[0]).getGroupName() + " §7(" + Utils.getOnlineString(targetName) + "§7)");
+		sender.sendMessage(PermissionAPI.PREFIX + "Игрок §6" + targetName + " §fполучил группу " + PermissionAPI.getGroup(args[0]).getGroupName() + " навсегда §7(" + Utils.getOnlineString(targetName) + "§7)");
 		Player target = Server.getInstance().getPlayerExact(targetName);
 		if (target != null) {
 			if (!alias.equalsIgnoreCase("groups")) {
-				Server.getInstance().broadcastMessage("Игрок " + target.getName() + "купил донат навсегда, хочешь так-же " +
+				Server.getInstance().broadcastMessage("Игрок " + target.getName() + " купил донат навсегда, хочешь " +
+						"так-же " +
 						"заходи на " +
 						"наш сайт litenex.ru");
 				target.sendMessage("Вам был видан донат  " + PermissionAPI.getGroup(args[0]).getGroupName() + " навсегда," +
