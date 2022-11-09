@@ -59,8 +59,8 @@ public class CasesListener implements Listener {
 			return;
 		}
 
-		if (AuthAPI.getCases(player.getName()) > 0) {
-			if (block.getId() == Block.ENDER_CHEST && block.getLocation().equals(CURRENT_CASE_LOCATION)) {
+		if (block.getId() == Block.ENDER_CHEST && block.getLocation().equals(CURRENT_CASE_LOCATION)) {
+			if (AuthAPI.getCases(player.getName()) > 0) {
 				TitleManager manager = TitleAPI.getManager(player);
 				if (Titles.getAllCount() != manager.getAllCount()) {
 					this.startOpenCase(player);
@@ -69,10 +69,10 @@ public class CasesListener implements Listener {
 					player.sendMessage("Ты и так получил все титулы");
 					event.setCancelled();
 				}
+			} else {
+				player.sendMessage("У тебя недостаточно кейсов");
+				event.setCancelled();
 			}
-		} else {
-			player.sendMessage("У тебя недостаточно кейсов");
-			event.setCancelled();
 		}
 	}
 

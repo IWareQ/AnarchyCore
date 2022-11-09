@@ -43,7 +43,7 @@ public class ScoreboardTask extends PluginTask<AnarchyCore> {
 		ScoreboardDisplay scoreboardDisplay = scoreboard.addDisplay(DisplaySlot.SIDEBAR, "dumy", "  LITENEX");
 		scoreboardDisplay.addLine("§rНик: " + player.getName(), 0);
 
-		String time = "";
+		String time = " ∞";
 		if (PermissionAPI.getTimeGroup(player.getName()) > 0) {
 			time = " (" + PermissionAPI.getTimeGroup(player.getName()) / 86400 + " дн)";
 		}

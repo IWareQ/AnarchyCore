@@ -18,6 +18,8 @@ import ru.iwareq.anarchycore.module.Permissions.Group.SpecialGroup.YouTubeGroup;
 import ru.iwareq.anarchycore.module.Permissions.Group.StaffGroup.AdministratorGroup;
 import ru.iwareq.anarchycore.module.Permissions.Group.StaffGroup.HelperGroup;
 import ru.iwareq.anarchycore.module.Permissions.Group.StaffGroup.ModeratorGroup;
+import ru.iwareq.anarchycore.module.title.TitleAPI;
+import ru.iwareq.anarchycore.module.title.Titles;
 import ru.iwareq.anarchycore.util.Utils;
 
 import java.util.HashMap;
@@ -68,7 +70,8 @@ public class PermissionAPI {
 	}
 
 	public static void updateNamedTag(Player player) {
-		player.setNameTag(getPlayerGroup(player.getName()).getGroupName() + " " + player.getName() + "\n§7" + Utils.getDeviceOS(player));
+		Titles currentTitle = TitleAPI.getManager(player).getCurrentTitle();
+		player.setNameTag((currentTitle == null ? "" : currentTitle.getName()) + getPlayerGroup(player.getName()).getGroupName() + " " + player.getName() + "\n§7" + Utils.getDeviceOS(player));
 	}
 
 	public static void updatePermissions(Player player) {

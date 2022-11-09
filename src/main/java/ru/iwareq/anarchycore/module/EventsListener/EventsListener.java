@@ -34,6 +34,8 @@ import ru.iwareq.anarchycore.module.Commands.HideGlobalChatCommand;
 import ru.iwareq.anarchycore.module.Cooldown.CooldownAPI;
 import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
+import ru.iwareq.anarchycore.module.title.TitleAPI;
+import ru.iwareq.anarchycore.module.title.Titles;
 import ru.iwareq.anarchycore.util.Utils;
 
 import java.util.HashMap;
@@ -77,7 +79,10 @@ public class EventsListener implements Listener {
 	public void onPlayerChat(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		String message = event.getMessage();
-		String displayName = (ClanAPI.playerIsInClan(player.getName()) ? "§3" + ClanAPI.getClanName(ClanAPI.getPlayerClanId(player.getName())) + " " : "") + PermissionAPI.getPlayerGroup(player.getName()).getGroupName() + " " + player.getName();
+		Titles currentTitle = TitleAPI.getManager(player).getCurrentTitle();
+		String displayName =
+				(currentTitle == null ? "" : currentTitle.getName()) + " " + (ClanAPI.playerIsInClan(player.getName()) ?
+				                                                              "§3" + ClanAPI.getClanName(ClanAPI.getPlayerClanId(player.getName())) + " " : "") + PermissionAPI.getPlayerGroup(player.getName()).getGroupName() + " " + player.getName();
 		Long cooldownTime = COOLDOWN.get(player);
 		long nowTime = System.currentTimeMillis() / 1000;
 		if (cooldownTime != null && cooldownTime > nowTime) {
