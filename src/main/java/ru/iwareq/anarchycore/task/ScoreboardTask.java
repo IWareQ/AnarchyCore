@@ -13,8 +13,10 @@ import ru.iwareq.anarchycore.module.Auth.AuthAPI;
 import ru.iwareq.anarchycore.module.Economy.EconomyAPI;
 import ru.iwareq.anarchycore.module.EventsListener.EventsListener;
 import ru.iwareq.anarchycore.module.Permissions.PermissionAPI;
+import ru.iwareq.anarchycore.module.Permissions.RemoveGroup;
 import ru.iwareq.anarchycore.module.title.TitleAPI;
 import ru.iwareq.anarchycore.module.title.Titles;
+import ru.iwareq.anarchycore.util.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,8 +46,9 @@ public class ScoreboardTask extends PluginTask<AnarchyCore> {
 		scoreboardDisplay.addLine("§rНик: " + player.getName(), 0);
 
 		String time = " ∞";
-		if (PermissionAPI.getTimeGroup(player.getName()) > 0) {
-			time = " (" + PermissionAPI.getTimeGroup(player.getName()) / 86400 + " дн)";
+		long timeE = RemoveGroup.getTime(player.getName());
+		if (timeE > 0) {
+			time = " (" + Utils.getRemainingTime(timeE) + ")";
 		}
 
 		scoreboardDisplay.addLine("§rРанг: " + PermissionAPI.getPlayerGroup(player.getName()).getGroupName() + time, 1);

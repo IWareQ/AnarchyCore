@@ -61,28 +61,28 @@ public class GroupCommand extends Command {
 
 			sender.sendMessage(PermissionAPI.PREFIX + "Игрок §6" + targetName + " §fполучил группу " + PermissionAPI.getGroup(groupId).getGroupName() + " §7(" + Utils.getOnlineString(targetName) + "§7)");
 			Player target = Server.getInstance().getPlayerExact(targetName);
-			String days = args[3];
+			long seconds = Long.parseLong(args[3]);
 			if (target != null) {
 				if (!alias.equalsIgnoreCase("groups")) {
 					Server.getInstance().broadcastMessage("Игрок " + target.getName() + "выграл донат " + PermissionAPI.getGroup(groupId).getGroupName() +
-							"на " + TimeUnit.DAYS.toSeconds(Long.parseLong(days)) + " дн. из донат кейса, хочешь " +
+							"на " + Utils.getRemainingTime(seconds) + " дн. из донат кейса, хочешь " +
 							"так-же " +
 							"заходи на " +
 							"наш сайт litenex.ru");
 					target.sendMessage("Вам выдан донат  " + PermissionAPI.getGroup(groupId).getGroupName() + " " +
-							"на " + TimeUnit.DAYS.toSeconds(Long.parseLong(days)) +
+							"на " + Utils.getRemainingTime(seconds) +
 							" дн." +
 							" удачной игры");
 					target.sendMessage(PermissionAPI.PREFIX + "Вы получили привилегию " + PermissionAPI.getGroup(groupId).getGroupName() + "§7!\n§l§6• §rПодробнее со списком возможностей можно познакомиться с помощью команды §7/§6donate");
 				}
 
-				PermissionAPI.setGroup(target.getName(), groupId, TimeUnit.DAYS.toSeconds(Long.parseLong(days)));
+				PermissionAPI.setGroup(target.getName(), groupId, seconds);
 				PermissionAPI.updatePermissions(target);
 				PermissionAPI.updateNamedTag(target);
 				return true;
 			}
 
-			PermissionAPI.setGroup(targetName, groupId, TimeUnit.DAYS.toSeconds(Long.parseLong(days)));
+			PermissionAPI.setGroup(targetName, groupId, seconds);
 
 			return true;
 		}

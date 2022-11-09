@@ -162,7 +162,7 @@ public class AnarchyCore extends PluginBase {
 		scheduler.scheduleRepeatingTask(new CooldownRemoveTask(), 20);
 		scheduler.scheduleRepeatingTask(new BroadcastTask(), 60 * 20);
 		scheduler.scheduleRepeatingTask(new RestartTask(), 20);
-		scheduler.scheduleRepeatingTask(new ScoreboardTask(this), 20);
+		scheduler.scheduleRepeatingTask(new ScoreboardTask(this), 20, true);
 		scheduler.scheduleRepeatingTask(new GroupRemoveTask(), 20, true);
 	}
 

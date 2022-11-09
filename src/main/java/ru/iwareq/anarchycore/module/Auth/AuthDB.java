@@ -157,10 +157,11 @@ public class AuthDB extends SQLiteDatabase {
 	public Map<String, Long> getAllTimeGroup() {
 		try (Handle handle = this.connect()) {
 			Map<String, Long> result = new HashMap<>();
-			handle.createQuery("SELECT Name, PermissionTime FROM Users;").map(rowView -> {
-				result.put(rowView.getColumn("Name", String.class), rowView.getColumn("PermissionTime", Long.class));
+			handle.createQuery("SELECT Name, PermissionTime FROM Users WHERE PermissionTime != -1;").map(rowView -> {
+				result.put(rowView.getColumn("Name", String.class).toLowerCase(), rowView.getColumn("PermissionTime",
+						Long.class));
 				return 1L;
-			}).list();
+			}).one();
 
 			return result;
 		}

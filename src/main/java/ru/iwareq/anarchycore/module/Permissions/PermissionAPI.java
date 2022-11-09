@@ -67,6 +67,10 @@ public class PermissionAPI {
 
 	public static void setGroup(String playerName, String groupId, long expiredTime) {
 		AuthAPI.setGroup(playerName, groupId, expiredTime);
+
+		if (expiredTime != -1) {
+			RemoveGroup.add(playerName, expiredTime);
+		}
 	}
 
 	public static void updateNamedTag(Player player) {

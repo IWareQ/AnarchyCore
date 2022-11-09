@@ -18,4 +18,12 @@ public class RemoveGroup {
 	public static void save() {
 		USERS.forEach(AuthAPI::updateTimeGroup);
 	}
+
+	public static void add(String playerName, long seconds) {
+		USERS.put(playerName.toLowerCase(), seconds);
+	}
+
+	public static long getTime(String playerName) {
+		return USERS.getOrDefault(playerName.toLowerCase(), -1L);
+	}
 }
