@@ -161,7 +161,7 @@ public class AuthDB extends SQLiteDatabase {
 				result.put(rowView.getColumn("Name", String.class).toLowerCase(), rowView.getColumn("PermissionTime",
 						Long.class));
 				return 1L;
-			}).one();
+			}).list();
 
 			return result;
 		}

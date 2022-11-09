@@ -64,7 +64,7 @@ public class GroupCommand extends Command {
 			if (target != null) {
 				if (!alias.equalsIgnoreCase("groups")) {
 					Server.getInstance().broadcastMessage("Игрок " + target.getName() + "выграл донат " + PermissionAPI.getGroup(groupId).getGroupName() +
-							"на " + Utils.getRemainingTime(seconds) + " из донат кейса, хочешь " +
+							" на " + Utils.getRemainingTime(seconds) + " из донат кейса, хочешь " +
 							"так-же " +
 							"заходи на " +
 							"наш сайт litenex.ru");
