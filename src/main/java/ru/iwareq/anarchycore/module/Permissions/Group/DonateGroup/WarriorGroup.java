@@ -4,16 +4,16 @@ import ru.iwareq.anarchycore.module.Permissions.Group.DefaultGroup;
 
 import java.util.HashMap;
 
-public class GuardianGroup extends DefaultGroup {
+public class WarriorGroup extends DefaultGroup {
 
 	@Override
 	public String getGroupId() {
-		return "guardian";
+		return "warrior";
 	}
 
 	@Override
 	public String getGroupName() {
-		return "§3Страж§r";
+		return "§7Воин§r";
 	}
 
 	@Override
@@ -25,7 +25,6 @@ public class GuardianGroup extends DefaultGroup {
 	public HashMap<String, Boolean> getPermissionAttachment() {
 		HashMap<String, Boolean> permissionAllows = new HashMap<>();
 		permissionAllows.put("Command.CraftingTable", true);
-		permissionAllows.put("Command.Food", true);
 		return permissionAllows;
 	}
 

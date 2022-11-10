@@ -63,7 +63,7 @@ public class GroupCommand extends Command {
 			sender.sendMessage(PermissionAPI.PREFIX + "Игрок §6" + targetName + " §fполучил группу " + PermissionAPI.getGroup(groupId).getGroupName() + " на " + Utils.getRemainingTime(seconds) + " §7(" + Utils.getOnlineString(targetName) + "§7)");
 			if (target != null) {
 				if (!alias.equalsIgnoreCase("groups")) {
-					Server.getInstance().broadcastMessage("Игрок " + target.getName() + "выграл донат " + PermissionAPI.getGroup(groupId).getGroupName() +
+					Server.getInstance().broadcastMessage("Игрок " + target.getName() + " выграл донат " + PermissionAPI.getGroup(groupId).getGroupName() +
 							" на " + Utils.getRemainingTime(seconds) + " из донат кейса, хочешь " +
 							"так-же " +
 							"заходи на " +
@@ -116,7 +116,8 @@ public class GroupCommand extends Command {
 			return true;
 		} else {
 			if (!alias.equalsIgnoreCase("groups")) {
-				Server.getInstance().broadcastMessage("Игрок " + targetName + "купил донат навсегда, хочешь так-же заходи на " +
+				Server.getInstance().broadcastMessage("Игрок " + targetName + " купил донат навсегда, хочешь так-же " +
+						"заходи на " +
 						"наш сайт litenex.ru");
 			}
 		}

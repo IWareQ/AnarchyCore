@@ -1,24 +1,24 @@
-package ru.iwareq.anarchycore.module.Permissions.Group.SpecialGroup;
+package ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup;
 
 import ru.iwareq.anarchycore.module.Permissions.Group.DefaultGroup;
 
 import java.util.HashMap;
 
-public class YouTubeGroup extends DefaultGroup {
+public class HellHoundGroup extends DefaultGroup {
 
 	@Override
 	public String getGroupId() {
-		return "youtube";
+		return "hell_hound";
 	}
 
 	@Override
 	public String getGroupName() {
-		return "§7YouTube§r";
+		return "§7Цербер§r";
 	}
 
 	@Override
 	public Integer getMaxRegions() {
-		return 4;
+		return 2;
 	}
 
 	@Override

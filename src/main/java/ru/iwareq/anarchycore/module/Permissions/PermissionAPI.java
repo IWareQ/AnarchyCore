@@ -5,19 +5,18 @@ import cn.nukkit.permission.PermissionAttachment;
 import ru.iwareq.anarchycore.AnarchyCore;
 import ru.iwareq.anarchycore.module.Auth.AuthAPI;
 import ru.iwareq.anarchycore.module.Permissions.Group.DefaultGroup;
-import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.BogGroup;
-import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.GuardianGroup;
-import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.HeroGroup;
-import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.KingGroup;
+import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.AristocratGroup;
+import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.DukeGroup;
+import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.EmperorGroup;
+import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.HellHoundGroup;
 import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.LordGroup;
-import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.PrinceGroup;
-import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.TartarusGroup;
-import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.TitanGroup;
+import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.PhoenixGroup;
+import ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup.WarriorGroup;
 import ru.iwareq.anarchycore.module.Permissions.Group.PlayerGroup;
 import ru.iwareq.anarchycore.module.Permissions.Group.SpecialGroup.YouTubeGroup;
-import ru.iwareq.anarchycore.module.Permissions.Group.StaffGroup.AdministratorGroup;
+import ru.iwareq.anarchycore.module.Permissions.Group.SpecialGroup.YouTubePlusGroup;
+import ru.iwareq.anarchycore.module.Permissions.Group.StaffGroup.AdminGroup;
 import ru.iwareq.anarchycore.module.Permissions.Group.StaffGroup.HelperGroup;
-import ru.iwareq.anarchycore.module.Permissions.Group.StaffGroup.ModeratorGroup;
 import ru.iwareq.anarchycore.module.title.TitleAPI;
 import ru.iwareq.anarchycore.module.title.Titles;
 import ru.iwareq.anarchycore.util.Utils;
@@ -31,18 +30,19 @@ public class PermissionAPI {
 
 	public static void register() {
 		registerGroup(new PlayerGroup());
-		registerGroup(new BogGroup());
-		registerGroup(new GuardianGroup());
-		registerGroup(new HeroGroup());
-		registerGroup(new KingGroup());
+		registerGroup(new WarriorGroup());
+		registerGroup(new HellHoundGroup());
+		registerGroup(new PhoenixGroup());
+		registerGroup(new EmperorGroup());
+		registerGroup(new DukeGroup());
 		registerGroup(new LordGroup());
-		registerGroup(new PrinceGroup());
-		registerGroup(new TartarusGroup());
-		registerGroup(new TitanGroup());
+		registerGroup(new AristocratGroup());
+
 		registerGroup(new YouTubeGroup());
+		registerGroup(new YouTubePlusGroup());
+
 		registerGroup(new HelperGroup());
-		registerGroup(new ModeratorGroup());
-		registerGroup(new AdministratorGroup());
+		registerGroup(new AdminGroup());
 	}
 
 	private static void registerGroup(DefaultGroup group) {

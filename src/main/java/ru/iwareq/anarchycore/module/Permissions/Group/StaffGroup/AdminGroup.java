@@ -1,24 +1,24 @@
-package ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup;
+package ru.iwareq.anarchycore.module.Permissions.Group.StaffGroup;
 
 import ru.iwareq.anarchycore.module.Permissions.Group.DefaultGroup;
 
 import java.util.HashMap;
 
-public class HeroGroup extends DefaultGroup {
+public class AdminGroup extends DefaultGroup {
 
 	@Override
 	public String getGroupId() {
-		return "hero";
+		return "admin";
 	}
 
 	@Override
 	public String getGroupName() {
-		return "§eГерой§r";
+		return "§7Admin§r";
 	}
 
 	@Override
 	public Integer getMaxRegions() {
-		return 2;
+		return 6;
 	}
 
 	@Override
@@ -30,6 +30,6 @@ public class HeroGroup extends DefaultGroup {
 
 	@Override
 	public boolean isAdmin() {
-		return false;
+		return true;
 	}
 }

@@ -1,19 +1,19 @@
-package ru.iwareq.anarchycore.module.Permissions.Group.DonateGroup;
+package ru.iwareq.anarchycore.module.Permissions.Group.SpecialGroup;
 
 import ru.iwareq.anarchycore.module.Permissions.Group.DefaultGroup;
 
 import java.util.HashMap;
 
-public class PrinceGroup extends DefaultGroup {
+public class YouTubePlusGroup extends DefaultGroup {
 
 	@Override
 	public String getGroupId() {
-		return "prince";
+		return "youtube_plus";
 	}
 
 	@Override
 	public String getGroupName() {
-		return "§6Принц§r";
+		return "§7YouTube+§r";
 	}
 
 	@Override
@@ -25,12 +25,6 @@ public class PrinceGroup extends DefaultGroup {
 	public HashMap<String, Boolean> getPermissionAttachment() {
 		HashMap<String, Boolean> permissionAllows = new HashMap<>();
 		permissionAllows.put("Command.CraftingTable", true);
-		permissionAllows.put("Command.Food", true);
-		permissionAllows.put("Command.Heal", true);
-		permissionAllows.put("Command.ClearInventory", true);
-		permissionAllows.put("Command.Day", true);
-		permissionAllows.put("Command.Night", true);
-		permissionAllows.put("Command.Repair", true);
 		return permissionAllows;
 	}
 
